@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<main id="content" role="main">
+	<p style="margin-top:30px;">
+	Order by: <a href="/"> theme</a>, <a href="/priority/"> priority</a>, {% if sess.user == 'portfolio'%} <a href="/oddlead/"> ODD lead</a>, {% endif %} <a href="/rag/"> rag status</a> or <a href="/status/"> stage</a>. 
+		
+		
+		{%if sess.user == 'portfolio'%}
+		You can also <a href="/filter-view">filter</a> or <a href="/portfolio-add">add</a> projects.
+		{% else %}
+		You can also <a href="/filter-view">filter projects</a>.
+		{% endif %}</p>
+	<hr />
+	
+	<p><span style="font-weight:800;">Archived: </span>{{ counts.completed }}</p>
+	
+	<hr />
+	
+	{% for project in data %}
+	<p><a href="/projects/{{ project.project_id }}">{{ project.project_name | safe}} {{ projects.priority_main }}</a></p>
+	{% endfor %}
+
+</main>
+
+{% endblock %}

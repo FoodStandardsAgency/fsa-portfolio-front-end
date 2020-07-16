@@ -1,0 +1,318 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<main id="content" role="main">
+
+
+	<h1 class="heading-xlarge" style="margin-bottom:15px;">Update project</h1><br />
+
+	<div class="grid-row">
+		<section class="column-full">
+			
+			<form action="/process-project-form" method="post">
+			
+			<h2 class="heading-medium" style="margin-bottom:10px; margin-left:2%;">About the project</h2><br />
+			
+			<div class="container">
+			<div class="left30"><label for="project_id1">Project id:&nbsp; &nbsp;</label></div>
+			<div class="right70"><input id="project_id1" type="text" name="project_id1" class="form_input_grey" value = "{{ data.project_id | safe}}" disabled /></div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="project_name1">Project name:&nbsp; &nbsp;</label></div>
+			<div class="right70"><input id="project_name1" type="text" name="project_name1" class="form_input_grey" value = "{{ data.project_name | safe }}" disabled /></div>
+			<div class="clear"></div>
+			</div>
+					
+			<div class="container">
+			<div class="left30"><label for="project_desc">Short description:&nbsp; &nbsp;</label></div>
+			<div class="right70"><textarea id="project_desc" type="text" name="project_desc" class="form_input" rows="3">{{ data.short_desc | safe}}</textarea></div>
+			<div class="clear"></div>
+			</div>
+				
+			<div class="container">
+			<div class="left30"><label for="phase">Phase:&nbsp; &nbsp;</label></div>								
+			<div class="right70">
+				<select name="phase" class="form_input">
+					<option value="backlog" 	{% if data.phase == 'backlog' %}	selected {% endif %}	>Backlog	</option>
+					<option value="discovery" 	{% if data.phase == 'discovery' %}	selected {% endif %}	>Discovery	</option>
+					<option value="alpha"		{% if data.phase == 'alpha' %}		selected {% endif %} 	>Alpha		</option>
+					<option value="beta"		{% if data.phase == 'beta' %}		selected {% endif %}	>Beta		</option>
+					<option value="live" 		{% if data.phase == 'live' %}		selected {% endif %}	>Live		</option>
+					{% if sess.user == 'portfolio' %}<option value="completed"	{% if data.phase == 'completed' %}	selected {% endif %}	>Archived	</option>{% endif %}
+				</select>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="onhold">Is the project on hold or blocked?&nbsp; &nbsp;</label></div>								
+			<div class="right70">
+				<select name="onhold" class="form_input">
+					<option value="n" 	{% if data.onhold == 'n' %}	selected {% endif %}>No</option>
+					<option value="y" 	{% if data.onhold == 'y' %}	selected {% endif %}>On hold</option>
+					<option value="b" 	{% if data.onhold == 'b' %}	selected {% endif %}>Blocked</option>
+					<option value="c" 	{% if data.onhold == 'c' %}	selected {% endif %}>Covid-19 on hold</option>
+				</select>
+			<div class="clear"></div>
+			</div>
+
+			<div class="container">
+			<div class="left30"><label for="rag">RAG:&nbsp; &nbsp;</label></div>									
+			<div class="right70">
+				<select name="rag" class="form_input">
+					<option value="red" {% if data.rag == 'red' %}	selected {% endif %}>Red</option>
+					<option value="amb" {% if data.rag == 'amb' %}	selected {% endif %}>Amber</option>
+					<option value="gre" {% if data.rag == 'gre' %}	selected {% endif %}>Green</option>
+					<option value="nor" {% if data.rag == 'nor' %}	selected {% endif %}>Undecided</option>
+				</select></div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="team">Project team:&nbsp; &nbsp;</label></div>
+			<div class="right70"><input id="team" type="text" name="team" maxlength="500" class="form_input" placeholder="Team member 1, Team member 2..." value= "{{data.team | safe}}" /></div>
+			<div class="clear"></div>
+			</div>	
+			
+			<div class="container">
+			<div class="left30"><label for="rels">Related projects:&nbsp; &nbsp;</label></div>
+			<div class="right70"><input id="rels" type="text" maxlength="500" name="rels" class="form_input" placeholder="ODD1900000, ODD1900001,...." value= "{{data.rels}}" /></div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="deps">Dependencies:&nbsp; &nbsp;</label></div>
+			<div class="right70"><input id="deps" type="text" maxlength="500" name="deps" class="form_input" placeholder="ODD1900000, ODD1900001,...." value= "{{data.dependencies}}" /></div>
+			<div class="clear"></div>
+			</div>	
+
+					
+			
+			<h2 class="heading-medium" style="margin-bottom:10px; margin-left:2%;">Key dates</h2><br />
+			
+			<div class="container">
+			<div class="left30"><label for="start_date_day">Intended start date:&nbsp; &nbsp;</label></div>
+			<div class="right70">
+			
+			<input type="number" id = "start_date_day" name="start_date_day" class="form_input" style="width:10%;" placeholder="DD" min="1" max="31"  {% if dates[0] != '00' %}value= "{{dates[0] | safe}}" {% endif %} />
+			<input type="number" id = "start_date_month" name="start_date_month" class="form_input" style="width:10%;" placeholder="MM" min="1" max="12"  {% if dates[1] != '00' %}value= "{{dates[1]  | safe}}" {% endif %} />
+			<input type="number" id = "start_date_year" name="start_date_year" class="form_input" style="width:20%;" placeholder="YYYY" min="2016" max="2025" {% if dates[2] != '0000' %}value= "{{dates[2]  | safe}}" {% endif %} />
+			
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="actstart_day">Actual start date:&nbsp; &nbsp;</label></div>
+			<div class="right70">
+			
+			<input type="number" id = "actstart_day" name="actstart_day" class="form_input" style="width:10%;" placeholder="DD" min="1" max="31"  {% if dates[3] != '00' %}value= "{{dates[3] | safe}}" {% endif %}  />
+			<input type="number" id = "actstart_month" name="actstart_month" class="form_input" style="width:10%;" placeholder="MM" min="1" max="12" {% if dates[4] != '00' %} value= "{{dates[4]  | safe}}"{% endif %}  />
+			<input type="number" id = "actstart_year" name="actstart_year" class="form_input" style="width:20%;" placeholder="YYYY" min="2016" max="2025" {% if dates[5] != '0000' %} value= "{{dates[5]  | safe}}" {% endif %} />
+			
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="expendp_day">Expected current phase end date:&nbsp; &nbsp;</label></div>
+			<div class="right70">
+			
+			<input type="number" id = "expendp_day" name="expendp_day" class="form_input" style="width:10%;" placeholder="DD" min="1" max="31" {% if dates[6] != '00' %} value= "{{dates[12]  | safe}}" {% endif %} />
+			<input type="number" id = "expendp_month" name="expendp_month" class="form_input" style="width:10%;" placeholder="MM" min="1" max="12"{% if dates[7] != '00' %} value= "{{dates[13]  | safe}}"  {% endif %}/>
+			<input type="number" id = "expendp_year" name="expendp_year" class="form_input" style="width:20%;" placeholder="YYYY"  min="2016" max="2025" {% if dates[8] != '0000' %}value= "{{dates[14]  | safe}}" {% endif %} />
+			
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="expend_day">Expected project end date:&nbsp; &nbsp;</label></div>
+			<div class="right70">
+			
+			<input type="number" id = "expend_day" name="expend_day" class="form_input" style="width:10%;" placeholder="DD" min="1" max="31" {% if dates[6] != '00' %} value= "{{dates[6]  | safe}}" {% endif %} />
+			<input type="number" id = "expend_month" name="expend_month" class="form_input" style="width:10%;" placeholder="MM" min="1" max="12" {% if dates[7] != '00' %} value= "{{dates[7]  | safe}}"  {% endif %}/>
+			<input type="number" id = "expend_year" name="expend_year" class="form_input" style="width:20%;" placeholder="YYYY"  min="2016" max="2025" {% if dates[8] != '0000' %}value= "{{dates[8]  | safe}}" {% endif %} />
+			
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="hardend_day">Hard deadline:&nbsp; &nbsp;</label></div>
+			<div class="right70">
+			
+			<input type="number" id = "actstart_day" name="hardend_day" class="form_input" style="width:10%;" placeholder="DD" min="1" max="31" {% if dates[9] != '00' %}value= "{{dates[9]  | safe}}" {% endif %} />
+			<input type="number" id = "actstart_month" name="hardend_month" class="form_input" style="width:10%;" placeholder="MM"  min="1" max="12" {% if dates[10] != '00' %}value= "{{dates[10]  | safe}}" {% endif %} />
+			<input type="number" id = "actstart_year" name="hardend_year" class="form_input" style="width:20%;" placeholder="YYYY" min="2016" max="2025" {% if dates[11] != '0000' %}value= "{{dates[11]  | safe}}" {% endif %} />
+			
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="p_comp">Percentage complete:&nbsp; &nbsp;</label></div>
+			<div class="right70">
+			<input id="p_comp" type="number" min="0" max="100" name="p_comp" class="form_input" style="width:10%;" placeholder="25" value= "{{data.p_comp}}" /> %
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<h2 class="heading-medium" style="margin-bottom:10px; margin-left:2%;">Update</h2>
+
+			{% if udates[0] == udates[1]%}
+			
+			<p style="margin-left:2%; margin-bottom:10px; margin-top:0; color: #53565A;">Make changes to your update below. You can only amend an update on the day it was posted.<br /><br /></p>
+					
+			<div class="container">
+			<div class="left30" style="color:#53565A;"><label for="update">Update:&nbsp; &nbsp;</label><br /></div>
+			<div class="right70">
+			<textarea id="update" type="text" name="update" maxlength="1000" class="form_input" rows="7" style="white-space: pre-line;" placeholder="Update" />{{ data.update | safe}}</textarea>
+			<p style="text-align:left; color:#53565A;">Max 1,000 characters (approx. 350 - 400 words).</p>
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			{% else %}
+			
+			<p style="margin-left:2%; margin-bottom:10px; margin-top:0; color: #53565A;">Enter your new update below. You can only amend an update on the day it was posted.<br /><br /></p>
+			
+			<div class="container">
+			<div class="left30"><label for="new_update">New update:&nbsp; &nbsp;</label><br /></div>
+			<div class="right70">
+			<textarea id="new_update" type="text" name="new_update" maxlength="1000" class="form_input" style="white-space: pre-line;" rows="7" placeholder="New update" /></textarea>
+			<p style="text-align:left; color:#53565A;">Max 1,000 characters (approx. 350 - 400 words).</p>
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30" style="color:#53565A;"><label for="update">Previous update:&nbsp; &nbsp;</label><br /></div>
+			<div class="right70">
+			<textarea id="update" type="text" name="update" maxlength="1000" class="form_input" rows="7" style="white-space: pre-line; display:none;" placeholder="Previous update" />{{ data.update | safe}}</textarea>
+			<p style="color:#53565A; white-space: pre-wrap;">{{ data.update | safe}}</p>
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			{% endif %}
+
+			<h2 class="heading-medium" style="margin-bottom:10px; margin-left:2%;">Budget</h2>
+			<p style="margin-left:2%; margin-bottom:10px; margin-top:0; color:#53565A;">Please use numbers only, for example for £100k, please input 100000. If budget is not applicable to this project, please enter 0.<br /><br /></p>
+			
+			<div class="container">
+			<div class="left30"><label for="budgettype">Spending category:&nbsp; &nbsp;</label></div>
+			<div class="right70">
+			<select name="budgettype" class="form_input">
+			<option value="none"  {% if data.budgettype == 'none'  %}selected{% endif %}>Budget type</option>
+			<option value="admin" {% if data.budgettype == 'admin' %}selected{% endif %}>Admin</option>
+			<option value="progr" {% if data.budgettype == 'progr' %}selected{% endif %}>Programme</option>
+			<option value="capit" {% if data.budgettype == 'capit' %}selected{% endif %}>Capital</option>
+			</select>
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="budget">Budget:&nbsp; &nbsp;</label></div>				
+			<div class="right70"><input id="budget" maxlength="15" type="number" name="budget"  class="form_input" value="{{data.budget | safe}}" /></div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="spent">Spent:&nbsp; &nbsp;</label></div>				
+			<div class="right70"><input id="spent" maxlength="15" type="number" name="spent" class="form_input" value="{{data.spent | safe}}" /></div>
+			<div class="clear"></div>
+			</div>
+					
+						
+			<h2 class="heading-medium" style="margin-bottom:10px; margin-left:2%;">Key documents</h2><br />
+			
+			<div class="container">
+			<div class="left30"><label for="docs_name1">Documents:&nbsp; &nbsp;</label></div>
+			<div class="left20">File name:</div>
+			<div class="equalsplit2">Sharepoint link:</div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"></div>
+			<div class="left20"><input id="docs_name1" type="text" name="docs_name1" class="form_input" value="{{ docs[0] | safe}}" /></div>
+			<div class="equalsplit2"><input id="docs_link1" type="text" name="docs_link1" class="form_input" value="{{ docs[1] | safe}}" /></div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"></div>
+			<div class="left20"><input id="docs_name2" type="text" name="docs_name2" class="form_input" value="{{ docs[2] | safe}}" /></div>
+			<div class="equalsplit2"><input id="docs_link2" type="text" name="docs_link2" class="form_input" value="{{ docs[3] | safe}}" /></div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"></div>
+			<div class="left20"><input id="docs_name3" type="text" name="docs_name3" class="form_input" value="{{ docs[4] | safe}}" /></div>
+			<div class="equalsplit2"><input id="docs_link3" type="text" name="docs_link3" class="form_input" value="{{ docs[5] | safe}}" /></div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"></div>
+			<div class="left20"><input id="docs_name4" type="text" name="docs_name4" class="form_input" value="{{ docs[6] | safe}}" /></div>
+			<div class="equalsplit2"><input id="docs_link4" type="text" name="docs_link4" class="form_input" value="{{ docs[7] | safe}}" /></div>
+			<div class="clear"></div>
+			</div>
+			
+			<br />
+			
+			<h2 class="heading-medium" style="margin-bottom:10px; margin-left:2%;">Link to project channel</h2><br />
+			
+			<div class="container">
+			<div class="left30"></label></div>
+			<div class="left20">Link name:</div>
+			<div class="equalsplit2">Link address:</div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"></div>
+			<div class="left20"><input id="link_name" type="text" name="link_name" class="form_input" placeholder ="Link name" value="{{ link[0] | safe}}" /></div>
+			<div class="equalsplit2"><input id="link_address" type="text" name="link_address" class="form_input" placeholder = "Link address" value="{{ link[1] | safe}}" /></div>
+			<div class="clear"></div>
+			</div>
+	
+			<br /><br />
+			
+			<!-- For the db record - not editable and not visible -->
+			<input name="project_size" 		id="project_size" 		value="{{ data.project_size }}" 		hidden />
+			<input name="oddlead_role" 		id="oddlead_role" 		value="{{ data.oddlead_role }}" 		hidden />
+			<input name="category" 			id="category" 			value="{{ data.category }}" 			hidden />
+			<input name="subcat" 			id="subcat" 			value="{{ data.subcat }}" 				hidden />
+			<input name="oddlead" 			id="oddlead" 			value="{{ data.oddlead }}" 				hidden />
+			<input name="oddlead_email" 	id="oddlead_email" 		value="{{ data.oddlead_email }}" 		hidden />
+			<input name="servicelead" 		id="servicelead"  		value="{{ data.servicelead }}" 			hidden />
+			<input name="servicelead_email" id="servicelead_email"  value="{{ data.servicelead_email }}" 	hidden />
+			<input name="priority" 			id="priority" 			value="{{ data.priority_main }}"		hidden />
+			<input name="funded" 			id="funded" 			value="{{ data.funded }}" 				hidden />
+			<input name="confidence" 		id="confidence" 		value="{{ data.confidence }}" 			hidden />
+			<input name="priorities" 		id="priorities" 		value="{{ data.priorities }}" 			hidden />
+			<input name="benefits" 			id="benefits" 			value="{{ data.benefits }}" 			hidden />
+			<input name="criticality" 		id="criticality" 		value="{{ data.criticality }}" 			hidden />
+			<input name="direct" 			id="direct" 			value="{{ data.direct }}" 				hidden />
+			
+			<input id="project_id"  	name="project_id"  		value = "{{ data.project_id }}" 	hidden />
+			<input id="project_name"  	name="project_name"  	value = "{{ data.project_name }}" 	hidden />
+			<input id="start_date"  	name="start_date"  		value = "{{ data.start_date }}" 	hidden />
+
+			<input name="form_type" 		value="oddupdate" 			hidden />
+
+			<input type="submit" value="Update project" style="margin-left:2%;">
+
+			</form>
+		</section>
+	</div>
+</main>
+
+{% endblock %}
