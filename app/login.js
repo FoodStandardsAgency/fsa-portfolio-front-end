@@ -1,6 +1,19 @@
 const crypto	= require('crypto');
 const queries 	= require('./queries');
 
+// Redirect not logged in users to the login page
+function requireLogin(req, res, next) {
+	console.log("Login");
+	console.log(req.session.user);
+	console.log(req.session.group);
+	if (req.session.login == undefined) {
+		console.log("login undefined - redirecting");
+		req.session.destroy();
+		res.redirect('/login');
+		//res.redirect('/auth/signin');
+	} else { next(); }
+};
+
 function login(req, res) {
 	// Get form data
 	const user = req.body.user;
@@ -52,4 +65,4 @@ function login(req, res) {
 	.catch();
 }
 
-module.exports = login;
+module.exports = { requireLogin, login };

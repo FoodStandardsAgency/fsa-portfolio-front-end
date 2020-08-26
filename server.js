@@ -1,10 +1,15 @@
 const path 		= require('path');
 const express 	= require('express');
-const session	= require('client-sessions');
+const session = require('express-session');
+//const session	= require('client-sessions');
 const nunjucks  = require('nunjucks');
 const queries 	= require('./app/queries');
 const moment	= require('moment');
-var CronJob 	= require('cron').CronJob;
+var CronJob = require('cron').CronJob;
+
+const passport = require('passport');
+const odd_authenticate = require('./app/authentication');
+
 
 require('dotenv').config();
 
@@ -94,10 +99,40 @@ if (process.env.CRON == 'y') {
 job.start();
 }
 
+// Initialize passport
+console.log("Initialising passport");
+app.use(passport.initialize());
+app.use(passport.session());
+
+odd_authenticate.configurePassport();
+
+
 // Router
-app.use("/", function(req, res, next) {
-  require('./app/routes.js')(req, res, next);
-});
+var router = require('./app/routes.js');
+var authrouter = require('./routes/auth.js');
+var teamsrouter = require('./routes/teams.js');
+var suppliersrouter = require('./routes/suppliers.js');
+
+
+
+app.use("/", router);
+app.use("/auth", authrouter);
+app.use("/odd_people", teamsrouter);
+app.use("/suppliers", suppliersrouter);
+
+//-------------------------------------------------------------------
+// Error handling
+//-------------------------------------------------------------------
+
+/*Handle 404s*/
+app.use(function (req, res, next) {
+  res.status(404).render('error_page', {"message":"Requested page does not exist."})
+})
+
+app.use(function (req, res, next) {
+  res.status(500).render('error_page', {"message":"Something went wrong."})
+})
+
 
 // start the app
 app.listen(port, () => {

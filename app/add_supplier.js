@@ -28,7 +28,7 @@ function add_supplier(req, res) {
 			queries.generic_query(text, values).then().catch();
 		}
 		
-		var url = '/add-supplier?msg='.concat(msg);
+		var url = 'suppliers/add-supplier?msg='.concat(msg);
 		console.log(url);
 		
 		// Redirect

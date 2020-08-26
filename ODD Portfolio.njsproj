@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1cee69d7-8fc5-47b7-9663-965399e4531f}</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <ProjectView>ProjectFiles</ProjectView>
+    <ProjectView>ShowAllFiles</ProjectView>
     <StartupFile>server.js</StartupFile>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -16,9 +16,39 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Content Include="app\assets\sass\application.scss" />
+    <Content Include="app\assets\sass\display.scss" />
+    <Content Include="app\assets\sass\elements.scss" />
+    <Content Include="app\assets\sass\elements\forms\_form-block-labels.scss" />
+    <Content Include="app\assets\sass\elements\forms\_form-date.scss" />
+    <Content Include="app\assets\sass\elements\forms\_form-validation.scss" />
+    <Content Include="app\assets\sass\elements\_breadcrumb.scss" />
+    <Content Include="app\assets\sass\elements\_buttons.scss" />
+    <Content Include="app\assets\sass\elements\_components.scss" />
+    <Content Include="app\assets\sass\elements\_details.scss" />
+    <Content Include="app\assets\sass\elements\_elements-typography.scss" />
+    <Content Include="app\assets\sass\elements\_forms.scss" />
+    <Content Include="app\assets\sass\elements\_helpers.scss" />
+    <Content Include="app\assets\sass\elements\_icons.scss" />
+    <Content Include="app\assets\sass\elements\_layout.scss" />
+    <Content Include="app\assets\sass\elements\_lists.scss" />
+    <Content Include="app\assets\sass\elements\_panels.scss" />
+    <Content Include="app\assets\sass\elements\_reset.scss" />
+    <Content Include="app\assets\sass\elements\_tables.scss" />
+    <Content Include="app\assets\sass\examples.scss" />
+    <Content Include="app\assets\sass\patterns.scss" />
+    <Content Include="app\assets\sass\patterns\check-your-answers.scss" />
+    <Content Include="app\assets\sass\_multicolour.scss" />
+    <Content Include="app\authentication.js" />
+    <Content Include="app\graph.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="routes\auth.js" />
+    <Content Include="routes\suppliers.js" />
+    <Content Include="routes\teams.js" />
     <Content Include="server.js" />
     <Content Include="webpack.config.js" />
     <Content Include="app\add_supplier.js" />
@@ -28,7 +58,6 @@
     <Content Include="app\filter_view.js" />
     <Content Include="app\handle_add_update.js" />
     <Content Include="app\handle_delete.js" />
-    <Content Include="app\ldap.js" />
     <Content Include="app\login.js" />
     <Content Include="app\oddleads_view.js" />
     <Content Include="app\project_view.js" />
@@ -88,6 +117,7 @@
     <Folder Include="app\views" />
     <Folder Include="app\views\display bak" />
     <Folder Include="app\views\includes" />
+    <Folder Include="routes\" />
     <Folder Include="tmp" />
     <Folder Include="tmp\csv" />
   </ItemGroup>
