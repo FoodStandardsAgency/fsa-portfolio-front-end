@@ -19,6 +19,22 @@ const favicon = require('serve-favicon');
 
 const app = express();
 
+const port = process.env.PORT || 3100;
+const dev = process.env.NODE_ENV !== 'production';
+
+app.use(express.urlencoded({extended: true}));
+
+app.use(session({
+  cookieName: 'session',
+  secret: process.env.COOKIE_SECRET,
+  duration: 180 * 60 * 1000, // 180 min
+  activeDuration: 180 * 60 * 1000, // 180 min
+  maxAge: 8*60*60*1000, // 8 hour
+  httpOnly: true,
+  secure: true,
+  ephemeral: true
+}));
+
 // Flash middleware
 app.use(flash());
 
@@ -38,21 +54,6 @@ app.use(function (req, res, next) {
 	next();
 });
 
-const port = process.env.PORT || 3100;
-const dev = process.env.NODE_ENV !== 'production';
-
-app.use(express.urlencoded({extended: true}));
-
-app.use(session({
-  cookieName: 'session',
-  secret: process.env.COOKIE_SECRET,
-  duration: 180 * 60 * 1000, // 180 min
-  activeDuration: 180 * 60 * 1000, // 180 min
-  maxAge: 8*60*60*1000, // 8 hour
-  httpOnly: true,
-  secure: true,
-  ephemeral: true
-}));
 
 // Views & Nunjucks
 app.set('view engine', 'html');
