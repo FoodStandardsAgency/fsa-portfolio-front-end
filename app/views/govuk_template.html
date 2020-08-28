@@ -1,4 +1,4 @@
-{% block top_of_page %}{% endblock %}
+﻿{% block top_of_page %}{% endblock %}
 <!DOCTYPE html>
 <!--[if lt IE 9]><html class="lte-ie8" lang="{{ html_lang|default('en') }}"><![endif]-->
 <!--[if gt IE 8]><!--><html lang="{{ html_lang|default('en') }}"><!--<![endif]-->
@@ -84,7 +84,7 @@
             <div class="content" style="width:100%">
                 <nav id="proposition-menu" style="padding-bottom:5px; width:100%;">
 					<div class="container" style="width:97%;">
-					<div class="equalsplit2" style="width:50%; margin:0; padding:0;"><a href="/" class="govuk-header__link--service-name" id="proposition-name" style="font-family: 'Fira Sans', sans-serif;">ODD Online Portfolio </a></div>
+					<div class="equalsplit2" style="width:50%; margin:0; padding:0;"><a href="/" class="govuk-header__link--service-name" id="proposition-name" style="font-family: 'Fira Sans', sans-serif;">{{ global_header_text }}</a></div>
 					<div class="equalsplit2" style="width:50%; margin:0; padding:0; text-align:right;">{%if sess.user == 'portfolio'%}<a href="/portfolio-team" style="color:white;"> Admin area</a> <span style="color:white;">|</span> {% endif %}<a href="/log-out" style="color:white;">Log out</a> </div>
 					<div class="clear"></div>
 					</div>
