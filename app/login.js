@@ -10,7 +10,6 @@ function requireLogin(req, res, next) {
 		console.log("login undefined - redirecting");
 		req.session.destroy();
 		res.redirect('/login');
-		//res.redirect('/auth/signin');
 	} else { next(); }
 };
 
