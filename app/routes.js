@@ -51,11 +51,11 @@ router.get ('/login', function (req, res) {res.render("login");});
 router.post('/login', [check('user').escape()], function (req, res) { login.login(req, res); });
 
 router.get('/log-out', (req, res) => {
-	
 	// Destroy session and log out
-	req.session.destroy();
-	res.writeHead(302, {'Location': '/login'});
-	res.end();
+	req.session.destroy(function (err) {
+		req.logout();
+		res.redirect('/login');
+	});
 });
 
 

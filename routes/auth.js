@@ -23,7 +23,8 @@ router.post('/callback',
             {
                 response: res,
                 failureRedirect: '/',
-                failureFlash: true
+                failureFlash: true,
+                successRedirect: '/'
             }
         )(req, res, next);
     },

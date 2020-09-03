@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path 		= require('path');
 const express 	= require('express');
 const session = require('express-session');
@@ -10,9 +11,6 @@ var CronJob = require('cron').CronJob;
 
 const passport = require('passport');
 const odd_authenticate = require('./app/authentication');
-
-
-require('dotenv').config();
 
 const morgan = require('morgan');
 const favicon = require('serve-favicon');
@@ -124,6 +122,14 @@ job.start();
 console.log("Initialising passport");
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(function (req, res, next) {
+	// Set the authenticated user in the
+	// template locals
+	if (req.user) {
+		res.locals.user = req.user.profile;
+	}
+	next();
+});
 
 odd_authenticate.configurePassport();
 

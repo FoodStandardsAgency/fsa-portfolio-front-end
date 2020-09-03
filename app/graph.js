@@ -7,6 +7,11 @@ module.exports = {
 
         const user = await client.api('/me').get();
         return user;
+    },
+    getUserGroups: async function (accessToken) {
+        const client = getAuthenticatedClient(accessToken);
+        const groups = await client.api('/me/memberOf').get();
+        return groups;
     }
 };
 
