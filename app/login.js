@@ -1,5 +1,4 @@
 const crypto	= require('crypto');
-const queries = require('./queries');
 const tokens = require('./tokens');
 const graph = require('./graph');
 const got = require('got');
