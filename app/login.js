@@ -48,16 +48,23 @@ function login(req, res) {
 				responseType: 'json'
 			});
 
-			req.session.user = body.userName;
-			req.session.group = body.accessGroup;
-			req.session.login = 'yes';
+			if (body && body.userName && body.accessGroup) {
+				req.session.user = body.userName;
+				req.session.group = body.accessGroup;
+				req.session.login = 'yes';
 
-			res.redirect('/');
-			res.end();
+				res.redirect('/');
+				res.end();
+			}
+			else {
+				console.log('Login failed: user not found.')
+				req.session.destroy;
+				res.redirect('/login');
+				res.end();
+            }
 		}
 		catch (error) {
-			console.log('couldn`t log in')
-			console.log(error.response.body);
+			console.log(`Login failed: received error from API - ${error.message}`)
 			req.session.destroy;
 			res.redirect('/login');
 			res.end();
