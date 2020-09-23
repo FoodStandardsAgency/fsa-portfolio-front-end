@@ -36,6 +36,8 @@ function login(req, res) {
 	// Calculate hash
 	const prov_hash = crypto.createHash('sha256').update(password).digest('hex').toUpperCase();
 
+	console.log(`${backEndApiBase}/User`);
+
 	(async () => {
 		try {
 			const { body } = await got.post(`${backEndApiBase}/User`, {
@@ -54,7 +56,7 @@ function login(req, res) {
 			res.end();
 		}
 		catch (error) {
-			console.log('couldnt log in')
+			console.log('couldn`t log in')
 			console.log(error.response.body);
 			req.session.destroy;
 			res.redirect('/login');
