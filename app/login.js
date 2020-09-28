@@ -39,11 +39,9 @@ function login(req, res) {
 	// Calculate hash
 	const prov_hash = crypto.createHash('sha256').update(password).digest('hex').toUpperCase();
 
-	console.log(`${backEndApiBase}/User`);
-
 	(async () => {
 		try {
-			const { body } = await api.post('User', {
+			const { body } = await api.post('Users', {
 				json: {
 					userName: user,
 					passwordHash: prov_hash
@@ -97,7 +95,7 @@ function loginUser(req, res, loginUser) {
 
 	(async () => {
 		try {
-			const { body } = await api.post('ADUser', {
+			const { body } = await api.post('ADUsers', {
 				json: {
 					userName: loginUser
 				},
