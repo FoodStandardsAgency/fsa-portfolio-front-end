@@ -8,8 +8,8 @@ router.get('/unmatched', login.requireLogin, function (req, res) {
 		queries.unmatched_leads()
 			.then((result) => {
 				res.render('odd_people_unmatched', {
-					"data": result.rows,
-					"count": result.rowCount,
+					"data": result.body,
+					"count": result.body.length,
 					"sess": req.session,
 				})
 			})
