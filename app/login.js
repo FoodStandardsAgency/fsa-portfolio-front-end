@@ -5,9 +5,9 @@ const backend = require('./backend');
 
 // Redirect not logged in users to the login page
 function requireLogin(req, res, next) {
-	console.log("Login");
-	console.log(req.session.user);
-	console.log(req.session.group);
+	//console.log("Login");
+	//console.log(req.session.user);
+	//console.log(req.session.group);
 	if (req.session.login == undefined) {
 		loginADUser(req, res).then(result => {
 			if (!result) {

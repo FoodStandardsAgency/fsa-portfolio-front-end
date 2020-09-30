@@ -20,37 +20,29 @@ function odd_view(req, res) {
 
 queries.current_projects()
 	.then((projects) => {
-		
-		//console.log(projects);
-		
+
 		config.odd_leads
 		.then((oddleads) => {
 			
-			//console.log(oddleads);
-			
 			var odd_leads_arr = [];
-			var cnt = oddleads.rowCount;
 			var i = 0;
 			
-			for(i; i < oddleads.rows.length; i++){
+			for(i; i < oddleads.body.length; i++){
 				
-				var lead = oddleads.rows[i].oddlead;
+				var lead = oddleads.body[i].oddlead;
 				var string = lead.concat(',',lead);
 				var lead_arr = string.split(",");
 
 				odd_leads_arr.push(lead_arr);	
 			}
 			
-			//console.log(odd_leads_arr);
-			//console.log("----------------------");
-			//console.log(nestedGroupBy(projects.rows, ['oddlead', 'phase']);
-						
+					
 			res.render('index', {
-			"data": 	nestedGroupBy(projects.rows, ['oddlead', 'phase']),
-			"counts": 	_.countBy(projects.rows, 'phase'),
-			"themes": 	odd_leads_arr,
-			"phases":	config.phases,
-			"sess": req.session
+				"data": 	nestedGroupBy(projects.body, ['oddlead', 'phase']),
+				"counts": _.countBy(projects.body, 'phase'),
+				"themes": 	odd_leads_arr,
+				"phases":	config.phases,
+				"sess": req.session
 			});
 		})  
 	})
