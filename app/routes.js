@@ -22,7 +22,9 @@ const filter_view 		= require('./filter_view');
 const project_view 		= require('./project_view');
 const odd_view			= require('./oddleads_view');
 
-var router 			= express.Router();
+var router = express.Router();
+const backend = require('./backend');
+
 
 // Add timestamps to logs
 require('log-timestamp');
@@ -69,8 +71,8 @@ router.get('/', login.requireLogin, async (req, res) => {
 	queries.current_projects()
 	.then((result) => {
 		res.render('index', {
-			"data": nestedGroupBy(result.rows, ['category', 'phase']),
-			"counts": _.countBy(result.rows, 'phase'),
+			"data": nestedGroupBy(result.body, ['category', 'phase']),
+			"counts": _.countBy(result.body, 'phase'),
 			"themes": config.categories,
 			"phases": config.phases,
 			"sess": req.session
@@ -84,8 +86,8 @@ router.get('/priority/', login.requireLogin, function (req, res) {
 	queries.current_projects()
 	.then((result) => {
 		res.render('index', {
-			"data": nestedGroupBy(result.rows, ['pgroup', 'phase']),
-			"counts": _.countBy(result.rows, 'phase'),
+			"data": nestedGroupBy(result.body, ['pgroup', 'phase']),
+			"counts": _.countBy(result.body, 'phase'),
 			"themes": config.priorities,
 			"phases":config.phases,
 			"sess": req.session
@@ -97,8 +99,8 @@ router.get('/team/', login.requireLogin, function (req, res) {
 	queries.current_projects()
 	.then((result) => {
 		res.render('index', {
-			"data": nestedGroupBy(result.rows, ['g6team', 'phase']),
-			"counts": _.countBy(result.rows, 'phase'),
+			"data": nestedGroupBy(result.body, ['g6team', 'phase']),
+			"counts": _.countBy(result.body, 'phase'),
 			"themes": config.teams,
 			"phases":config.phases,
 			"sess": req.session
@@ -110,8 +112,8 @@ router.get('/rag/', login.requireLogin, function (req, res) {
 	queries.current_projects()
 	.then((result) => {
 		  res.render('index', {
-			"data": 	nestedGroupBy(result.rows, ['rag', 'phase']),
-			"counts": 	_.countBy(result.rows, 'phase'),
+			  "data": nestedGroupBy(result.body, ['rag', 'phase']),
+			  "counts": _.countBy(result.body, 'phase'),
 			"themes": 	config.rags,
 			"phases":	config.phases,
 			"sess": req.session
@@ -125,8 +127,8 @@ router.get('/status/', login.requireLogin, function (req, res) {
 	queries.current_projects()
 	.then((result) => {
 		res.render('phaseview', {
-			"data": 	nestedGroupBy(result.rows, ['phase']),
-			"counts": 	_.countBy(result.rows, 'phase'),
+			"data": 	nestedGroupBy(result.body, ['phase']),
+			"counts": _.countBy(result.body, 'phase'),
 			"phases":	config.phases,
 			"sess": req.session
 		});
@@ -138,8 +140,8 @@ router.get('/new_projects/', login.requireLogin, function (req, res) {
 	queries.new_projects()
 	.then((result) => {
 		res.render('index', {
-			"data": nestedGroupBy(result.rows, ['g6team', 'phase']),
-			"counts": _.countBy(result.rows, 'phase'),
+			"data": nestedGroupBy(result.body, ['g6team', 'phase']),
+			"counts": _.countBy(result.body, 'phase'),
 			"themes": config.teams,
 			"phases":config.phases,
 			"sess": req.session
@@ -152,8 +154,8 @@ router.get('/archived', login.requireLogin, function (req, res) {
 	.then((result) => {
 		res.render('completed', {
 			"user": req.session.user,
-			"data": result.rows,
-			"counts": _.countBy(result.rows, 'phase'),
+			"data": result.body,
+			"counts": _.countBy(result.body, 'phase'),
 			"sess":req.session
 		});
 	})
@@ -293,61 +295,61 @@ router.get('/download/csv', login.requireLogin, function(req,res){
 		queries.latest_projects()
 		.then( (result) => {
 						
-			for (i = 0; i < result.rows.length; i++){
+			for (i = 0; i < result.body.length; i++){
 			/*Project size*/
-			if(result.rows[i].project_size == 's') {result.rows[i].project_size = 'Small'}
-			else if(result.rows[i].project_size == 'm') {result.rows[i].project_size = 'Medium'}
-			else if(result.rows[i].project_size == 'l') {result.rows[i].project_size = 'Large'}
-			else if(result.rows[i].project_size == 'x') {result.rows[i].project_size = 'Extra Large'}
-			else {result.rows[i].project_size = 'Not set'}
+			if(result.body[i].project_size == 's') {result.body[i].project_size = 'Small'}
+			else if(result.body[i].project_size == 'm') {result.body[i].project_size = 'Medium'}
+			else if(result.body[i].project_size == 'l') {result.body[i].project_size = 'Large'}
+			else if(result.body[i].project_size == 'x') {result.body[i].project_size = 'Extra Large'}
+			else {result.body[i].project_size = 'Not set'}
 			
 			/*Phase*/
-			if(result.rows[i].phase == 'backlog') 	{result.rows[i].phase = 'Backlog'}
-			else if(result.rows[i].phase == 'discovery') {result.rows[i].phase = 'Discovery'}
-			else if(result.rows[i].phase == 'alpha') 	{result.rows[i].phase = 'Alpha'}
-			else if(result.rows[i].phase == 'beta') 		{result.rows[i].phase = 'Beta'}
-			else if(result.rows[i].phase == 'live') 		{result.rows[i].phase = 'Live'}
-			else if(result.rows[i].phase == 'completed') {result.rows[i].phase = 'Completed'}
-			else {result.rows[i].phase = 'Not set'}
+			if(result.body[i].phase == 'backlog') 	{result.body[i].phase = 'Backlog'}
+			else if(result.body[i].phase == 'discovery') {result.body[i].phase = 'Discovery'}
+			else if(result.body[i].phase == 'alpha') 	{result.body[i].phase = 'Alpha'}
+			else if(result.body[i].phase == 'beta') 		{result.body[i].phase = 'Beta'}
+			else if(result.body[i].phase == 'live') 		{result.body[i].phase = 'Live'}
+			else if(result.body[i].phase == 'completed') {result.body[i].phase = 'Completed'}
+			else {result.body[i].phase = 'Not set'}
 			
 			/*Category*/
-			if(result.rows[i].category == 'cap') 	{result.rows[i].category = 'Developing our digital capability'}
-			else if(result.rows[i].category == 'data')	{result.rows[i].category = 'Data driven FSA'}
-			else if(result.rows[i].category == 'sm') 	{result.rows[i].category = 'IT Service management'}
-			else if(result.rows[i].category == 'ser') 	{result.rows[i].category = 'Digital services development and support'}
-			else if(result.rows[i].category == 'it') 	{result.rows[i].category = 'Evergreen IT'}
-			else if(result.rows[i].category == 'res') 	{result.rows[i].category = 'Protecting data and business resilience'}
-			else {result.rows[i].category = 'Not set'}
+			if(result.body[i].category == 'cap') 	{result.body[i].category = 'Developing our digital capability'}
+			else if(result.body[i].category == 'data')	{result.body[i].category = 'Data driven FSA'}
+			else if(result.body[i].category == 'sm') 	{result.body[i].category = 'IT Service management'}
+			else if(result.body[i].category == 'ser') 	{result.body[i].category = 'Digital services development and support'}
+			else if(result.body[i].category == 'it') 	{result.body[i].category = 'Evergreen IT'}
+			else if(result.body[i].category == 'res') 	{result.body[i].category = 'Protecting data and business resilience'}
+			else {result.body[i].category = 'Not set'}
 				
 			/*Budget*/
-			if(result.rows[i].budgettype == 'admin') 	{result.rows[i].budgettype = 'Admin'}
-			else if(result.rows[i].budgettype == 'progr') 	{result.rows[i].budgettype = 'Programme'}
-			else if(result.rows[i].budgettype == 'capit') 	{result.rows[i].budgettype = 'Capital'}
-			else {result.rows[i].budgettype = 'Not set'}
+			if(result.body[i].budgettype == 'admin') 	{result.body[i].budgettype = 'Admin'}
+			else if(result.body[i].budgettype == 'progr') 	{result.body[i].budgettype = 'Programme'}
+			else if(result.body[i].budgettype == 'capit') 	{result.body[i].budgettype = 'Capital'}
+			else {result.body[i].budgettype = 'Not set'}
 			
 			/*Directorate*/
-			if(result.rows[i].direct == 'ODD') 	{result.rows[i].direct = 'Openness Data & Digital'}
-			else if(result.rows[i].direct == 'COMMS') 	{result.rows[i].direct = 'Communications'}
-			else if(result.rows[i].direct == 'IR') 	{result.rows[i].direct = 'Incidents & Resilience'}
-			else if(result.rows[i].direct == 'FO') 	{result.rows[i].direct = 'Field Operations'}
-			else if(result.rows[i].direct == 'FP') 	{result.rows[i].direct = 'Finance & Performance'}
-			else if(result.rows[i].direct == 'FSP') 	{result.rows[i].direct = 'Food Safety Policy'}
-			else if(result.rows[i].direct == 'FSA') 	{result.rows[i].direct = 'FSA Wide'}
-			else if(result.rows[i].direct == 'NFCU') 	{result.rows[i].direct = 'National Food Crime Unit'}
-			else if(result.rows[i].direct == 'NI') 	{result.rows[i].direct = 'Northern Ireland'}
-			else if(result.rows[i].direct == 'PEOP') 	{result.rows[i].direct = 'People'}
-			else if(result.rows[i].direct == 'RC') 	{result.rows[i].direct = 'Regulatory Compliance'}
-			else if(result.rows[i].direct == 'SERD') 	{result.rows[i].direct = 'Science Evidence & Research'}
-			else if(result.rows[i].direct == 'SLG') 	{result.rows[i].direct = 'Strategy Legal & Governance'}
-			else if(result.rows[i].direct == 'WAL') 	{result.rows[i].direct = 'Wales'}
-			else {result.rows[i].direct = 'Not set'}	
+			if(result.body[i].direct == 'ODD') 	{result.body[i].direct = 'Openness Data & Digital'}
+			else if(result.body[i].direct == 'COMMS') 	{result.body[i].direct = 'Communications'}
+			else if(result.body[i].direct == 'IR') 	{result.body[i].direct = 'Incidents & Resilience'}
+			else if(result.body[i].direct == 'FO') 	{result.body[i].direct = 'Field Operations'}
+			else if(result.body[i].direct == 'FP') 	{result.body[i].direct = 'Finance & Performance'}
+			else if(result.body[i].direct == 'FSP') 	{result.body[i].direct = 'Food Safety Policy'}
+			else if(result.body[i].direct == 'FSA') 	{result.body[i].direct = 'FSA Wide'}
+			else if(result.body[i].direct == 'NFCU') 	{result.body[i].direct = 'National Food Crime Unit'}
+			else if(result.body[i].direct == 'NI') 	{result.body[i].direct = 'Northern Ireland'}
+			else if(result.body[i].direct == 'PEOP') 	{result.body[i].direct = 'People'}
+			else if(result.body[i].direct == 'RC') 	{result.body[i].direct = 'Regulatory Compliance'}
+			else if(result.body[i].direct == 'SERD') 	{result.body[i].direct = 'Science Evidence & Research'}
+			else if(result.body[i].direct == 'SLG') 	{result.body[i].direct = 'Strategy Legal & Governance'}
+			else if(result.body[i].direct == 'WAL') 	{result.body[i].direct = 'Wales'}
+			else {result.body[i].direct = 'Not set'}	
 			
 			/*RAG*/
-			if(result.rows[i].rag == 'gre') {result.rows[i].rag = 'Green'}
-			else if(result.rows[i].rag == 'nor') {result.rows[i].rag = 'Not set'}
-			else if(result.rows[i].rag == 'amb') {result.rows[i].rag = 'Amber'}
-			else if(result.rows[i].rag == 'red') {result.rows[i].rag = 'Red'}
-			else {result.rows[i].rag = 'Not set'}
+			if(result.body[i].rag == 'gre') {result.body[i].rag = 'Green'}
+			else if(result.body[i].rag == 'nor') {result.body[i].rag = 'Not set'}
+			else if(result.body[i].rag == 'amb') {result.body[i].rag = 'Amber'}
+			else if(result.body[i].rag == 'red') {result.body[i].rag = 'Red'}
+			else {result.body[i].rag = 'Not set'}
 			}
 
 		  res.setHeader('Content-Type', 'text/csv');
@@ -355,7 +357,7 @@ router.get('/download/csv', login.requireLogin, function(req,res){
 		  res.setHeader('Cache-Control', 'no-cache');
 		  res.setHeader('Pragma', 'no-cache');
 
-		  stringify(result.rows, { header: true })
+		  stringify(result.body, { header: true })
 			.pipe(res);
 
 		})

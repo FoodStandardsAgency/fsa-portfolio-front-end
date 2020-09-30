@@ -1,12 +1,7 @@
 const crypto	= require('crypto');
 const tokens = require('./tokens');
 const graph = require('./graph');
-const got = require('got');
-const backEndApiBase = `${process.env.BACKEND_PROTOCOL}://${process.env.BACKEND_HOST}/${process.env.BACKEND_API_BASE}`;
-const api = got.extend({
-	prefixUrl: backEndApiBase,
-	headers: { 'APIKey': process.env.BACKEND_API_KEY }
-});
+const backend = require('./backend');
 
 // Redirect not logged in users to the login page
 function requireLogin(req, res, next) {
@@ -41,12 +36,11 @@ function login(req, res) {
 
 	(async () => {
 		try {
-			const { body } = await api.post('Users', {
+			const { body } = await backend.api.post('Users', {
 				json: {
 					userName: user,
 					passwordHash: prov_hash
-				},
-				responseType: 'json'
+				}
 			});
 
 			if (body && body.userName && body.accessGroup) {
@@ -95,11 +89,10 @@ function loginUser(req, res, loginUser) {
 
 	(async () => {
 		try {
-			const { body } = await api.post('ADUsers', {
+			const { body } = await backend.api.post('ADUsers', {
 				json: {
 					userName: loginUser
-				},
-				responseType: 'json'
+				}
 			});
 
 			req.session.user = body.userName;
