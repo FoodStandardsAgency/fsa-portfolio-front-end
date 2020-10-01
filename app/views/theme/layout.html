@@ -1,0 +1,42 @@
+{% block top_of_page %}{% endblock %}
+
+<!DOCTYPE html>
+<html lang="{{ html_lang|default('en') }}"><!--<![endif]-->
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+    <title>{{ portfolio | upper }} Online Portfolio </title>
+
+	<link href="https://fonts.googleapis.com/css?family=Fira+Sans|Open+Sans&display=swap" rel="stylesheet">
+	<link rel="shortcut icon" href="/public/images/favicon_fsa.png" type="image/png" />
+	
+	<!--<script type="text/javascript" src="/public/app.bundle.js"></script>-->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link rel="stylesheet" href="/public/customstyles.css">
+
+
+    {% block head %}{% endblock %}
+  </head>
+
+
+
+<body>
+    
+    {% block body_start %}{% endblock %}
+	
+	<div class="container-fluid" style="min-height:100vh;">
+
+	{% block header %} {% include "theme/header.html" %} {% endblock %}
+
+    {% block content %}{% endblock %}
+
+
+	{% block body_end %} {# {% include "theme/scripts.html" %} #} {% endblock %}
+	{% block foot %} {% include "theme/foot.html" %} {% endblock %}
+	
+	</div> <!-- container - fluid - bootstrap -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+ 

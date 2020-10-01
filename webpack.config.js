@@ -1,16 +1,15 @@
 var path = require('path');
 
 module.exports = {
-  mode: 'development',
+  mode: "development",
   context: __dirname,
 
   entry: {
-    app: './app/assets/sass/application.scss',
-    display: './app/assets/sass/display.scss'
+    app: './app/styles/style.js'
   },
 
   output: {
-    path: path.join(__dirname, 'public'),
+    path: path.join(__dirname, 'app/styles'),
     publicPath: '/public/',
     filename: '[name].bundle.js'
   },
@@ -18,23 +17,20 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.(scss)$/,
         use: [
-          'style-loader',
-          'css-loader',
+          {loader: 'style-loader'},
+          {loader: 'css-loader'},
           {
-            loader: 'sass-loader',
+            loader: 'postcss-loader',
             options: {
-			  implementation: require('node-sass'),
-			  sassOptions:{
-				  includePaths: [
-					path.join(__dirname, 'node_modules/govuk-elements-sass/public/sass'),
-					path.join(__dirname, 'node_modules/govuk_frontend_toolkit/stylesheets'),
-				  ]
-			  }
+              plugins: function () {
+                return [require('autoprefixer')];
+              }
             }
-          }
-        ],
+          },
+          {loader: 'sass-loader'}
+        ]
       }
     ]
   }

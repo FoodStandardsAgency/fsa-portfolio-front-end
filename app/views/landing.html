@@ -1,0 +1,21 @@
+{% extends "theme/layout.html" %}
+
+{% block content %}
+<!-- Top navigation links -->
+<div class="row">
+	<div class="col-xl-3 col-md-1 col-sm-1"></div>
+	<div class="col-xl-6 col-md-10 col-sm-10">
+	
+		<div class="d-flex align-items-stretch flex-wrap">
+		
+		{% for portfolio in data %}
+		<div class="landing_box"><a href="{{portfolio[0]}}" class="landing_link">{{ portfolio[1] }}</a></div>
+		{% endfor %}
+		
+		</div>
+	
+	</div>
+	<div class="col-xl-3 col-md-1 col-sm-1"></div>
+</div>
+
+{% endblock %}

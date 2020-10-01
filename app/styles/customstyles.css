@@ -1,0 +1,149 @@
+/* Fonts */
+
+h1, h2, h3, h4			{font-family: 'Fira Sans', sans-serif;}
+p						{font-family: 'Open Sans', sans-serif;}
+
+ul {
+    list-style-type: none;
+	padding-inline-start: 15px;
+	padding-top: 5px;
+	padding-right:5px;
+}
+
+a:hover {text-decoration:none;}
+
+
+/* Text styling */
+strong					{font-weight: 900;}
+
+/* Headbar custom styles*/
+.headbar 				{background-color:#006F51; border-bottom: 10px solid #A9C47F;}
+.headbar-margin			{background-color:#006F51; border-bottom: 10px solid #FFFFFF;}
+.headbar-title 			{color:#ffffff; font-size:2em; font-weight:900; font-family: 'Fira Sans', sans-serif;}
+.headbar-text,	
+a.headbar-text:hover, 
+a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira Sans', sans-serif;}
+
+/* Project page */
+.project-title			{font-family: 'Open Sans', sans-serif; font-weight:900; font-size:3em; margin-bottom:15px;} 
+.project-new			{background-color:#007FB2; color:white; font-size:0.5em; padding: 5px; border-radius:5px;}
+
+.desc-para				{border:1px solid #006F51; background-color:#f7fffd; padding:10px;}
+
+.heading-medium			{font-size:1.5em; font-weight:900; margin:10px 0 0;}
+.heading-small			{font-size:1em; font-weight:900; margin:10px 0 0;}
+
+.small-flag				{font-weight:800; font-size:1em; display: inline-block; color: white;  text-transform: none; padding: 2px 8px;}
+.priority 				{background-color: purple;}
+.rag-red				{background-color:red;}
+.rag-amber				{background-color:amber;}
+.rag-green				{background-color:green;}
+.rag-no					{background-color:black;}
+.onhold					{color:red; border: 1px solid red;}
+
+.circle.backlog   		{background-color:$backlog-colour;}
+.circle.discovery 		{background-color:$discovery-colour;}
+.circle.alpha     		{background-color:$alpha-colour;}
+.circle.beta      		{background-color:$beta-colour;}
+.circle.live      		{background-color:$live-colour;}
+
+.phase_modifier {font-size:16px; position:absolute; top:24px; left:0; width:100%; text-align:center; color:white;}
+.phase-circle { width:70%;  position:relative;}
+.circle-label { position:absolute; top:50%; left:0; width:100%; margin-top:-15px; text-align:center; color:white; font-weight:700;  font-size:24px;}
+.circle { background:red;  color:white;  width:100%;  height:0;  padding-top:100%;  border-radius:50% 50%;  display:inline-block; margin:0;}
+
+#myList li{display:none;}
+
+
+/*Summary page*/
+.summ_links {text-decoration:none;}
+
+.tag {
+  color:white !important;
+  font-weight:700;
+  padding:0.25em;
+  text-align:center;
+  text-decoration:none;
+  text-transform:uppercase;
+}
+.tag.backlog   {background-color:#2E358B;}
+.tag.discovery {background-color:#912B88;}
+.tag.alpha     {background-color:#D53880;}
+.tag.beta      {background-color:#F15D22;}
+.tag.live      {background-color:#85994B;}
+
+.big_number {
+  font-size:96px;
+  font-weight:600;
+  text-align:center;
+}
+
+.txt-backlog    {color:#2E358B;}
+.txt-discovery  {color:#912B88;}
+.txt-alpha      {color:#D53880;}
+.txt-beta       {color:#F15D22;}
+.txt-live       {color:#85994B;}
+
+
+/* Lists of links */
+
+.link-list {
+  font-size:16px;
+  font-family: 'Open Sans', sans-serif;
+  margin-bottom:5px;
+  background-color:#f8f8f8;
+  border-left:5px solid transparent;
+}
+
+.border-backlog   {border-color:#2E358B;}
+.border-discovery {border-color:#912B88;}
+.border-alpha     {border-color:#D53880;}
+.border-beta      {border-color:#F15D22;}
+.border-live      {border-color:#85994B;}
+
+.nodec {color:black; text-decoration:none;}
+
+.new_tag {background-color:#007FB2; color:white; font-size:10px; padding 3px; border-radius:3px;}
+
+.service-area {
+  border-bottom:1px solid $border-colour;
+  margin-bottom:10px;
+
+}
+
+.anchors {  font-family: 'Fira Sans', sans-serif;
+  color: black;
+  font-weight:900;}
+.anchors:hover {text-decoration:none; color:black;}
+
+
+/* Landing */
+.landing_box {
+	width: calc(33% - 25px);
+	min-height:100px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 100px;
+	margin-right: 25px;
+	margin-bottom:25px;
+	
+	background-color: #e8fcf7;
+	border: 2px solid #006F51;;
+}
+
+.landing_link {
+	color:black;
+	font-size:1.5em;
+	font-weight:900;
+	text-decoration:none;
+	padding:35px;
+}
+.landing_link:hover {
+	color:black;
+	text-decoration:none;
+}
+
+
+
+
+

@@ -1,143 +1,181 @@
 {% extends "layout.html" %}
 
+{% block head %}
+	<!-- Script for hiding/ showing updates -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>
+$(document).ready(function () {
+    size_li = $("#myList li").size();
+	x=1;
+    $('#myList li:lt('+x+')').show();
+    $('#loadMore').click(function () {
+        x= (x+1 <= size_li) ? x+1 : size_li;
+        $('#myList li:lt('+x+')').show();
+         $('#showLess').show();
+        if(x == size_li){
+            $('#loadMore').hide();
+        }
+    });
+    $('#showLess').click(function () {
+        x=(x-1<0) ? 1 : x-1;
+        $('#myList li').not(':lt('+x+')').hide();
+        $('#loadMore').show();
+         $('#showLess').show();
+        if(x == 1){
+            $('#showLess').hide();
+        }
+    });
+});
+	</script>
+{% endblock %}
+
 {% block content %}
-<main id="content" role="main">
-	<div class="container">
-	<div class="equalsplit2" style="padding-top:20px;width:50%; margin:0;"><p><span style="font-weight:800;">Project ID:</span> {{ data.project_id }}</p></div>
-	<div class="equalsplit2" style="padding-top:20px; width:50%; margin:0; text-align:right;"><p>
+
+<!-- Project IDs & Edit/ Delete links -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	
+	<div class="col-xl-7 col-md-7 col-sm-6 py-3">
+	<p><strong>Project ID: </strong>{{ data.project_id }}
+	
+	<!-- Test if up to two other project IDs are passed, and display -->
+	
+	</p>
+	</div>
+	
+	<!-- Change for access groups -->
+	<div class="col-xl-3 col-md-3 col-sm-4 py-3 text-right">
 	{% if user == 'portfolio' %}
-	<a href="/portfolio-delete/{{ data.project_id }}">Delete this project</a> | 
-	<a href="/portfolio-update/{{ data.project_id }}">Update this project</a>
+	<a href="/portfolio-delete/{{ data.project_id }}">Delete</a> | 
+	<a href="/portfolio-update/{{ data.project_id }}">Update</a>
 	{% elif user == 'odd' or  user == 'team_leaders'%}
 	<a href="/odd-update/{{ data.project_id }}">Update this project</a>
 	{% endif%}
-	</p></div>
-	<div class="clear"></div>
 	</div>
+	
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
 
-	<h1 class="heading-xlarge" style="margin-bottom:15px;">{{ data.project_name | safe }}
-	{% if data.new_flag == 'Y' %}
-	<span style="background-color:#007FB2; color:white; font-size:0.5em;padding 5px; border-radius:5px;">NEW</span>
-	{% endif %}	
+<!-- Project title -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-10 col-md-10 col-sm-10 py-3">
+	<h1 class="project-title" style="">{{ data.project_name | safe }}
+	{% if data.new_flag == 'Y' %}<span class="project-new">NEW</span>{% endif %}	
 	</h1>
+	</div>
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
+
+
+<!-- Projet description, flags and status -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-8 col-md-7 col-sm-6 py-3">
+	{% if data.short_desc %}{% endif %}
+	<div class="desc-para"><p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.{{ data.short_desc | safe }}</p></div><br />
+	<strong>Priority:</strong> 
+	<div class="small-flag priority">{{ data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;&nbsp;&nbsp;
+	<strong>Status:</strong> 
+	
+	{% set rag = data.rag %}
+	
+	{% if rag == 'gre' %}
+	<div class="small-flag rag-green"><strong>Green</strong></div>
+	
+	{% elif rag == 'amb' %}
+	<div class="small-flag rag-amber"><strong>Amber</strong></div>
+	
+	{% elif rag == 'red' %}
+	<div class="small-flag rag-red"><strong>Red</strong></div>
+	
+	{% else %}
+	<div class="small-flag rag-no"><strong>No RAG</strong></div>
+	
+	{% endif %}
+	
+	{% set onhold = data.onhold %}
+	
+	{% if onhold == 'y' %}
+	<div class="small-flag onhold"><strong>On hold</strong></div>
+	
+	{% elif onhold == 'b' %}
+	<div class="small-flag onhold"><strong>Blocked</strong></div>
+	
+	{% elif onhold == 'c' %}
+	<div class="small-flag onhold"><strong>Covid-19 on hold</strong></div>
+	
+	{% endif %}
+	
+	
+	</div>
+	<div class="col-xl-2 col-md-3 col-sm-4 py-3">
+	{% if data.phase_modifier %}{% endif %}
+	<div class="phase-circle">
+		<p class="circle {{ data.phase | lower }}"></p>
+		{% if data.phase_modifier %}<p class="phase_modifier">{{ data.phase_modifier }}</p>{% endif %}
+		<p class="circle-label">{{ data.phase | title }}</p>
+	</div>
+	</div>
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
+
+
+<!-- Project team - list + lead, lead role, DM and directorate -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	
+	<div class="col-xl-10 col-md-7 col-sm-6 py-3">
+	
+	<div class="d-inline-flex p-2"> ODD lead + role</div>
+	<div class="d-inline-flex p-2"> Delivery Manager</div>
+	<div class="d-inline-flex p-2"> Project team</div>
+	<div class="d-inline-flex p-2"> Key dates</div>
+	
+	<div class="d-flex bd-highlight">
+		<div class="p-2 flex-fill bd-highlight align-items-stretch">
+		{% if data.oddlead %}<h3 class="heading-small">ODD lead</h3>
+			<p>
+			{{ data.oddlead | safe }}<br />
+			<a href="mailto:{{ data.oddlead_email }}">{{ data.oddlead_email | safe}}</a>
+			</p>
+			
+			{% if data.oddlead_role == 'sup' or data.oddlead_role == 'imp' or data.oddlead_role == 'man' %}
+			<h3 class="heading-small">Lead's role </h3>
+			<p>
+			{% if data.oddlead_role == 'sup' %} Support
+			{% elif data.oddlead_role == 'imp' %} Implementation
+			{% elif data.oddlead_role == 'man' %} Management
+			{% endif %}
+			</p>
+			{% endif %}
+			
+			{% else %}
+				<p>{{ data.oddlead | default('Not set') }}</p>
+		{% endif %}
+		</div>
+	  <div class="p-2 flex-fill bd-highlight align-items-stretch">Flex item</div>
+	  <div class="p-2 flex-fill bd-highlight align-items-stretch">Flex item</div>
+	  <div class="p-2 flex-fill bd-highlight align-items-stretch">Flex item</div>
+	</div>
+	
+	{% if data.team %}
+		<hr />
+		<h2 class="heading-medium">Project team</h2>
+		<p>{{ data.team }}</p>
+	{% endif %}
+	
+	</div>
+	<div class="col-xl-2 col-md-7 col-sm-6 py-3">
+	
+	
+			
+	
+	
+	</div>
+	<div class="col-xl-2 col-md-3 col-sm-4 py-3">
 	<br />
-
-	<div class="grid-row">
-		<section class="column-two-thirds">
-			
-			{% if data.short_desc %}
-			<div class="desc-para"><p>{{ data.short_desc | safe }}</p></div>
-			<br />
-			{% endif %}
-			<strong>Priority:</strong> <div class="small-flag priority"><strong>{{ data.pgroup | capitalize }} ({{ data.priority_main }})</strong></div>&nbsp;&nbsp;&nbsp;
-			<strong>Status:</strong> 
-			
-			{% set rag = data.rag %}
-			
-			{% if rag == 'gre' %}
-			<div class="small-flag rag-green"><strong>Green</strong></div>
-			
-			{% elif rag == 'amb' %}
-			<div class="small-flag rag-amber"><strong>Amber</strong></div>
-			
-			{% elif rag == 'red' %}
-			<div class="small-flag rag-red"><strong>Red</strong></div>
-			
-			{% else %}
-			<div class="small-flag rag-no"><strong>No RAG</strong></div>
-			
-			{% endif %}
-			
-			{% set onhold = data.onhold %}
-			
-			{% if onhold == 'y' %}
-			<div class="small-flag onhold"><strong>On hold</strong></div>
-			
-			{% elif onhold == 'b' %}
-			<div class="small-flag onhold"><strong>Blocked</strong></div>
-			
-			{% elif onhold == 'c' %}
-			<div class="small-flag onhold"><strong>Covid-19 on hold</strong></div>
-			
-			{% endif %}
-			
-			
-			{% if data.team %}
-			<hr />
-			<h2 class="heading-medium">Project team</h2>
-			<p>{{ data.team }}</p>
-			
-			{% endif %}
-			
-			<hr />
-			{% if upd_cnt > 0 %}
-			<h2 class="heading-medium">Updates</h2>
-
-			<ul id="myList">
-			{% for i in range(0, upd_cnt) %}
-			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">{{ updates[i].date | safe }}</span> - {{ updates[i].update | safe }}</p></li>
-			{% endfor %}
-			</ul>
-			
-			<p><span id="loadMore" style="font-weight:800;">Load more</span> | <span id="showLess" style="font-weight:800;">Show less</span></p>
-			
-			{% else %}
-			
-			<h2 class="heading-medium"> No updates</h2>
-			
-			{% endif %}
-			
-			<hr />
-			
-			{% if docs %}
-			<h2 class="heading-medium">Key documents</h2>
-			
-			<div class="container">
-			<div class="equalsplit2"><a href="{{ docs[1] | safe }}">{{ docs[0] | safe }}</a></div>
-			<div class="equalsplit2"><a href="{{ docs[3] | safe }}">{{ docs[2] | safe }}</a></div>
-			<div class="clear"></div>
-			</div>
-			<br />
-			<div class="container">
-			<div class="equalsplit2"><a href="{{ docs[5] | safe }}">{{ docs[4] | safe }}</a></div>
-			<div class="equalsplit2"><a href="{{ docs[7] | safe }}">{{ docs[6] | safe }}</a></div>
-			<div class="clear"></div>
-			</div>
-
-			{% endif %}
-			
-			{% if deps_cnt > 0 %}
-			
-				<h2 class="heading-medium">Dependencies</h2>
-				
-				{% for i in range(0, deps_cnt) %}
-				<a href="/projects/{{ deps[i].project_id }}">{{ deps[i].project_name }}</a><br /> 
-				{% endfor %}
-
-			{% endif %}
-			
-			{% if rels_cnt > 0 %}
-			
-				<h2 class="heading-medium">Related projects</h2>
-				
-				{% for i in range(0, rels_cnt) %}
-				<a href="/projects/{{ rels[i].project_id }}">{{ rels[i].project_name }}</a><br />
-				{% endfor %}
-
-			{% endif %}
-			
-		</section>
-		
-		
-		<section class="column-third">
-
-			<div class="phase-circle">
-				<p class="circle {{ data.phase | lower }}"></p>
-				{% if data.phase_modifier %}<p class="phase_modifier">{{ data.phase_modifier }}</p>{% endif %}
-				<p class="circle-label">{{ data.phase | title }}</p>
-			</div>
-			
-			{% if data.direct and data.direct != 'NONE' %}
+	{% if data.direct and data.direct != 'NONE' %}
 			<h3 class="heading-small">Directorate</h3>
 			<p>
 				  {% if data.direct == 'COMMS' %} 	Communications
@@ -158,38 +196,89 @@
 			</p>
 			{% endif %}
 
-			{% if data.oddlead %}
-			<h3 class="heading-small">ODD lead</h3>
+			
+			
+			
+	</div>
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
 
-			<p>
-			{{ data.oddlead | safe }}<br />
-			<a href="mailto:{{ data.oddlead_email }}">{{ data.oddlead_email | safe}}</a>
-			</p>
+
+<!-- Updates, key dates, %complete, size -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-7 col-md-7 col-sm-6 py-3">
+	<hr />
+	{% if upd_cnt > 0 %}
+	<h2 class="heading-medium">Updates</h2>
+
+	<ul id="myList">
+	{% for i in range(0, upd_cnt) %}
+	<li><p style="white-space: pre-wrap;"><span style="font-weight:700">{{ updates[i].date | safe }}</span> - {{ updates[i].update | safe }}</p></li>
+	{% endfor %}
+	</ul>
+	
+	<p><span id="loadMore" style="font-weight:800;">Load more</span> <span id="showLess" style="font-weight:800;">| Show less</span></p>
+	
+	{% else %}
+	
+	<h2 class="heading-medium"> No updates</h2>
+	
+	{% endif %}
+	</div>
+	<div class="col-xl-3 col-md-3 col-sm-4 py-3">
+	
+	</div>
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
+
+
+<!-- Dependencies and related projects, project size -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-7 col-md-7 col-sm-6 py-3">
+	{% if docs %}
+			<h2 class="heading-medium">Key documents</h2>
 			
-			{% if data.oddlead_role == 'sup' or data.oddlead_role == 'imp' or data.oddlead_role == 'man' %}
-			<h3 class="heading-small">Lead's role </h3>
-			<p>
-			{% if data.oddlead_role == 'sup' %} Support
-			{% elif data.oddlead_role == 'imp' %} Implementation
-			{% elif data.oddlead_role == 'man' %} Management
-			{% endif %}
-			</p>
-			{% endif %}
+			<div class="container">
+			<div class="equalsplit2"><a href="{{ docs[1] | safe }}">{{ docs[0] | safe }}</a></div>
+			<div class="equalsplit2"><a href="{{ docs[3] | safe }}">{{ docs[2] | safe }}</a></div>
+			<div class="clear"></div>
+			</div>
+			<br />
+			<div class="container">
+			<div class="equalsplit2"><a href="{{ docs[5] | safe }}">{{ docs[4] | safe }}</a></div>
+			<div class="equalsplit2"><a href="{{ docs[7] | safe }}">{{ docs[6] | safe }}</a></div>
+			<div class="clear"></div>
+			</div>
+
+	{% endif %}
+	
+	{% if deps_cnt > 0 %}
 			
-			{% else %}
-				<p>{{ data.oddlead | default('Not set') }}</p>
+				<h2 class="heading-medium">Dependencies</h2>
+				
+				{% for i in range(0, deps_cnt) %}
+				<a href="/projects/{{ deps[i].project_id }}">{{ deps[i].project_name }}</a><br /> 
+				{% endfor %}
 
 			{% endif %}
 			
-			{% if data.servicelead %}
-			<h3 class="heading-small">Delivery manager</h3>
-
-			<p>
-			{{ data.servicelead | safe }}<br />
-			<a href="mailto:{{ data.servicelead_email }}">{{ data.servicelead_email | safe}}</a>
-			</p>
-			{% endif %}
+			{% if rels_cnt > 0 %}
 			
+				<h2 class="heading-medium">Related projects</h2>
+				
+				{% for i in range(0, rels_cnt) %}
+				<a href="/projects/{{ rels[i].project_id }}">{{ rels[i].project_name }}</a><br />
+				{% endfor %}
+
+	{% endif %}
+	
+	</div>
+	<div class="col-xl-3 col-md-3 col-sm-4 py-3"></div>
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
+
 			{% if dates[10] or dates[11] or dates[12] or dates[13] or dates [14] or comp %}
 			<br /><h3 class="heading-small">Key dates</h3>
 			<p>

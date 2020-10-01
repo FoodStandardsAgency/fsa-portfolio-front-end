@@ -18,8 +18,8 @@ const favicon = require('serve-favicon');
 const app = express();
 
 const port = process.env.PORT || 3100;
-const dev = process.env.NODE_ENV !== 'production';
-
+//const dev = process.env.NODE_ENV !== 'production';
+const dev	= true;
 app.use(express.urlencoded({extended: true}));
 
 app.use(session({
@@ -66,16 +66,6 @@ nunjucks.configure(__dirname + '/app/views', {
 app.use(morgan('dev'));
 
 if (dev) {
-  var webpack = require('webpack');
-  var webpackDevMiddleware = require('webpack-dev-middleware');
-  var webpackConfig = require('./webpack.config');
-
-  var compiler = webpack(webpackConfig);
-  app.use(webpackDevMiddleware(compiler, {
-    publicPath: webpackConfig.output.publicPath
-  }));
-  console.log('Webpack compilation enabled');
-  
   var chokidar = require('chokidar');
   chokidar.watch('./app', {ignoreInitial: true}).on('all', (event, path) => {
     console.log("Clearing /app/ module cache from server");
@@ -88,9 +78,8 @@ if (dev) {
 // Middleware to serve static assets
 [
   '/public',
-  '/app/assets',
-  '/node_modules/govuk_template_mustache/assets',
-  '/node_modules/govuk_frontend_toolkit'
+  '/app/img',
+  '/app/styles'
 ].forEach((folder) => {
   app.use('/public', express.static(path.join(__dirname, folder)));
 });

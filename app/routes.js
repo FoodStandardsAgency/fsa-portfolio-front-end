@@ -61,110 +61,152 @@ router.get('/log-out', (req, res) => {
 });
 
 
+//-------------------------------------------------------------------
+// PORTFOLIO LANDING PAGE
+//-------------------------------------------------------------------
+
+router.get('/', login.requireLogin, async (req, res) => {
+	
+	// run query to pick up all portfolios we have on the platform - and feed through to the template
+	// Put expected data structure here. [[url,acronym,name],[...], [...]]
+	var portfolios = [['odd', 'ODD','Openness, Data and Digital'], ['serd', 'SERD', 'Science, Evidence and Reseach Directorate'],['abc', 'ABC', 'Portfolio name'], ['test1', 'Test1', 'Portfolio name'],  ['test2', 'Test2', 'Portfolio name'],  ['test3', 'Test3', 'Portfolio name'],  ['test4', 'Test4', 'Portfolio name']]
+	
+	res.render('landing', {
+		"data":portfolios,
+		"sess": req.session
+	});
+})
+
+
+//-------------------------------------------------------------------
+// CONFIGURATION
+//-------------------------------------------------------------------
+
+router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
+	
+	// Need to get current configuration data to pre-populate the form
+
+	var portfolio = req.params.portfolio;
+		
+	res.render('configure', {
+		"data":"",
+		"sess": req.session
+	});
+})
+
 
 
 //-------------------------------------------------------------------
 // SUMMARY PAGES
 //-------------------------------------------------------------------
 
-router.get('/', login.requireLogin, async (req, res) => {
+router.get('/:portfolio', login.requireLogin, async (req, res) => {
+	var portfolio = req.params.portfolio;
+	
 	queries.current_projects()
 	.then((result) => {
-		res.render('index', {
+		res.render('summary', {
 			"data": nestedGroupBy(result.body, ['category', 'phase']),
 			"counts": _.countBy(result.body, 'phase'),
 			"themes": config.categories,
 			"phases": config.phases,
-			"sess": req.session
+			"sess": req.session,
+			"portfolio": portfolio
 		});
 	})
 	.catch();
 });
 
 
-router.get('/priority/', login.requireLogin, function (req, res) {	
+router.get('/:portfolio/priority/', login.requireLogin, function (req, res) {	
 	queries.current_projects()
 	.then((result) => {
-		res.render('index', {
+		res.render('summary', {
 			"data": nestedGroupBy(result.body, ['pgroup', 'phase']),
 			"counts": _.countBy(result.body, 'phase'),
 			"themes": config.priorities,
 			"phases":config.phases,
-			"sess": req.session
+			"sess": req.session,
+			"portfolio": portfolio
 		});
 	});	
 });
 
-router.get('/team/', login.requireLogin, function (req, res) {	
+router.get('/:portfolio/team/', login.requireLogin, function (req, res) {	
 	queries.current_projects()
 	.then((result) => {
-		res.render('index', {
+		res.render('summary', {
 			"data": nestedGroupBy(result.body, ['g6team', 'phase']),
 			"counts": _.countBy(result.body, 'phase'),
 			"themes": config.teams,
 			"phases":config.phases,
-			"sess": req.session
+			"sess": req.session,
+			"portfolio": portfolio
 		});
 	});	
 });
 
-router.get('/rag/', login.requireLogin, function (req, res) {
+router.get('/:portfolio/rag/', login.requireLogin, function (req, res) {
 	queries.current_projects()
 	.then((result) => {
-		  res.render('index', {
-			  "data": nestedGroupBy(result.body, ['rag', 'phase']),
+		  res.render('summary', {
+			"data": 	nestedGroupBy(result.body, ['rag', 'phase']),
 			  "counts": _.countBy(result.body, 'phase'),
 			"themes": 	config.rags,
 			"phases":	config.phases,
-			"sess": req.session
+			"sess": req.session,
+			"portfolio": portfolio
 		});
 	});	
 });
 
-router.get('/oddlead/', login.requireLogin, function (req, res) {odd_view(req, res);});
+router.get('/:portfolio/oddlead/', login.requireLogin, function (req, res) {odd_view(req, res);});
 
-router.get('/status/', login.requireLogin, function (req, res) {
+router.get('/:portfolio/status/', login.requireLogin, function (req, res) {
 	queries.current_projects()
 	.then((result) => {
 		res.render('phaseview', {
-			"data": 	nestedGroupBy(result.body, ['phase']),
+			"data": nestedGroupBy(result.body, ['phase']),
 			"counts": _.countBy(result.body, 'phase'),
 			"phases":	config.phases,
-			"sess": req.session
+			"sess": req.session,
+			"portfolio": portfolio
 		});
 	})
 	.catch();	
 });
 
-router.get('/new_projects/', login.requireLogin, function (req, res) {	
+router.get('/:portfolio/new_projects/', login.requireLogin, function (req, res) {	
 	queries.new_projects()
 	.then((result) => {
-		res.render('index', {
+		res.render('summary', {
 			"data": nestedGroupBy(result.body, ['g6team', 'phase']),
 			"counts": _.countBy(result.body, 'phase'),
 			"themes": config.teams,
 			"phases":config.phases,
-			"sess": req.session
+			"sess": req.session,
+			"portfolio": portfolio
 		});
 	});	
 });
 
-router.get('/archived', login.requireLogin, function (req, res) {
+router.get('/:portfolio/archived', login.requireLogin, function (req, res) {
 	queries.completed_projects()
 	.then((result) => {
 		res.render('completed', {
 			"user": req.session.user,
 			"data": result.body,
 			"counts": _.countBy(result.body, 'phase'),
-			"sess":req.session
+			"sess":req.session,
+			"portfolio": portfolio
 		});
 	})
 	.catch();	
 });
 
-router.get('/completed', login.requireLogin, function (req, res){res.redirect('/archived');});
+router.get('/:portfolio/completed', login.requireLogin, function (req, res){res.redirect('/archived');});
 
-router.get('/portfolio-team', login.requireLogin, (req, res) => {
+router.get('/:portfolio/portfolio-team', login.requireLogin, (req, res) => {
 	if(req.session.user == 'portfolio') {res.render('team-page', {"sess": req.session});}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
@@ -207,25 +249,6 @@ router.get('/odd-update/:project_id', login.requireLogin, (req, res) => {
 });
 
 //-------------------------------------------------------------------
-// BULK UPLOADS
-//-------------------------------------------------------------------
-const upload 			= multer({ dest: 'tmp/csv/' });
-
-router.get('/upload-test', login.requireLogin, (req, res) => {
-	if(req.session.user == 'portfolio'){res.render('upload', {"title":"Test bulk upload", "post":"upload-test",});}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
-});
-
-router.get('/upload', login.requireLogin, (req, res) => {
-	if(req.session.user == 'portfolio'){res.render('upload', {"title":"Bulk upload", "post":"upload",});}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
-});
-
-router.post('/upload-test', upload.single('file'), function (req, res) { bulk(req, res, 'test_projects'); });
-router.post('/upload', 		upload.single('file'), function (req, res) { bulk(req, res, 'projects'); });
-
-
-//-------------------------------------------------------------------
 // ADD/UPDATE PROJECTS - handle form submissions
 //-------------------------------------------------------------------
 router.post('/process-project-form', login.requireLogin, function (req, res) { handle_form(req, res); });
@@ -234,55 +257,6 @@ router.post('/process-project-form', login.requireLogin, function (req, res) { h
 // DELETE PROJECTS - handle form submissions
 //-------------------------------------------------------------------	
 router.post('/delete_project_process', login.requireLogin, function (req, res) {handle_delete(req, res)});
-
-//-------------------------------------------------------------------
-// Export PowerBI views
-//-------------------------------------------------------------------	
-	
-router.get('/api/powerbi_projects_days', function(req, res) {
-  var token = req.headers['authorization'];
-  if (token == process.env.POWERBI_TOKEN) {
-  console.log("Authenticated - ready to provide the data");
-	  queries.powerbi_projects_days()
-	  .then((data)=>{
-		   res.status(200).send(data);
-	  })
-	  .catch();
-  }
-  else if (!token) { res.status(401).send({ auth: false, message: 'No token provided.' }); console.log("Missing token");}
-  else if (token != process.env.POWERBI_TOKEN) { res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }); console.log("Incorrect token");}
-  else { res.status(500).send({ auth: false, message: 'Authentication error.' }); console.log("Other error");}
-});
-
-router.get('/api/powerbi_date_flag', function(req, res) {
-  var token = req.headers['authorization'];
-  if (token == process.env.POWERBI_TOKEN) {
-	  
-	  queries.powerbi_date_flag()
-	  .then((data)=>{
-		   res.status(200).send(data);
-	  })
-	  .catch();
-  }
-  else if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
-  else if (token != process.env.POWERBI_TOKEN) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-  else return res.status(500).send({ auth: false, message: 'Authentication error.' });
-});
-
-router.get('/api/powerbi_phase_prev', function(req, res) {
-  var token = req.headers['authorization'];
-  if (token == process.env.POWERBI_TOKEN) {
-	  
-	  queries.powerbi_phase()
-	  .then((data)=>{
-		   res.status(200).send(data);
-	  })
-	  .catch();
-  }
-  else if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
-  else if (token != process.env.POWERBI_TOKEN) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-  else return res.status(500).send({ auth: false, message: 'Authentication error.' });
-});
 
 
 //-------------------------------------------------------------------
