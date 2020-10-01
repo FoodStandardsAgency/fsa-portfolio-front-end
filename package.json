@@ -39,6 +39,7 @@
     "express-validator": "latest",
     "fast-csv": "^4.3.2",
     "fibers": "latest",
+    "got": "^11.7.0",
     "isomorphic-fetch": "^3.0.0",
     "jquery": "^3.3.1",
     "jsonwebtoken": "^8.5.1",
