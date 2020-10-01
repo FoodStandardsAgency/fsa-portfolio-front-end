@@ -167,11 +167,7 @@ $(document).ready(function () {
 	
 	</div>
 	<div class="col-xl-2 col-md-7 col-sm-6 py-3">
-	
-	
-			
-	
-	
+
 	</div>
 	<div class="col-xl-2 col-md-3 col-sm-4 py-3">
 	<br />
@@ -251,11 +247,9 @@ $(document).ready(function () {
 			<div class="equalsplit2"><a href="{{ docs[7] | safe }}">{{ docs[6] | safe }}</a></div>
 			<div class="clear"></div>
 			</div>
-
 	{% endif %}
 	
 	{% if deps_cnt > 0 %}
-			
 				<h2 class="heading-medium">Dependencies</h2>
 				
 				{% for i in range(0, deps_cnt) %}
@@ -271,7 +265,6 @@ $(document).ready(function () {
 				{% for i in range(0, rels_cnt) %}
 				<a href="/projects/{{ rels[i].project_id }}">{{ rels[i].project_name }}</a><br />
 				{% endfor %}
-
 	{% endif %}
 	
 	</div>
@@ -279,6 +272,70 @@ $(document).ready(function () {
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 </div>
 
+		</section>
+		
+		
+		<section class="column-third">
+
+			<div class="phase-circle">
+				<p class="circle {{ data.phase | lower }}"></p>
+				{% if data.phase_modifier %}<p class="phase_modifier">{{ data.phase_modifier }}</p>{% endif %}
+				<p class="circle-label">{{ data.phase | title }}</p>
+			</div>
+			
+			{% if data.direct and data.direct != 'NONE' %}
+			<h3 class="heading-small">Directorate</h3>
+			<p>
+				  {% if data.direct == 'COMMS' %} 	Communications
+				  {% elif data.direct == 'IR' %}	Incidents & Resilience
+				  {% elif data.direct == 'FO' %}	Field Operations
+				  {% elif data.direct == 'FP' %}	Finance & Performance
+				  {% elif data.direct == 'FSP' %}	Food Safety Policy
+				  {% elif data.direct == 'FSA' %}	FSA wide
+				  {% elif data.direct == 'NFCU' %}	National Food Crime Unit
+				  {% elif data.direct == 'NI' %}	Northern Ireland
+				  {% elif data.direct == 'ODD' %}	Openness, Data & Digital
+				  {% elif data.direct == 'PEOP' %}	People
+				  {% elif data.direct == 'RC' %}	Regulatory Compliance
+				  {% elif data.direct == 'SERD' %}	Science, Evidence & Research
+				  {% elif data.direct == 'SLG' %}	Strategy, Legal & Governance
+				  {% elif data.direct == 'WAL' %}	Wales
+				{% endif %}
+			</p>
+			{% endif %}
+
+			{% if data.oddlead %}
+			<h3 class="heading-small">ODD lead</h3>
+
+			<p>
+			{{ data.oddlead | safe }}<br />
+			<a href="mailto:{{ data.oddlead_email }}">{{ data.oddlead_email | safe}}</a>
+			</p>
+			
+			{% if data.oddlead_role == 'sup' or data.oddlead_role == 'imp' or data.oddlead_role == 'man' %}
+			<h3 class="heading-small">Lead's role </h3>
+			<p>
+			{% if data.oddlead_role == 'sup' %} Support
+			{% elif data.oddlead_role == 'imp' %} Implementation
+			{% elif data.oddlead_role == 'man' %} Management
+			{% endif %}
+			</p>
+			{% endif %}
+			
+			{% else %}
+				<p>{{ data.oddlead | default('Not set') }}</p>
+
+			{% endif %}
+			
+			{% if data.servicelead %}
+			<h3 class="heading-small">Delivery manager</h3>
+
+			<p>
+			{{ data.servicelead | safe }}<br />
+			<a href="mailto:{{ data.servicelead_email }}">{{ data.servicelead_email | safe}}</a>
+			</p>
+			{% endif %}
+			
 			{% if dates[10] or dates[11] or dates[12] or dates[13] or dates [14] or comp %}
 			<br /><h3 class="heading-small">Key dates</h3>
 			<p>

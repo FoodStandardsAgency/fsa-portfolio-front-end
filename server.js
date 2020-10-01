@@ -18,8 +18,8 @@ const favicon = require('serve-favicon');
 const app = express();
 
 const port = process.env.PORT || 3100;
-//const dev = process.env.NODE_ENV !== 'production';
 const dev	= true;
+
 app.use(express.urlencoded({extended: true}));
 
 app.use(session({
@@ -77,7 +77,6 @@ if (dev) {
 
 // Middleware to serve static assets
 [
-  '/public',
   '/app/img',
   '/app/styles'
 ].forEach((folder) => {

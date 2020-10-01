@@ -58,7 +58,6 @@ router.get('/log-out', (req, res) => {
 	});
 });
 
-
 //-------------------------------------------------------------------
 // PORTFOLIO LANDING PAGE
 //-------------------------------------------------------------------
@@ -93,7 +92,6 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
 })
 
 
-
 //-------------------------------------------------------------------
 // SUMMARY PAGES
 //-------------------------------------------------------------------
@@ -110,6 +108,7 @@ router.get('/:portfolio', login.requireLogin, async (req, res) => {
 			"phases": config.phases,
 			"sess": req.session,
 			"portfolio": portfolio
+			"sess": req.session
 		});
 	})
 	.catch();
@@ -126,9 +125,11 @@ router.get('/:portfolio/priority/', login.requireLogin, function (req, res) {
 			"phases":config.phases,
 			"sess": req.session,
 			"portfolio": portfolio
+			"sess": req.session
 		});
 	});	
 });
+
 
 router.get('/:portfolio/team/', login.requireLogin, function (req, res) {	
 	queries.current_projects()
@@ -140,6 +141,7 @@ router.get('/:portfolio/team/', login.requireLogin, function (req, res) {
 			"phases":config.phases,
 			"sess": req.session,
 			"portfolio": portfolio
+			"sess": req.session
 		});
 	});	
 });
@@ -154,6 +156,7 @@ router.get('/:portfolio/rag/', login.requireLogin, function (req, res) {
 			"phases":	config.phases,
 			"sess": req.session,
 			"portfolio": portfolio
+			"sess": req.session
 		});
 	});	
 });
@@ -161,6 +164,10 @@ router.get('/:portfolio/rag/', login.requireLogin, function (req, res) {
 router.get('/:portfolio/oddlead/', login.requireLogin, function (req, res) {odd_view(req, res);});
 
 router.get('/:portfolio/status/', login.requireLogin, function (req, res) {
+
+router.get('/oddlead/', login.requireLogin, function (req, res) {odd_view(req, res);});
+
+router.get('/status/', login.requireLogin, function (req, res) {
 	queries.current_projects()
 	.then((result) => {
 		res.render('phaseview', {
@@ -184,6 +191,7 @@ router.get('/:portfolio/new_projects/', login.requireLogin, function (req, res) 
 			"phases":config.phases,
 			"sess": req.session,
 			"portfolio": portfolio
+			"sess": req.session
 		});
 	});	
 });
@@ -197,6 +205,7 @@ router.get('/:portfolio/archived', login.requireLogin, function (req, res) {
 			"counts": _.countBy(result.rows, 'phase'),
 			"sess":req.session,
 			"portfolio": portfolio
+			"sess":req.session
 		});
 	})
 	.catch();	
@@ -247,6 +256,7 @@ router.get('/odd-update/:project_id', login.requireLogin, (req, res) => {
 });
 
 //-------------------------------------------------------------------
+
 // ADD/UPDATE PROJECTS - handle form submissions
 //-------------------------------------------------------------------
 router.post('/process-project-form', login.requireLogin, function (req, res) { handle_form(req, res); });
@@ -255,7 +265,6 @@ router.post('/process-project-form', login.requireLogin, function (req, res) { h
 // DELETE PROJECTS - handle form submissions
 //-------------------------------------------------------------------	
 router.post('/delete_project_process', login.requireLogin, function (req, res) {handle_delete(req, res)});
-
 
 //-------------------------------------------------------------------
 // Export latest projects as a csv

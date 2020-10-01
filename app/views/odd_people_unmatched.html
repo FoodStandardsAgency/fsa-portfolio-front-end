@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<main id="content" role="main">
+	
+	<p style="margin-top:30px;"><span style="font-weight:800;">ODD leads not matched to the G6 team: </span>{{ count }}</p>
+
+	<br /><hr /><br />
+
+	<p>
+	{% for lead in data %}
+	
+	{% if lead.oddlead %}
+	{{ lead.oddlead | safe}}<br />
+	{% endif %}
+	
+	{% if lead.oddlead_email %}
+	<a href="mailto:{{ lead.oddlead_email }}">{{ lead.oddlead_email }}</a><br />
+	{% endif %}
+	
+	<br />
+	{% endfor %}
+	</p>
+
+</main>
+
+{% endblock %}

@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1cee69d7-8fc5-47b7-9663-965399e4531f}</ProjectGuid>
+    <ProjectHome>
+    </ProjectHome>
+    <ProjectView>ProjectFiles</ProjectView>
+    <StartupFile>server.js</StartupFile>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">16.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <NodejsPort>3100</NodejsPort>
+    <StartWebBrowser>True</StartWebBrowser>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
+    <NodeExeArguments>
+    </NodeExeArguments>
+    <NodeExePath>
+    </NodeExePath>
+    <Name>FSAPortfolio</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Content Include=".env" />
+    <Content Include="app\assets\sass\application.scss" />
+    <Content Include="app\assets\sass\display.scss" />
+    <Content Include="app\assets\sass\elements.scss" />
+    <Content Include="app\assets\sass\elements\forms\_form-block-labels.scss" />
+    <Content Include="app\assets\sass\elements\forms\_form-date.scss" />
+    <Content Include="app\assets\sass\elements\forms\_form-validation.scss" />
+    <Content Include="app\assets\sass\elements\_breadcrumb.scss" />
+    <Content Include="app\assets\sass\elements\_buttons.scss" />
+    <Content Include="app\assets\sass\elements\_components.scss" />
+    <Content Include="app\assets\sass\elements\_details.scss" />
+    <Content Include="app\assets\sass\elements\_elements-typography.scss" />
+    <Content Include="app\assets\sass\elements\_forms.scss" />
+    <Content Include="app\assets\sass\elements\_helpers.scss" />
+    <Content Include="app\assets\sass\elements\_icons.scss" />
+    <Content Include="app\assets\sass\elements\_layout.scss" />
+    <Content Include="app\assets\sass\elements\_lists.scss" />
+    <Content Include="app\assets\sass\elements\_panels.scss" />
+    <Content Include="app\assets\sass\elements\_reset.scss" />
+    <Content Include="app\assets\sass\elements\_tables.scss" />
+    <Content Include="app\assets\sass\examples.scss" />
+    <Content Include="app\assets\sass\patterns.scss" />
+    <Content Include="app\assets\sass\patterns\check-your-answers.scss" />
+    <Content Include="app\assets\sass\_multicolour.scss" />
+    <Content Include="app\authentication.js" />
+    <Content Include="app\graph.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\tokens.js" />
+    <Content Include="package-lock.json" />
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+    <Content Include="routes\auth.js" />
+    <Content Include="routes\suppliers.js" />
+    <Content Include="routes\teams.js" />
+    <Content Include="server.js" />
+    <Content Include="webpack.config.js" />
+    <Content Include="app\add_supplier.js" />
+    <Content Include="app\bulk.js" />
+    <Content Include="app\config.js" />
+    <Content Include="app\delete_portfolio.js" />
+    <Content Include="app\filter_view.js" />
+    <Content Include="app\handle_add_update.js" />
+    <Content Include="app\handle_delete.js" />
+    <Content Include="app\login.js" />
+    <Content Include="app\oddleads_view.js" />
+    <Content Include="app\project_view.js" />
+    <Content Include="app\queries.js" />
+    <Content Include="app\render_add_project.js" />
+    <Content Include="app\routes.js" />
+    <Content Include="app\update_odd.js" />
+    <Content Include="app\update_portfolio.js" />
+    <Content Include="app\views\add_odd_person.html" />
+    <Content Include="app\views\add_project.html" />
+    <Content Include="app\views\add_supplier.html" />
+    <Content Include="app\views\blank.html" />
+    <Content Include="app\views\completed.html" />
+    <Content Include="app\views\delete_project.html" />
+    <Content Include="app\views\error_page.html" />
+    <Content Include="app\views\filter_view.html" />
+    <Content Include="app\views\govuk_template.html" />
+    <Content Include="app\views\index.html" />
+    <Content Include="app\views\layout.html" />
+    <Content Include="app\views\login.html" />
+    <Content Include="app\views\odd_people_all.html" />
+    <Content Include="app\views\odd_people_delete_conf.html" />
+    <Content Include="app\views\odd_people_unmatched.html" />
+    <Content Include="app\views\phaseview.html" />
+    <Content Include="app\views\project.html" />
+    <Content Include="app\views\team-page.html" />
+    <Content Include="app\views\thank_you.html" />
+    <Content Include="app\views\update_project.html" />
+    <Content Include="app\views\upload-conf.html" />
+    <Content Include="app\views\upload.html" />
+    <Content Include="app\assets\images\favicon_fsa.png" />
+    <Content Include="app\assets\images\separator-2x.png" />
+    <Content Include="app\assets\images\separator.png" />
+    <Content Include="app\assets\javascripts\application.js" />
+    <Content Include="app\assets\javascripts\details.polyfill.js" />
+    <Content Include="app\assets\javascripts\jquery-1.11.3.js" />
+    <Content Include="app\assets\javascripts\jquery-1.9.1.min.js" />
+    <Content Include="app\assets\javascripts\govuk\selection-buttons.js" />
+    <Content Include="app\views\display bak\index.html" />
+    <Content Include="app\views\display bak\layout.html" />
+    <Content Include="app\views\includes\examples_head.bak.html" />
+    <Content Include="app\views\includes\head.html" />
+    <Content Include="app\views\includes\propositional_navigation.html" />
+    <Content Include="app\views\includes\propositional_navigation_alpha.html" />
+    <Content Include="app\views\includes\scripts.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app" />
+    <Folder Include="app\assets" />
+    <Folder Include="app\assets\images" />
+    <Folder Include="app\assets\javascripts" />
+    <Folder Include="app\assets\javascripts\govuk" />
+    <Folder Include="app\assets\sass" />
+    <Folder Include="app\assets\sass\elements" />
+    <Folder Include="app\assets\sass\elements\forms" />
+    <Folder Include="app\assets\sass\patterns" />
+    <Folder Include="app\views" />
+    <Folder Include="app\views\display bak" />
+    <Folder Include="app\views\includes" />
+    <Folder Include="routes\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

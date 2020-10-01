@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<main id="content" role="main">
+	<p style="margin-top:30px;">
+		Order by: <a href="/"> theme</a>, <a href="/priority/"> priority</a>, <a href="/team/"> team</a>, <a href="/oddlead/"> ODD lead</a>, <a href="/rag/"> rag status</a> or <a href="/status/"> stage</a>. You can also <a href="/filter-view">filter projects</a>.
+	</p>
+
+	<div class="grid-row">
+		<section class="column-fifth">
+			<a href="/status#backlog" class="summ_links">
+			<div class="tag backlog">Backlog</div>
+			<div class="big_number txt-backlog">{{ counts.backlog }}</div>
+			</a>
+		</section>
+		<section class="column-fifth">
+			<a href="/status#discovery" class="summ_links">
+			<div class="tag discovery">Discovery</div>
+			<div class="big_number txt-discovery">{{ counts.discovery }}</div>
+			</a>
+		</section>
+		<section class="column-fifth">
+			<a href="/status#alpha" class="summ_links">
+			<div class="tag alpha">Alpha</div>
+			<div class="big_number txt-alpha">{{ counts.alpha }}</div>
+			</a>
+		</section>
+		<section class="column-fifth">
+			<a href="/status#beta" class="summ_links">
+			<div class="tag beta">Beta</div>
+			<div class="big_number txt-beta">{{ counts.beta }}</div>
+			</a>
+		</section>
+		<section class="column-fifth">
+			<a href="/status#live" class="summ_links">
+			<div class="tag live">Live</div>
+			<div class="big_number txt-live">{{ counts.live }}</div>
+			</a>
+		</section>
+	</div>
+
+	{#
+		theme_order & phase_order are set in projects.js
+		so they can be used in multiple pages.
+	#}
+
+	{% for theme, name in themes %}
+
+		{% set themeProjects = data[theme] %}
+		<h2 class="heading-large service-area"><a name="{{ theme }}" class="anchors">{{ name }}</h2>
+
+		<div class="grid-row">
+		{% for phase, name in phases %}
+
+			<section class="column-fifth">
+			{% if themeProjects[phase] %}
+
+				<ul class="link-list border-{{phase}}">
+				{% for project in themeProjects[phase] %}
+					<li>
+						<a href="/projects/{{ project.project_id }}">{{ project.project_name | safe}}</a>
+						{% if project.new_flag == 'Y' %}
+						<span style="background-color:#007FB2; color:white; font-size:10px; padding 3px; border-radius:3px;">NEW</span>
+						{% endif %}	
+						
+					</li>
+				{% endfor %}
+				</ul>
+
+			{% else %}
+				&nbsp;
+			{% endif %}
+			</section>
+
+		{% endfor %}
+		</div>
+
+	{% endfor %}
+
+</main>
+
+{% endblock %}

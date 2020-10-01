@@ -1,0 +1,233 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<main id="content" role="main">
+
+	<h1 class="heading-xlarge" style="margin-bottom:15px;">Filter projects</h1><br />
+	
+
+	<div class="grid-row">
+		<section class="column-full">
+			
+			<form action="/filter-view" method="post" id="filter">
+			
+			<h2 class="heading-medium" style="margin-bottom:10px; margin-left:2%;">About the project</h2><br />
+					
+			<div class="container">
+			<div class="left30"><label for="project_name">Project title or ID includes:&nbsp; &nbsp;</label></div>
+			<div class="right70"><input id="project_name" type="text" name="project_name" class="form_input" placeholder="Project title or ID includes" value= "{{form_values[0] | safe}}" /></div>
+			<div class="clear"></div>
+			</div>
+					
+			<div class="container">
+			<div class="left30"><label for="phase">Phase:&nbsp; &nbsp;</label></div>								
+			<div class="right70">
+				<select name="phase" class="form_input">
+					<option value="none" 		{% if form_values[1] == 'none' %}		selected {% endif %}>None selected</option>
+					<option value="backlog" 	{% if form_values[1] == 'backlog' %}	selected {% endif %}>Backlog</option>
+					<option value="discovery" 	{% if form_values[1] == 'discovery' %}	selected {% endif %}>Discovery</option>
+					<option value="alpha" 		{% if form_values[1] == 'alpha' %}		selected {% endif %}>Alpha</option>
+					<option value="beta" 		{% if form_values[1] == 'beta' %}		selected {% endif %}>Beta</option>
+					<option value="live" 		{% if form_values[1] == 'live' %}		selected {% endif %}>Live</option>
+					<option value="completed" 	{% if form_values[1] == 'completed' %}	selected {% endif %}>Archived</option>
+					<option disabled>--------------</option>
+					<option value="nback" 		{% if form_values[1] == 'nback' %}	selected {% endif %}>Not in backlog</option>
+					<option value="dab" 		{% if form_values[1] == 'dab' %}	selected {% endif %}>Discovery, Alpha or Beta only</option>
+				</select>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="onhold">On hold or blocked?:&nbsp; &nbsp;</label></div>								
+			<div class="right70">
+				<select name="onhold" class="form_input">
+					<option value="none" 		{% if form_values[8] == 'none' %}		selected {% endif %}>None selected</option>
+					<option value="y" 			{% if form_values[8] == 'y' %}			selected {% endif %}>On hold</option>
+					<option value="b" 			{% if form_values[8] == 'b' %}			selected {% endif %}>Blocked</option>
+					<option value="c" 			{% if form_values[8] == 'b' %}			selected {% endif %}>Covid-19 on hold</option>
+					<option value="n" 			{% if form_values[8] == 'n' %}			selected {% endif %}>No</option>
+				</select>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="rag">RAG:&nbsp; &nbsp;</label></div>									
+			<div class="right70">
+				<select name="rag" class="form_input">
+					<option value="none"{% if form_values[2] == 'none' %}		selected {% endif %}>None selected</option>
+					<option value="red" {% if form_values[2] == 'red' %}		selected {% endif %}>Red</option>
+					<option value="amb" {% if form_values[2] == 'amb' %}		selected {% endif %}>Amber</option>
+					<option value="gre" {% if form_values[2] == 'gre' %}		selected {% endif %}>Green</option>
+					<option value="nor" {% if form_values[2] == 'nor' %}		selected {% endif %}>Undecided</option>
+				</select></div>
+			<div class="clear"></div>
+			</div>
+
+			<div class="container">
+			<div class="left30"><label for="pgroup">Priority:&nbsp; &nbsp;</label></div>									
+			<div class="right70">
+				<select name="pgroup" class="form_input">
+					<option value="none" 		{% if form_values[3] == 'none' %}		selected {% endif %}>None selected</option>
+					<option value="high" 		{% if form_values[3] == 'high' %}		selected {% endif %}>High</option>
+					<option value="medium" 		{% if form_values[3] == 'medium' %}		selected {% endif %}>Medium</option>
+					<option value="low" 		{% if form_values[3] == 'low' %}		selected {% endif %}>Low</option>
+				</select></div>
+			<div class="clear"></div>
+			</div>
+				
+			<div class="container">
+			<div class="left30"><label for="category">Category:&nbsp; &nbsp;</label></div>						
+			<div class="right70">
+				<select name="category" class="form_input">
+					<option value="none" {% if form_values[4] == 'none' %}	selected {% endif %}>None selected</option>
+					<option value="data" {% if form_values[4] == 'data' %}	selected {% endif %}>Data driven FSA</option>
+					<option value="cap"  {% if form_values[4] == 'cap' %}	selected {% endif %}>Developing out digital capability</option>
+					<option value="ser"  {% if form_values[4] == 'ser' %}	selected {% endif %}>Digital services development and support</option>
+					<option value="it"   {% if form_values[4] == 'it' %}		selected {% endif %}>Evergreen IT</option>
+					<option value="res"  {% if form_values[4] == 'res' %}	selected {% endif %}>Protecting data and business resilience</option>
+					<option value="sm"   {% if form_values[4] == 'sm' %}		selected {% endif %}>IT Service improvements</option>
+				</select>
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="category">Directorate:&nbsp; &nbsp;</label></div>						
+			<div class="right70">
+			<select name="direct" class="form_input">
+				<option value="NONE"  {% if form_values[13] == 'NONE' %}  	selected {% endif %}>None</option>
+				<option value="COMMS" {% if form_values[13] == 'COMMS' %} 	selected {% endif %}>Communications</option>
+				<option value="IR"    {% if form_values[13] == 'IR' %}	  	selected {% endif %}>Incidents & Resilience</option>
+				<option value="FO"    {% if form_values[13] == 'FO' %}	  	selected {% endif %}>Field Operations</option>
+				<option value="FP"    {% if form_values[13] == 'FP' %}	  	selected {% endif %}>Finance & Performance</option>
+				<option value="FSP"   {% if form_values[13] == 'FSP' %}		selected {% endif %}>Food Safety Policy</option>
+				<option value="FSA"   {% if form_values[13] == 'FSA' %}		selected {% endif %}>FSA wide</option>
+				<option value="NFCU"  {% if form_values[13] == 'NFCU' %}	selected {% endif %}>National Food Crime Unit</option>
+				<option value="NI" 	  {% if form_values[13] == 'NI' %}		selected {% endif %}>Northern Ireland</option>
+				<option value="ODD"   {% if form_values[13] == 'ODD' %}		selected {% endif %}>Openness, Data & Digital</option>
+				<option value="PEOP"  {% if form_values[13] == 'PEOP' %}	selected {% endif %}>People</option>
+				<option value="RC"    {% if form_values[13] == 'RC' %}		selected {% endif %}>Regulatory Compliance</option>
+				<option value="SERD"  {% if form_values[13] == 'SERD' %}	selected {% endif %}>Science, Evidence and Research</option>
+				<option value="SLG"   {% if form_values[13] == 'SLG' %}		selected {% endif %}>Strategy, Legal & Governance</option>
+				<option value="WAL"   {% if form_values[13] == 'WAL' %}		selected {% endif %}>Wales</option>
+			</select>
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<br /><br />
+			
+			<h2 class="heading-medium" style="margin-bottom:10px; margin-left:2%;">Project team</h2><br />
+			
+			{% if sess.user == 'portfolio' or sess.user == 'team_leaders' %}
+			<div class="container">
+			<div class="left30"><label for="g6team">Team:&nbsp; &nbsp;</label></div>				
+			<div class="right70">
+			<select name="g6team" class="form_input">
+				<option value="none"  	{% if form_values[5] == 'none' %}	  selected {% endif %}>None selected</option>
+				<option value="Data"  	{% if form_values[5] == 'Data' %}	  selected {% endif %}>Data</option>
+				<option value="Digital" {% if form_values[5] == 'Digital' %} selected {% endif %}>Digital</option>
+				<option value="KIM"  	{% if form_values[5] == 'KIM' %}	  selected {% endif %}>KIM</option>
+				<option value="IT"  	{% if form_values[5] == 'IT' %}	  selected {% endif %}>IT</option>
+				<option value="null"  	{% if form_values[5] == 'null' %}	  selected {% endif %}>Not assigned</option>
+			</select>			
+			</div>
+			<div class="clear"></div>
+			</div>
+			{% endif %}
+			
+			<div class="container">
+			<div class="left30"><label for="oddlead">ODD lead:&nbsp; &nbsp;</label></div>				
+			<div class="right70"><input id="oddlead" type="text" name="oddlead" class="form_input" placeholder="ODD lead includes" value= "{{form_values[6] | safe}}" /></div>
+			<div class="clear"></div>
+			</div>
+										
+			<div class="container">
+			<div class="left30"><label for="team">Project team including:&nbsp; &nbsp;</label></div>
+			<div class="right70"><input id="team" type="text" name="team" class="form_input" placeholder="Team members include" value= "{{form_values[7] | safe}}" /></div>
+			<div class="clear"></div>
+			</div>
+			
+			<br /><br />
+			
+			{% if sess.user == 'portfolio' or sess.user == 'odd' %}
+			<h2 class="heading-medium" style="margin-bottom:10px; margin-left:2%;">Updates</h2><br />
+			
+			<div class="container">
+			<div class="left30"><label for="update_date">Last update before:&nbsp; &nbsp;</label></div>
+			<div class="right70"><input id="update_date" type="date" name="update_date" class="form_input" placeholder="dd/mm/yyyy" value= "{{form_values[9] | safe}}" /></div>
+			<div class="clear"></div>
+			</div>
+				
+			<div class="container">
+			<div class="left30"><label for="no_updates">Show projects with no updates:&nbsp; &nbsp;</label></div>
+			<div class="right70">
+			<select name="no_updates" class="form_input">
+					<option value="none" {% if form_values[10] == 'none' %}	selected {% endif %}>None selected</option>
+					<option value="y" 	 {% if form_values[10] == 'y' %}	selected {% endif %}>Yes</option>
+					<option value="n" 	 {% if form_values[10] == 'n' %}	selected {% endif %}>No</option>
+			</select>
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			{% endif %}
+			
+			<br /><br />
+			
+			<h2 class="heading-medium" style="margin-bottom:10px; margin-left:2%;">Key dates</h2><br />
+			
+			<div class="container">
+			<div class="left30"><label for="past_start">Past intended start date:&nbsp; &nbsp;</label></div>
+			<div class="right70">
+			<select name="past_start" class="form_input">
+					<option value="none" {% if form_values[11] == 'none' %}	selected {% endif %}>None selected</option>
+					<option value="y" 	 {% if form_values[11] == 'y' %}	selected {% endif %}>Yes</option>
+					<option value="n" 	 {% if form_values[11] == 'n' %}	selected {% endif %}>No</option>
+			</select>
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<div class="container">
+			<div class="left30"><label for="missed_dead">Missed end date or deadline:&nbsp; &nbsp;</label></div>
+			<div class="right70">
+			<select name="missed_dead" class="form_input">
+					<option value="none" {% if form_values[12] == 'none' %}	selected {% endif %}>None selected</option>
+					<option value="y" 	 {% if form_values[12] == 'y' %}	selected {% endif %}>Yes</option>
+					<option value="n" 	 {% if form_values[12] == 'n' %}	selected {% endif %}>No</option>
+			</select>
+			</div>
+			<div class="clear"></div>
+			</div>
+			
+			<input name="form_type" 		value="{{ form_type }}" 			hidden />
+			<br />
+			
+			<p style = "margin-left:2%">
+			<button type="submit" form="filter" style="font-size:1em;">Submit</button> &nbsp;&nbsp;&nbsp;
+			<button type="reset" form="filter" style="font-size:1em;" onClick="window.location.href=window.location.href;">Reset</button>
+			</p>
+			
+			</form>
+			
+			
+			{% if stage == 'results' %}
+			<br />
+			<hr />
+			<br />
+			<h1 class="heading-xlarge" style="margin-bottom:15px; margin-left:2%;"><a name="results">Results</a></h1><br />
+			
+				<p style="margin-left:2%;"><strong>Number of projects:</strong> {{ project_cnt }}</p>
+			
+				{% for project in data %}
+				<p style="margin-left:2%;"><a href="/projects/{{ project.project_id }}">{{ project.project_name | safe}} {{ projects.priority_main }}</a></p>
+				{% endfor %}
+
+			{% endif %}
+		</section>
+	</div>
+</main>
+
+{% endblock %}

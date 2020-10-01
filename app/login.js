@@ -5,6 +5,15 @@ const graph = require('./graph');
 
 // Redirect not logged in users to the login page
 function requireLogin(req, res, next) {
+
+const tokens = require('./tokens');
+const graph = require('./graph');
+const got = require('got');
+const backEndApiBase = `${process.env.BACKEND_PROTOCOL}://${process.env.BACKEND_HOST}/${process.env.BACKEND_API_BASE}`;
+const api = got.extend({
+	prefixUrl: backEndApiBase,
+	headers: { 'APIKey': process.env.BACKEND_API_KEY }
+});
 	if (req.session.login == undefined) {
 		loginADUser(req, res).then(result => {
 			if (!result) {
@@ -31,47 +40,38 @@ function login(req, res) {
 	// Calculate hash
 	const prov_hash = crypto.createHash('sha256').update(password).digest('hex').toUpperCase();
 	
-	//console.log('In login function')
-	//console.log(user)
-	//console.log(password)
-		
-	// Define queries
-	var text = 'SELECT username, pass_hash, access_group from users where username = $1';
-	var values = [user];
+	(async () => {
+		try {
+			const { body } = await api.post('Users', {
+				json: {
+					userName: user,
+					passwordHash: prov_hash
+				},
+				responseType: 'json'
+			});
 
-	// Check if the usernames match
-	queries.generic_query(text, values)
-	.then((result) => {
-
-	//console.log(result)
-		if(result.rowCount == 1){
-			if(result.rows[0].pass_hash == prov_hash){
-				req.session.user = result.rows[0].username;
-				req.session.group = result.rows[0].access_group;
+			if (body && body.userName && body.accessGroup) {
+				req.session.user = body.userName;
+				req.session.group = body.accessGroup;
 				req.session.login = 'yes';
-				
-				//console.log(prov_hash)
-				//console.log(result.rows[0].pass_hash)
 
 				res.redirect('/');
 				res.end();
-				}
+			}
 			else {
+				console.log('Login failed: user not found.')
 				req.session.destroy;
-				//console.log('couldnt log in')
 				res.redirect('/login');
 				res.end();
-			}
+            }
 		}
-		else {
-			//console.log('no result')
+		catch (error) {
+			console.log(`Login failed: received error from API - ${error.message}`)
 			req.session.destroy;
 			res.redirect('/login');
 			res.end();
-		}
-	}
-	)
-	.catch();
+        }
+	})();
 }
 
 async function loginADUser(req, res) {
@@ -96,25 +96,30 @@ function loginUser(req, res, loginUser) {
 	var values = [loginUser];
 
 	// Check if the usernames match
-	queries.generic_query(text, values)
-		.then((result) => {
+	(async () => {
+		try {
+			const { body } = await api.post('ADUsers', {
+				json: {
+					userName: loginUser
+				},
+				responseType: 'json'
+			});
 
-			if (result.rowCount == 1) {
-				req.session.user = result.rows[0].username;
-				req.session.group = result.rows[0].access_group;
-				req.session.login = 'yes';
-				res.redirect('/');
-				res.end();
-			}
-			else {
-				//console.log('no result')
-				req.session.destroy;
-				res.redirect('/login');
-				res.end();
-			}
+			req.session.user = body.userName;
+			req.session.group = body.accessGroup;
+			req.session.login = 'yes';
+
+			res.redirect('/');
+			res.end();
 		}
-		)
-		.catch();
+		catch (error) {
+			console.log('couldnt log in')
+			console.log(error.response.body);
+			req.session.destroy;
+			res.redirect('/login');
+			res.end();
+		}
+	})();
 }
 
 
