@@ -1,0 +1,72 @@
+{% extends "theme/layout.html" %}
+
+{% block content %}
+
+<!-- Top navigation links -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+	<div class="col-xl-10 col-md-10 col-sm-10">
+	<p>Order by: <a href="/"> theme</a>, <a href="/priority/"> priority</a>, <a href="/team/"> team</a>, <a href="/oddlead/"> ODD lead</a>, <a href="/rag/"> rag status</a> or <a href="/status/"> stage</a>. You can also <a href="/filter-view">filter projects</a>.
+	</p>
+	</div>
+		<div class="col-xl-1 col-md-1 col-sm-1"></div>
+</div>
+
+
+
+<!-- Numbers in each stage -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/status#backlog" 	 class="summ_links"><div class="tag backlog">	Backlog		</div><div class="big_number txt-backlog">	{{ counts.backlog }}	</div></a></div>
+	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/status#discovery" class="summ_links"><div class="tag discovery">	Discovery	</div><div class="big_number txt-discovery">{{ counts.discovery }}	</div></a></div>
+	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/status#alpha" 	 class="summ_links"><div class="tag alpha">		Alpha		</div><div class="big_number txt-alpha">	{{ counts.alpha }}		</div></a></div>
+	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/status#beta" 	 class="summ_links"><div class="tag beta">		Beta		</div><div class="big_number txt-beta">		{{ counts.beta }}		</div></a></div>
+	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/status#live" 	 class="summ_links"><div class="tag live">		Live		</div><div class="big_number txt-live">		{{ counts.live }}		</div></a></div>
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
+
+<br /><br />
+
+<!-- Projects grouped by theme -->
+	{% for theme, name in themes %}
+		{% set themeProjects = data[theme] %}
+		<div class="row">
+		<div class="col-xl-1 col-md-1 col-sm-1"></div>
+		<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="service-area"><a name="{{ theme }}" class="anchors">{{ name }}</a></h2><hr /></div>
+		<div class="col-xl-1 col-md-1 col-sm-1"></div>
+		</div>
+		
+		<div class="row">
+		<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+		{% for phase, name in phases %}
+
+			<div class="col-xl-2 col-md-2 col-sm-2 py-3">
+			{% if themeProjects[phase] %}
+
+				<ul class="link-list border-{{phase}}">
+				{% for project in themeProjects[phase] %}
+					<li>
+						<a href="/projects/{{ project.project_id }}" class="nodec">{{ project.project_name | safe}}</a>
+						{% if project.new_flag == 'Y' %}
+						<span class="new_tag">NEW</span>
+						{% endif %}
+					</li>
+					<br />		
+				{% endfor %}
+				</ul>
+
+			{% else %}
+				&nbsp;
+			{% endif %}
+			</div>
+
+		{% endfor %}
+
+		<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+		</div>
+		<br /><br />
+	{% endfor %}
+
+
+
+{% endblock %}

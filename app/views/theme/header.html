@@ -1,0 +1,9 @@
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3 headbar-margin"></div>
+	<div class="col-xl-5 col-md-7 col-sm-8 py-3 headbar"><span><a href="/" class="headbar-title">{{ portfolio | upper }} Online Portfolio</a></span></div>
+	<div class="col-xl-5 col-md-3 col-sm-2 py-3 text-right headbar">
+		{%if sess.user == 'portfolio'%}<a href="/portfolio-team" class="headbar-text"> Admin area</a> <span class="headbar-text">|</span> {% endif %}<a href="/log-out" class="headbar-text">Log out</a> 
+	</div>
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3 headbar-margin"></div>
+</div>
+<br /><br />
