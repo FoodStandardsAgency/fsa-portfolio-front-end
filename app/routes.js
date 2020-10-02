@@ -102,8 +102,7 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
 
 router.get('/:portfolio', login.requireLogin, async (req, res) => {
 	var portfolio = req.params.portfolio;
-	
-	queries.current_projects()
+	queries.current_projects(portfolio)
 	.then((result) => {
 		res.render('summary', {
 			"data": nestedGroupBy(result.body, ['category', 'phase']),
@@ -119,7 +118,8 @@ router.get('/:portfolio', login.requireLogin, async (req, res) => {
 
 
 router.get('/:portfolio/priority/', login.requireLogin, function (req, res) {	
-	queries.current_projects()
+	var portfolio = req.params.portfolio;
+	queries.current_projects(portfolio)
 	.then((result) => {
 		res.render('summary', {
 			"data": nestedGroupBy(result.body, ['pgroup', 'phase']),
@@ -133,7 +133,8 @@ router.get('/:portfolio/priority/', login.requireLogin, function (req, res) {
 });
 
 router.get('/:portfolio/team/', login.requireLogin, function (req, res) {	
-	queries.current_projects()
+	var portfolio = req.params.portfolio;
+	queries.current_projects(portfolio)
 	.then((result) => {
 		res.render('summary', {
 			"data": nestedGroupBy(result.body, ['g6team', 'phase']),
@@ -147,7 +148,8 @@ router.get('/:portfolio/team/', login.requireLogin, function (req, res) {
 });
 
 router.get('/:portfolio/rag/', login.requireLogin, function (req, res) {
-	queries.current_projects()
+	var portfolio = req.params.portfolio;
+	queries.current_projects(portfolio)
 	.then((result) => {
 		  res.render('summary', {
 			"data": 	nestedGroupBy(result.body, ['rag', 'phase']),
@@ -163,7 +165,8 @@ router.get('/:portfolio/rag/', login.requireLogin, function (req, res) {
 router.get('/:portfolio/oddlead/', login.requireLogin, function (req, res) {odd_view(req, res);});
 
 router.get('/:portfolio/status/', login.requireLogin, function (req, res) {
-	queries.current_projects()
+	var portfolio = req.params.portfolio;
+	queries.current_projects(portfolio)
 	.then((result) => {
 		res.render('phaseview', {
 			"data": nestedGroupBy(result.body, ['phase']),

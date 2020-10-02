@@ -19,7 +19,7 @@ const q = {
 
 // Export promises
 module.exports = {
-	current_projects: (text, params) => backend.api('Projects/Current'),
+	current_projects: (portfolio) => backend.api(`Projects/Current/${portfolio}`),
 	completed_projects: (text, params) => backend.api('Projects/Completed'),
 	latest_projects: (text, params) => backend.api('Projects/Latest'),
 	max_id:				(text, params) => pool.query(q.max_id),
