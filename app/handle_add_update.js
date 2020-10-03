@@ -3,6 +3,17 @@ const xss = require('xss');
 const backend = require('./backend');
 
 async function handle_form(req, res) {
+	try {
+		await handle_add_update(req, res);
+	}
+	catch (error) {
+		console.log(`Login failed: received error from API - ${error.message}`)
+		console.log(error.stack)
+		res.end();
+    }
+}
+
+async function handle_add_update(req, res) {
 
 	const project_id = xss(req.body.project_id);
 

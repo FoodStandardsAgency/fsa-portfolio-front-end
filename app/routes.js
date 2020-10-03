@@ -236,8 +236,10 @@ router.get('/portfolio-add', login.requireLogin, function (req, res) {
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
 		
-router.get('/portfolio-update/:project_id', login.requireLogin, function (req, res) {
-	if(req.session.user == 'portfolio'){update_portfolio(req, res);}
+router.get('/portfolio-update/:project_id', login.requireLogin, async function (req, res) {
+	if (req.session.user == 'portfolio') {
+		await update_portfolio(req, res);
+	}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
 
