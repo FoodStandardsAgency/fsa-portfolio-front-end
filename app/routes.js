@@ -254,7 +254,7 @@ router.get('/odd-update/:project_id', login.requireLogin, (req, res) => {
 //-------------------------------------------------------------------
 // ADD/UPDATE PROJECTS - handle form submissions
 //-------------------------------------------------------------------
-router.post('/process-project-form', login.requireLogin, function (req, res) { handle_form(req, res); });
+router.post('/process-project-form', login.requireLogin, async function (req, res) { handle_form(req, res); });
 	
 //-------------------------------------------------------------------
 // DELETE PROJECTS - handle form submissions
