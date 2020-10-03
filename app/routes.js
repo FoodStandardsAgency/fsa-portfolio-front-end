@@ -226,7 +226,7 @@ router.post('/filter-view', login.requireLogin, function (req,res) {filter_view(
 // PROJECT VIEW
 //-------------------------------------------------------------------
 
-router.get('/projects/:project_id', login.requireLogin, function (req, res) {project_view(req, res);});
+router.get('/projects/:project_id', login.requireLogin, async function (req, res) {project_view(req, res);});
 
 //-------------------------------------------------------------------
 // RENDER FORMS

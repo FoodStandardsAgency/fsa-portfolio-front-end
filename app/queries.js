@@ -31,5 +31,9 @@ module.exports = {
 	unmatched_leads: (text, params) => backend.api('Projects/Legacy/UnmatchedODDLeads'),
 	odd_people:			(text, params) => pool.query(q.odd_people),
 	new_projects: (text, params) => backend.api(`Projects?portfolio=${portfolio}&filter=new`),
-	load_project: (projectId) => backend.api(`Projects/${projectId}`)
+	load_project: (projectId) => backend.api(`Projects/${projectId}`),
+	load_updates: (projectId) => backend.api(`Projects/${projectId}/updates`),
+	load_related: (projectId) => backend.api(`Projects/${projectId}/related`),
+	load_dependant: (projectId) => backend.api(`Projects/${projectId}/dependant`)
+
 }
