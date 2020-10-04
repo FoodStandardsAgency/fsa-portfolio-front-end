@@ -5,7 +5,7 @@ var sess = req.session;
 // Find next available projet id
 	queries.max_id()
 	.then((result) => {
-		var id = result.rows[0].max || 'ODD0000000';
+		var id = result || 'ODD0000000';
 		var dt = new Date();
 		
 		// Data from the id
