@@ -34,6 +34,8 @@ module.exports = {
 	load_project: (projectId) => backend.api(`Projects/${projectId}`),
 	load_updates: (projectId) => backend.api(`Projects/${projectId}/updates`),
 	load_related: (projectId) => backend.api(`Projects/${projectId}/related`),
-	load_dependant: (projectId) => backend.api(`Projects/${projectId}/dependant`)
+	load_dependant: (projectId) => backend.api(`Projects/${projectId}/dependant`),
+	update_label: (portfolio, field, label, included) => backend.api.post('PortfolioConfiguration/Label', { json: { portfolio: portfolio, field: field, label: label, included: included } }),
+	portfolio_config: (portfolio) => backend.api(`PortfolioConfiguration?portfolio=${portfolio}`)
 
 }
