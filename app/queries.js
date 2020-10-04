@@ -22,7 +22,7 @@ module.exports = {
 	current_projects: (portfolio) => backend.api(`Projects?portfolio=${portfolio}&filter=current`),
 	completed_projects: (text, params) => backend.api(`Projects?portfolio=${portfolio}&filter=complete`),
 	latest_projects: (text, params) => backend.api(`Projects?portfolio=${portfolio}&filter=latest`),
-	max_id:				(text, params) => pool.query(q.max_id),
+	max_id: (portfolio) => backend.api(`PortfolioConfiguration/MaxId?portfolio=${portfolio}`),
 	oddleads: (text, params) => backend.api('Projects/Legacy/ODDLeads'),
 	powerbi_projects_days: (text, params) => pool.query(q.power_bi_projects_days),
 	powerbi_date_flag: 	(text, params) => pool.query(q.power_bi_date_flag),
