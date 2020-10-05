@@ -103,7 +103,8 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
 
 router.get('/:portfolio', login.requireLogin, async (req, res) => {
 	var portfolio = req.params.portfolio;
-	queries.current_projects(portfolio)
+	
+	queries.current_projects()
 	.then((result) => {
 		res.render('summary', {
 			"data": nestedGroupBy(result.body, ['category', 'phase']),
@@ -119,8 +120,7 @@ router.get('/:portfolio', login.requireLogin, async (req, res) => {
 
 
 router.get('/:portfolio/priority/', login.requireLogin, function (req, res) {	
-	var portfolio = req.params.portfolio;
-	queries.current_projects(portfolio)
+	queries.current_projects()
 	.then((result) => {
 		res.render('summary', {
 			"data": nestedGroupBy(result.body, ['pgroup', 'phase']),
@@ -134,8 +134,7 @@ router.get('/:portfolio/priority/', login.requireLogin, function (req, res) {
 });
 
 router.get('/:portfolio/team/', login.requireLogin, function (req, res) {	
-	var portfolio = req.params.portfolio;
-	queries.current_projects(portfolio)
+	queries.current_projects()
 	.then((result) => {
 		res.render('summary', {
 			"data": nestedGroupBy(result.body, ['g6team', 'phase']),
@@ -149,8 +148,7 @@ router.get('/:portfolio/team/', login.requireLogin, function (req, res) {
 });
 
 router.get('/:portfolio/rag/', login.requireLogin, function (req, res) {
-	var portfolio = req.params.portfolio;
-	queries.current_projects(portfolio)
+	queries.current_projects()
 	.then((result) => {
 		  res.render('summary', {
 			"data": 	nestedGroupBy(result.body, ['rag', 'phase']),
@@ -166,8 +164,7 @@ router.get('/:portfolio/rag/', login.requireLogin, function (req, res) {
 router.get('/:portfolio/oddlead/', login.requireLogin, function (req, res) {odd_view(req, res);});
 
 router.get('/:portfolio/status/', login.requireLogin, function (req, res) {
-	var portfolio = req.params.portfolio;
-	queries.current_projects(portfolio)
+	queries.current_projects()
 	.then((result) => {
 		res.render('phaseview', {
 			"data": nestedGroupBy(result.body, ['phase']),
@@ -227,43 +224,18 @@ router.post('/filter-view', login.requireLogin, function (req,res) {filter_view(
 // PROJECT VIEW
 //-------------------------------------------------------------------
 
-router.get('/projects/:project_id', login.requireLogin, async function (req, res) {project_view(req, res);});
+router.get('/projects/:project_id', login.requireLogin, function (req, res) {project_view(req, res);});
 
 //-------------------------------------------------------------------
 // RENDER FORMS
 //-------------------------------------------------------------------
-router.get('/:portfolio/add', login.requireLogin, function (req, res) {
-	
-	var portfolio = req.params.portfolio
-	
-	if(req.session.user == 'portfolio') {
-			
-		var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_theme", "ab_cat", "ab_scat", "ab_dir", "ab_chan", "ab_rel", "ab_doc"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"], "ab_cat":["category 1", "category 2", "category 3"], "ab_scat":["secondary category 1", "secondary category 2", "secondary category 3"]}}');
-		
-		res.render('add-edit-project', {
-			"user": req.session.user, // need access-level to determine whether user can add projects
-			"data": '',
-			"config":config,
-			"sess":req.session,
-			"portfolio": portfolio
-		});
-		
-		//add_project(req,res);
-		}
+router.get('/portfolio-add', login.requireLogin, function (req, res) {
+	if(req.session.user == 'portfolio') {add_project(req,res);}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
-
-router.get('/:portfolio/edit/:project_id', login.requireLogin, function (req, res) {
+		
+router.get('/portfolio-update/:project_id', login.requireLogin, function (req, res) {
 	if(req.session.user == 'portfolio'){update_portfolio(req, res);}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
-});
-
-
-		
-router.get('/portfolio-update/:project_id', login.requireLogin, async function (req, res) {
-	if (req.session.user == 'portfolio') {
-		await update_portfolio(req, res);
-	}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
 
@@ -280,7 +252,7 @@ router.get('/odd-update/:project_id', login.requireLogin, (req, res) => {
 //-------------------------------------------------------------------
 // ADD/UPDATE PROJECTS - handle form submissions
 //-------------------------------------------------------------------
-router.post('/process-project-form', login.requireLogin, async function (req, res) { handle_form(req, res); });
+router.post('/process-project-form', login.requireLogin, function (req, res) { handle_form(req, res); });
 	
 //-------------------------------------------------------------------
 // DELETE PROJECTS - handle form submissions

@@ -8,11 +8,6 @@ const pool = new Pool()
 // Queries
 const q = {
 	max_id:				'SELECT max(project_id) from latest_projects',
-
-	power_bi_date_flag: 'SELECT * from powerbi_input_date_flag_v',
-	power_bi_projects_days: 'SELECT * from powerbi_projects_days_v',
-	power_bi_phase: 'SELECT * from powerbi_phase_prev',
-	
 	odd_people: 'select * from odd_people order by g6team, surname',
 	
 }
@@ -24,9 +19,6 @@ module.exports = {
 	latest_projects: (text, params) => backend.api(`Projects?portfolio=${portfolio}&filter=latest`),
 	max_id: (portfolio) => backend.api(`PortfolioConfiguration/MaxId?portfolio=${portfolio}`),
 	oddleads: (text, params) => backend.api('Projects/Legacy/ODDLeads'),
-	powerbi_projects_days: (text, params) => pool.query(q.power_bi_projects_days),
-	powerbi_date_flag: 	(text, params) => pool.query(q.power_bi_date_flag),
-	powerbi_phase: 		(text, params) => pool.query(q.power_bi_phase),
 	generic_query: 		(text, params) => pool.query(text, params),
 	unmatched_leads: (text, params) => backend.api('Projects/Legacy/UnmatchedODDLeads'),
 	odd_people:			(text, params) => pool.query(q.odd_people),
