@@ -312,7 +312,7 @@ router.get('/:portfolio/completed', login.requireLogin, function (req, res){res.
 router.get('/:portfolio/portfolio-team', login.requireLogin, (req, res) => {
 	var portfolio = req.params.portfolio;
 	
-	if(req.session.user == 'portfolio') {res.render('team-page', {"sess": req.session});}
+	if(req.session.user == 'portfolio') {res.render('team-page', {"sess": req.session, "portfolio":portfolio});}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
 		

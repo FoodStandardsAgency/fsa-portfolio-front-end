@@ -70,9 +70,11 @@
 <!-- Projet description, flags and status -->
 <div class="row">
 	<div class="col-sm-1 py-3"></div>
+
 	<div class="col-sm-8 py-3 pr-5">
 	{% if data.short_desc %}{% endif %}
 	<div class="desc-para"><p>{{ data.short_desc | safe }}</p></div><br />
+			<br />
 	<strong>Priority:</strong> 
 	<div class="small-flag priority">{{ data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;&nbsp;&nbsp;
 	<strong>Status:</strong> 

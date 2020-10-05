@@ -1,46 +1,43 @@
-{% extends "layout.html" %}
+{% extends "theme/layout.html" %}
 
 {% block content %}
 
-<main id="content" role="main">
+<div class="row">
+<div class="col-sm-1"></div>
+<div class="col-sm-10">
 
 	<h1 class="heading-xlarge" style="margin-bottom:15px;">Create supplier account</h1><br />
 
-	<div class="grid-row">
-		<section class="column-full">
-		
-			<p style="margin-left:2%;">Supplier name will be used as a username. It needs to be a single word, consisting of letters and digits only.</p>
+			<p>Supplier name will be used as a username. It needs to be a single word, consisting of letters and digits only.</p>
 			
 			<form action="suppliers/add-supplier" method="post">
 			
-			<div class="container">
-			<div class="left30"><label for="user_supp">Supplier name:&nbsp; &nbsp;</label></div>
-			<div class="right70"><input id="user_supp" type="text" name="user_supp" class="form_input" placeholder="Supplier name" required /></div>
-			<div class="clear"></div>
+			<div class="row">
+			<div class="col-sm-2"><label for="user_supp">Supplier name:&nbsp; &nbsp;</label></div>
+			<div class="col-sm-10 py-1"><input id="user_supp" type="text" name="user_supp" class="form-control" placeholder="Supplier name" required /></div>
 			</div>
 			
-			<div class="container">
-			<div class="left30"><label for="password_supp">Password:&nbsp; &nbsp;</label></div>
-			<div class="right70"><input id="password_supp" type="password" name="password_supp" class="form_input" placeholder="Password" required /></div>
-			<div class="clear"></div>
+			<div class="row">
+			<div class="col-sm-2"><label for="password_supp">Password:&nbsp; &nbsp;</label></div>
+			<div class="col-sm-10 py-1"><input id="password_supp" type="password" name="password_supp" class="form-control" placeholder="Password" required /></div>
 			</div>
 			
 			<br />
 			
-			<input type="submit" value="Create account" style="margin-left:2%;">
+			<input type="submit" value="Create account">
 
 			</form>
 			
 			{% if msg %}
-			<p style="margin-left:2%;">{{ msg | safe}}</p>
+			<p>{{ msg | safe}}</p>
 			{% endif %}
 			
 			<br /><hr /><br />
 			
 			{% if cnt > 0 %}
-			<p style="margin-left:2%;"><span style="font-weight:800;">All suppliers:</span> {{ cnt }}</p>
+			<p><span style="font-weight:800;">All suppliers:</span> {{ cnt }}</p>
 			
-			<p style="margin-left:2%;">List:</br />
+			<p>List:</br />
 			{% for supplier in supps %}
 			{{ supplier | capitalize }} <br />
 			{% endfor %}
@@ -48,8 +45,8 @@
 			
 			{% endif %}
 
-		</section>
+</div>
+<div class="col-sm-1"></div>
 	</div>
-</main>
 
 {% endblock %}
