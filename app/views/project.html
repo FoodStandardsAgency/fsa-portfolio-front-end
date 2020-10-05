@@ -1,31 +1,31 @@
-{% extends "layout.html" %}
+{% extends "theme/layout.html" %}
 
 {% block head %}
 	<!-- Script for hiding/ showing updates -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script>
-$(document).ready(function () {
-    size_li = $("#myList li").size();
-	x=1;
-    $('#myList li:lt('+x+')').show();
-    $('#loadMore').click(function () {
-        x= (x+1 <= size_li) ? x+1 : size_li;
-        $('#myList li:lt('+x+')').show();
-         $('#showLess').show();
-        if(x == size_li){
-            $('#loadMore').hide();
-        }
-    });
-    $('#showLess').click(function () {
-        x=(x-1<0) ? 1 : x-1;
-        $('#myList li').not(':lt('+x+')').hide();
-        $('#loadMore').show();
-         $('#showLess').show();
-        if(x == 1){
-            $('#showLess').hide();
-        }
-    });
-});
+	$(document).ready(function () {
+		size_li = $("#myList li").length;
+		x=1;
+		$('#myList li:lt('+x+')').show();
+		$('#loadMore').click(function () {
+			x= (x+1 <= size_li) ? x+1 : size_li;
+			$('#myList li:lt('+x+')').show();
+			 $('#showLess').show();
+			if(x == size_li){
+				$('#loadMore').hide();
+			}
+		});
+		$('#showLess').click(function () {
+			x=(x-1<0) ? 1 : x-1;
+			$('#myList li').not(':lt('+x+')').hide();
+			$('#loadMore').show();
+			 $('#showLess').show();
+			if(x == 1){
+				$('#showLess').hide();
+			}
+		});
+	});
 	</script>
 {% endblock %}
 
@@ -34,7 +34,6 @@ $(document).ready(function () {
 <!-- Project IDs & Edit/ Delete links -->
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-	
 	<div class="col-xl-7 col-md-7 col-sm-6 py-3">
 	<p><strong>Project ID: </strong>{{ data.project_id }}
 	
@@ -70,10 +69,10 @@ $(document).ready(function () {
 
 <!-- Projet description, flags and status -->
 <div class="row">
-	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-	<div class="col-xl-8 col-md-7 col-sm-6 py-3">
+	<div class="col-sm-1 py-3"></div>
+	<div class="col-sm-8 py-3 pr-5">
 	{% if data.short_desc %}{% endif %}
-	<div class="desc-para"><p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.{{ data.short_desc | safe }}</p></div><br />
+	<div class="desc-para"><p>{{ data.short_desc | safe }}</p></div><br />
 	<strong>Priority:</strong> 
 	<div class="small-flag priority">{{ data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;&nbsp;&nbsp;
 	<strong>Status:</strong> 
@@ -109,10 +108,11 @@ $(document).ready(function () {
 	
 	
 	</div>
-	<div class="col-xl-2 col-md-3 col-sm-4 py-3">
+	
+	<div class="col-sm-2 py-3">
 	{% if data.phase_modifier %}{% endif %}
 	<div class="phase-circle">
-		<p class="circle {{ data.phase | lower }}"></p>
+		<p class="circle {{ data.phase | lower }}" style="background-color:#D53880;"></p>
 		{% if data.phase_modifier %}<p class="phase_modifier">{{ data.phase_modifier }}</p>{% endif %}
 		<p class="circle-label">{{ data.phase | title }}</p>
 	</div>
@@ -123,87 +123,17 @@ $(document).ready(function () {
 
 <!-- Project team - list + lead, lead role, DM and directorate -->
 <div class="row">
-	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-	
-	<div class="col-xl-10 col-md-7 col-sm-6 py-3">
-	
-	<div class="d-inline-flex p-2"> ODD lead + role</div>
-	<div class="d-inline-flex p-2"> Delivery Manager</div>
-	<div class="d-inline-flex p-2"> Project team</div>
-	<div class="d-inline-flex p-2"> Key dates</div>
-	
-	<div class="d-flex bd-highlight">
-		<div class="p-2 flex-fill bd-highlight align-items-stretch">
-		{% if data.oddlead %}<h3 class="heading-small">ODD lead</h3>
-			<p>
-			{{ data.oddlead | safe }}<br />
-			<a href="mailto:{{ data.oddlead_email }}">{{ data.oddlead_email | safe}}</a>
-			</p>
-			
-			{% if data.oddlead_role == 'sup' or data.oddlead_role == 'imp' or data.oddlead_role == 'man' %}
-			<h3 class="heading-small">Lead's role </h3>
-			<p>
-			{% if data.oddlead_role == 'sup' %} Support
-			{% elif data.oddlead_role == 'imp' %} Implementation
-			{% elif data.oddlead_role == 'man' %} Management
-			{% endif %}
-			</p>
-			{% endif %}
-			
-			{% else %}
-				<p>{{ data.oddlead | default('Not set') }}</p>
-		{% endif %}
-		</div>
-	  <div class="p-2 flex-fill bd-highlight align-items-stretch">Flex item</div>
-	  <div class="p-2 flex-fill bd-highlight align-items-stretch">Flex item</div>
-	  <div class="p-2 flex-fill bd-highlight align-items-stretch">Flex item</div>
-	</div>
+	<div class="col-sm-1 py-3"></div>
+	<div class="col-sm-8 py-3 pr-5">
 	
 	{% if data.team %}
 		<hr />
 		<h2 class="heading-medium">Project team</h2>
 		<p>{{ data.team }}</p>
+		<br />
+		<br />
 	{% endif %}
 	
-	</div>
-	<div class="col-xl-2 col-md-7 col-sm-6 py-3">
-
-	</div>
-	<div class="col-xl-2 col-md-3 col-sm-4 py-3">
-	<br />
-	{% if data.direct and data.direct != 'NONE' %}
-			<h3 class="heading-small">Directorate</h3>
-			<p>
-				  {% if data.direct == 'COMMS' %} 	Communications
-				  {% elif data.direct == 'IR' %}	Incidents & Resilience
-				  {% elif data.direct == 'FO' %}	Field Operations
-				  {% elif data.direct == 'FP' %}	Finance & Performance
-				  {% elif data.direct == 'FSP' %}	Food Safety Policy
-				  {% elif data.direct == 'FSA' %}	FSA wide
-				  {% elif data.direct == 'NFCU' %}	National Food Crime Unit
-				  {% elif data.direct == 'NI' %}	Northern Ireland
-				  {% elif data.direct == 'ODD' %}	Openness, Data & Digital
-				  {% elif data.direct == 'PEOP' %}	People
-				  {% elif data.direct == 'RC' %}	Regulatory Compliance
-				  {% elif data.direct == 'SERD' %}	Science, Evidence & Research
-				  {% elif data.direct == 'SLG' %}	Strategy, Legal & Governance
-				  {% elif data.direct == 'WAL' %}	Wales
-				{% endif %}
-			</p>
-			{% endif %}
-
-			
-			
-			
-	</div>
-	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-</div>
-
-
-<!-- Updates, key dates, %complete, size -->
-<div class="row">
-	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-	<div class="col-xl-7 col-md-7 col-sm-6 py-3">
 	<hr />
 	{% if upd_cnt > 0 %}
 	<h2 class="heading-medium">Updates</h2>
@@ -215,24 +145,14 @@ $(document).ready(function () {
 	</ul>
 	
 	<p><span id="loadMore" style="font-weight:800;">Load more</span> <span id="showLess" style="font-weight:800;">| Show less</span></p>
-	
+	<br /><br />
 	{% else %}
 	
 	<h2 class="heading-medium"> No updates</h2>
-	
+	<br /><br />
 	{% endif %}
-	</div>
-	<div class="col-xl-3 col-md-3 col-sm-4 py-3">
 	
-	</div>
-	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-</div>
-
-
-<!-- Dependencies and related projects, project size -->
-<div class="row">
-	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-	<div class="col-xl-7 col-md-7 col-sm-6 py-3">
+	
 	{% if docs %}
 			<h2 class="heading-medium">Key documents</h2>
 			
@@ -247,6 +167,7 @@ $(document).ready(function () {
 			<div class="equalsplit2"><a href="{{ docs[7] | safe }}">{{ docs[6] | safe }}</a></div>
 			<div class="clear"></div>
 			</div>
+	<br /><br />
 	{% endif %}
 	
 	{% if deps_cnt > 0 %}
@@ -265,69 +186,54 @@ $(document).ready(function () {
 				{% for i in range(0, rels_cnt) %}
 				<a href="/projects/{{ rels[i].project_id }}">{{ rels[i].project_name }}</a><br />
 				{% endfor %}
+	<br /><br />
+	{% endif %}
+
+	</div>
+	<div class="col-sm-2 py-3">
+	<br />
+	{% if data.direct and data.direct != 'NONE' %}
+		<h3 class="heading-small">Directorate</h3>
+		<p>
+			  {% if data.direct == 'COMMS' %} 	Communications
+			  {% elif data.direct == 'IR' %}	Incidents & Resilience
+			  {% elif data.direct == 'FO' %}	Field Operations
+			  {% elif data.direct == 'FP' %}	Finance & Performance
+			  {% elif data.direct == 'FSP' %}	Food Safety Policy
+			  {% elif data.direct == 'FSA' %}	FSA wide
+			  {% elif data.direct == 'NFCU' %}	National Food Crime Unit
+			  {% elif data.direct == 'NI' %}	Northern Ireland
+			  {% elif data.direct == 'ODD' %}	Openness, Data & Digital
+			  {% elif data.direct == 'PEOP' %}	People
+			  {% elif data.direct == 'RC' %}	Regulatory Compliance
+			  {% elif data.direct == 'SERD' %}	Science, Evidence & Research
+			  {% elif data.direct == 'SLG' %}	Strategy, Legal & Governance
+			  {% elif data.direct == 'WAL' %}	Wales
+			{% endif %}
+		</p>
+		{% endif %}
+			
+		{% if data.oddlead %}<h3 class="heading-small">ODD lead</h3>
+		<p>
+		{{ data.oddlead | safe }}<br />
+		<a href="mailto:{{ data.oddlead_email }}">{{ data.oddlead_email | safe}}</a>
+		</p>
+		
+		{% if data.oddlead_role == 'sup' or data.oddlead_role == 'imp' or data.oddlead_role == 'man' %}
+		<h3 class="heading-small">Lead's role </h3>
+		<p>
+		{% if data.oddlead_role == 'sup' %} Support
+		{% elif data.oddlead_role == 'imp' %} Implementation
+		{% elif data.oddlead_role == 'man' %} Management
+		{% endif %}
+		</p>
+		{% endif %}
+		
+		{% else %}
+			<p>{{ data.oddlead | default('Not set') }}</p>
 	{% endif %}
 	
-	</div>
-	<div class="col-xl-3 col-md-3 col-sm-4 py-3"></div>
-	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-</div>
-
-		</section>
-		
-		
-		<section class="column-third">
-
-			<div class="phase-circle">
-				<p class="circle {{ data.phase | lower }}"></p>
-				{% if data.phase_modifier %}<p class="phase_modifier">{{ data.phase_modifier }}</p>{% endif %}
-				<p class="circle-label">{{ data.phase | title }}</p>
-			</div>
-			
-			{% if data.direct and data.direct != 'NONE' %}
-			<h3 class="heading-small">Directorate</h3>
-			<p>
-				  {% if data.direct == 'COMMS' %} 	Communications
-				  {% elif data.direct == 'IR' %}	Incidents & Resilience
-				  {% elif data.direct == 'FO' %}	Field Operations
-				  {% elif data.direct == 'FP' %}	Finance & Performance
-				  {% elif data.direct == 'FSP' %}	Food Safety Policy
-				  {% elif data.direct == 'FSA' %}	FSA wide
-				  {% elif data.direct == 'NFCU' %}	National Food Crime Unit
-				  {% elif data.direct == 'NI' %}	Northern Ireland
-				  {% elif data.direct == 'ODD' %}	Openness, Data & Digital
-				  {% elif data.direct == 'PEOP' %}	People
-				  {% elif data.direct == 'RC' %}	Regulatory Compliance
-				  {% elif data.direct == 'SERD' %}	Science, Evidence & Research
-				  {% elif data.direct == 'SLG' %}	Strategy, Legal & Governance
-				  {% elif data.direct == 'WAL' %}	Wales
-				{% endif %}
-			</p>
-			{% endif %}
-
-			{% if data.oddlead %}
-			<h3 class="heading-small">ODD lead</h3>
-
-			<p>
-			{{ data.oddlead | safe }}<br />
-			<a href="mailto:{{ data.oddlead_email }}">{{ data.oddlead_email | safe}}</a>
-			</p>
-			
-			{% if data.oddlead_role == 'sup' or data.oddlead_role == 'imp' or data.oddlead_role == 'man' %}
-			<h3 class="heading-small">Lead's role </h3>
-			<p>
-			{% if data.oddlead_role == 'sup' %} Support
-			{% elif data.oddlead_role == 'imp' %} Implementation
-			{% elif data.oddlead_role == 'man' %} Management
-			{% endif %}
-			</p>
-			{% endif %}
-			
-			{% else %}
-				<p>{{ data.oddlead | default('Not set') }}</p>
-
-			{% endif %}
-			
-			{% if data.servicelead %}
+	{% if data.servicelead %}
 			<h3 class="heading-small">Delivery manager</h3>
 
 			<p>
@@ -391,12 +297,12 @@ $(document).ready(function () {
 								
 				
 			{% endif %}
-				
-			
-			
-
-		</section>
 	</div>
-</main>
+
+	</div>
+	<div class="col-sm-1 py-3">
+	</div>
+	<div class="col-sm-1 py-3"></div>
+</div>
 
 {% endblock %}
