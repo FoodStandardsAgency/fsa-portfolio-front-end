@@ -1,0 +1,365 @@
+{% extends "theme/layout.html" %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-10 col-md-7 col-sm-8 py-3">
+	
+	<h1 class="project-title">Add project</h1>
+	
+	<br /><br />
+
+	<form action="/{{portfolio}}/add" method="post">
+	<h2 class="heading-medium">Project IDs</h2>
+	<br />
+	
+	<!-- check for included and admin -->
+	{% if 'id1' in config.inc %}
+	<!-- if included in true (bool) and user access permission is greater than or equal to the one required to show the field, then show the field --> 
+	  <div class="form-group row">
+		<div class="col-sm-2">{{ config.lab['id1'] | default('Project ID') }}</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="id1_value" name="id1_value" placeholder="{{ config.lab['id1'] | default('Project ID') }}" value="{{data['id1']}}" {% if config['adm'] and user != 'portfolio' %}readonly{% endif %}></div>
+	  </div>
+	{% endif %}
+	 
+	{% if 'id2' in config.inc %}
+	  <div class="form-group row">
+		<div class="col-sm-2">{{ config.lab['id2'] | default('Business Case Number') }}</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="id2_value" name="id2_value" placeholder="{{ config.lab['id1'] | default('Business Case Number') }}" value="{{data['id2']}}"></div>
+	  </div>
+	{% endif %}
+	
+	{% if 'id3' in config.inc %}
+	  <div class="form-group row">
+		<div class="col-sm-2">{{ config.lab['id3'] | default('FS Number') }}</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="id3_val" name="id3_val" placeholder="{{ config.lab['id1'] | default('FS Number') }}" value="{{data['id3']}}"></div>
+	  </div>
+	{% endif %}
+	  <br />
+	 	  
+	<br /><br />
+	<h2 class="heading-medium">About the project</h2>
+	<br />
+	
+	{% if 'ab_name' in config.inc %}
+	<div class="form-group row">
+		<div class="col-sm-2">{{ config.lab['ab_name'] | default('Project name') }}</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_name_val" name="ab_name_val" placeholder="{{ config.lab['ab_name'] | default('Project name') }}" value="{{data['ab_name']}}" required></div>
+	</div>
+	{% endif %}
+	
+	{% if 'ab_desc' in config.inc %}
+	<div class="form-group row">
+		<div class="col-sm-2">{{ config.lab['ab_desc'] | default('Short description') }}</div>
+		<div class="col-sm-10"><textarea type="text" rows="2" class="form-control" id="ab_desc_val" name="ab_desc_val" placeholder="Short description">{{data['ab_desc']}}</textarea></div>
+	</div>
+	{% endif %}
+	
+	{% if 'ab_risk' in config.inc %}
+	<div class="form-group row">
+		<div class="col-sm-2">{{ config.lab['ab_risk'] | default('Risk rating') }}</div>
+		
+		<div class="col-sm-10">
+			<select class="form-control" id="ab_risk_val" name="ab_risk_val">
+			<option value = "0">Please select</option>
+				{% for i in range(0, config.val['ab_risk'].length) -%}
+				<option value = "{{i + 1}}">{{ config.val['ab_risk'][i] | capitalize}}</option>
+				{%- endfor %}
+			</select>
+		</div>
+	</div>
+	{% endif %}
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Theme</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_theme_val" name="ab_theme_val" placeholder="List of options for the drop-down" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Project type</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_type_lb" name="ab_type_lb" placeholder="List of options for the drop-down"></div>
+	</div><!-- e.g. internship, research... -->
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Project size</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_size_val" name="ab_size_val" placeholder="List of options for the drop-down"></div>
+	</div><!-- e.g. internship, research... -->
+
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Category</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_cat_val" name="ab_cat_val" placeholder="List of options for the drop-down" ></div>
+	</div><!-- i.e. on hold, blocked -->
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Secondary category</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_scat_val" name="ab_scat_val" placeholder="List of options for the drop-down" ></div>
+	</div><!-- i.e. on hold, blocked -->
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Directorate</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_dir_val" name="ab_dir_val" placeholder="Pre-defined list"  ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Strategic objectives</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_so_val" name="ab_so_val" placeholder="Pre-defined list"  ></div>
+	</div>
+
+	<div class="form-group row">
+		<div class="col-sm-2">Programme</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_prg_val" name="ab_prg_val" placeholder="List of options for the drop-down" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Programme description</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_prgd_val" name="ab_prgd_val" placeholder="Free text input" ></div>
+	</div>
+	
+		<div class="form-group row">
+		<div class="col-sm-2">Project channel (link)</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_chan_val" name="ab_chan_val" placeholder="Free text input - predefined field" ></div>
+	</div>
+	
+		<div class="form-group row">
+		<div class="col-sm-2">Related projects</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_rel_val" name="ab_rel_val" placeholder="Predefined field" ></div>
+	</div>
+	
+		<div class="form-group row">
+		<div class="col-sm-2">Dependencies</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_dep_val" name="ab_dep_val" placeholder="Predefined field" ></div>
+	</div>
+	
+		<div class="form-group row">
+		<div class="col-sm-2">Key documents</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_doc_val" name="ab_doc_val" placeholder="Predefined field" ></div>
+	</div>
+	
+	<br /><br />
+	<h2 class="heading-medium">Project team</h2>
+	<br />
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Project lead</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="tm_lead_val" name="tm_lead_val" placeholder="Predefined field" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Lead role</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="tm_lrole_val" name="tm_lrole_val" placeholder="List of options for the drop-down" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Lead team</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="tm_lteam_val" name="tm_lteam_val" placeholder="List of options for the drop-down" ></div>
+	</div>
+		
+	<div class="form-group row">
+		<div class="col-sm-2">Key contact 1</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="tm_kc1_val" name="tm_kc1_val" placeholder="Predefined field" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Key contact 2</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="tm_kc2_val" name="tm_kc2_val" placeholder="Predefined field" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Key contact 3</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="tm_kc3_val" name="tm_kc3_val" placeholder="Predefined field" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Supplier</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="tm_sup_val" name="tm_sup_val" placeholder="Free text input" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Project team</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="tm_team_val" name="tm_team_val" placeholder="Predefined field" ></div>
+	</div>
+	
+	<br /><br />
+
+	<h2 class="heading-medium">Project plan</h2>
+	<br />
+
+	<div class="form-group row">
+		<div class="col-sm-2">Intended start date</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pp_isd_val" name="pp_isd_val" placeholder="Date" ></div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">Actual start date</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pp_asd_val" name="pp_asd_val" placeholder="Date" ></div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">Expected current phase end date</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pp_epd_val" name="pp_epd_val" placeholder="Date" ></div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">Expected end date</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pp_eed_val" name="pp_eed_val" placeholder="Date" ></div>
+	</div>
+	<div class="form-group row">
+	<div class="col-sm-2">Actual end date date</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pp_aed_val" name="pp_aed_val" placeholder="Date" ></div>
+	</div>
+	<div class="form-group row">
+	<div class="col-sm-2">Hard deadline</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pp_hd_val" name="pp_hd_val" placeholder="Date" ></div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">Percentage completed</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pp_pc_val" name="pp_pc_val" placeholder="Number" ></div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">Milestones</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pp_ms_val" name="pp_ms_val" placeholder="Predefined field" ></div>
+	</div>
+	
+	<br /><br />
+	
+	<h2 class="heading-medium">Progress indicators</h2>
+	<br />
+	<div class="form-group row">
+		<div class="col-sm-2">Phase</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pi_phase_val" name="pi_phase_val" placeholder="List of options for the drop-down" ></div>
+	</div><!-- e.g. backlog, discovery, alpha, beta... -->
+	
+	<div class="form-group row">
+		<div class="col-sm-2">RAG</div>
+		<div class="col-sm-2"><input type="text" class="form-control" id="pi_rag_lb" name="pi_rag_lb" placeholder="Value"></div>
+		<div class="col-sm-10">
+			<select class="form-control" id="pi_rag_val" name="pi_rag_val">
+			<option value = "3p">3-point scale: Red, Amber, Green</option>
+			<option value = "5p">5-point scale: Red, Red-Amber, Amber, Amber-Green, Green</option>
+			</select>
+		</div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">How to get to Green?</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pi_gr_val" name="pi_gr_val" placeholder="Free text input" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Status</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pi_stat_val" name="pi_stat_val" placeholder="List of options for the drop-down" ></div>
+	</div><!-- i.e. on hold, blocked -->
+	
+	
+	<br /><br />
+
+	<br />
+	<h2 class="heading-medium">Updates</h2>
+	<div class="form-group row">
+		<div class="col-sm-2">Updates</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="up_up_val" name="up_up_val" placeholder="Free text input" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Forward look</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="up_fl_val" name="up_fl_val" placeholder="Free text input" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Emerging issues, risks...</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="up_em_val" name="up_em_val" placeholder="Free text input" ></div>
+	</div>
+	
+	<br />
+	<h2 class="heading-medium">Prioritisation</h2>
+		<br />
+	<div class="form-group row">
+		<div class="col-sm-2">Priority score</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pr_score_val" name="pr_score_val" placeholder="Predefined field" ></div>
+	</div>
+		<div class="form-group row">
+		<div class="col-sm-2">Funded</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pr_fund_val" name="pr_fund_val" placeholder="Predefined field" ></div>
+	</div>
+		<div class="form-group row">
+		<div class="col-sm-2">Confidence in delivery</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pr_conf_val" name="pr_conf_val" placeholder="Predefined field" ></div>
+	</div>
+		<div class="form-group row">
+		<div class="col-sm-2">Priorities impacted</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pr_prior_val" name="pr_prior_val" placeholder="Predefined field" ></div>
+	</div>
+		<div class="form-group row">
+		<div class="col-sm-2">Benefits</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pr_ben_val" name="pr_ben_val" placeholder="Predefined field" ></div>
+	</div>
+		<div class="form-group row">
+		<div class="col-sm-2">Criticality</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pr_crit_val" name="pr_crit_val" placeholder="Predefined field" ></div>
+	</div>
+	
+	
+	
+		<br /><br />
+	<h2 class="heading-medium">Budget</h2>
+		<br />
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Budget category</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="bg_cat_val" name="bg_cat_val" placeholder="List of options for the drop-down" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Budget amount</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="bg_amt_val" name="bg_amt_val" placeholder="Number" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Amount spent</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="bg_sp_val" name="bg_sp_val" placeholder="Number" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Forecast spend at completion</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="bg_for_val" name="bg_for_val" placeholder="Number" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Budget field 1</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="bg_bf1_val" name="bg_bf1_val" placeholder="Number" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Cost centre</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="bg_cc_val" name="bg_cc_val" placeholder="Free text input" ></div>
+	</div>
+	
+	
+	<br />
+	<h2 class="heading-medium">FSA processes</h2>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Assurance gate number</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pc_gn_val" name="pc_gn_val" placeholder="Free text input" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Assurance gate completed</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pc_gc_val" name="pc_gc_val" placeholder="Date" ></div>
+	</div>
+	
+	<div class="form-group row">
+		<div class="col-sm-2">Next gate</div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pc_ng_val" name="pc_ng_val" placeholder="Free text input" ></div>
+	</div>
+	
+ 
+	<div class="form-group row">
+		<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>
+	 </div>
+	 
+	</form>
+	
+	</div>
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
+{% endblock %}

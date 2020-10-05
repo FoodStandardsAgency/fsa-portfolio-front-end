@@ -229,35 +229,10 @@ router.get('/projects/:project_id', login.requireLogin, function (req, res) {pro
 //-------------------------------------------------------------------
 // RENDER FORMS
 //-------------------------------------------------------------------
-router.get('/:portfolio/add', login.requireLogin, function (req, res) {
-	
-	var portfolio = req.params.portfolio
-	
-	if(req.session.user == 'portfolio') {
-		
-		/*var config = JSON.parse('{"inc":{"id1":"1", "id2":"1", "ab_name":"1", "ab_desc":"1", "ab_risk":"1"},"adm":{"id1":"0", "id2":"1", "ab_name":"1", "ab_desc":"1", "ab_risk":"0"},"lab":{"ab_name":"Project title"},"val":{"ab_risk":["low", "medium", "high"]}}');*/
-		
-		var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_risk"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"]}}');
-		
-		res.render('add-edit-project', {
-			"user": req.session.user, // need access-level to determine whether user can add projects
-			"data": '',
-			"config":config,
-			"sess":req.session,
-			"portfolio": portfolio
-		});
-		
-		//add_project(req,res);
-		}
+router.get('/portfolio-add', login.requireLogin, function (req, res) {
+	if(req.session.user == 'portfolio') {add_project(req,res);}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
-
-router.get('/:portfolio/edit/:project_id', login.requireLogin, function (req, res) {
-	if(req.session.user == 'portfolio'){update_portfolio(req, res);}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
-});
-
-
 		
 router.get('/portfolio-update/:project_id', login.requireLogin, function (req, res) {
 	if(req.session.user == 'portfolio'){update_portfolio(req, res);}
