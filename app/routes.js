@@ -104,7 +104,7 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
 router.get('/:portfolio', login.requireLogin, async (req, res) => {
 	var portfolio = req.params.portfolio;
 	
-	queries.current_projects()
+	queries.current_projects(portfolio)
 	.then((result) => {
 		res.render('summary', {
 			"data": nestedGroupBy(result.body, ['category', 'phase']),
@@ -120,6 +120,8 @@ router.get('/:portfolio', login.requireLogin, async (req, res) => {
 
 
 router.get('/:portfolio/priority/', login.requireLogin, function (req, res) {	
+	var portfolio = req.params.portfolio;
+	
 	queries.current_projects()
 	.then((result) => {
 		res.render('summary', {
@@ -134,6 +136,8 @@ router.get('/:portfolio/priority/', login.requireLogin, function (req, res) {
 });
 
 router.get('/:portfolio/team/', login.requireLogin, function (req, res) {	
+var portfolio = req.params.portfolio;
+	
 	queries.current_projects()
 	.then((result) => {
 		res.render('summary', {
@@ -148,6 +152,8 @@ router.get('/:portfolio/team/', login.requireLogin, function (req, res) {
 });
 
 router.get('/:portfolio/rag/', login.requireLogin, function (req, res) {
+	var portfolio = req.params.portfolio;
+	
 	queries.current_projects()
 	.then((result) => {
 		  res.render('summary', {
@@ -164,6 +170,8 @@ router.get('/:portfolio/rag/', login.requireLogin, function (req, res) {
 router.get('/:portfolio/oddlead/', login.requireLogin, function (req, res) {odd_view(req, res);});
 
 router.get('/:portfolio/status/', login.requireLogin, function (req, res) {
+	var portfolio = req.params.portfolio;
+	
 	queries.current_projects()
 	.then((result) => {
 		res.render('phaseview', {
@@ -178,6 +186,8 @@ router.get('/:portfolio/status/', login.requireLogin, function (req, res) {
 });
 
 router.get('/:portfolio/new_projects/', login.requireLogin, function (req, res) {	
+var portfolio = req.params.portfolio;
+	
 	queries.new_projects()
 	.then((result) => {
 		res.render('summary', {
@@ -192,6 +202,8 @@ router.get('/:portfolio/new_projects/', login.requireLogin, function (req, res) 
 });
 
 router.get('/:portfolio/archived', login.requireLogin, function (req, res) {
+	var portfolio = req.params.portfolio;
+	
 	queries.completed_projects()
 	.then((result) => {
 		res.render('completed', {
@@ -208,6 +220,8 @@ router.get('/:portfolio/archived', login.requireLogin, function (req, res) {
 router.get('/:portfolio/completed', login.requireLogin, function (req, res){res.redirect('/archived');});
 
 router.get('/:portfolio/portfolio-team', login.requireLogin, (req, res) => {
+	var portfolio = req.params.portfolio;
+	
 	if(req.session.user == 'portfolio') {res.render('team-page', {"sess": req.session});}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
@@ -217,8 +231,8 @@ router.get('/:portfolio/portfolio-team', login.requireLogin, (req, res) => {
 // FILTER VIEW
 //-------------------------------------------------------------------
 
-router.get ('/filter-view', login.requireLogin, function (req,res) {res.render('filter_view', {"sess": req.session});});
-router.post('/filter-view', login.requireLogin, function (req,res) {filter_view(req,res)});
+router.get ('/:portfolio/filter-view', login.requireLogin, function (req,res) {res.render('filter_view', {"sess": req.session});});
+router.post('/:portfolio/filter-view', login.requireLogin, function (req,res) {filter_view(req,res)});
 
 //-------------------------------------------------------------------
 // PROJECT VIEW
@@ -237,16 +251,17 @@ router.get('/:portfolio/add', login.requireLogin, function (req, res) {
 			
 		var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_theme", "ab_cat", "ab_scat", "ab_dir", "ab_chan", "ab_rel", "ab_doc"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"], "ab_cat":["category 1", "category 2", "category 3"], "ab_scat":["secondary category 1", "secondary category 2", "secondary category 3"]}}');
 		
+		var data = JSON.parse('{"ab_name":"Project name!", "ab_chan":["name","link"]}');
+		
 		res.render('add-edit-project', {
 			"user": req.session.user, // need access-level to determine whether user can add projects
-			"data": '',
+			"data": data,
 			"config":config,
 			"sess":req.session,
 			"portfolio": portfolio
 		});
 		
-		//add_project(req,res);
-		}
+	}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
 
@@ -287,10 +302,12 @@ router.post('/delete_project_process', login.requireLogin, function (req, res) {
 // Export latest projects as a csv
 //-------------------------------------------------------------------	
 
-router.get('/download/csv', login.requireLogin, function(req,res){
+router.get('/:portfolio/download/csv', login.requireLogin, function(req,res){
 
+	var portfolio = req.params.portfolio;
+	
 	if(req.session.user == 'portfolio') {
-		queries.latest_projects()
+		queries.latest_projects(portfolio)
 		.then( (result) => {
 						
 			for (i = 0; i < result.body.length; i++){
