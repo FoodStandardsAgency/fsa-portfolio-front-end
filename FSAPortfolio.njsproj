@@ -54,7 +54,19 @@
     <Content Include="app\graph.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\styles\app.bundle.js" />
+    <Content Include="app\styles\app.scss" />
+    <Content Include="app\styles\customstyles.css" />
+    <Content Include="app\styles\style.js" />
     <Content Include="app\tokens.js" />
+    <Content Include="app\views\configure.html" />
+    <Content Include="app\views\landing.html" />
+    <Content Include="app\views\project_odd.html" />
+    <Content Include="app\views\summary.html" />
+    <Content Include="app\views\theme\foot.html" />
+    <Content Include="app\views\theme\header.html" />
+    <Content Include="app\views\theme\layout.html" />
+    <Content Include="app\views\theme\scripts.html" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -126,9 +138,11 @@
     <Folder Include="app\assets\sass\elements" />
     <Folder Include="app\assets\sass\elements\forms" />
     <Folder Include="app\assets\sass\patterns" />
+    <Folder Include="app\styles\" />
     <Folder Include="app\views" />
     <Folder Include="app\views\display bak" />
     <Folder Include="app\views\includes" />
+    <Folder Include="app\views\theme\" />
     <Folder Include="routes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
