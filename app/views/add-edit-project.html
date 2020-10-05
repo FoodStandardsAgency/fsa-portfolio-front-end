@@ -71,36 +71,107 @@
 	</div>
 	{% endif %}
 	
-	<div class="form-group row">
-		<div class="col-sm-2">Theme</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_theme_val" name="ab_theme_val" placeholder="List of options for the drop-down" ></div>
-	</div>
-	
-	<div class="form-group row">
-		<div class="col-sm-2">Project type</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_type_lb" name="ab_type_lb" placeholder="List of options for the drop-down"></div>
-	</div><!-- e.g. internship, research... -->
-	
-	<div class="form-group row">
-		<div class="col-sm-2">Project size</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_size_val" name="ab_size_val" placeholder="List of options for the drop-down"></div>
-	</div><!-- e.g. internship, research... -->
 
-	
+	{% if 'ab_theme' in config.inc %}
 	<div class="form-group row">
-		<div class="col-sm-2">Category</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_cat_val" name="ab_cat_val" placeholder="List of options for the drop-down" ></div>
-	</div><!-- i.e. on hold, blocked -->
+		<div class="col-sm-2">{{ config.lab['ab_theme'] | default('Project theme') }}</div>
+		
+		<div class="col-sm-10">
+			<select class="form-control" id="ab_theme_val" name="ab_theme_val">
+			<option value = "0">Please select</option>
+				{% for i in range(0, config.val['ab_theme'].length) -%}
+				<option value = "{{i + 1}}">{{ config.val['ab_theme'][i] | capitalize}}</option>
+				{%- endfor %}
+			</select>
+		</div>
+	</div>
+	{% endif %}
 	
+	{% if 'ab_type' in config.inc %}
 	<div class="form-group row">
-		<div class="col-sm-2">Secondary category</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_scat_val" name="ab_scat_val" placeholder="List of options for the drop-down" ></div>
-	</div><!-- i.e. on hold, blocked -->
+		<div class="col-sm-2">{{ config.lab['ab_type'] | default('Project type') }}</div>
+		
+		<div class="col-sm-10">
+			<select class="form-control" id="ab_type_val" name="ab_type_val">
+			<option value = "0">Please select</option>
+				{% for i in range(0, config.val['ab_type'].length) -%}
+				<option value = "{{i + 1}}">{{ config.val['ab_type'][i] | capitalize}}</option>
+				{%- endfor %}
+			</select>
+		</div>
+	</div>
+	{% endif %}
 	
+	{% if 'ab_size' in config.inc %}
+	<div class="form-group row">
+		<div class="col-sm-2">{{ config.lab['ab_size'] | default('Project size') }}</div>
+		
+		<div class="col-sm-10">
+			<select class="form-control" id="ab_size_val" name="ab_size_val">
+			<option value = "0">Please select</option>
+				{% for i in range(0, config.val['ab_size'].length) -%}
+				<option value = "{{i + 1}}">{{ config.val['ab_size'][i] | capitalize}}</option>
+				{%- endfor %}
+			</select>
+		</div>
+	</div>
+	{% endif %}
+		
+	{% if 'ab_cat' in config.inc %}
+	<div class="form-group row">
+		<div class="col-sm-2">{{ config.lab['ab_cat'] | default('Project category') }}</div>
+		
+		<div class="col-sm-10">
+			<select class="form-control" id="ab_cat_val" name="ab_cat_val">
+			<option value = "0">Please select</option>
+				{% for i in range(0, config.val['ab_cat'].length) -%}
+				<option value = "{{i + 1}}">{{ config.val['ab_cat'][i] | capitalize}}</option>
+				{%- endfor %}
+			</select>
+		</div>
+	</div>
+	{% endif %}
+	
+	{% if 'ab_scat' in config.inc %}
+	<div class="form-group row">
+		<div class="col-sm-2">{{ config.lab['ab_scat'] | default('Secondary category') }}</div>
+		
+		<div class="col-sm-10">
+			<select class="form-control" id="ab_scat_val" name="ab_scat_val" multiple>
+			<option value = "0">Please select</option>
+				{% for i in range(0, config.val['ab_scat'].length) -%}
+				<option value = "{{i + 1}}">{{ config.val['ab_scat'][i] | capitalize}}</option>
+				{%- endfor %}
+			</select>
+		</div>
+	</div>
+	{% endif %}
+	
+	{% if 'ab_dir' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Directorate</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_dir_val" name="ab_dir_val" placeholder="Pre-defined list"  ></div>
+		<div class="col-sm-10">
+			<select class="form-control" id="ab_dir_val" name="ab_dir_val">
+					<option value="0"  		{% if data.ab_dir == '0' %}  	selected {% endif %}>None</option>
+					<option value="6"   	{% if data.ab_dir == '6' %}		selected {% endif %}>FSA wide</option>
+					<option value="1" 		{% if data.ab_dir == '1' %} 	selected {% endif %}>Communications</option>
+					<option value="2"   	{% if data.ab_dir == '2' %}	  	selected {% endif %}>Incidents & Resilience</option>
+					<option value="3"    	{% if data.ab_dir == '3' %}	  	selected {% endif %}>Field Operations</option>
+					<option value="4"   	{% if data.ab_dir == '4' %}	  	selected {% endif %}>Finance & Performance</option>
+					<option value="5"   	{% if data.ab_dir == '5' %}		selected {% endif %}>Food Safety Policy</option>
+					<option value="7"  		{% if data.ab_dir == '7' %}		selected {% endif %}>National Food Crime Unit</option>
+					<option value="8" 	  	{% if data.ab_dir == '8' %}		selected {% endif %}>Northern Ireland</option>
+					<option value="9"   	{% if data.ab_dir == '9' %}		selected {% endif %}>Openness, Data & Digital</option>
+					<option value="10"  	{% if data.ab_dir == '10' %}	selected {% endif %}>People</option>
+					<option value="11"    	{% if data.ab_dir == '11' %}	selected {% endif %}>Regulatory Compliance</option>
+					<option value="12"  	{% if data.ab_dir == '12' %}	selected {% endif %}>Science, Evidence & Research</option>
+					<option value="13"   	{% if data.ab_dir == '13' %}	selected {% endif %}>Strategy, Legal & Governance</option>
+					<option value="14"   	{% if data.ab_dir == '14' %}	selected {% endif %}>Wales</option>
+			</select>
+		
+		</div>
 	</div>
+	{% endif %}
 	
 	<div class="form-group row">
 		<div class="col-sm-2">Strategic objectives</div>
@@ -117,7 +188,7 @@
 		<div class="col-sm-10"><input type="text" class="form-control" id="ab_prgd_val" name="ab_prgd_val" placeholder="Free text input" ></div>
 	</div>
 	
-		<div class="form-group row">
+	<div class="form-group row">
 		<div class="col-sm-2">Project channel (link)</div>
 		<div class="col-sm-10"><input type="text" class="form-control" id="ab_chan_val" name="ab_chan_val" placeholder="Free text input - predefined field" ></div>
 	</div>

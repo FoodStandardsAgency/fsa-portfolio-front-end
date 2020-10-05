@@ -234,10 +234,8 @@ router.get('/:portfolio/add', login.requireLogin, function (req, res) {
 	var portfolio = req.params.portfolio
 	
 	if(req.session.user == 'portfolio') {
-		
-		/*var config = JSON.parse('{"inc":{"id1":"1", "id2":"1", "ab_name":"1", "ab_desc":"1", "ab_risk":"1"},"adm":{"id1":"0", "id2":"1", "ab_name":"1", "ab_desc":"1", "ab_risk":"0"},"lab":{"ab_name":"Project title"},"val":{"ab_risk":["low", "medium", "high"]}}');*/
-		
-		var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_risk"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"]}}');
+			
+		var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_theme", "ab_cat", "ab_scat", "ab_dir", "ab_chan", "ab_rel", "ab_doc"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"], "ab_cat":["category 1", "category 2", "category 3"], "ab_scat":["secondary category 1", "secondary category 2", "secondary category 3"]}}');
 		
 		res.render('add-edit-project', {
 			"user": req.session.user, // need access-level to determine whether user can add projects
