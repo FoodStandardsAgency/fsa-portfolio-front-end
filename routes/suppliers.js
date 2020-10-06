@@ -9,7 +9,8 @@ var router = express.Router();
 // SUPPLIER ACCOUNT
 //-------------------------------------------------------------------
 
-router.get('/add-supplier', login.requireLogin, function (req, res) {
+router.get('/:portfolio/add-supplier', login.requireLogin, function (req, res) {
+	var portfolio = req.params.portfolio;
 	if (req.session.user == 'portfolio') { render_add_supplier(req, res) }
 	else { res.render('error_page', { message: 'You are not authorised to view this page' }); }
 });

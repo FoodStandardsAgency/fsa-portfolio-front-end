@@ -1,5 +1,5 @@
 {% extends "theme/layout.html" %}
-
+{% block head %}{% endblock %}
 {% block content %}
 
 <div class="row">
@@ -137,7 +137,7 @@
 		<div class="col-sm-2">{{ config.lab['ab_scat'] | default('Secondary category') }}</div>
 		
 		<div class="col-sm-10">
-			<select class="form-control" id="ab_scat_val" name="ab_scat_val" multiple>
+			<select class="form-control" id="ab_scat_val" name="ab_scat_val" size="2" multiple>
 			<option value = "0">Please select</option>
 				{% for i in range(0, config.val['ab_scat'].length) -%}
 				<option value = "{{i + 1}}">{{ config.val['ab_scat'][i] | capitalize}}</option>
@@ -168,261 +168,528 @@
 					<option value="13"   	{% if data.ab_dir == '13' %}	selected {% endif %}>Strategy, Legal & Governance</option>
 					<option value="14"   	{% if data.ab_dir == '14' %}	selected {% endif %}>Wales</option>
 			</select>
-		
 		</div>
 	</div>
 	{% endif %}
 	
+	{% if 'ab_so' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Strategic objectives</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_so_val" name="ab_so_val" placeholder="Pre-defined list"  ></div>
+		<div class="col-sm-10">
+			<select class="form-control" id="ab_so_val" name="ab_so_val">
+					<option value="0"  		{% if data.ab_so == '0' %}  	selected {% endif %}>None</option>
+					<option value="1"   	{% if data.ab_so == '6' %}		selected {% endif %}>FSA wide</option>
+					<option value="2" 		{% if data.ab_so == '1' %} 		selected {% endif %}>Communications</option>
+			</select>
+		</div>
 	</div>
-
+	{% endif %}
+	
+	{% if 'ab_prg' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Programme</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_prg_val" name="ab_prg_val" placeholder="List of options for the drop-down" ></div>
+		<div class="col-sm-10">
+		<select class="form-control" id="ab_prg_val" name="ab_prg_val" multiple>
+			<option value = "0">Please select</option>
+				{% for i in range(0, config.val['ab_prg'].length) -%}
+				<option value = "{{i + 1}}">{{ config.val['ab_prg'][i] | capitalize}}</option>
+				{%- endfor %}
+		</select>
 	</div>
+	{% endif %}
 	
+	{% if 'ab_prgd' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Programme description</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_prgd_val" name="ab_prgd_val" placeholder="Free text input" ></div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="ab_prgd" name="ab_prgd" placeholder="{{ config.lab['ab_prgd'] | default('Project name') }}" >{{data['ab_prgd']}}</div>
 	</div>
+	{% endif %}
 	
+	{% if 'ab_chan' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Project channel (link)</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_chan_val" name="ab_chan_val" placeholder="Free text input - predefined field" ></div>
+		<div class="col-sm-6"><input type="text" class="form-control" id="ab_chan0" name="ab_chan0" placeholder="Label" value="{{ data['ab_chan'][0] }}"></div>
+		<div class="col-sm-4"><input type="text" class="form-control" id="ab_chan1" name="ab_chan1" placeholder="Value" value="{{ data['ab_chan'][1] }}"></div>
 	</div>
+	{% endif %}
 	
-		<div class="form-group row">
+	{% if 'ab_rel' in config.inc %}
+	<div class="form-group row">
 		<div class="col-sm-2">Related projects</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_rel_val" name="ab_rel_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		<select class="selectpicker form-control" style="background-color:white;" data-live-search="true" multiple>
+		  <option value="sel">Please select</option>
+		  <option value="projectid" data-tokens="projectid, project title">projectid: project title test 1</option>
+		  <option value="projectid" data-tokens="projectid, project title">projectid: project title test 2</option>
+		  <option value="projectid" data-tokens="projectid, project title">projectid: project title test 3</option>
+		</select>
+		</div>
 	</div>
+	{% endif %}
 	
-		<div class="form-group row">
+	{% if 'ab_dep' in config.inc %}
+	<div class="form-group row">
 		<div class="col-sm-2">Dependencies</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_dep_val" name="ab_dep_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		<select id="ab_dep" name ="ab_dep" class="selectpicker form-control" style="background-color:white;" data-live-search="true" multiple>
+		  <option value="sel">Please select</option>
+		  <option value="projectid" data-tokens="projectid, project title">projectid: project title test 1</option>
+		  <option value="projectid" data-tokens="projectid, project title">projectid: project title test 2</option>
+		  <option value="projectid" data-tokens="projectid, project title">projectid: project title test 3</option>
+		</select>
+		</div>
 	</div>
+	{% endif %}
 	
-		<div class="form-group row">
+	{% if 'ab_doc' in config.inc %}
+	<div class="form-group row">
 		<div class="col-sm-2">Key documents</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="ab_doc_val" name="ab_doc_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		<!-- HIDDEN DYNAMIC ELEMENT TO CLONE -->
+		<div class="form-group dynamic-element" style="display:none">
+		  <div class="row">
+			  <div class="col-md-3"><input type="text" class="form-control" id="ab_docn[]" name="ab_docn[]" placeholder="Document name"></div>
+			  <div class="col-md-8"><input type="text" class="form-control" id="ab_docl[]" name="ab_docl[]" placeholder="Document link"></div>
+			  <div class="col-md-1"><p class="delete">x</p></div>
+		  </div>
+		</div>
+		<!-- END OF HIDDEN ELEMENT -->
+
+		<fieldset>
+		<div class="dynamic-stuff">
+		<!-- Dynamic element will be cloned here -->
+		<!-- You can call clone function once if you want it to show it a first element-->
+		</div>
+	  
+		<p class="add-one">+ add documents</p>
+		</fieldset>
+		</div>
 	</div>
+	{% endif %}
+	
 	
 	<br /><br />
 	<h2 class="heading-medium">Project team</h2>
 	<br />
 	
+	{% if 'tm_lead' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Project lead</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="tm_lead_val" name="tm_lead_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		<select id="tm_lead" name ="tm_lead" class="selectpicker form-control" data-live-search="true">
+		  <option value="sel">Please select</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		</select>
+		</div>
 	</div>
-	
+	{% endif %}
+
+	{% if 'tm_lrole' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Lead role</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="tm_lrole_val" name="tm_lrole_val" placeholder="List of options for the drop-down" ></div>
+		<div class="col-sm-10">
+			<select class="form-control" id="tm_lrole" name="tm_lrole">
+			<option value = "0">Please select</option>
+				{% for i in range(0, config.val['tm_lrole'].length) -%}
+				<option value = "{{i + 1}}">{{ config.val['tm_lrole'][i] | capitalize}}</option>
+				{%- endfor %}
+			</select>
 	</div>
+	</div>
+	{% endif %}
 	
+	{% if 'tm_lteam' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Lead team</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="tm_lteam_val" name="tm_lteam_val" placeholder="List of options for the drop-down" ></div>
+		<div class="col-sm-10">
+		<select class="form-control" id="tm_lteam" name="tm_lteam">
+			<option value = "0">Please select</option>
+				{% for i in range(0, config.val['tm_lteam'].length) -%}
+				<option value = "{{i + 1}}">{{ config.val['tm_lteam'][i] | capitalize}}</option>
+				{%- endfor %}
+		</select>
 	</div>
-		
+	</div>
+	{% endif %}
+	
+	{% if 'tm_kc1' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Key contact 1</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="tm_kc1_val" name="tm_kc1_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		<select class="selectpicker form-control" name="tm_kc1" id = "tm_kc1" data-live-search="true">
+		  <option value="sel">Please select</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		</select>
 	</div>
+	</div>
+	{% endif %}
 	
+	{% if 'tm_kc2' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Key contact 2</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="tm_kc2_val" name="tm_kc2_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		<select class="selectpicker form-control" name="tm_kc2" id = "tm_k2" data-live-search="true">
+		  <option value="sel">Please select</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		</select>
+		</div>
 	</div>
+	{% endif %}
 	
+	{% if 'tm_kc3' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Key contact 3</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="tm_kc3_val" name="tm_kc3_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		<select class="selectpicker form-control" name="tm_kc3" id = "tm_kc3" data-live-search="true">
+		  <option value="sel">Please select</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		</select>
+		</div>
 	</div>
+	{% endif %}
 	
+	{% if 'tm_sup' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Supplier</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="tm_sup_val" name="tm_sup_val" placeholder="Free text input" ></div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="tm_sup" name="tm_sup" placeholder="{{ config.lab['Supplier'] | default('Supplier') }}" value="{{data['tm_sup']}}"></div>
 	</div>
+	{% endif %}
 	
+	
+	{% if 'tm_team' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Project team</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="tm_team_val" name="tm_team_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		<select class="selectpicker form-control" name="tm_team" id = "tm_team" data-live-search="true" multiple>
+		  <option value="sel">Please select</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		  <option value="email" data-tokens="name">name, email</option>
+		</select>
+		</div>
 	</div>
+	{% endif %}
 	
 	<br /><br />
 
 	<h2 class="heading-medium">Project plan</h2>
 	<br />
-
+	
+	{% if 'pp_isd' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Intended start date</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pp_isd_val" name="pp_isd_val" placeholder="Date" ></div>
+		<div class="col-sm-10"><input type="date" class="form-control" id="pp_isd" name="pp_isd" placeholder="{{ config.lab['pp_isd'] | default('Intended start date') }}" value="{{data['pp_isd']}}" ></div>
 	</div>
+	{% endif %}
+	
+	{% if 'pp_asd' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Actual start date</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pp_asd_val" name="pp_asd_val" placeholder="Date" ></div>
+		<div class="col-sm-10"><input type="date" class="form-control" id="pp_asd" name="pp_asd" placeholder="{{ config.lab['pp_asd'] | default('Actual start date') }}" value="{{data['pp_asd']}}" ></div>
 	</div>
+	{% endif %}
+	
+	{% if 'pp_epd' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Expected current phase end date</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pp_epd_val" name="pp_epd_val" placeholder="Date" ></div>
+		<div class="col-sm-10"><input type="date" class="form-control" id="pp_epd" name="pp_epd" placeholder="{{ config.lab['pp_epd'] | default('Expected phase end date') }}" value="{{data['pp_epd']}}" ></div>
 	</div>
+	{% endif %}
+	
+	{% if 'pp_eed' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Expected end date</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pp_eed_val" name="pp_eed_val" placeholder="Date" ></div>
+		<div class="col-sm-10"><input type="date" class="form-control" id="pp_eed" name="pp_eed" placeholder="{{ config.lab['pp_eed'] | default('Expected end date') }}" value="{{data['pp_eed']}}" ></div>
 	</div>
+	{% endif %}
+	
+	{% if 'pp_aed' in config.inc %}
 	<div class="form-group row">
 	<div class="col-sm-2">Actual end date date</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pp_aed_val" name="pp_aed_val" placeholder="Date" ></div>
+		<div class="col-sm-10"><input type="date" class="form-control" id="pp_aed" name="pp_aed" placeholder="{{ config.lab['pp_aed'] | default('Actual end date') }}" value="{{data['pp_aed']}}" ></div>
 	</div>
+	{% endif %}
+	
+	{% if 'pp_hd' in config.inc %}
 	<div class="form-group row">
 	<div class="col-sm-2">Hard deadline</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pp_hd_val" name="pp_hd_val" placeholder="Date" ></div>
+		<div class="col-sm-10"><input type="date" class="form-control" id="pp_hd" name="pp_hd" placeholder="{{ config.lab['pp_hd'] | default('Hard deadline') }}" value="{{data['pp_hd']}}" ></div>
 	</div>
+	{% endif %}
+	
+	{% if 'pp_pc' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Percentage completed</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pp_pc_val" name="pp_pc_val" placeholder="Number" ></div>
+		<div class="col-sm-10"><input type="number" min="0" max="100" class="form-control" id="pp_pc" name="pp_pc" placeholder="{{ config.lab['pp_pc'] | default('Percentage completed') }}" value="{{data['pp_pc']}}" ></div>
 	</div>
+	{% endif %}
+	
+	
+	{% if 'pp_ms' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Milestones</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pp_ms_val" name="pp_ms_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">+ add milestones</div>
 	</div>
 	
 	<br /><br />
 	
 	<h2 class="heading-medium">Progress indicators</h2>
 	<br />
+	{% endif %}
+	
+	{% if 'pi_phase' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Phase</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pi_phase_val" name="pi_phase_val" placeholder="List of options for the drop-down" ></div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pi_phase" name="pi_phase" placeholder="List of options for the drop-down" ></div>
 	</div><!-- e.g. backlog, discovery, alpha, beta... -->
+	{% endif %}
 	
+	{% if 'pi_rag' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">RAG</div>
-		<div class="col-sm-2"><input type="text" class="form-control" id="pi_rag_lb" name="pi_rag_lb" placeholder="Value"></div>
 		<div class="col-sm-10">
-			<select class="form-control" id="pi_rag_val" name="pi_rag_val">
-			<option value = "3p">3-point scale: Red, Amber, Green</option>
-			<option value = "5p">5-point scale: Red, Red-Amber, Amber, Amber-Green, Green</option>
+			{% if config.val['pi_rag'] == '3p' %}
+			<select class="form-control" id="pi_rag" name="pi_rag">
+				<option value="1">Red</option>
+				<option value="3">Amber</option>
+				<option value="5">Green</option>
 			</select>
+			{% else %}
+			<select class="form-control" id="pi_rag" name="pi_rag">
+				<option value="1">Red</option>
+				<option value="2">Red/Amber</option>
+				<option value="3">Amber</option>
+				<option value="4">Amber/Green</option>
+				<option value="5">Green</option>
+			</select>
+			{% endif %}
 		</div>
 	</div>
+	{% endif %}
 	
+	{% if 'pi_gr' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">How to get to Green?</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pi_gr_val" name="pi_gr_val" placeholder="Free text input" ></div>
+		<div class="col-sm-10"><textarea rows="3" type="text" class="form-control" id="pi_gr" name="pi_gr" placeholder="{{ config.lab['pi_gr'] | default('How to get to green') }}" >{{data['pi_gr']}}</textarea></div>
 	</div>
+	{% endif %}
 	
+	{% if 'pi_stat' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Status</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pi_stat_val" name="pi_stat_val" placeholder="List of options for the drop-down" ></div>
+		<div class="col-sm-10">
+			<select class="form-control" id="pi_stat" name="pi_stat">
+				<option value="0">Please select</option>
+				{% for i in range(0, config.val['pi_stat'].length) -%}
+				<option value = "{{i + 1}}">{{ config.val['pi_stat'][i] | capitalize}}</option>
+				{%- endfor %}
+			</select>
+		</div>
 	</div><!-- i.e. on hold, blocked -->
-	
+	{% endif %}
 	
 	<br /><br />
 
 	<br />
 	<h2 class="heading-medium">Updates</h2>
+	
+	{% if 'up_up' in config.inc %}
+	<br />
 	<div class="form-group row">
 		<div class="col-sm-2">Updates</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="up_up_val" name="up_up_val" placeholder="Free text input" ></div>
+		<div class="col-sm-10"><textarea rows="4" type="text" class="form-control" id="up_up" name="up_up" placeholder="{{ config.lab['up_up'] | default('Updates') }}">{{ data['up_up'] }}</textarea>
+		<br /><br />
+			<p>Date and text of the previous update, for reference.</p>
+		</div>
 	</div>
-	
+	{% endif %}
+
+	{% if 'up_fl' in config.inc %}
+	<br />
 	<div class="form-group row">
 		<div class="col-sm-2">Forward look</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="up_fl_val" name="up_fl_val" placeholder="Free text input" ></div>
+		<div class="col-sm-10"><textarea rows="4" type="text" class="form-control" id="up_fl" name="up_fl" placeholder="{{ config.lab['up_fl'] | default('Forward look') }}">{{ data['up_fl'] }}</textarea></div>
 	</div>
+	{% endif %}
 	
+	{% if 'up_em' in config.inc %}
+	<br />
 	<div class="form-group row">
 		<div class="col-sm-2">Emerging issues, risks...</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="up_em_val" name="up_em_val" placeholder="Free text input" ></div>
+		<div class="col-sm-10"><textarea rows="4" type="text" class="form-control" id="up_em" name="up_em" placeholder="{{ config.lab['up_em'] | default('Emerging issues, risks...') }}">{{ data['up_em'] }}</textarea></div>
 	</div>
+	{% endif %}
 	
+	{% if 'pr_score' in config.inc %}
 	<br />
 	<h2 class="heading-medium">Prioritisation</h2>
 		<br />
 	<div class="form-group row">
 		<div class="col-sm-2">Priority score</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pr_score_val" name="pr_score_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		<select name="pr_score" class="form-control">
+			<option value="0" selected>Priority score</option>
+			{% for i in ['20','19','18','17','16','15','14','13','12','11','10','09','08','07','06','05','04','03','02','01','0'] %}
+			<option value="{{ i }}" {% if data['pr_score'] == i %} selected {% endif %} >{{ i }}</option>
+			{% endfor %}
+		</select>
+		</div>
 	</div>
-		<div class="form-group row">
+	{% endif %}
+	
+	{% if 'pr_conf' in config.inc %}
+	<div class="form-group row">
 		<div class="col-sm-2">Funded</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pr_fund_val" name="pr_fund_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		
+		<select name="pr_conf" class="form-control">
+			<option value="0" selected>Funded</option>
+			{% for i in [4,3,2,1,0] %}
+			<option value="{{ i }}" {% if data['pr_fund'] == i %} selected {% endif %} >{{ i }}</option>
+			{% endfor %}
+		</select>
 	</div>
-		<div class="form-group row">
+	</div>
+	{% endif %}
+	
+	{% if 'pr_conf' in config.inc %}
+	<div class="form-group row">
 		<div class="col-sm-2">Confidence in delivery</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pr_conf_val" name="pr_conf_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		<select name="pr_conf" class="form-control">
+			<option value="0" selected>Confidence in delivery</option>
+			{% for i in [4,3,2,1,0] %}
+			<option value="{{ i }}" {% if data['pr_conf'] == i %} selected {% endif %} >{{ i }}</option>
+			{% endfor %}
+		</select>
+		</div>
 	</div>
-		<div class="form-group row">
+	{% endif %}
+	
+	{% if 'pr_prior' in config.inc %}
+	<div class="form-group row">
 		<div class="col-sm-2">Priorities impacted</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pr_prior_val" name="pr_prior_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		
+		<select name="pr_prior" class="form-control">
+			<option value="0" selected>Priorities impacted</option>
+			{% for i in [4,3,2,1,0] %}
+			<option value="{{ i }}" {% if data['pr_prior'] == i %} selected {% endif %} >{{ i }}</option>
+			{% endfor %}
+		</select>
 	</div>
-		<div class="form-group row">
+	</div>
+	{% endif %}
+	
+	{% if 'pr_ben' in config.inc %}
+	<div class="form-group row">
 		<div class="col-sm-2">Benefits</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pr_ben_val" name="pr_ben_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		
+		<select name="pr_ben" class="form-control">
+			<option value="0" selected>Benefits</option>
+			{% for i in [4,3,2,1,0] %}
+			<option value="{{ i }}" {% if data['pr_ben'] == i %} selected {% endif %} >{{ i }}</option>
+			{% endfor %}
+		</select>
 	</div>
-		<div class="form-group row">
+	</div>
+	{% endif %}
+	
+	{% if 'pr_crit' in config.inc %}
+	<div class="form-group row">
 		<div class="col-sm-2">Criticality</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pr_crit_val" name="pr_crit_val" placeholder="Predefined field" ></div>
+		<div class="col-sm-10">
+		
+		<select name="pr_crit" class="form-control">
+			<option value="0" selected>Criticality</option>
+			{% for i in [4,3,2,1,0] %}
+			<option value="{{ i }}" {% if data['pr_crit'] == i %} selected {% endif %} >{{ i }}</option>
+			{% endfor %}
+		</select>
+		</div>
 	</div>
+	{% endif %}
+
 	
-	
-	
-		<br /><br />
 	<h2 class="heading-medium">Budget</h2>
 		<br />
 	
+	{% if 'bg_cat' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Budget category</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="bg_cat_val" name="bg_cat_val" placeholder="List of options for the drop-down" ></div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="bg_cat" name="bg_cat" placeholder="List of options for the drop-down"></div>
 	</div>
+	{% endif %}
 	
+	{% if 'bg_amt' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Budget amount</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="bg_amt_val" name="bg_amt_val" placeholder="Number" ></div>
+		<div class="col-sm-10"><input type="number" class="form-control" id="bg_amt" name="bg_amt" placeholder="{{ config.lab['bg_amt'] | default('Budget amount') }}" value="{{data['bg_amt']}}"></div>
 	</div>
+	{% endif %}
 	
+	{% if 'bg_sp' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Amount spent</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="bg_sp_val" name="bg_sp_val" placeholder="Number" ></div>
+		<div class="col-sm-10"><input type="number" class="form-control" id="bg_sp" name="bg_sp" placeholder="{{ config.lab['sp'] | default('Amount spent') }}" value="{{data['bg_sp']}}"></div>
 	</div>
+	{% endif %}
 	
+	{% if 'bg_for' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Forecast spend at completion</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="bg_for_val" name="bg_for_val" placeholder="Number" ></div>
+		<div class="col-sm-10"><input type="number" class="form-control" id="bg_for" name="bg_for" placeholder="{{ config.lab['bg_for'] | default('Forecast spend at completion') }}" value="{{data['bg_for']}}"></div>
 	</div>
+	{% endif %}
 	
+	{% if 'bg_bf1' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Budget field 1</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="bg_bf1_val" name="bg_bf1_val" placeholder="Number" ></div>
+		<div class="col-sm-10"><input type="number" class="form-control" id="bg_bf1" name="bg_bf1" placeholder="{{ config.lab['bg_bf1'] | default('Budget field 1') }}" value="{{data['bg_bf1']}}"></div>
 	</div>
+	{% endif %}
 	
+	{% if 'bg_cc' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Cost centre</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="bg_cc_val" name="bg_cc_val" placeholder="Free text input" ></div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="bg_cc" name="bg_cc" placeholder="{{ config.lab['bg_cc'] | default('Cost centre') }}" value="{{data['bg_cc']}}"></div>
 	</div>
+	{% endif %}
 	
 	
 	<br />
 	<h2 class="heading-medium">FSA processes</h2>
 	
+	{% if 'pc_gn' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Assurance gate number</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pc_gn_val" name="pc_gn_val" placeholder="Free text input" ></div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pc_gn" name="pc_gn" placeholder="{{ config.lab['pc_gn'] | default('Assurance gate number') }}" value="{{data['pc_gn']}}" ></div>
 	</div>
+	{% endif %}
 	
+	{% if 'pc_gc' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Assurance gate completed</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pc_gc_val" name="pc_gc_val" placeholder="Date" ></div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pc_gc" name="pc_gc" placeholder="{{ config.lab['pc_gc'] | default('Assurance gate completed') }}" value="{{data['pc_gc']}}" ></div>
 	</div>
+	{% endif %}
 	
+	{% if 'pc_ng' in config.inc %}
 	<div class="form-group row">
 		<div class="col-sm-2">Next gate</div>
-		<div class="col-sm-10"><input type="text" class="form-control" id="pc_ng_val" name="pc_ng_val" placeholder="Free text input" ></div>
+		<div class="col-sm-10"><input type="text" class="form-control" id="pc_ng" name="pc_ng" placeholder="{{ config.lab['pc_ng'] | default('Next gate') }}" value="{{data['pc_ng']}}" ></div>
 	</div>
-	
+	{% endif %}
+	<br /><br />
  
 	<div class="form-group row">
 		<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>

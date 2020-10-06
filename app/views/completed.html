@@ -1,8 +1,10 @@
-{% extends "layout.html" %}
+{% extends "theme/layout.html" %}
 
 {% block content %}
 
-<main id="content" role="main">
+<div class="row">
+<div class="col-sm-1"></div>
+<div class="col-sm-10">
 	<p style="margin-top:30px;">
 	Order by: <a href="/"> theme</a>, <a href="/priority/"> priority</a>, {% if sess.user == 'portfolio'%} <a href="/oddlead/"> ODD lead</a>, {% endif %} <a href="/rag/"> rag status</a> or <a href="/status/"> stage</a>. 
 		
@@ -22,6 +24,8 @@
 	<p><a href="/projects/{{ project.project_id }}">{{ project.project_name | safe}} {{ projects.priority_main }}</a></p>
 	{% endfor %}
 
-</main>
+</div>
+</div class="col-sm-1"></div>
+</div>
 
 {% endblock %}
