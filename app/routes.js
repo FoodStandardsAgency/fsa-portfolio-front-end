@@ -29,8 +29,18 @@ const inputType_optlist = 'optionlist';
 const inputType_optlist_text = 'List of options for the drop-down';
 const inputType_prelist = 'predefinedlist';
 const inputType_prelist_text = 'Pre-defined list';
+const inputType_prefield = 'predefinedfield';
+const inputType_prefield_text = 'Pre-defined field';
 const inputType_free = 'freetext';
 const inputType_free_text = 'Free text input';
+const inputType_date = 'date';
+const inputType_date_text = 'Date';
+const inputType_percentage = 'percentage';
+const inputType_percentage_text = 'Percentage';
+const inputType_ragchoice = 'ragchoice';
+const inputType_ragchoice_text = 'RAG Choice';
+const inputType_budget = 'budget';
+const inputType_budget_text = 'Budget Amount';
 
 
 
@@ -111,8 +121,23 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
 				case inputType_optlist:
 					label.inputtype = inputType_optlist_text;
 					break;
+				case inputType_prefield:
+					label.inputtype = inputType_prefield_text;
+					break;
 				case inputType_prelist:
 					label.inputtype = inputType_prelist_text;
+					break;
+				case inputType_date:
+					label.inputtype = inputType_date_text;
+					break;
+				case inputType_percentage:
+					label.inputtype = inputType_percentage_text;
+					break;
+				case inputType_ragchoice:
+					label.inputtype = inputType_ragchoice_text;
+					break;
+				case inputType_budget:
+					label.inputtype = inputType_budget_text;
 					break;
 				case inputType_free:
 				default:
@@ -160,8 +185,23 @@ router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
 				case inputType_optlist_text:
 					label.inputtype = inputType_optlist;
 					break;
+				case inputType_prefield_text:
+					label.inputtype = inputType_prefield;
+					break;
 				case inputType_prelist_text:
 					label.inputtype = inputType_prelist;
+					break;
+				case inputType_date_text:
+					label.inputtype = inputType_date;
+					break;
+				case inputType_percentage_text:
+					label.inputtype = inputType_percentage;
+					break;
+				case inputType_ragchoice_text:
+					label.inputtype = inputType_ragchoice;
+					break;
+				case inputType_budget_text:
+					label.inputtype = inputType_budget;
 					break;
 				case inputType_free_text:
 				default:
