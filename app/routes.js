@@ -146,11 +146,16 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
 			}
 		});
 
+		//console.log(config.labels);
+
 
 		var fieldGroups = _.chain(config.labels)
+			.orderBy("grouporder", "fieldorder")
 			.groupBy("fieldgroup")
 			.map((value, key) => ({ "fieldgroup": key, labels: value }))
 			.value();
+
+		//console.log(fieldGroups);
 
 		res.render('configure', {
 			"data": "",
