@@ -15,6 +15,7 @@ async function project_view(req, res) {
 		var projectDTO = await queries.load_project(project_id);
 		var project = projectDTO.body.project;
 		if (project) {
+			console.log(project);
 			if (project.documents != null && project.documents != '') { var docs = project.documents.split(","); }
 			else { var docs = ''; }
 
@@ -103,6 +104,9 @@ async function project_view(req, res) {
 				map[obj.field] = obj.label || obj.fieldtitle;
 				return map;
 			}, {});
+
+			console.log(labels);
+
 
 			res.render('project', {
 				"user": user,
