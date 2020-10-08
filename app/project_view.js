@@ -135,7 +135,8 @@ async function project_view(req, res) {
 		}
 	}
 	catch (e) {
-		e => console.error(e.stack);
+		e => console.log(e.Message);
+		e => console.log(e.stack);
 	}
 }
 
