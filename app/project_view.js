@@ -15,7 +15,7 @@ async function project_view(req, res) {
 		var projectDTO = await queries.load_project(project_id);
 		var project = projectDTO.body.project;
 		if (project) {
-			console.log(project);
+			//console.log(project);
 			if (project.documents != null && project.documents != '') { var docs = project.documents.split(","); }
 			else { var docs = ''; }
 
@@ -93,7 +93,11 @@ async function project_view(req, res) {
 
 			var comp_date = project.first_completed;
 			if (!comp_date) { comp_date = ''; }
-			else { comp_date = String(comp_date.rows[0].min_timestamp); comp_date = comp_date.split(' '); }
+			else {
+				comp_date = String(comp_date);
+				//console.log(`comp_date = ${comp_date}`);
+				comp_date = comp_date.split(' ');
+			}
 
 			var rels = await queries.load_related(project_id);
 			var deps = await queries.load_dependant(project_id);
@@ -105,7 +109,7 @@ async function project_view(req, res) {
 				return map;
 			}, {});
 
-			console.log(labels);
+			//console.log(labels);
 
 
 			res.render('project', {
@@ -139,8 +143,8 @@ async function project_view(req, res) {
 		}
 	}
 	catch (e) {
-		e => console.log(e.Message);
-		e => console.log(e.stack);
+		if(e.message) console.log(e.message);
+		if(e.stack) console.log(e.stack);
 	}
 }
 

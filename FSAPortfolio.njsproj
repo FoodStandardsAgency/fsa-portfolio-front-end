@@ -61,7 +61,6 @@
     <Content Include="app\tokens.js" />
     <Content Include="app\views\configure.html" />
     <Content Include="app\views\landing.html" />
-    <Content Include="app\views\project_odd.html" />
     <Content Include="app\views\summary.html" />
     <Content Include="app\views\theme\foot.html" />
     <Content Include="app\views\theme\header.html" />
@@ -90,10 +89,8 @@
     <Content Include="app\routes.js" />
     <Content Include="app\update_odd.js" />
     <Content Include="app\update_portfolio.js" />
-    <Content Include="app\views\add_odd_person.html" />
     <Content Include="app\views\add_project.html" />
     <Content Include="app\views\add_supplier.html" />
-    <Content Include="app\views\blank.html" />
     <Content Include="app\views\completed.html" />
     <Content Include="app\views\delete_project.html" />
     <Content Include="app\views\error_page.html" />
@@ -102,16 +99,11 @@
     <Content Include="app\views\index.html" />
     <Content Include="app\views\layout.html" />
     <Content Include="app\views\login.html" />
-    <Content Include="app\views\odd_people_all.html" />
-    <Content Include="app\views\odd_people_delete_conf.html" />
-    <Content Include="app\views\odd_people_unmatched.html" />
     <Content Include="app\views\phaseview.html" />
     <Content Include="app\views\project.html" />
     <Content Include="app\views\team-page.html" />
     <Content Include="app\views\thank_you.html" />
     <Content Include="app\views\update_project.html" />
-    <Content Include="app\views\upload-conf.html" />
-    <Content Include="app\views\upload.html" />
     <Content Include="app\assets\images\favicon_fsa.png" />
     <Content Include="app\assets\images\separator-2x.png" />
     <Content Include="app\assets\images\separator.png" />
