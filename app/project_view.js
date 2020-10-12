@@ -95,7 +95,6 @@ async function project_view(req, res) {
 			if (!comp_date) { comp_date = ''; }
 			else {
 				comp_date = String(comp_date);
-				//console.log(`comp_date = ${comp_date}`);
 				comp_date = comp_date.split(' ');
 			}
 

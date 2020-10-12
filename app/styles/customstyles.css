@@ -144,6 +144,13 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 }
 
 
+/* Label Config Page */
+.portfolio-field-group {
+	margin-bottom: 4em;
+}
 
+	.portfolio-field-group-header, .portfolio-field-group h2 {
+		margin-bottom: 1em;
+	}
 
 

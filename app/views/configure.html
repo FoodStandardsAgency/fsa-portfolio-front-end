@@ -5,56 +5,98 @@
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-xl-10 col-md-7 col-sm-8 py-3">
-	
-	<h1 class="project-title">Configuration</h1>
-	
-	<br /><br />
 
-		  <form action="/{{portfolio}}/configure" method="post">
-		  	{% set labelNo = 0 %}
-		  	{% for fieldgroup in fieldgroups %}
-		  	<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
-		  	<br />
-		  	<div class="row">
-		  		<div class="col-sm-2">Field name</div>
-		  		<div class="col-sm-1">Included?</div>
-		  		<div class="col-sm-1">Admin only?</div>
-		  		<div class="col-sm-2">Label</div>
-		  		<div class="col-sm-6">Values</div>
-		  	</div>
-		  	<br />
-		  	{% for label in fieldgroup.labels %}
-			<div class="form-group row">
-				<div class="col-sm-2">{{label.fieldtitle}}</div>
-				<input type="hidden" name="labels[{{labelNo}}][field]" value="{{label.field}}" id="key_{{label.field}}">
-				<input type="hidden" name="labels[{{labelNo}}][fieldgroup]" value="{{label.fieldgroup}}" id="fieldgroup_{{label.field}}">
-				<input type="hidden" name="labels[{{labelNo}}][order]" value="{{label.order}}" id="order_{{label.field}}">
-				<input type="hidden" name="labels[{{labelNo}}][fieldtitle]" value="{{label.fieldtitle}}" id="fieldfieldtitle_{{label.field}}">
-				{% if label.readonly %}
-				<input type="hidden" name="labels[{{labelNo}}][included]" value="{{label.included}}" id="idinc2_{{label.field}}">
-				<input type="hidden" name="labels[{{labelNo}}][admin]" value="{{label.admin}}" id="idadm2_{{label.field}}">
-				<div class="col-sm-1"><input type="checkbox" id="idinc_{{label.field}}" {% if(label.included) %}checked{% endif %} {% if(label.readonly) %}disabled{% endif %} class=""></div>
-				<div class="col-sm-1"><input type="checkbox" id="idadm_{{label.field}}" {% if(label.admin) %}checked{% endif %} {% if(label.readonly) %}disabled{% endif %} class=""></div>
-				{% else %}
-				<div class="col-sm-1"><input type="checkbox" value="true" name="labels[{{labelNo}}][included]" id="idinc_{{label.field}}" {% if(label.included) %}checked{% endif %} {% if(label.readonly) %}disabled{% endif %} class=""></div>
-				<div class="col-sm-1"><input type="checkbox" value="true" name="labels[{{labelNo}}][admin]" id="idadm_{{label.field}}" {% if(label.admin) %}checked{% endif %} {% if(label.readonly) %}disabled{% endif %} class=""></div>
-				{% endif %}
-				<input type="hidden" name="labels[{{labelNo}}][readonly]" value="{{label.readonly}}" id="readonly_{{label.field}}">
-				<div class="col-sm-2"><input type="text" id="idlbl_{{label.field}}" name="labels[{{labelNo}}][label]" placeholder="Value" value="{{label.label}}" class="form-control"></div>
-				<div class="col-sm-6"><input type="text" id="idtyp_{{label.field}}" name="labels[{{labelNo}}][inputtype]" placeholder="{{label.inputtype}}" value="{{label.inputtype}}" {% if(label.inputtype_locked) %}readonly{% endif %} class="form-control"></div>
-				<input type="hidden" name="labels[{{labelNo}}][inputtype_locked]" value="{{label.inputtype_locked}}" id="inputtype_locked_{{label.field}}">
+		<h1 class="project-title">Configuration</h1>
+
+		<br /><br />
+
+		<form action="/{{portfolio}}/configure" method="post">
+			{% set labelNo = 0 %}
+			{% for fieldgroup in fieldgroups %}
+			<div class="portfolio-field-group">
+				<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
+				<div class="row portfolio-field-group-header">
+					<div class="col-sm-2">Field name</div>
+					<div class="col-sm-1">Included?</div>
+					<div class="col-sm-1">Admin only?</div>
+					<div class="col-sm-2">Label</div>
+					<div class="col-sm-6">Values</div>
+				</div>
+				{% for label in fieldgroup.labels %}
+				<div class="form-group row portfolio-label" id="fgr_{{label.field}}" {% if (label.masterfield) %} data-master-id="idinc_{{label.masterfield}}" {% endif %}>
+					<div class="col-sm-2">{{label.fieldtitle}}</div>
+					<input type="hidden" name="labels[{{labelNo}}][field]" value="{{label.field}}" id="key_{{label.field}}">
+					<input type="hidden" name="labels[{{labelNo}}][fieldgroup]" value="{{label.fieldgroup}}" id="fieldgroup_{{label.field}}">
+					<input type="hidden" name="labels[{{labelNo}}][order]" value="{{label.order}}" id="order_{{label.field}}">
+					<input type="hidden" name="labels[{{labelNo}}][fieldtitle]" value="{{label.fieldtitle}}" id="fieldfieldtitle_{{label.field}}">
+					{% if label.included_lock %}
+					<input type="hidden" name="labels[{{labelNo}}][included]" value="{{label.included}}" id="idinc2_{{label.field}}">
+					<div class="col-sm-1"><input type="checkbox" id="idinc_{{label.field}}" {% if(label.included) %}checked{% endif %} {% if(label.included_lock) %}disabled{% endif %}></div>
+					{% else %}
+					<div class="col-sm-1"><input type="checkbox" value="true" name="labels[{{labelNo}}][included]" id="idinc_{{label.field}}" {% if(label.included) %}checked{% endif %} {% if(label.included_lock) %}disabled{% endif %}></div>
+					{% endif %}
+					{% if label.adminonly_lock %}
+					<input type="hidden" name="labels[{{labelNo}}][admin]" value="{{label.admin}}" id="idadm2_{{label.field}}">
+					<div class="col-sm-1"><input type="checkbox" id="idadm_{{label.field}}" {% if(label.admin) %}checked{% endif %} {% if(label.adminonly_lock) %}disabled{% endif %}></div>
+					{% else %}
+					<div class="col-sm-1"><input type="checkbox" value="true" name="labels[{{labelNo}}][admin]" id="idadm_{{label.field}}" {% if(label.admin) %}checked{% endif %} {% if(label.adminonly_lock) %}disabled{% endif %}></div>
+					{% endif %}
+					<input type="hidden" name="labels[{{labelNo}}][included_lock]" value="{{label.included_lock}}" id="included_lock_{{label.field}}">
+					<input type="hidden" name="labels[{{labelNo}}][adminonly_lock]" value="{{label.adminonly_lock}}" id="adminonly_lock_{{label.field}}">
+					<div class="col-sm-2"><input type="text" id="idlbl_{{label.field}}" name="labels[{{labelNo}}][label]" placeholder="Value" value="{{label.label}}" class="form-control"></div>
+					<div class="col-sm-6"><input type="text" id="idtyp_{{label.field}}" name="labels[{{labelNo}}][inputtype]" placeholder="{{label.inputtype}}" value="{{label.inputvalue}}" {% if(label.inputtype_locked) %}readonly{% endif %} class="form-control"></div>
+					<input type="hidden" name="labels[{{labelNo}}][inputtype_locked]" value="{{label.inputtype_locked}}" id="inputtype_locked_{{label.field}}">
+				</div>
+				{% set labelNo = labelNo + 1 %}
+				{% endfor %}
 			</div>
-		  	{% set labelNo = labelNo + 1 %}
-		  	{% endfor %}
-		  	{% endfor %}
+			{% endfor %}
 
-		  	<div class="form-group row">
-		  		<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>
-		  	</div>
+			<div class="form-group row">
+				<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>
+			</div>
 
-		  </form>
-	
+		</form>
+
 	</div>
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function ConfigureLabels() {
+        var self = this;
+
+        self.showHideDependentLabels = function () {
+            $('.portfolio-label[data-master-id]').each(function () {
+				var $formgroup = $(this);
+				var $master = $('#' + $formgroup.data('master-id'));
+				if ($master.is(':checked'))
+					$formgroup.show();
+				else
+                    $formgroup.hide();
+
+				$master.on('click', function () {
+					var id = $(this).attr('id');
+					var isChecked = this.checked;
+                    $('.portfolio-label[data-master-id="' + id + '"]').each(function () {
+						if (isChecked)
+                            $(this).slideDown('slow').fadeTo('slow', 1);
+						else
+                            $(this).fadeTo('slow', 0).slideUp('slow');
+					});
+				});
+            });
+        };
+    }
+
+    $(document).ready(function () {
+
+        var configure = new ConfigureLabels();
+        configure.showHideDependentLabels();
+    });
+
+</script>
+
 {% endblock %}
