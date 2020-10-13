@@ -6,7 +6,7 @@
     <ProjectGuid>{1cee69d7-8fc5-47b7-9663-965399e4531f}</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <ProjectView>ProjectFiles</ProjectView>
+    <ProjectView>ShowAllFiles</ProjectView>
     <StartupFile>server.js</StartupFile>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -59,6 +59,7 @@
     <Content Include="app\styles\customstyles.css" />
     <Content Include="app\styles\style.js" />
     <Content Include="app\tokens.js" />
+    <Content Include="app\views\add-edit-project.html" />
     <Content Include="app\views\configure.html" />
     <Content Include="app\views\landing.html" />
     <Content Include="app\views\summary.html" />

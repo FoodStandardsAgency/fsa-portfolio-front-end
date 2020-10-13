@@ -154,3 +154,11 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 	}
 
 
+/* Add project page */
+div.project-field-group {
+	margin-bottom: 4em;
+}
+
+div.project-field-group h2 {
+	margin-bottom: 1em;
+}

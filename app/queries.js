@@ -12,6 +12,7 @@ const q = {
 
 	portfolio_projects_url: (portfolio, filter) => `Projects?portfolio=${portfolio}&filter=${filter}`,
 	portfolio_config_url: (portfolio) => `PortfolioConfiguration/${portfolio}`,
+	newproject_config_url: (portfolio) => `Projects/${portfolio}/newproject`,
 	project_url: (projectId) => `Projects/${projectId}`
 	
 }
@@ -34,6 +35,7 @@ module.exports = {
 	odd_people:			(text, params) => pool.query(q.odd_people),
 	update_label: (portfolio, field, label, included) => backend.api.post('PortfolioConfiguration/Label', { json: { portfolio: portfolio, field: field, label: label, included: included } }),
 	portfolio_config: (portfolio) => backend.api(q.portfolio_config_url(portfolio)),
-	portfolio_config_update: (portfolio, data) => backend.api.patch(q.portfolio_config_url(portfolio), { json: data })
+	portfolio_config_update: (portfolio, data) => backend.api.patch(q.portfolio_config_url(portfolio), { json: data }),
+	newproject_config: (portfolio) => backend.api(q.newproject_config_url(portfolio))
 
 }
