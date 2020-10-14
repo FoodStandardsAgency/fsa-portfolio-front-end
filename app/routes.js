@@ -392,7 +392,7 @@ router.get('/:portfolio/add', login.requireLogin, async function (req, res) {
 
 		var portfolio = req.params.portfolio;
 		var result = await queries.newproject_config(portfolio);
-		var project_id = result.body.project_id;
+		var project = result.body.project;
 		var config1 = result.body.config;
 
 		var fieldGroups = _.chain(config1.labels)
@@ -401,7 +401,7 @@ router.get('/:portfolio/add', login.requireLogin, async function (req, res) {
 			.map((value, key) => ({ "fieldgroup": key, labels: value }))
 			.value();
 
-		console.log(config1.labels);
+		console.log(project);
 			
 		var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_theme", "ab_cat", "ab_scat", "ab_dir", "ab_chan", "ab_rel", "ab_doc"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"], "ab_cat":["category 1", "category 2", "category 3"], "ab_scat":["secondary category 1", "secondary category 2", "secondary category 3"]}}');
 		
@@ -409,7 +409,7 @@ router.get('/:portfolio/add', login.requireLogin, async function (req, res) {
 		
 		res.render('add-edit-project', {
 			"user": req.session.user, // need access-level to determine whether user can add projects
-			"project_id": project_id,
+			"project": project,
 			"data": data,
 			"config":config,
 			"sess":req.session,

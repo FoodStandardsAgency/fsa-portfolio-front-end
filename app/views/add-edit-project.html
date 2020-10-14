@@ -16,15 +16,23 @@
 			  <div class="project-field-group">
 			  	<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
 			  	{% for label in fieldgroup.labels %}
+			  	{% set readonly = ((label.admin and user !='portfolio') or label.inputtype == 'auto') %}
 				<div class="form-group row">
 					<div class="col-sm-2">{{label.label}}</div>
-					{% if label.field === 'project_id' %}
-					<div class="col-sm-10"><input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" value="{{project_id}}" readonly></div>
-					{% else %}
-					<div class="col-sm-10"><input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{data['id1']}}" {% if config['adm'] and user !='portfolio' %}readonly{% endif %}></div>
-					{% endif %}
+					{% switch label.inputtype %}
+					{% case 'auto' %}
+					{% case 'freetext' %}
+					<div class="col-sm-10"><input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {% if readonly %}readonly{% endif %}></div>
+					{% case 'optionlist' %}
+					{% case 'predefinedlist' %}
+					{% case 'predefinedfield' %}
+					{% case 'ragchoice' %}
+					{% case 'date' %}
+					{% case 'percentage' %}
+					{% case 'budget' %}
+					{% default %}
+					{% endswitch %}
 				</div>
-
 			  	{% endfor %}
 			  </div>
 		  	{% endfor %}
