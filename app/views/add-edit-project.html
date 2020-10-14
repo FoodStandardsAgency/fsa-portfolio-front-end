@@ -13,28 +13,47 @@
 		  <form action="/{{portfolio}}/add" method="post">
 
 		  	{% for fieldgroup in fieldgroups %}
+		  	{% if fieldgroup.display %}
 			  <div class="project-field-group">
 			  	<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
 			  	{% for label in fieldgroup.labels %}
+			  	{% if label.included %}
 			  	{% set readonly = ((label.admin and user !='portfolio') or label.inputtype == 'auto') %}
-				<div class="form-group row">
-					<div class="col-sm-2">{{label.label}}</div>
-					{% switch label.inputtype %}
-					{% case 'auto' %}
-					{% case 'freetext' %}
-					<div class="col-sm-10"><input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {% if readonly %}readonly{% endif %}></div>
-					{% case 'optionlist' %}
-					{% case 'predefinedlist' %}
-					{% case 'predefinedfield' %}
-					{% case 'ragchoice' %}
-					{% case 'date' %}
-					{% case 'percentage' %}
-					{% case 'budget' %}
-					{% default %}
-					{% endswitch %}
-				</div>
+			  	<div class="form-group row">
+			  		<div class="col-sm-2">{{label.label}}</div>
+			  		<div class="col-sm-10">
+			  			{% switch label.inputtype %}
+			  			{% case 'auto' %}
+			  			{% case 'freetext' %}
+			  			<input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {% if readonly %}readonly{% endif %}>
+			  			{% case 'freetextarea' %}
+			  			<textarea type="text" rows="2" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+			  			{% case 'optionlist' %}
+			  			{% case 'predefinedlist' %}
+			  			{% case 'ragchoice' %}
+			  			{% if options[label.field] %}
+			  			<select class="form-control" id="id_{{label.field}}" name="{{label.field}}">
+			  				{% for option in options[label.field] %}
+			  				{% set selected = option.value == project[label.field] %}
+			  				<option value="{{option.value}}" {% if selected %} selected{% endif %}>{{option.display}}</option>
+			  				{% endfor %}
+			  			</select>
+			  			{% endif %}
+
+			  			{% case 'predefinedfield' %}
+			  			{% case 'date' %}
+			  			{% case 'percentage' %}
+			  			{% case 'budget' %}
+			  			{% default %}
+			  			{% endswitch %}
+			  		</div>
+			  	</div>
+			  	{% else %}
+			  	<input type="hidden" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}">
+			  	{% endif %}
 			  	{% endfor %}
 			  </div>
+		  	{% endif %}
 		  	{% endfor %}
 
 
@@ -180,21 +199,21 @@
 		  		<div class="col-sm-2">Directorate</div>
 		  		<div class="col-sm-10">
 		  			<select class="form-control" id="ab_dir_val" name="ab_dir_val">
-		  				<option value="0" {% if data.ab_dir == '0' %} selected {% endif %}>None</option>
-		  				<option value="6" {% if data.ab_dir == '6' %} selected {% endif %}>FSA wide</option>
-		  				<option value="1" {% if data.ab_dir == '1' %} selected {% endif %}>Communications</option>
-		  				<option value="2" {% if data.ab_dir == '2' %} selected {% endif %}>Incidents & Resilience</option>
-		  				<option value="3" {% if data.ab_dir == '3' %} selected {% endif %}>Field Operations</option>
-		  				<option value="4" {% if data.ab_dir == '4' %} selected {% endif %}>Finance & Performance</option>
-		  				<option value="5" {% if data.ab_dir == '5' %} selected {% endif %}>Food Safety Policy</option>
-		  				<option value="7" {% if data.ab_dir == '7' %} selected {% endif %}>National Food Crime Unit</option>
-		  				<option value="8" {% if data.ab_dir == '8' %} selected {% endif %}>Northern Ireland</option>
-		  				<option value="9" {% if data.ab_dir == '9' %} selected {% endif %}>Openness, Data & Digital</option>
-		  				<option value="10" {% if data.ab_dir == '10' %} selected {% endif %}>People</option>
-		  				<option value="11" {% if data.ab_dir == '11' %} selected {% endif %}>Regulatory Compliance</option>
-		  				<option value="12" {% if data.ab_dir == '12' %} selected {% endif %}>Science, Evidence & Research</option>
-		  				<option value="13" {% if data.ab_dir == '13' %} selected {% endif %}>Strategy, Legal & Governance</option>
-		  				<option value="14" {% if data.ab_dir == '14' %} selected {% endif %}>Wales</option>
+		  				<option value="0" {% if data.ab_dir=='0' %} selected {% endif %}>None</option>
+		  				<option value="6" {% if data.ab_dir=='6' %} selected {% endif %}>FSA wide</option>
+		  				<option value="1" {% if data.ab_dir=='1' %} selected {% endif %}>Communications</option>
+		  				<option value="2" {% if data.ab_dir=='2' %} selected {% endif %}>Incidents & Resilience</option>
+		  				<option value="3" {% if data.ab_dir=='3' %} selected {% endif %}>Field Operations</option>
+		  				<option value="4" {% if data.ab_dir=='4' %} selected {% endif %}>Finance & Performance</option>
+		  				<option value="5" {% if data.ab_dir=='5' %} selected {% endif %}>Food Safety Policy</option>
+		  				<option value="7" {% if data.ab_dir=='7' %} selected {% endif %}>National Food Crime Unit</option>
+		  				<option value="8" {% if data.ab_dir=='8' %} selected {% endif %}>Northern Ireland</option>
+		  				<option value="9" {% if data.ab_dir=='9' %} selected {% endif %}>Openness, Data & Digital</option>
+		  				<option value="10" {% if data.ab_dir=='10' %} selected {% endif %}>People</option>
+		  				<option value="11" {% if data.ab_dir=='11' %} selected {% endif %}>Regulatory Compliance</option>
+		  				<option value="12" {% if data.ab_dir=='12' %} selected {% endif %}>Science, Evidence & Research</option>
+		  				<option value="13" {% if data.ab_dir=='13' %} selected {% endif %}>Strategy, Legal & Governance</option>
+		  				<option value="14" {% if data.ab_dir=='14' %} selected {% endif %}>Wales</option>
 		  			</select>
 		  		</div>
 		  	</div>
