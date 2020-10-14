@@ -21,32 +21,40 @@
 			  	{% set readonly = ((label.admin and user !='portfolio') or label.inputtype == 'auto') %}
 			  	<div class="form-group row">
 			  		<div class="col-sm-2">{{label.label}}</div>
-			  		<div class="col-sm-10">
-			  			{% switch label.inputtype %}
-			  			{% case 'auto' %}
-			  			{% case 'freetext' %}
-			  			<input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {% if readonly %}readonly{% endif %}>
-			  			{% case 'freetextarea' %}
-			  			<textarea type="text" rows="2" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
-			  			{% case 'optionlist' %}
-			  			{% case 'predefinedlist' %}
-			  			{% case 'ragchoice' %}
-			  			{% if options[label.field] %}
-			  			<select class="form-control" id="id_{{label.field}}" name="{{label.field}}">
-			  				{% for option in options[label.field] %}
-			  				{% set selected = option.value == project[label.field] %}
-			  				<option value="{{option.value}}" {% if selected %} selected{% endif %}>{{option.display}}</option>
-			  				{% endfor %}
-			  			</select>
-			  			{% endif %}
+					<div class="col-sm-10">
+						{% switch label.inputtype %}
+						{% case 'auto' %}
+						{% case 'freetext' %}
+						<input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {% if readonly %}readonly{% endif %}>
+						{% case 'freetextarea' %}
+						<textarea type="text" rows="2" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+						{% case 'optionlist' %}
+						{% case 'predefinedlist' %}
+						{% case 'ragchoice' %}
+						{% if options[label.field] %}
+						<select class="form-control" id="id_{{label.field}}" name="{{label.field}}">
+							{% for option in options[label.field] %}
+							{% set selected = option.value == project[label.field] %}
+							<option value="{{option.value}}" {% if selected %} selected{% endif %}>{{option.display}}</option>
+							{% endfor %}
+						</select>
+						{% endif %}
 
-			  			{% case 'predefinedfield' %}
-			  			{% case 'date' %}
-			  			{% case 'percentage' %}
-			  			{% case 'budget' %}
-			  			{% default %}
-			  			{% endswitch %}
-			  		</div>
+						{% case 'selectpicker' %}
+						<select class="selectpicker form-control" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
+							{% for option in options[label.field].items %}
+							<option value="{{option.value}}" data-tokens="{{option.tokens}}">{{option.display}}</option>
+							{% endfor %}
+						</select>
+
+
+						{% case 'predefinedfield' %}
+						{% case 'date' %}
+						{% case 'percentage' %}
+						{% case 'budget' %}
+						{% default %}
+						{% endswitch %}
+					</div>
 			  	</div>
 			  	{% else %}
 			  	<input type="hidden" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}">
