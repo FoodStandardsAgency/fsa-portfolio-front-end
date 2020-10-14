@@ -406,7 +406,7 @@ router.get('/:portfolio/add', login.requireLogin, async function (req, res) {
 			}))
 			.value();
 
-		console.log(fieldGroups);
+		//console.log(fieldGroups);
 			
 		var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_theme", "ab_cat", "ab_scat", "ab_dir", "ab_chan", "ab_rel", "ab_doc"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"], "ab_cat":["category 1", "category 2", "category 3"], "ab_scat":["secondary category 1", "secondary category 2", "secondary category 3"]}}');
 		
@@ -455,6 +455,30 @@ router.get('/odd-update/:project_id', login.requireLogin, (req, res) => {
 // ADD/UPDATE PROJECTS - handle form submissions
 //-------------------------------------------------------------------
 router.post('/process-project-form', login.requireLogin, async function (req, res) { handle_form(req, res); });
+
+router.post('/:portfolio/add', login.requireLogin, async (req, res) => {
+	try {
+		console.log(req.body);
+
+		await queries.project_update(req.body);
+		res.redirect(`Projects/${req.body.project_id}`);
+		res.end();
+	}
+	catch (error) {
+		console.log('***************************');
+		if (error.response) {
+			console.log(error.response.url);
+			console.log(error.response.body.ExceptionMessage);
+		}
+		else {
+			console.log(error.message);
+		}
+		console.log('***************************');
+		res.end();
+	}
+
+})
+
 	
 //-------------------------------------------------------------------
 // DELETE PROJECTS - handle form submissions
