@@ -54,7 +54,21 @@
     <Content Include="app\graph.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\styles\app.bundle.js" />
+    <Content Include="app\styles\app.scss" />
+    <Content Include="app\styles\bootstrap-select.css" />
+    <Content Include="app\styles\bootstrap-select.js" />
+    <Content Include="app\styles\customstyles.css" />
+    <Content Include="app\styles\style.js" />
     <Content Include="app\tokens.js" />
+    <Content Include="app\views\add-edit-project.html" />
+    <Content Include="app\views\configure.html" />
+    <Content Include="app\views\landing.html" />
+    <Content Include="app\views\summary.html" />
+    <Content Include="app\views\theme\foot.html" />
+    <Content Include="app\views\theme\header.html" />
+    <Content Include="app\views\theme\layout.html" />
+    <Content Include="app\views\theme\scripts.html" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -78,10 +92,8 @@
     <Content Include="app\routes.js" />
     <Content Include="app\update_odd.js" />
     <Content Include="app\update_portfolio.js" />
-    <Content Include="app\views\add_odd_person.html" />
     <Content Include="app\views\add_project.html" />
     <Content Include="app\views\add_supplier.html" />
-    <Content Include="app\views\blank.html" />
     <Content Include="app\views\completed.html" />
     <Content Include="app\views\delete_project.html" />
     <Content Include="app\views\error_page.html" />
@@ -90,16 +102,11 @@
     <Content Include="app\views\index.html" />
     <Content Include="app\views\layout.html" />
     <Content Include="app\views\login.html" />
-    <Content Include="app\views\odd_people_all.html" />
-    <Content Include="app\views\odd_people_delete_conf.html" />
-    <Content Include="app\views\odd_people_unmatched.html" />
     <Content Include="app\views\phaseview.html" />
     <Content Include="app\views\project.html" />
     <Content Include="app\views\team-page.html" />
     <Content Include="app\views\thank_you.html" />
     <Content Include="app\views\update_project.html" />
-    <Content Include="app\views\upload-conf.html" />
-    <Content Include="app\views\upload.html" />
     <Content Include="app\assets\images\favicon_fsa.png" />
     <Content Include="app\assets\images\separator-2x.png" />
     <Content Include="app\assets\images\separator.png" />
@@ -126,9 +133,11 @@
     <Folder Include="app\assets\sass\elements" />
     <Folder Include="app\assets\sass\elements\forms" />
     <Folder Include="app\assets\sass\patterns" />
+    <Folder Include="app\styles\" />
     <Folder Include="app\views" />
     <Folder Include="app\views\display bak" />
     <Folder Include="app\views\includes" />
+    <Folder Include="app\views\theme\" />
     <Folder Include="routes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />

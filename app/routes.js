@@ -83,16 +83,69 @@ router.get('/', login.requireLogin, async (req, res) => {
 //-------------------------------------------------------------------
 
 router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
-	
-	// Need to get current configuration data to pre-populate the form
 
-	var portfolio = req.params.portfolio;
-		
-	res.render('configure', {
-		"data":"",
-		"sess": req.session,
-		"portfolio": portfolio
-	});
+	try {
+		// Need to get current configuration data to pre-populate the form
+
+		var portfolio = req.params.portfolio;
+		var result = await queries.portfolio_config(portfolio);
+		var config = result.body;
+
+		//console.log(config.labels);
+
+
+		var fieldGroups = _.chain(config.labels)
+			.orderBy("grouporder", "fieldorder")
+			.groupBy("fieldgroup")
+			.map((value, key) => ({ "fieldgroup": key, labels: value }))
+			.value();
+
+		//console.log(fieldGroups);
+
+		res.render('configure', {
+			"data": "",
+			"sess": req.session,
+			"portfolio": portfolio,
+			"fieldgroups": fieldGroups
+		});
+	}
+	catch (error) {
+		console.log('***************************');
+		if (error.response) {
+			console.log(error.response.url);
+			console.log(error.response.body.ExceptionMessage);
+		}
+		else {
+			console.log(error.message);
+        }
+		console.log('***************************');
+		res.end();
+    }
+})
+
+router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
+	try {
+		var portfolio = req.params.portfolio;
+
+		//console.log(req.body);
+
+		await queries.portfolio_config_update(portfolio, req.body);
+		res.redirect(`/${portfolio}/configure`);
+		res.end();
+	}
+	catch (error) {
+		console.log('***************************');
+		if (error.response) {
+			console.log(error.response.url);
+			console.log(error.response.body.ExceptionMessage);
+		}
+		else {
+			console.log(error.message);
+		}
+		console.log('***************************');
+		res.end();
+	}
+
 })
 
 
@@ -328,16 +381,32 @@ router.post('/:portfolio/filter-view', login.requireLogin, function (req,res) {f
 // PROJECT VIEW
 //-------------------------------------------------------------------
 
-router.get('/:portfolio/project/:project_id', login.requireLogin, function (req, res) {project_view(req, res);});
+router.get('/projects/:project_id', login.requireLogin, async function (req, res) {project_view(req, res);});
 
 //-------------------------------------------------------------------
 // RENDER FORMS
 //-------------------------------------------------------------------
-router.get('/:portfolio/add', login.requireLogin, function (req, res) {
+router.get('/:portfolio/add', login.requireLogin, async function (req, res) {
 	
-	var portfolio = req.params.portfolio
-	
-	if(req.session.user == 'portfolio') {
+	if (req.session.user == 'portfolio') {
+
+		var portfolio = req.params.portfolio;
+		var result = await queries.newproject_config(portfolio);
+		var project = result.body.project;
+		var config1 = result.body.config;
+		var options = result.body.options;
+
+		var fieldGroups = _.chain(config1.labels)
+			.orderBy("grouporder", "fieldorder")
+			.groupBy("fieldgroup")
+			.map((value, key) => ({
+				"fieldgroup": key,
+				labels: value, 
+				display: (_.findIndex(value, { included: true }) >= 0)
+			}))
+			.value();
+
+		//console.log(fieldGroups);
 			
 		var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_theme", "ab_cat", "ab_scat", "ab_dir", "ab_chan", "ab_rel", "ab_doc"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"], "ab_cat":["category 1", "category 2", "category 3"], "ab_scat":["secondary category 1", "secondary category 2", "secondary category 3"]}}');
 		
@@ -345,10 +414,13 @@ router.get('/:portfolio/add', login.requireLogin, function (req, res) {
 		
 		res.render('add-edit-project', {
 			"user": req.session.user, // need access-level to determine whether user can add projects
+			"project": project,
+			"options": options,
 			"data": data,
 			"config":config,
 			"sess":req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"fieldgroups": fieldGroups
 		});
 		
 	}
@@ -362,8 +434,10 @@ router.get('/:portfolio/edit/:project_id', login.requireLogin, function (req, re
 
 
 		
-router.get('/portfolio-update/:project_id', login.requireLogin, function (req, res) {
-	if(req.session.user == 'portfolio'){update_portfolio(req, res);}
+router.get('/portfolio-update/:project_id', login.requireLogin, async function (req, res) {
+	if (req.session.user == 'portfolio') {
+		await update_portfolio(req, res);
+	}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
 
@@ -380,7 +454,31 @@ router.get('/odd-update/:project_id', login.requireLogin, (req, res) => {
 //-------------------------------------------------------------------
 // ADD/UPDATE PROJECTS - handle form submissions
 //-------------------------------------------------------------------
-router.post('/process-project-form', login.requireLogin, function (req, res) { handle_form(req, res); });
+router.post('/process-project-form', login.requireLogin, async function (req, res) { handle_form(req, res); });
+
+router.post('/:portfolio/add', login.requireLogin, async (req, res) => {
+	try {
+		console.log(req.body);
+
+		await queries.project_update(req.body);
+		res.redirect(`Projects/${req.body.project_id}`);
+		res.end();
+	}
+	catch (error) {
+		console.log('***************************');
+		if (error.response) {
+			console.log(error.response.url);
+			console.log(error.response.body.ExceptionMessage);
+		}
+		else {
+			console.log(error.message);
+		}
+		console.log('***************************');
+		res.end();
+	}
+
+})
+
 	
 //-------------------------------------------------------------------
 // DELETE PROJECTS - handle form submissions

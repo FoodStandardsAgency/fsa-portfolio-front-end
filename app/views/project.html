@@ -35,7 +35,7 @@
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-xl-7 col-md-7 col-sm-6 py-3">
-	<p><strong>Project ID: </strong>{{ data.project_id }}
+	<p><strong>{{labels.project_id}}: </strong>{{ data.project_id }}
 	
 	<!-- Test if up to two other project IDs are passed, and display -->
 	
@@ -75,9 +75,9 @@
 	{% if data.short_desc %}{% endif %}
 	<div class="desc-para"><p>{{ data.short_desc | safe }}</p></div><br />
 			<br />
-	<strong>Priority:</strong> 
+			<strong>{{labels.priority_main}}:</strong> 
 	<div class="small-flag priority">{{ data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;&nbsp;&nbsp;
-	<strong>Status:</strong> 
+	<strong>{{labels.rag}}:</strong> 
 	
 	{% set rag = data.rag %}
 	
@@ -130,7 +130,7 @@
 	
 	{% if data.team %}
 		<hr />
-		<h2 class="heading-medium">Project team</h2>
+		<h2 class="heading-medium">{{ labels.team }}</h2>
 		<p>{{ data.team }}</p>
 		<br />
 		<br />
@@ -138,7 +138,7 @@
 	
 	<hr />
 	{% if upd_cnt > 0 %}
-	<h2 class="heading-medium">Updates</h2>
+	<h2 class="heading-medium">{{labels.update}}</h2>
 
 	<ul id="myList">
 	{% for i in range(0, upd_cnt) %}
@@ -156,7 +156,7 @@
 	
 	
 	{% if docs %}
-			<h2 class="heading-medium">Key documents</h2>
+		  <h2 class="heading-medium">{{labels.documents}}</h2>
 			
 			<div class="container">
 			<div class="equalsplit2"><a href="{{ docs[1] | safe }}">{{ docs[0] | safe }}</a></div>
@@ -173,7 +173,7 @@
 	{% endif %}
 	
 	{% if deps_cnt > 0 %}
-				<h2 class="heading-medium">Dependencies</h2>
+		  <h2 class="heading-medium">{{labels.dependencies}}</h2>
 				
 				{% for i in range(0, deps_cnt) %}
 				<a href="/projects/{{ deps[i].project_id }}">{{ deps[i].project_name }}</a><br /> 
@@ -183,7 +183,7 @@
 			
 			{% if rels_cnt > 0 %}
 			
-				<h2 class="heading-medium">Related projects</h2>
+				<h2 class="heading-medium">{{labels.rels}}</h2>
 				
 				{% for i in range(0, rels_cnt) %}
 				<a href="/projects/{{ rels[i].project_id }}">{{ rels[i].project_name }}</a><br />
@@ -195,7 +195,7 @@
 	<div class="col-sm-2 py-3">
 	<br />
 	{% if data.direct and data.direct != 'NONE' %}
-		<h3 class="heading-small">Directorate</h3>
+	<h3 class="heading-small">{{labels.direct}}</h3>
 		<p>
 			  {% if data.direct == 'COMMS' %} 	Communications
 			  {% elif data.direct == 'IR' %}	Incidents & Resilience
@@ -215,14 +215,14 @@
 		</p>
 		{% endif %}
 			
-		{% if data.oddlead %}<h3 class="heading-small">ODD lead</h3>
+		{% if data.oddlead %}<h3 class="heading-small">{{labels.oddlead}}</h3>
 		<p>
 		{{ data.oddlead | safe }}<br />
 		<a href="mailto:{{ data.oddlead_email }}">{{ data.oddlead_email | safe}}</a>
 		</p>
 		
 		{% if data.oddlead_role == 'sup' or data.oddlead_role == 'imp' or data.oddlead_role == 'man' %}
-		<h3 class="heading-small">Lead's role </h3>
+		<h3 class="heading-small">{{labels.oddlead_role}}</h3>
 		<p>
 		{% if data.oddlead_role == 'sup' %} Support
 		{% elif data.oddlead_role == 'imp' %} Implementation
@@ -236,7 +236,7 @@
 	{% endif %}
 	
 	{% if data.servicelead %}
-			<h3 class="heading-small">Delivery manager</h3>
+			<h3 class="heading-small">{{labels.servicelead_email}}</h3>
 
 			<p>
 			{{ data.servicelead | safe }}<br />
@@ -246,19 +246,19 @@
 			
 			{% if dates[10] or dates[11] or dates[12] or dates[13] or dates [14] or comp %}
 			<br /><h3 class="heading-small">Key dates</h3>
-			<p>
-			{% if dates[10] %}Intended start date:<br /> {{ dates[0] }} {{ dates[1] }} <br /><br />{% endif %}
-			{% if dates[11] %}Date started:<br /> {{ dates[2] }} {{ dates[3] }} {{ dates[4] }}<br /><br />{% endif %}
-			{% if dates[14] %}Phase completion date:<br /> {{ dates[15] }} {{ dates[16] }} {{ dates[17] }} <br /><br />{% endif %}
-			{% if dates[12] %}Project completion date:<br /> {{ dates[5] }} {{ dates[6] }} <br /><br />{% endif %}
-			{% if dates[13] %}Hard deadline:<br /> {{ dates[7] }} {{ dates[8] }} {{ dates[9] }}<br /><br />{% endif %}
-			{% if comp %}Completed:<br /> {{ comp[2] }} {{ comp[1] }} {{ comp[3] }}<br /><br />{% endif %}
-			</p>
+				  <p>
+				  	{% if dates[10] %}{{labels.start_date}}:<br /> {{ dates[0] }} {{ dates[1] }} <br /><br />{% endif %}
+				  	{% if dates[11] %}{{labels.actstart}}:<br /> {{ dates[2] }} {{ dates[3] }} {{ dates[4] }}<br /><br />{% endif %}
+				  	{% if dates[14] %}{{labels.expendp}}:<br /> {{ dates[15] }} {{ dates[16] }} {{ dates[17] }} <br /><br />{% endif %}
+				  	{% if dates[12] %}{{labels.expend}}:<br /> {{ dates[5] }} {{ dates[6] }} <br /><br />{% endif %}
+				  	{% if dates[13] %}{{labels.hardend}}:<br /> {{ dates[7] }} {{ dates[8] }} {{ dates[9] }}<br /><br />{% endif %}
+				  	{% if comp %}{{labels.actual_end_date}}:<br /> {{ comp[2] }} {{ comp[1] }} {{ comp[3] }}<br /><br />{% endif %}
+				  </p>
 			
 			{% endif %}
 			
 			{% if data.p_comp > 0 %}
-			<h3 class="heading-small">Percentage of whole project complete</h3>
+				  <h3 class="heading-small">{{labels.p_comp}}</h3>
 			<p>
 			{{ data.p_comp }}%
 			</p>
@@ -267,7 +267,7 @@
 			{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' or link[1] %} <br /> {% endif %}
 			
 			{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' %}
-			<h3 class="heading-small">Project size </h3>
+			<h3 class="heading-small">{{labels.project_size}}</h3>
 			<p>
 			{% if data.project_size == 's' %} Small
 			{% elif data.project_size == 'm' %} Medium
@@ -278,7 +278,7 @@
 			{% endif %}
 
 			{% if link[1] %}
-			<h3 class="heading-small">Project channel</h3>
+			<h3 class="heading-small">{{labels.link}}</h3>
 			
 				<a href="{{ link[1] }}" target="_blank" title="Project channel">
 					<p>{{ link[0]}}</p>
@@ -292,9 +292,9 @@
 				{% if data.budget == 0 %}	Not applicable	
 				
 				{% else %}
-					<strong>Category:</strong> {{ budgettype }} <br />
-					<strong>Allocated:</strong> {{ budget }} <br />
-					{% if data.spent %}	<strong>Used:</strong> {{ spent }} {% endif %}
+					<strong>{{labels.budgettype}}:</strong> {{ budgettype }} <br />
+					<strong>{{labels.budget}}:</strong> {{ budget }} <br />
+					{% if data.spent %}	<strong>{{labels.spent}}:</strong> {{ spent }} {% endif %}
 				{% endif %}
 								
 				

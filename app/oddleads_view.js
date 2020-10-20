@@ -17,8 +17,7 @@ function nestedGroupBy(data, keys) {
 function odd_view(req, res) {
 	
 	//console.log('In ODD leads view function')
-
-queries.current_projects()
+	queries.current_projects(req.params.portfolio)
 	.then((projects) => {
 
 		config.odd_leads
