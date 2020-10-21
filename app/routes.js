@@ -43,6 +43,19 @@ function nestedGroupBy(data, keys) {
  return grouped;
 }
 
+function handleError(error) {
+	console.log('***************************');
+	if (error.response) {
+		console.log(error.response.url);
+		console.log(error.response.body.ExceptionMessage);
+		console.log(error.response.body);
+	}
+	else {
+		console.log(error.message);
+	}
+	console.log('***************************');
+}
+
 
 
 //-------------------------------------------------------------------
@@ -110,15 +123,7 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
 		});
 	}
 	catch (error) {
-		console.log('***************************');
-		if (error.response) {
-			console.log(error.response.url);
-			console.log(error.response.body.ExceptionMessage);
-		}
-		else {
-			console.log(error.message);
-        }
-		console.log('***************************');
+		handleError(error);
 		res.end();
     }
 })
@@ -134,15 +139,7 @@ router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
 		res.end();
 	}
 	catch (error) {
-		console.log('***************************');
-		if (error.response) {
-			console.log(error.response.url);
-			console.log(error.response.body.ExceptionMessage);
-		}
-		else {
-			console.log(error.message);
-		}
-		console.log('***************************');
+		handleError(error);
 		res.end();
 	}
 
@@ -387,44 +384,50 @@ router.get('/projects/:project_id', login.requireLogin, async function (req, res
 // RENDER FORMS
 //-------------------------------------------------------------------
 router.get('/:portfolio/add', login.requireLogin, async function (req, res) {
-	
-	if (req.session.user == 'portfolio') {
+	try {
+		if (req.session.user == 'portfolio') {
 
-		var portfolio = req.params.portfolio;
-		var result = await queries.newproject_config(portfolio);
-		var project = result.body.project;
-		var config1 = result.body.config;
-		var options = result.body.options;
+			var portfolio = req.params.portfolio;
+			var result = await queries.newproject_config(portfolio);
+			var project = result.body.project;
+			var config1 = result.body.config;
+			var options = result.body.options;
 
-		var fieldGroups = _.chain(config1.labels)
-			.orderBy("grouporder", "fieldorder")
-			.groupBy("fieldgroup")
-			.map((value, key) => ({
-				"fieldgroup": key,
-				labels: value, 
-				display: (_.findIndex(value, { included: true }) >= 0)
-			}))
-			.value();
+			var fieldGroups = _.chain(config1.labels)
+				.orderBy("grouporder", "fieldorder")
+				.groupBy("fieldgroup")
+				.map((value, key) => ({
+					"fieldgroup": key,
+					labels: value,
+					display: (_.findIndex(value, { included: true }) >= 0)
+				}))
+				.value();
 
-		//console.log(fieldGroups);
-			
-		var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_theme", "ab_cat", "ab_scat", "ab_dir", "ab_chan", "ab_rel", "ab_doc"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"], "ab_cat":["category 1", "category 2", "category 3"], "ab_scat":["secondary category 1", "secondary category 2", "secondary category 3"]}}');
-		
-		var data = JSON.parse('{"ab_name":"Project name!", "ab_chan":["name","link"]}');
-		
-		res.render('add-edit-project', {
-			"user": req.session.user, // need access-level to determine whether user can add projects
-			"project": project,
-			"options": options,
-			"data": data,
-			"config":config,
-			"sess":req.session,
-			"portfolio": portfolio,
-			"fieldgroups": fieldGroups
-		});
-		
+			//console.log(fieldGroups);
+
+			var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_theme", "ab_cat", "ab_scat", "ab_dir", "ab_chan", "ab_rel", "ab_doc"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"], "ab_cat":["category 1", "category 2", "category 3"], "ab_scat":["secondary category 1", "secondary category 2", "secondary category 3"]}}');
+
+			var data = JSON.parse('{"ab_name":"Project name!", "ab_chan":["name","link"]}');
+
+			res.render('add-edit-project', {
+				"user": req.session.user, // need access-level to determine whether user can add projects
+				"project": project,
+				"options": options,
+				"data": data,
+				"config": config,
+				"sess": req.session,
+				"portfolio": portfolio,
+				"fieldgroups": fieldGroups
+			});
+
+		}
+		else { res.render('error_page', { message: 'You are not authorised to view this page' }); }
 	}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
+	catch (error) {
+		handleError(error);
+		res.end();
+
+    }
 });
 
 router.get('/:portfolio/edit/:project_id', login.requireLogin, function (req, res) {
@@ -465,15 +468,7 @@ router.post('/:portfolio/add', login.requireLogin, async (req, res) => {
 		res.end();
 	}
 	catch (error) {
-		console.log('***************************');
-		if (error.response) {
-			console.log(error.response.url);
-			console.log(error.response.body.ExceptionMessage);
-		}
-		else {
-			console.log(error.message);
-		}
-		console.log('***************************');
+		handleError(error);
 		res.end();
 	}
 
