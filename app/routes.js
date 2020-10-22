@@ -79,11 +79,8 @@ router.get('/log-out', (req, res) => {
 //-------------------------------------------------------------------
 
 router.get('/', login.requireLogin, async (req, res) => {
-	
-	// run query to pick up all portfolios we have on the platform - and feed through to the template
-	// Put expected data structure here. [[url,acronym,name],[...], [...]]
-	var portfolios = [['odd', 'ODD','Openness, Data and Digital'], ['serd', 'SERD', 'Science, Evidence and Reseach Directorate'],['abc', 'ABC', 'Portfolio name'], ['fhp', 'FHP', 'Portfolio name'],  ['otp', 'OTP', 'Portfolio name'],  ['test', 'Test', 'Test portfolio']]
-	
+	var result = await queries.portfolio_index();
+	var portfolios = result.body;
 	res.render('landing', {
 		"data":portfolios,
 		"sess": req.session
