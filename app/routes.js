@@ -378,7 +378,7 @@ router.post('/:portfolio/filter-view', login.requireLogin, function (req,res) {f
 // PROJECT VIEW
 //-------------------------------------------------------------------
 
-router.get('/projects/:project_id', login.requireLogin, async function (req, res) {project_view(req, res);});
+router.get('/:portfolio/Projects/:project_id', login.requireLogin, async function (req, res) {project_view(req, res);});
 
 //-------------------------------------------------------------------
 // RENDER FORMS
@@ -405,16 +405,10 @@ router.get('/:portfolio/add', login.requireLogin, async function (req, res) {
 
 			//console.log(fieldGroups);
 
-			var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_theme", "ab_cat", "ab_scat", "ab_dir", "ab_chan", "ab_rel", "ab_doc"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"], "ab_cat":["category 1", "category 2", "category 3"], "ab_scat":["secondary category 1", "secondary category 2", "secondary category 3"]}}');
-
-			var data = JSON.parse('{"ab_name":"Project name!", "ab_chan":["name","link"]}');
-
 			res.render('add-edit-project', {
 				"user": req.session.user, // need access-level to determine whether user can add projects
 				"project": project,
 				"options": options,
-				"data": data,
-				"config": config,
 				"sess": req.session,
 				"portfolio": portfolio,
 				"fieldgroups": fieldGroups
@@ -461,10 +455,9 @@ router.post('/process-project-form', login.requireLogin, async function (req, re
 
 router.post('/:portfolio/add', login.requireLogin, async (req, res) => {
 	try {
-		console.log(req.body);
-
+		//console.log(req.body);
 		await queries.project_update(req.body);
-		res.redirect(`Projects/${req.body.project_id}`);
+		res.redirect(`/${portfolio}/Projects/${req.body.project_id}`);
 		res.end();
 	}
 	catch (error) {
