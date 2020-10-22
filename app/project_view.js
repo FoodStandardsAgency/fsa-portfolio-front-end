@@ -13,7 +13,7 @@ async function project_view(req, res) {
 	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 	try {
-		var projectDTO = await queries.load_project(project_id);
+		var projectDTO = await queries.load_project(project_id, { includeConfig: true, includeHistory: true });
 		var project = projectDTO.body.project;
 		if (project) {
 			//console.log(project);
