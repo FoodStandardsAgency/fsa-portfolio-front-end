@@ -4,6 +4,7 @@ const config 	= require('./config');
 function currencyFormat(num) { return '£' + num.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
 
 async function project_view(req, res) {
+	var portfolio = req.params.portfolio;
 	var sess = req.session;
 	var user = req.session.user;
 	var group = req.session.group;
@@ -19,7 +20,7 @@ async function project_view(req, res) {
 			if (project.documents != null && project.documents != '') { var docs = project.documents.split(","); }
 			else { var docs = ''; }
 
-			if (project.link != null && project.link != '') { var links = project.link.split(","); } else { var links = ''; }
+			if (project.link != null && project.link.link != '') { var links = project.link.link.split(","); } else { var links = ''; }
 
 			if (project.rels != '' && project.rels != undefined) {
 				var rels = project.rels
@@ -112,6 +113,7 @@ async function project_view(req, res) {
 
 
 			res.render('project', {
+				"portfolio": portfolio,
 				"user": user,
 				"group": group,
 				"data": project,

@@ -4,39 +4,44 @@
 
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-	<div class="col-xl-10 col-md-7 col-sm-8 py-3">
+	<div class="col-xl-8 col-md-8 col-sm-10 py-3">
 	
-	<h1 class="project-title">Add project</h1>
+	<h1 class="project-title">{{title}}</h1>
 	
 	<br /><br />
 
-		  <form action="/{{portfolio}}/add" method="post">
+		<form action="/{{portfolio}}/update" method="post">
 
-		  	{% for fieldgroup in fieldgroups %}
-		  	{% if fieldgroup.display %}
-		  	<div class="project-field-group">
-		  		<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
-		  		{% for label in fieldgroup.labels %}
-		  		{% if label.included %}
-		  		{% set readonly = ((label.admin and user !='portfolio') or label.inputtype == 'auto') %}
+		{% for fieldgroup in fieldgroups %}
+		{% if fieldgroup.display %}
+			<div class="project-field-group">
+				<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
+				{% for label in fieldgroup.labels %}
+				{% if label.included %}
+				{% set readonly = ((label.admin and user !='portfolio') or label.inputtype == 'auto') %}
+				{% set label_col = 'col-sm-4 col-md-4' %}
+				{% set input_col = 'col-sm-8 col-md-8' %}
+				{% set date_input_col = 'col-sm-6 col-md-5' %}
+				{% set link1_input_col = 'col-sm-4 col-md-3' %}
+				{% set link2_input_col = 'col-sm-4 col-md-5' %}
 				<div class="form-group row">
-					<div class="col-sm-2">{{label.label}}</div>
+					<div class="{{label_col}}">{{label.label}}</div>
 					{% switch label.inputtype %}
 					{% case 'auto' %}
 					{% case 'freetext' %}
-					<div class="col-sm-10">
+					<div class="{{input_col}}">
 						<input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {% if readonly %}readonly{% endif %}>
 					</div>
 
 					{% case 'freetextarea' %}
-					<div class="col-sm-10">
+					<div class="{{input_col}}">
 						<textarea type="text" rows="2" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
 					</div>
 
 					{% case 'optionlist' %}
 					{% case 'predefinedlist' %}
 					{% case 'ragchoice' %}
-					<div class="col-sm-10">
+					<div class="{{input_col}}">
 						{% if options[label.field] %}
 						<select class="form-control" id="id_{{label.field}}" name="{{label.field}}">
 							{% for option in options[label.field] %}
@@ -50,7 +55,7 @@
 					</div>
 
 					{% case 'predefinedsearchablemultilist' %}
-					<div class="col-sm-10">
+					<div class="{{input_col}}">
 						{% if options[label.field] %}
 						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
 							{% for option in options[label.field].items %}
@@ -63,7 +68,7 @@
 					</div>
 
 					{% case 'predefinedsearchablelist' %}
-					<div class="col-sm-10">
+					<div class="{{input_col}}">
 						{% if options[label.field] %}
 						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="true">
 							{% for option in options[label.field].items %}
@@ -77,7 +82,7 @@
 
 					{% case 'multioptionlist' %}
 					{% case 'predefinedmultilist' %}
-					<div class="col-sm-10">
+					<div class="{{input_col}}">
 						{% if options[label.field] %}
 						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="false" multiple>
 							{% for option in options[label.field].items %}
@@ -90,7 +95,7 @@
 					</div>
 
 					{% case 'linkeditemlist' %}
-					<div class="col-sm-10">
+					<div class="{{input_col}}">
 						<!-- HIDDEN DYNAMIC ELEMENT TO CLONE -->
 						<div class="form-group dynamic-element" style="display:none">
 							<div class="row">
@@ -112,10 +117,10 @@
 					</div>
 
 					{% case 'namedlink' %}
-					<div class="col-sm-4">
+					<div class="{{link1_input_col}}">
 						<input type="text" class="form-control" id="id_{{label.field}}_name" name="{{label.field}}[name]" placeholder="Enter {{label.label}} name" value="{{project[label.field].name}}" {% if readonly %}readonly{% endif %}>
 					</div>
-					<div class="col-sm-6">
+					<div class="{{link2_input_col}}">
 						<input type="text" class="form-control" id="id_{{label.field}}_link" name="{{label.field}}[link]" placeholder="Enter {{label.label}} link" value="{{project[label.field].link}}" {% if readonly %}readonly{% endif %}>
 					</div>
 
@@ -143,33 +148,33 @@
 					</div>
 
 					{% case 'date' %}
-					<div class="col-sm-4">
+					<div class="{{date_input_col}}">
 						<input type="date" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}" class="form-control" aria-label="Date" {% if readonly %}readonly{% endif %}>
 					</div>
 
 
 					{% case 'predefinedfield' %}
 					{% default %}
-					<div class="col-sm-10">
+					<div class="{{input_col}}">
 						<span><i>The {{label.label}} field has no input configured. Please contact the portfolio administrator</i></span>
 					</div>
 					{% endswitch %}
 				</div>
-		  		{% else %}
-		  		<input type="hidden" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}">
-		  		{% endif %}
-		  		{% endfor %}
-		  	</div>
-		  	{% endif %}
-		  	{% endfor %}
+				{% else %}
+				<input type="hidden" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}">
+				{% endif %}
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% endfor %}
 
-		  	<div class="form-group row">
-		  		<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>
-		  	</div>
+		<div class="form-group row">
+			<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>
+		</div>
 
-		  </form>
+		</form>
 	
 	</div>
-	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-3 col-md-3 col-sm-1 py-3"></div>
 </div>
 {% endblock %}

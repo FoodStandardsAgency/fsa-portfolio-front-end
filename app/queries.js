@@ -14,6 +14,7 @@ const q = {
 	portfolio_config_url: (portfolio) => `PortfolioConfiguration/${portfolio}`,
 	newproject_config_url: (portfolio) => `Projects/${portfolio}/newproject`,
 	project_url: (projectId) => `Projects/${projectId}`,
+	project_edit_url: (projectId) => `Projects/${projectId}?includeOptions=true`,
 	project_update_url: `Projects`
 	
 }
@@ -26,6 +27,7 @@ module.exports = {
 	latest_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'latest')),
 	new_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'new')),
 	load_project: (projectId) => backend.api(q.project_url(projectId)),
+	load_project_foredit: (projectId) => backend.api(q.project_edit_url(projectId)),
 	load_updates: (projectId) => backend.api(`${q.project_url(projectId)}/updates`),
 	load_related: (projectId) => backend.api(`${q.project_url(projectId)}/related`),
 	load_dependant: (projectId) => backend.api(`${q.project_url(projectId)}/dependant`),
