@@ -28,29 +28,30 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 .project-title			{font-family: 'Open Sans', sans-serif; font-weight:900; font-size:3em; margin-bottom:15px;} 
 .project-new			{background-color:#007FB2; color:white; font-size:0.5em; padding: 5px; border-radius:5px;}
 
-.desc-para				{border:1px solid #006F51; background-color:#f7fffd; padding:10px;}
+.desc-para				{border:1px solid #006F51; background-color:#f7fffd; padding:10px; margin:0;}
 
 .heading-medium			{font-size:1.5em; font-weight:900; margin:10px 0 0;}
 .heading-small			{font-size:1em; font-weight:900; margin:10px 0 0;}
 
-.small-flag				{font-weight:800; font-size:1em; display: inline-block; color: white;  text-transform: none; padding: 2px 8px;}
+.small-flag				{font-weight:800; font-size:1em; display: inline-block; color: white;  text-transform: none; padding: 4px 16px; border-radius:5px;}
 .priority 				{background-color: purple;}
-.rag-red				{background-color:red;}
-.rag-amber				{background-color:amber;}
-.rag-green				{background-color:green;}
-.rag-no					{background-color:black;}
-.onhold					{color:red; border: 1px solid red;}
+.rag-1					{background-color:red;}
+.rag-2					{background-color:brown;}
+.rag-3					{background-color:amber;}
+.rag-4					{background-color:lime;}
+.rag-5					{background-color:green;}
+.onhold					{color:black; border: 1px solid black; border-radius: 5px;}
+.risk					{background-color: #006f9e; border-radius: 5px;}
 
-.circle.backlog   		{background-color:$backlog-colour;}
-.circle.discovery 		{background-color:$discovery-colour;}
-.circle.alpha     		{background-color:$alpha-colour;}
-.circle.beta      		{background-color:$beta-colour;}
-.circle.live      		{background-color:$live-colour;}
+.phase 					{border-radius: 5px;}
+.phase-1  				{background-color:#2E358B}
+.phase-2 				{background-color:#912B88;}
+.phase-3    			{background-color:#D53880;}
+.phase-4      			{background-color:#F15D22;}
+.phase-5      			{background-color:#85994B;}
+.phase-6      			{background-color:#454545;}
+.phase-label 			{ position:absolute; top:50%; left:0; width:100%; margin-top:-25px; text-align:center; color:white; font-weight:800;  font-size:36px;}
 
-.phase_modifier {font-size:16px; position:absolute; top:24px; left:0; width:100%; text-align:center; color:white;}
-.phase-circle { width:70%;  position:relative;}
-.circle-label { position:absolute; top:50%; left:0; width:100%; margin-top:-15px; text-align:center; color:white; font-weight:700;  font-size:24px;}
-.circle { background:red;  color:white;  width:100%;  height:0;  padding-top:100%;  border-radius:50% 50%;  display:inline-block; margin:0;}
 
 #myList li{display:none;}
 
