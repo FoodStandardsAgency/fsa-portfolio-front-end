@@ -59,7 +59,7 @@
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-xl-10 col-md-10 col-sm-10 py-3">
-	<h1 class="project-title" style="">{{ data.project_name | safe }}
+	<h1 class="project-title">{{ data.project_name | safe }}
 	{% if data.new_flag == 'Y' %}<span class="project-new">NEW</span>{% endif %}	
 	</h1>
 	</div>
@@ -72,52 +72,42 @@
 	<div class="col-sm-1 py-3"></div>
 
 	<div class="col-sm-8 py-3 pr-5">
-	{% if data.short_desc %}{% endif %}
-	<div class="desc-para"><p>{{ data.short_desc | safe }}</p></div><br />
-			<br />
-			<strong>{{labels.priority_main}}:</strong> 
-	<div class="small-flag priority">{{ data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;&nbsp;&nbsp;
+	<!-- Short description -->
+	{% if data.short_desc %}
+	<p class="desc-para">{{ data.short_desc | safe }}</p><br />
+	{% endif %}
+	
+	<!-- Priority -->
+	{% if data.priority_main %}
+	<strong>{{labels.priority_main}}:</strong> 
+	<div class="small-flag priority">{{data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;&nbsp;&nbsp;
+	{% endif %}
+	
+	<!-- RAG - make it feed from data.rag, once rags are returned as numbers -->
+	{% set rag = 1 %}
+	{% if rag %}
+	{% set rags = ['Red', 'Red-Amber', 'Amber', 'Amber-Green', 'Green']%}
 	<strong>{{labels.rag}}:</strong> 
+	<div class="small-flag rag-{{rag }}">{{ rags[rag - 1] }}</div>
+	{% endif%}
 	
-	{% set rag = data.rag %}
-	
-	{% if rag == 'gre' %}
-	<div class="small-flag rag-green"><strong>Green</strong></div>
-	
-	{% elif rag == 'amb' %}
-	<div class="small-flag rag-amber"><strong>Amber</strong></div>
-	
-	{% elif rag == 'red' %}
-	<div class="small-flag rag-red"><strong>Red</strong></div>
-	
-	{% else %}
-	<div class="small-flag rag-no"><strong>No RAG</strong></div>
-	
+	<!-- Status --><!-- drop-down position shouldn't be the one indicating the onhold status is unset for a particular projet -->
+	{% if data.onhold and data.onhold != 'No' %}
+	<strong>{{labels.onhold}}:</strong> 
+	<div class="small-flag onhold"><strong>{{ data.onhold }}</strong></div>
 	{% endif %}
 	
-	{% set onhold = data.onhold %}
-	
-	{% if onhold == 'y' %}
-	<div class="small-flag onhold"><strong>On hold</strong></div>
-	
-	{% elif onhold == 'b' %}
-	<div class="small-flag onhold"><strong>Blocked</strong></div>
-	
-	{% elif onhold == 'c' %}
-	<div class="small-flag onhold"><strong>Covid-19 on hold</strong></div>
-	
+	<!-- Risk rating -->
+	{% if data.risk_rating %}
+	<strong>{{labels.risk_rating}}:</strong> 
+	<div class="small-flag risk"><strong>{{ data.risk_rating }}</strong></div>
 	{% endif %}
-	
-	
 	</div>
 	
-	<div class="col-sm-2 py-3">
-	{% if data.phase_modifier %}{% endif %}
-	<div class="phase-circle">
-		<p class="circle {{ data.phase | lower }}" style="background-color:#D53880;"></p>
-		{% if data.phase_modifier %}<p class="phase_modifier">{{ data.phase_modifier }}</p>{% endif %}
-		<p class="circle-label">{{ data.phase | title }}</p>
-	</div>
+	<!-- Phase indicator -->
+	{% set phase_num = 3 %}
+	<div class="col-sm-2 py-3 phase phase-{{phase_num}}">
+		<p class="phase-label">{{ data.phase | title }}</p>
 	</div>
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 </div>
