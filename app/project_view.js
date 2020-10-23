@@ -102,8 +102,6 @@ async function project_view(req, res) {
 			var rels = await queries.load_related(project_id);
 			var deps = await queries.load_dependant(project_id);
 
-			var updates = await queries.load_updates(project_id);
-
 			var labels = projectDTO.body.config.labels.reduce(function (map, obj) {
 				map[obj.field] = obj.label || obj.fieldtitle;
 				return map;
@@ -120,8 +118,6 @@ async function project_view(req, res) {
 				"labels": labels,
 				"docs": docs,
 				"phases": config.phases,
-				"updates": updates.body,
-				"upd_cnt": updates.body.length,
 				"rels": rels.body,
 				"rels_cnt": rels.body.length,
 				"deps": deps.body,
