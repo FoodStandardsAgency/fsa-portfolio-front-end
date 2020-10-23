@@ -236,14 +236,14 @@
 
 		{% if data.start_date or data.actstart or data.expendp or data.expend or data.hardend or data.first_completed %}
 		<br /><h3 class="heading-small">Key dates</h3>
-		<p>
-			{% if data.start_date %}{{labels.start_date}}:<br /> {{ data.start_date | date }} <br /><br />{% endif %}
-			{% if data.actstart %}{{labels.actstart}}:<br /> {{ data.actstart | date }}<br /><br />{% endif %}
-			{% if dates[14] %}{{labels.expendp}}:<br /> {{ data.expendp | date }} <br /><br />{% endif %}
-			{% if dates[12] %}{{labels.expend}}:<br /> {{ data.expend | date }} <br /><br />{% endif %}
-			{% if dates[13] %}{{labels.hardend}}:<br /> {{ data.hardend | date }}<br /><br />{% endif %}
-			{% if comp %}{{labels.actual_end_date}}:<br /> {{ data.actual_end_date | date }}<br /><br />{% endif %}
-		</p>
+			  <p>
+			  	{% if data.start_date %}{{labels.start_date}}:<br /> {{ data.start_date | date }} <br /><br />{% endif %}
+			  	{% if data.actstart %}{{labels.actstart}}:<br /> {{ data.actstart | date }}<br /><br />{% endif %}
+			  	{% if data.expendp %}{{labels.expendp}}:<br /> {{ data.expendp | date }} <br /><br />{% endif %}
+			  	{% if data.expend %}{{labels.expend}}:<br /> {{ data.expend | date }} <br /><br />{% endif %}
+			  	{% if data.hardend %}{{labels.hardend}}:<br /> {{ data.hardend | date }}<br /><br />{% endif %}
+			  	{% if data.actual_end_date %}{{labels.actual_end_date}}:<br /> {{ data.actual_end_date | date }}<br /><br />{% endif %}
+			  </p>
 
 		{% endif %}
 
