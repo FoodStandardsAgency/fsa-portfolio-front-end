@@ -43,6 +43,19 @@ function nestedGroupBy(data, keys) {
  return grouped;
 }
 
+function handleError(error) {
+	console.log('***************************');
+	if (error.response) {
+		console.log(error.response.url);
+		console.log(error.response.body.ExceptionMessage);
+		console.log(error.response.body);
+	}
+	else {
+		console.log(error.message);
+	}
+	console.log('***************************');
+}
+
 
 
 //-------------------------------------------------------------------
@@ -66,11 +79,8 @@ router.get('/log-out', (req, res) => {
 //-------------------------------------------------------------------
 
 router.get('/', login.requireLogin, async (req, res) => {
-	
-	// run query to pick up all portfolios we have on the platform - and feed through to the template
-	// Put expected data structure here. [[url,acronym,name],[...], [...]]
-	var portfolios = [['odd', 'ODD','Openness, Data and Digital'], ['serd', 'SERD', 'Science, Evidence and Reseach Directorate'],['abc', 'ABC', 'Portfolio name'], ['fhp', 'FHP', 'Portfolio name'],  ['otp', 'OTP', 'Portfolio name'],  ['test', 'Test', 'Test portfolio']]
-	
+	var result = await queries.portfolio_index();
+	var portfolios = result.body;
 	res.render('landing', {
 		"data":portfolios,
 		"sess": req.session
@@ -110,15 +120,7 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
 		});
 	}
 	catch (error) {
-		console.log('***************************');
-		if (error.response) {
-			console.log(error.response.url);
-			console.log(error.response.body.ExceptionMessage);
-		}
-		else {
-			console.log(error.message);
-        }
-		console.log('***************************');
+		handleError(error);
 		res.end();
     }
 })
@@ -134,15 +136,7 @@ router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
 		res.end();
 	}
 	catch (error) {
-		console.log('***************************');
-		if (error.response) {
-			console.log(error.response.url);
-			console.log(error.response.body.ExceptionMessage);
-		}
-		else {
-			console.log(error.message);
-		}
-		console.log('***************************');
+		handleError(error);
 		res.end();
 	}
 
@@ -156,58 +150,16 @@ router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
 
 router.get('/:portfolio', login.requireLogin, async (req, res) => {
 	var portfolio = req.params.portfolio;
-	
-	// Phases
-	if (portfolio == 'odd'){
-		var phase_names = ['Backlog', 'Discovery', 'Alpha', 'Beta', 'Live'];
-		
-		var categories_map = [
-		['data', 'Data driven FSA'],
-		['cap', 'Developing our digital capability'],
-		['ser', 'Digital services development and support'],
-		['it', 'Evergreen IT'],
-		['res', 'Protecting data and business resilience'],
-		['sm', 'IT Service improvements']
-		]
-	}
-		
-	else if (portfolio == 'serd'){
-		var phase_names = ['In development', 'Awaiting decision', 'Waiting to start', 'Underway', 'Complete'];
-		var categories_map = [
-		['data', 'Best regulator'],
-		['cap', 'Food hypersensitivity'],
-		['ser', 'Foodborne disease'],
-		['it', 'Chemical contaminants'],
-		['res', 'Novel food and processes'],
-		['sm', 'Antimicrobial resistance']
-		]
-		}
-	else if (portfolio == 'abc'){
-		var phase_names = ['Feasibility', 'Appraise & Select', 'Define', 'Deliver', 'Embed/Close'];
-		
-		var categories_map = [
-		['data', 'Category / Swimlane 1'],
-		['cap', 'Category / Swimlane 2'],
-		['ser', 'Category / Swimlane 3'],
-		['it', 'Category / Swimlane 4'],
-		['res', 'Category / Swimlane 5'],
-		['sm', 'Category / Swimlane 6']
-		];
-		}
-	else {var phase_names = []; var categories_map = []}
-	
-	
+
+	var response = await queries.portfolio_summary(portfolio);
+	var summary = response.body;
 	
 	queries.current_projects(portfolio)
 	.then((result) => {
 		res.render('summary', {
-			"data": nestedGroupBy(result.body, ['category', 'phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"themes": categories_map,
-			"phases": config.phases,
-			"phase_names": phase_names,
 			"sess": req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"summary": summary
 		});
 	})
 	.catch();
@@ -381,64 +333,21 @@ router.post('/:portfolio/filter-view', login.requireLogin, function (req,res) {f
 // PROJECT VIEW
 //-------------------------------------------------------------------
 
-router.get('/projects/:project_id', login.requireLogin, async function (req, res) {project_view(req, res);});
+router.get('/:portfolio/Projects/:project_id', login.requireLogin, async function (req, res) {project_view(req, res);});
 
 //-------------------------------------------------------------------
 // RENDER FORMS
 //-------------------------------------------------------------------
 router.get('/:portfolio/add', login.requireLogin, async function (req, res) {
+	await update_portfolio.add(req, res);
+});
+
+router.get('/:portfolio/edit/:project_id', login.requireLogin, async function (req, res) {
+	await update_portfolio.edit(req, res);
+});
 	
-	if (req.session.user == 'portfolio') {
-
-		var portfolio = req.params.portfolio;
-		var result = await queries.newproject_config(portfolio);
-		var project = result.body.project;
-		var config1 = result.body.config;
-		var options = result.body.options;
-
-		var fieldGroups = _.chain(config1.labels)
-			.orderBy("grouporder", "fieldorder")
-			.groupBy("fieldgroup")
-			.map((value, key) => ({
-				"fieldgroup": key,
-				labels: value, 
-				display: (_.findIndex(value, { included: true }) >= 0)
-			}))
-			.value();
-
-		//console.log(fieldGroups);
-			
-		var config = JSON.parse('{"inc":["id1", "id2", "ab_name", "ab_desc", "ab_theme", "ab_cat", "ab_scat", "ab_dir", "ab_chan", "ab_rel", "ab_doc"], "adm":["id2", "ab_name", "ab_desc"], "lab":{"ab_name":"Project title"}, "val":{"ab_risk":["low", "medium", "high"], "ab_cat":["category 1", "category 2", "category 3"], "ab_scat":["secondary category 1", "secondary category 2", "secondary category 3"]}}');
-		
-		var data = JSON.parse('{"ab_name":"Project name!", "ab_chan":["name","link"]}');
-		
-		res.render('add-edit-project', {
-			"user": req.session.user, // need access-level to determine whether user can add projects
-			"project": project,
-			"options": options,
-			"data": data,
-			"config":config,
-			"sess":req.session,
-			"portfolio": portfolio,
-			"fieldgroups": fieldGroups
-		});
-		
-	}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
-});
-
-router.get('/:portfolio/edit/:project_id', login.requireLogin, function (req, res) {
-	if(req.session.user == 'portfolio'){update_portfolio(req, res);}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
-});
-
-
-		
 router.get('/portfolio-update/:project_id', login.requireLogin, async function (req, res) {
-	if (req.session.user == 'portfolio') {
-		await update_portfolio(req, res);
-	}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
+	await update_portfolio.edit(req, res);
 });
 
 router.get('/portfolio-delete/:project_id', login.requireLogin, function (req, res) {
@@ -446,8 +355,8 @@ router.get('/portfolio-delete/:project_id', login.requireLogin, function (req, r
 	else {res.render('error_page', {message: 'You are not authorised to view this page'})};
 });
 
-router.get('/odd-update/:project_id', login.requireLogin, (req, res) => {
-	if(req.session.user == 'portfolio' || req.session.user == 'odd' || req.session.user == 'team_leaders'){update_odd(req, res);}
+router.get('/:portfolio/update/:project_id', login.requireLogin, (req, res) => {
+	if (req.session.user == 'portfolio' || req.session.user == 'odd' || req.session.user == 'team_leaders') { update_portfolio.edit(req, res);}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
 
@@ -456,24 +365,16 @@ router.get('/odd-update/:project_id', login.requireLogin, (req, res) => {
 //-------------------------------------------------------------------
 router.post('/process-project-form', login.requireLogin, async function (req, res) { handle_form(req, res); });
 
-router.post('/:portfolio/add', login.requireLogin, async (req, res) => {
+router.post('/:portfolio/update', login.requireLogin, async (req, res) => {
 	try {
-		console.log(req.body);
-
+		var portfolio = req.params.portfolio;
+		//console.log(req.body);
 		await queries.project_update(req.body);
-		res.redirect(`Projects/${req.body.project_id}`);
+		res.redirect(`/${portfolio}/Projects/${req.body.project_id}`);
 		res.end();
 	}
 	catch (error) {
-		console.log('***************************');
-		if (error.response) {
-			console.log(error.response.url);
-			console.log(error.response.body.ExceptionMessage);
-		}
-		else {
-			console.log(error.message);
-		}
-		console.log('***************************');
+		handleError(error);
 		res.end();
 	}
 

@@ -4,33 +4,44 @@
 
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-	<div class="col-xl-10 col-md-7 col-sm-8 py-3">
+	<div class="col-xl-8 col-md-8 col-sm-10 py-3">
 	
-	<h1 class="project-title">Add project</h1>
+	<h1 class="project-title">{{title}}</h1>
 	
 	<br /><br />
 
-		  <form action="/{{portfolio}}/add" method="post">
+		<form action="/{{portfolio}}/update" method="post">
 
-		  	{% for fieldgroup in fieldgroups %}
-		  	{% if fieldgroup.display %}
-			  <div class="project-field-group">
-			  	<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
-			  	{% for label in fieldgroup.labels %}
-			  	{% if label.included %}
-			  	{% set readonly = ((label.admin and user !='portfolio') or label.inputtype == 'auto') %}
-			  	<div class="form-group row">
-			  		<div class="col-sm-2">{{label.label}}</div>
-					<div class="col-sm-10">
-						{% switch label.inputtype %}
-						{% case 'auto' %}
-						{% case 'freetext' %}
+		{% for fieldgroup in fieldgroups %}
+		{% if fieldgroup.display %}
+			<div class="project-field-group">
+				<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
+				{% for label in fieldgroup.labels %}
+				{% if label.included %}
+				{% set readonly = ((label.admin and user !='portfolio') or label.inputtype == 'auto') %}
+				{% set label_col = 'col-sm-4 col-md-4' %}
+				{% set input_col = 'col-sm-8 col-md-8' %}
+				{% set date_input_col = 'col-sm-6 col-md-5' %}
+				{% set link1_input_col = 'col-sm-4 col-md-3' %}
+				{% set link2_input_col = 'col-sm-4 col-md-5' %}
+				<div class="form-group row">
+					<div class="{{label_col}}">{{label.label}}</div>
+					{% switch label.inputtype %}
+					{% case 'auto' %}
+					{% case 'freetext' %}
+					<div class="{{input_col}}">
 						<input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {% if readonly %}readonly{% endif %}>
-						{% case 'freetextarea' %}
+					</div>
+
+					{% case 'freetextarea' %}
+					<div class="{{input_col}}">
 						<textarea type="text" rows="2" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
-						{% case 'optionlist' %}
-						{% case 'predefinedlist' %}
-						{% case 'ragchoice' %}
+					</div>
+
+					{% case 'optionlist' %}
+					{% case 'predefinedlist' %}
+					{% case 'ragchoice' %}
+					<div class="{{input_col}}">
 						{% if options[label.field] %}
 						<select class="form-control" id="id_{{label.field}}" name="{{label.field}}">
 							{% for option in options[label.field] %}
@@ -41,8 +52,10 @@
 						{% else %}
 						<span><i>The {{label.label}} field has no options configured. Please contact the portfolio administrator</i></span>
 						{% endif %}
+					</div>
 
-						{% case 'selectpicker' %}
+					{% case 'projectmultiselect' %}
+					<div class="{{input_col}}">
 						{% if options[label.field] %}
 						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
 							{% for option in options[label.field].items %}
@@ -52,9 +65,24 @@
 						{% else %}
 						<span><i>The {{label.label}} field has no options configured. Please contact the portfolio administrator</i></span>
 						{% endif %}
+					</div>
 
-						{% case 'multioptionlist' %}
-						{% case 'predefinedmultilist' %}
+					{% case 'predefinedsearchablelist' %}
+					<div class="{{input_col}}">
+						{% if options[label.field] %}
+						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="true">
+							{% for option in options[label.field].items %}
+							<option value="{{option.value}}" data-tokens="{{option.tokens}}">{{option.display}}</option>
+							{% endfor %}
+						</select>
+						{% else %}
+						<span><i>The {{label.label}} field has no options configured. Please contact the portfolio administrator</i></span>
+						{% endif %}
+					</div>
+
+					{% case 'multioptionlist' %}
+					{% case 'predefinedmultilist' %}
+					<div class="{{input_col}}">
 						{% if options[label.field] %}
 						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="false" multiple>
 							{% for option in options[label.field].items %}
@@ -64,367 +92,89 @@
 						{% else %}
 						<span><i>The {{label.label}} field has no options configured. Please contact the portfolio administrator</i></span>
 						{% endif %}
-
-						{% case 'predefinedfield' %}
-						{% case 'date' %}
-						{% case 'percentage' %}
-						{% case 'budget' %}
-						{% default %}
-						<span><i>The {{label.label}} field has no input configured. Please contact the portfolio administrator</i></span>
-						{% endswitch %}
 					</div>
-			  	</div>
-			  	{% else %}
-			  	<input type="hidden" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}">
-			  	{% endif %}
-			  	{% endfor %}
-			  </div>
-		  	{% endif %}
-		  	{% endfor %}
+
+					{% case 'linkeditemlist' %}
+					<div class="{{input_col}}">
+						<!-- HIDDEN DYNAMIC ELEMENT TO CLONE -->
+						<div class="form-group dynamic-element" style="display:none">
+							<div class="row">
+								<div class="col-md-3"><input type="text" class="form-control" name="{{label.field}}[][name]" placeholder="{{label.label}} name"></div>
+								<div class="col-md-8"><input type="text" class="form-control" name="{{label.field}}[][link]" placeholder="{{label.label}} link"></div>
+								<div class="col-md-1"><p class="delete">x</p></div>
+							</div>
+						</div>
+						<!-- END OF HIDDEN ELEMENT -->
+
+						<fieldset>
+							<div class="dynamic-stuff">
+								<!-- Dynamic element will be cloned here -->
+								<!-- You can call clone function once if you want it to show it a first element-->
+							</div>
+
+							<p class="add-one">+ add documents</p>
+						</fieldset>
+					</div>
+
+					{% case 'namedlink' %}
+					<div class="{{link1_input_col}}">
+						<input type="text" class="form-control" id="id_{{label.field}}_name" name="{{label.field}}[name]" placeholder="Enter {{label.label}} name" value="{{project[label.field].name}}" {% if readonly %}readonly{% endif %}>
+					</div>
+					<div class="{{link2_input_col}}">
+						<input type="text" class="form-control" id="id_{{label.field}}_link" name="{{label.field}}[link]" placeholder="Enter {{label.label}} link" value="{{project[label.field].link}}" {% if readonly %}readonly{% endif %}>
+					</div>
+
+					{% case 'budget' %}
+					<div class="col-sm-4">
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text">&pound;</span>
+							</div>
+							<input type="text" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}" class="form-control" aria-label="Amount (to the nearest pound)" {% if readonly %}readonly{% endif %}>
+							<div class="input-group-append">
+								<span class="input-group-text">.00</span>
+							</div>
+						</div>
+					</div>
+
+					{% case 'percentage' %}
+					<div class="col-sm-4">
+						<div class="input-group mb-3">
+							<input type="number" min="0" max="100" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}" class="form-control" aria-label="Percentage from 1 to 100" {% if readonly %}readonly{% endif %}>
+							<div class="input-group-append">
+								<span class="input-group-text">%</span>
+							</div>
+						</div>
+					</div>
+
+					{% case 'date' %}
+					<div class="{{date_input_col}}">
+						<input type="date" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}" class="form-control" aria-label="Date" {% if readonly %}readonly{% endif %}>
+					</div>
 
 
+					{% case 'predefinedfield' %}
+					{% default %}
+					<div class="{{input_col}}">
+						<span><i>The {{label.label}} field has no input configured. Please contact the portfolio administrator</i></span>
+					</div>
+					{% endswitch %}
+				</div>
+				{% else %}
+				<input type="hidden" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}">
+				{% endif %}
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% endfor %}
 
+		<div class="form-group row">
+			<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>
+		</div>
 
-
-		  	<br /><br />
-		  	<h2 class="heading-medium">About the project</h2>
-		  	<br />
-
-
-
-
-
-
-
-		  		{% if 'ab_chan' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Project channel (link)</div>
-		  			<div class="col-sm-6"><input type="text" class="form-control" id="ab_chan0" name="ab_chan0" placeholder="Label" value="{{ data['ab_chan'][0] }}"></div>
-		  			<div class="col-sm-4"><input type="text" class="form-control" id="ab_chan1" name="ab_chan1" placeholder="Value" value="{{ data['ab_chan'][1] }}"></div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'ab_doc' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Key documents</div>
-		  			<div class="col-sm-10">
-		  				<!-- HIDDEN DYNAMIC ELEMENT TO CLONE -->
-		  				<div class="form-group dynamic-element" style="display:none">
-		  					<div class="row">
-		  						<div class="col-md-3"><input type="text" class="form-control" id="ab_docn[]" name="ab_docn[]" placeholder="Document name"></div>
-		  						<div class="col-md-8"><input type="text" class="form-control" id="ab_docl[]" name="ab_docl[]" placeholder="Document link"></div>
-		  						<div class="col-md-1"><p class="delete">x</p></div>
-		  					</div>
-		  				</div>
-		  				<!-- END OF HIDDEN ELEMENT -->
-
-		  				<fieldset>
-		  					<div class="dynamic-stuff">
-		  						<!-- Dynamic element will be cloned here -->
-		  						<!-- You can call clone function once if you want it to show it a first element-->
-		  					</div>
-
-		  					<p class="add-one">+ add documents</p>
-		  				</fieldset>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-
-		  		<br /><br />
-		  		<h2 class="heading-medium">Project team</h2>
-		  		<br />
-
-		  		{% if 'tm_lead' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Project lead</div>
-		  			<div class="col-sm-10">
-		  				<select id="tm_lead" name="tm_lead" class="selectpicker form-control" data-live-search="true">
-		  					<option value="sel">Please select</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'tm_lrole' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Lead role</div>
-		  			<div class="col-sm-10">
-		  				<select class="form-control" id="tm_lrole" name="tm_lrole">
-		  					<option value="0">Please select</option>
-		  					{% for i in range(0, config.val['tm_lrole'].length) -%}
-		  					<option value="{{i + 1}}">{{ config.val['tm_lrole'][i] | capitalize}}</option>
-		  					{%- endfor %}
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'tm_lteam' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Lead team</div>
-		  			<div class="col-sm-10">
-		  				<select class="form-control" id="tm_lteam" name="tm_lteam">
-		  					<option value="0">Please select</option>
-		  					{% for i in range(0, config.val['tm_lteam'].length) -%}
-		  					<option value="{{i + 1}}">{{ config.val['tm_lteam'][i] | capitalize}}</option>
-		  					{%- endfor %}
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'tm_kc1' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Key contact 1</div>
-		  			<div class="col-sm-10">
-		  				<select class="selectpicker form-control" name="tm_kc1" id="tm_kc1" data-live-search="true">
-		  					<option value="sel">Please select</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'tm_kc2' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Key contact 2</div>
-		  			<div class="col-sm-10">
-		  				<select class="selectpicker form-control" name="tm_kc2" id="tm_k2" data-live-search="true">
-		  					<option value="sel">Please select</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'tm_kc3' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Key contact 3</div>
-		  			<div class="col-sm-10">
-		  				<select class="selectpicker form-control" name="tm_kc3" id="tm_kc3" data-live-search="true">
-		  					<option value="sel">Please select</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'tm_sup' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Supplier</div>
-		  			<div class="col-sm-10"><input type="text" class="form-control" id="tm_sup" name="tm_sup" placeholder="{{ config.lab['Supplier'] | default('Supplier') }}" value="{{data['tm_sup']}}"></div>
-		  		</div>
-		  		{% endif %}
-
-
-		  		{% if 'tm_team' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Project team</div>
-		  			<div class="col-sm-10">
-		  				<select class="selectpicker form-control" name="tm_team" id="tm_team" data-live-search="true" multiple>
-		  					<option value="sel">Please select</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  					<option value="email" data-tokens="name">name, email</option>
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-
-
-
-		  		{% if 'pp_ms' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Milestones</div>
-		  			<div class="col-sm-10">+ add milestones</div>
-		  		</div>
-
-		  		<br /><br />
-
-		  		{% endif %}
-
-
-		  		{% if 'pi_rag' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">RAG</div>
-		  			<div class="col-sm-10">
-		  				{% if config.val['pi_rag'] == '3p' %}
-		  				<select class="form-control" id="pi_rag" name="pi_rag">
-		  					<option value="1">Red</option>
-		  					<option value="3">Amber</option>
-		  					<option value="5">Green</option>
-		  				</select>
-		  				{% else %}
-		  				<select class="form-control" id="pi_rag" name="pi_rag">
-		  					<option value="1">Red</option>
-		  					<option value="2">Red/Amber</option>
-		  					<option value="3">Amber</option>
-		  					<option value="4">Amber/Green</option>
-		  					<option value="5">Green</option>
-		  				</select>
-		  				{% endif %}
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-
-		  		{% if 'pi_stat' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Status</div>
-		  			<div class="col-sm-10">
-		  				<select class="form-control" id="pi_stat" name="pi_stat">
-		  					<option value="0">Please select</option>
-		  					{% for i in range(0, config.val['pi_stat'].length) -%}
-		  					<option value="{{i + 1}}">{{ config.val['pi_stat'][i] | capitalize}}</option>
-		  					{%- endfor %}
-		  				</select>
-		  			</div>
-		  		</div><!-- i.e. on hold, blocked -->
-		  		{% endif %}
-
-		  		<br /><br />
-
-		  		<br />
-		  		<h2 class="heading-medium">Updates</h2>
-
-		  		{% if 'up_up' in config.inc %}
-		  		<br />
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Updates</div>
-		  			<div class="col-sm-10">
-		  				<textarea rows="4" type="text" class="form-control" id="up_up" name="up_up" placeholder="{{ config.lab['up_up'] | default('Updates') }}">{{ data['up_up'] }}</textarea>
-		  				<br /><br />
-		  				<p>Date and text of the previous update, for reference.</p>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'up_fl' in config.inc %}
-		  		<br />
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Forward look</div>
-		  			<div class="col-sm-10"><textarea rows="4" type="text" class="form-control" id="up_fl" name="up_fl" placeholder="{{ config.lab['up_fl'] | default('Forward look') }}">{{ data['up_fl'] }}</textarea></div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'up_em' in config.inc %}
-		  		<br />
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Emerging issues, risks...</div>
-		  			<div class="col-sm-10"><textarea rows="4" type="text" class="form-control" id="up_em" name="up_em" placeholder="{{ config.lab['up_em'] | default('Emerging issues, risks...') }}">{{ data['up_em'] }}</textarea></div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'pr_score' in config.inc %}
-		  		<br />
-		  		<h2 class="heading-medium">Prioritisation</h2>
-		  		<br />
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Priority score</div>
-		  			<div class="col-sm-10">
-		  				<select name="pr_score" class="form-control">
-		  					<option value="0" selected>Priority score</option>
-		  					{% for i in ['20','19','18','17','16','15','14','13','12','11','10','09','08','07','06','05','04','03','02','01','0'] %}
-		  					<option value="{{ i }}" {% if data['pr_score'] == i %} selected {% endif %}>{{ i }}</option>
-		  					{% endfor %}
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'pr_conf' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Funded</div>
-		  			<div class="col-sm-10">
-
-		  				<select name="pr_conf" class="form-control">
-		  					<option value="0" selected>Funded</option>
-		  					{% for i in [4,3,2,1,0] %}
-		  					<option value="{{ i }}" {% if data['pr_fund'] == i %} selected {% endif %}>{{ i }}</option>
-		  					{% endfor %}
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'pr_conf' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Confidence in delivery</div>
-		  			<div class="col-sm-10">
-		  				<select name="pr_conf" class="form-control">
-		  					<option value="0" selected>Confidence in delivery</option>
-		  					{% for i in [4,3,2,1,0] %}
-		  					<option value="{{ i }}" {% if data['pr_conf'] == i %} selected {% endif %}>{{ i }}</option>
-		  					{% endfor %}
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'pr_prior' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Priorities impacted</div>
-		  			<div class="col-sm-10">
-
-		  				<select name="pr_prior" class="form-control">
-		  					<option value="0" selected>Priorities impacted</option>
-		  					{% for i in [4,3,2,1,0] %}
-		  					<option value="{{ i }}" {% if data['pr_prior'] == i %} selected {% endif %}>{{ i }}</option>
-		  					{% endfor %}
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'pr_ben' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Benefits</div>
-		  			<div class="col-sm-10">
-
-		  				<select name="pr_ben" class="form-control">
-		  					<option value="0" selected>Benefits</option>
-		  					{% for i in [4,3,2,1,0] %}
-		  					<option value="{{ i }}" {% if data['pr_ben'] == i %} selected {% endif %}>{{ i }}</option>
-		  					{% endfor %}
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-		  		{% if 'pr_crit' in config.inc %}
-		  		<div class="form-group row">
-		  			<div class="col-sm-2">Criticality</div>
-		  			<div class="col-sm-10">
-
-		  				<select name="pr_crit" class="form-control">
-		  					<option value="0" selected>Criticality</option>
-		  					{% for i in [4,3,2,1,0] %}
-		  					<option value="{{ i }}" {% if data['pr_crit'] == i %} selected {% endif %}>{{ i }}</option>
-		  					{% endfor %}
-		  				</select>
-		  			</div>
-		  		</div>
-		  		{% endif %}
-
-
-		  		<div class="form-group row">
-		  			<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>
-		  		</div>
-
-		  </form>
+		</form>
 	
 	</div>
-	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-3 col-md-3 col-sm-1 py-3"></div>
 </div>
 {% endblock %}

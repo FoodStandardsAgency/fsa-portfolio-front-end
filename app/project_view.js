@@ -4,6 +4,7 @@ const config 	= require('./config');
 function currencyFormat(num) { return '£' + num.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
 
 async function project_view(req, res) {
+	var portfolio = req.params.portfolio;
 	var sess = req.session;
 	var user = req.session.user;
 	var group = req.session.group;
@@ -12,14 +13,14 @@ async function project_view(req, res) {
 	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 	try {
-		var projectDTO = await queries.load_project(project_id);
+		var projectDTO = await queries.load_project(project_id, { includeConfig: true, includeHistory: true });
 		var project = projectDTO.body.project;
 		if (project) {
 			//console.log(project);
 			if (project.documents != null && project.documents != '') { var docs = project.documents.split(","); }
 			else { var docs = ''; }
 
-			if (project.link != null && project.link != '') { var links = project.link.split(","); } else { var links = ''; }
+			if (project.link != null && project.link.link != '') { var links = project.link.link.split(","); } else { var links = ''; }
 
 			if (project.rels != '' && project.rels != undefined) {
 				var rels = project.rels
@@ -101,8 +102,6 @@ async function project_view(req, res) {
 			var rels = await queries.load_related(project_id);
 			var deps = await queries.load_dependant(project_id);
 
-			var updates = await queries.load_updates(project_id);
-
 			var labels = projectDTO.body.config.labels.reduce(function (map, obj) {
 				map[obj.field] = obj.label || obj.fieldtitle;
 				return map;
@@ -112,14 +111,13 @@ async function project_view(req, res) {
 
 
 			res.render('project', {
+				"portfolio": portfolio,
 				"user": user,
 				"group": group,
 				"data": project,
 				"labels": labels,
 				"docs": docs,
 				"phases": config.phases,
-				"updates": updates.body,
-				"upd_cnt": updates.body.length,
 				"rels": rels.body,
 				"rels_cnt": rels.body.length,
 				"deps": deps.body,
