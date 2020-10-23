@@ -69,6 +69,7 @@
     <Content Include="app\views\theme\header.html" />
     <Content Include="app\views\theme\layout.html" />
     <Content Include="app\views\theme\scripts.html" />
+    <Content Include="app\views\_globals.html" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />

@@ -52,6 +52,7 @@
     "multer": "latest",
     "node-sass": "latest",
     "nunjucks": "^3.2.2",
+    "nunjucks-date-filter": "^0.1.1",
     "passport-azure-ad": "^4.3.0",
     "pg": "7.12.1",
     "popper.js": "^1.12.9",
