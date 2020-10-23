@@ -150,58 +150,16 @@ router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
 
 router.get('/:portfolio', login.requireLogin, async (req, res) => {
 	var portfolio = req.params.portfolio;
-	
-	// Phases
-	if (portfolio == 'odd'){
-		var phase_names = ['Backlog', 'Discovery', 'Alpha', 'Beta', 'Live'];
-		
-		var categories_map = [
-		['data', 'Data driven FSA'],
-		['cap', 'Developing our digital capability'],
-		['ser', 'Digital services development and support'],
-		['it', 'Evergreen IT'],
-		['res', 'Protecting data and business resilience'],
-		['sm', 'IT Service improvements']
-		]
-	}
-		
-	else if (portfolio == 'serd'){
-		var phase_names = ['In development', 'Awaiting decision', 'Waiting to start', 'Underway', 'Complete'];
-		var categories_map = [
-		['data', 'Best regulator'],
-		['cap', 'Food hypersensitivity'],
-		['ser', 'Foodborne disease'],
-		['it', 'Chemical contaminants'],
-		['res', 'Novel food and processes'],
-		['sm', 'Antimicrobial resistance']
-		]
-		}
-	else if (portfolio == 'abc'){
-		var phase_names = ['Feasibility', 'Appraise & Select', 'Define', 'Deliver', 'Embed/Close'];
-		
-		var categories_map = [
-		['data', 'Category / Swimlane 1'],
-		['cap', 'Category / Swimlane 2'],
-		['ser', 'Category / Swimlane 3'],
-		['it', 'Category / Swimlane 4'],
-		['res', 'Category / Swimlane 5'],
-		['sm', 'Category / Swimlane 6']
-		];
-		}
-	else {var phase_names = []; var categories_map = []}
-	
-	
+
+	var response = await queries.portfolio_summary(portfolio);
+	var summary = response.body;
 	
 	queries.current_projects(portfolio)
 	.then((result) => {
 		res.render('summary', {
-			"data": nestedGroupBy(result.body, ['category', 'phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"themes": categories_map,
-			"phases": config.phases,
-			"phase_names": phase_names,
 			"sess": req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"summary": summary
 		});
 	})
 	.catch();

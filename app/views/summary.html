@@ -6,10 +6,11 @@
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
 	<div class="col-xl-10 col-md-10 col-sm-10">
-	<p>Order by: <a href="/{{portfolio}}"> theme</a>, <a href="/{{portfolio}}/priority/"> priority</a>, <a href="/{{portfolio}}/team/"> team</a>, <a href="/{{portfolio}}/rag/"> rag status</a> or <a href="/{{portfolio}}/status/"> stage</a>. You can also <a href="/{{portfolio}}/filter-view">filter projects</a>.
-	</p>
+		<p>
+			Order by: <a href="/{{portfolio}}"> theme</a>, <a href="/{{portfolio}}/priority/"> priority</a>, <a href="/{{portfolio}}/team/"> team</a>, <a href="/{{portfolio}}/rag/"> rag status</a> or <a href="/{{portfolio}}/status/"> stage</a>. You can also <a href="/{{portfolio}}/filter-view">filter projects</a>.
+		</p>
 	</div>
-		<div class="col-xl-1 col-md-1 col-sm-1"></div>
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
 </div>
 
 
@@ -17,56 +18,51 @@
 <!-- Numbers in each stage -->
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/status#backlog" 	 class="summ_links"><div class="tag backlog">	{{phase_names[0]}}		</div><div class="big_number txt-backlog">	{{ counts.backlog | default('0') }}	</div></a></div>
-	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/status#discovery" class="summ_links"><div class="tag discovery">	{{phase_names[1]}}	</div><div class="big_number txt-discovery">{{ counts.discovery | default('0')}}	</div></a></div>
-	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/status#alpha" 	 class="summ_links"><div class="tag alpha">		{{phase_names[2]}}		</div><div class="big_number txt-alpha">	{{ counts.alpha | default('0')}}		</div></a></div>
-	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/status#beta" 	 class="summ_links"><div class="tag beta">		{{phase_names[3]}}		</div><div class="big_number txt-beta">		{{ counts.beta | default('0')}}		</div></a></div>
-	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/status#live" 	 class="summ_links"><div class="tag live">		{{phase_names[4]}}		</div><div class="big_number txt-live">		{{ counts.live | default('0')}}		</div></a></div>
+	{% for phase in summary.phases %}
+	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/{{portfolio}}/status#{{phase.viewkey}}" class="summ_links"><div class="tag {{phase.viewkey}}">	{{phase.name}}		</div><div class="big_number txt-{{phase.viewkey}}">	{{ phase.count }}	</div></a></div>
+	{% endfor %}
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 </div>
 
-<br /><br />
+<br />
+<br />
+{% for category in summary.categories %}
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+	<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="service-area"><a name="{{ category.viewkey }}" class="anchors">{{ category.name }}</a></h2><hr /></div>
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+</div>
 
-<!-- Projects grouped by theme -->
-	{% for theme, name in themes %}
-		{% set themeProjects = data[theme] %}
-		<div class="row">
-		<div class="col-xl-1 col-md-1 col-sm-1"></div>
-		<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="service-area"><a name="{{ theme }}" class="anchors">{{ name }}</a></h2><hr /></div>
-		<div class="col-xl-1 col-md-1 col-sm-1"></div>
-		</div>
-		
-		<div class="row">
-		<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-		{% for phase, name in phases %}
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	{% for phase in category.phases %}
 
-			<div class="col-xl-2 col-md-2 col-sm-2 py-3">
-			{% if themeProjects[phase] %}
+	<div class="col-xl-2 col-md-2 col-sm-2 py-3">
+		{% if phase.projects.length > 0 %}
 
-				<ul class="link-list border-{{phase}}">
-				{% for project in themeProjects[phase] %}
-					<li>
-						<a href="{{portfolio}}/Projects/{{ project.project_id }}" class="nodec">{{ project.project_name | safe}}</a>
-						{% if project.new_flag == 'Y' %}
-						<span class="new_tag">NEW</span>
-						{% endif %}
-					</li>
-					<br />		
-				{% endfor %}
-				</ul>
+		<ul class="link-list border-{{phase.viewkey}}">
+			{% for project in phase.projects %}
+			<li>
+				<a href="{{portfolio}}/Projects/{{ project.project_id }}" class="nodec">{{ project.name | safe}}</a>
+				{% if project.new_flag == 'Y' %}
+				<span class="new_tag">NEW</span>
+				{% endif %}
+			</li>
+			<br />
+			{% endfor %}
+		</ul>
 
-			{% else %}
-				&nbsp;
-			{% endif %}
-			</div>
+		{% else %}
+		&nbsp;
+		{% endif %}
+	</div>
 
-		{% endfor %}
-
-		<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-		</div>
-		<br /><br />
 	{% endfor %}
 
-
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
+<br />
+<br />
+{% endfor %}
 
 {% endblock %}

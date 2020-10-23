@@ -23,6 +23,7 @@ const q = {
 module.exports = {
 	// Actions
 	portfolio_index: () => backend.api('Portfolios'),
+	portfolio_summary: (portfolio) => backend.api(`Portfolios/${portfolio}/summary`),
 	current_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'current')),
 	completed_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'complete')),
 	latest_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'latest')),
