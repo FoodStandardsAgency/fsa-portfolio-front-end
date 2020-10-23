@@ -149,7 +149,7 @@
 
 					{% case 'date' %}
 					<div class="{{date_input_col}}">
-						<input type="date" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}" class="form-control" aria-label="Date" {% if readonly %}readonly{% endif %}>
+						<input type="date" name="{{label.field}}" value="{{project[label.field] | date('YYYY-MM-DD')}}" id="ID_{{label.field}}" class="form-control" aria-label="Date" {% if readonly %}readonly{% endif %}>
 					</div>
 
 
