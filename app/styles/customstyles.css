@@ -163,3 +163,9 @@ div.project-field-group {
 div.project-field-group h2 {
 	margin-bottom: 1em;
 }
+
+div.last-update-text
+{
+	margin-top: 1em;
+	font-size: 0.9em;
+}

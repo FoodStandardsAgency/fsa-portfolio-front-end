@@ -23,7 +23,7 @@ async function edit(req, res) {
 			var isAdmin = (req.session.user === 'portfolio');
 			var portfolio = req.params.portfolio;
 			var project_id = req.params.project_id;
-			var result = await queries.load_project(project_id, { includeConfig: true, includeOptions: true });
+			var result = await queries.load_project(project_id, { includeConfig: true, includeOptions: true, includeLastUpdate: true });
 			var project = result.body.project;
 			var config = result.body.config;
 			var options = result.body.options;
