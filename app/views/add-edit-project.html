@@ -16,7 +16,7 @@
 			<div class="project-field-group">
 				<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
 				{% for label in fieldgroup.labels %}
-				{% set labelIncluded = label.included and not (label.adminviewonly and not isAdmin) %}
+				{% set labelIncluded = (label.included and ((not label.admin) or (label.admin and (isAdmin or label.editorcanview)))) %}
 				{% if labelIncluded %}
 				{% set readonly = ((label.admin and not isAdmin) or label.inputtype == 'auto') %}
 				{% set label_col = 'col-sm-4 col-md-4' %}
