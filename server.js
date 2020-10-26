@@ -63,7 +63,7 @@ var njenv = nunjucks.configure(__dirname + '/app/views', {
 	watch: true,
     express: app
 });
-dateFilter.setDefaultFormat('DD/MM/YYYY');
+dateFilter.setDefaultFormat('DD MMM YYYY');
 dateFilter.install(njenv, 'date');
 
 app.use(morgan('dev'));
