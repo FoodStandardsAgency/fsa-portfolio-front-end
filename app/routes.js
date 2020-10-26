@@ -151,18 +151,19 @@ router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
 router.get('/:portfolio', login.requireLogin, async (req, res) => {
 	var portfolio = req.params.portfolio;
 
-	var response = await queries.portfolio_summary(portfolio);
-	var summary = response.body;
-	
-	queries.current_projects(portfolio)
-	.then((result) => {
+	try {
+		var response = await queries.portfolio_summary(portfolio);
+		var summary = response.body;
 		res.render('summary', {
 			"sess": req.session,
 			"portfolio": portfolio,
 			"summary": summary
 		});
-	})
-	.catch();
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+    }
 });
 
 
