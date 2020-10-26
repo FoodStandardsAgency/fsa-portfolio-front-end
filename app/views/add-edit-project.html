@@ -65,7 +65,7 @@
 						{% if options[label.field] %}
 						<select class="form-control" id="id_{{label.field}}" name="{{label.field}}">
 							{% for option in options[label.field] %}
-							{% set selected = option.value == project[label.field] %}
+							{% set selected = (option.value == project[label.field]) %}
 							<option value="{{option.value}}" {% if selected %} selected{% endif %}>{{option.display}}</option>
 							{% endfor %}
 						</select>
