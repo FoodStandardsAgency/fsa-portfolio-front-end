@@ -20,6 +20,7 @@ async function edit(req, res) {
 	try {
 		if (req.session.user == 'portfolio') {
 
+			var isAdmin = (req.session.user === 'portfolio');
 			var portfolio = req.params.portfolio;
 			var project_id = req.params.project_id;
 			var result = await queries.load_project(project_id, { includeConfig: true, includeOptions: true });
@@ -42,6 +43,7 @@ async function edit(req, res) {
 			res.render('add-edit-project', {
 				"title": "Edit project",
 				"user": req.session.user, // need access-level to determine whether user can add projects
+				"isAdmin": isAdmin,
 				"project": project,
 				"options": options,
 				"sess": req.session,
@@ -61,6 +63,7 @@ async function add(req, res) {
 	try {
 		if (req.session.user == 'portfolio') {
 
+			var isAdmin = (req.session.user === 'portfolio');
 			var portfolio = req.params.portfolio;
 			var result = await queries.newproject_config(portfolio);
 			var project = result.body.project;

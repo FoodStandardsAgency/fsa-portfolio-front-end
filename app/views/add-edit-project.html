@@ -1,7 +1,6 @@
 {% extends "theme/layout.html" %}
 {% block head %}{% endblock %}
 {% block content %}
-
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-xl-8 col-md-8 col-sm-10 py-3">
@@ -17,8 +16,9 @@
 			<div class="project-field-group">
 				<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
 				{% for label in fieldgroup.labels %}
-				{% if label.included %}
-				{% set readonly = ((label.admin and user !='portfolio') or label.inputtype == 'auto') %}
+				{% set labelIncluded = label.included and not (label.adminviewonly and not isAdmin) %}
+				{% if labelIncluded %}
+				{% set readonly = ((label.admin and not isAdmin) or label.inputtype == 'auto') %}
 				{% set label_col = 'col-sm-4 col-md-4' %}
 				{% set input_col = 'col-sm-8 col-md-8' %}
 				{% set date_input_col = 'col-sm-6 col-md-5' %}
@@ -33,9 +33,17 @@
 						<input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {% if readonly %}readonly{% endif %}>
 					</div>
 
-					{% case 'freetextarea' %}
+					{% case 'smallfreetextarea' %}
 					<div class="{{input_col}}">
 						<textarea type="text" rows="2" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+					</div>
+					{% case 'mediumfreetextarea' %}
+					<div class="{{input_col}}">
+						<textarea type="text" rows="4" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+					</div>
+					{% case 'largefreetextarea' %}
+					<div class="{{input_col}}">
+						<textarea type="text" rows="6" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
 					</div>
 
 					{% case 'optionlist' %}
