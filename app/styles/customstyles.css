@@ -35,11 +35,11 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 
 .small-flag				{font-weight:800; font-size:1em; display: inline-block; color: white;  text-transform: none; padding: 4px 16px; border-radius:5px;}
 .priority 				{background-color: purple;}
-.rag-1					{background-color:red;}
-.rag-2					{background-color:brown;}
-.rag-3					{background-color:amber;}
-.rag-4					{background-color:lime;}
-.rag-5					{background-color:green;}
+.rag-red				{background-color:red;}
+.rag-redamb				{background-color:brown;}
+.rag-amb				{background-color:orange;}
+.rag-ambgre				{background-color:lime;}
+.rag-gre				{background-color:green;}
 .onhold					{color:black; border: 1px solid black; border-radius: 5px;}
 .risk					{background-color: #006f9e; border-radius: 5px;}
 

@@ -83,12 +83,11 @@
 		<div class="small-flag priority">{{data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;&nbsp;&nbsp;
 		{% endif %}
 
-		<!-- RAG - make it feed from data.rag, once rags are returned as numbers -->
-		{% set rag = 1 %}
-		{% if rag %}
-		{% set rags = ['Red', 'Red-Amber', 'Amber', 'Amber-Green', 'Green']%}
+		<!-- RAG -->
+		{% set rags = { 'red': 'Red', 'redamb': 'Red-Amber', 'amb': 'Amber', 'ambgre': 'Amber-Green', 'gre': 'Green']%}
+		{% if rags[data.rag] %}
 		<strong>{{labels.rag}}:</strong>
-		<div class="small-flag rag-{{rag }}">{{ rags[rag - 1] }}</div>
+		<div class="small-flag rag-{{data.rag}}">{{ rags[data.rag] }}</div>
 		{% endif%}
 
 		<!-- Status --><!-- drop-down position shouldn't be the one indicating the onhold status is unset for a particular projet -->
