@@ -1,4 +1,6 @@
-const queries 	= require('./queries');
+const queries = require('./queries');
+const _ = require('lodash');
+
 
 // Order for views
 const categories_map = [
@@ -39,6 +41,15 @@ const teams_map = [
 ['', 'Not assigned'],
 ];
 
+function getFieldGroups(config) {
+	return _.chain(config.labels)
+		.orderBy("grouporder", "fieldorder")
+		.groupBy("fieldgroup")
+		.map((value, key) => ({ "fieldgroup": key, labels: value }))
+		.value();
+}
+
+
 // ODD leads - load from the database
 queries.oddleads();
 
@@ -49,3 +60,4 @@ exports.priorities = priorities_order;
 exports.rags = rag_map;
 exports.teams = teams_map;
 exports.odd_leads = queries.oddleads();
+exports.getFieldGroups = getFieldGroups;

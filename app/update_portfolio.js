@@ -1,19 +1,7 @@
 const queries = require('./queries');
 const _ = require('lodash');
+const handleError = require('./error');
 
-
-function handleError(error) {
-	console.log('***************************');
-	console.log(error.message);
-	if (error.stack) console.log(error.stack);
-	if (error.response) {
-		console.log('Response from server:');
-		console.log(error.response.url);
-		console.log(error.response.body.ExceptionMessage);
-		console.log(error.response.body);
-	}
-	console.log('***************************');
-}
 
 
 async function edit(req, res) {

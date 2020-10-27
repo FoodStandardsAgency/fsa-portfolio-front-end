@@ -1,4 +1,4 @@
-var express 			= require('express');
+var express = require('express');
 var { check } 		= require('express-validator');
 const _ 				= require('lodash');
 const multer			= require('multer');
@@ -7,6 +7,7 @@ const xss				= require('xss');
 const stringify 		= require('csv-stringify')
 
 // Custom modules
+const handleError		= require('./error');
 const config 			= require('./config');
 var queries 			= require('./queries');
 
@@ -23,8 +24,6 @@ const project_view 		= require('./project_view');
 const odd_view			= require('./oddleads_view');
 
 var router = express.Router();
-const backend = require('./backend');
-
 
 // Add timestamps to logs
 require('log-timestamp');
@@ -43,18 +42,7 @@ function nestedGroupBy(data, keys) {
  return grouped;
 }
 
-function handleError(error) {
-	console.log('***************************');
-	if (error.response) {
-		console.log(error.response.url);
-		console.log(error.response.body.ExceptionMessage);
-		console.log(error.response.body);
-	}
-	else {
-		console.log(error.message);
-	}
-	console.log('***************************');
-}
+
 
 
 
@@ -99,16 +87,11 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
 
 		var portfolio = req.params.portfolio;
 		var result = await queries.portfolio_config(portfolio);
-		var config = result.body;
+		var portfolioconfig = result.body;
 
 		//console.log(config.labels);
 
-
-		var fieldGroups = _.chain(config.labels)
-			.orderBy("grouporder", "fieldorder")
-			.groupBy("fieldgroup")
-			.map((value, key) => ({ "fieldgroup": key, labels: value }))
-			.value();
+		var fieldGroups = config.getFieldGroups(portfolioconfig);
 
 		//console.log(fieldGroups);
 
@@ -317,7 +300,6 @@ router.get('/:portfolio/completed', login.requireLogin, function (req, res){res.
 
 router.get('/:portfolio/portfolio-team', login.requireLogin, (req, res) => {
 	var portfolio = req.params.portfolio;
-	
 	if(req.session.user == 'portfolio') {res.render('team-page', {"sess": req.session, "portfolio":portfolio});}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
@@ -327,8 +309,8 @@ router.get('/:portfolio/portfolio-team', login.requireLogin, (req, res) => {
 // FILTER VIEW
 //-------------------------------------------------------------------
 
-router.get ('/:portfolio/filter-view', login.requireLogin, function (req,res) {res.render('filter_view', {"sess": req.session});});
-router.post('/:portfolio/filter-view', login.requireLogin, function (req,res) {filter_view(req,res)});
+router.get('/:portfolio/filter-view', login.requireLogin, async function (req, res) { await filter_view.view(req, res); });
+router.post('/:portfolio/filter-view', login.requireLogin, async function (req,res) { await filter_view.getResults(req,res)});
 
 //-------------------------------------------------------------------
 // PROJECT VIEW

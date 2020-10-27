@@ -10,7 +10,8 @@ const q = {
 	max_id:				'SELECT max(project_id) from latest_projects',
 	odd_people: 'select * from odd_people order by g6team, surname',
 
-	portfolio_projects_url: (portfolio, filter) => `Projects?portfolio=${portfolio}&filter=${filter}`,
+	portfolio_project_query_url: (portfolio) => `Portfolios/${portfolio}/projects`,
+	portfolio_projects_url: (portfolio, filter) => `Projects?portfolio=${portfolio}&filter=${filter}`, // Not currently working
 	portfolio_config_url: (portfolio) => `PortfolioConfiguration/${portfolio}`,
 	newproject_config_url: (portfolio) => `Projects/${portfolio}/newproject`,
 	project_url: (projectId) => `Projects/${projectId}`,
@@ -23,6 +24,8 @@ module.exports = {
 	// Actions
 	portfolio_index: () => backend.api('Portfolios'),
 	portfolio_summary: (portfolio) => backend.api(`Portfolios/${portfolio}/summary`),
+	portfolio_filter_options: (portfolio) => backend.api(`Portfolios/${portfolio}/filteroptions`),
+	portfolio_filtered_projects: (portfolio, data) => backend.api.post(q.portfolio_project_query_url(portfolio), { json: data }),
 	current_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'current')),
 	completed_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'complete')),
 	latest_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'latest')),

@@ -51,6 +51,7 @@
     <Content Include="app\assets\sass\_multicolour.scss" />
     <Content Include="app\authentication.js" />
     <Content Include="app\backend.js" />
+    <Content Include="app\error.js" />
     <Content Include="app\graph.js">
       <SubType>Code</SubType>
     </Content>
