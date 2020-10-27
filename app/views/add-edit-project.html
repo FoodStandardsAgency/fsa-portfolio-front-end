@@ -77,7 +77,7 @@
 					{% case 'projectmultiselect' %}
 					<div class="{{input_col}}">
 						{% if options[label.field] %}
-						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
+						<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
 							{% for option in options[label.field].items %}
 							<option value="{{option.value}}" data-tokens="{{option.tokens}}">{{option.display}}</option>
 							{% endfor %}
@@ -104,7 +104,7 @@
 					{% case 'predefinedmultilist' %}
 					<div class="{{input_col}}">
 						{% if options[label.field] %}
-						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="false" multiple>
+						<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="false" multiple>
 							{% for option in options[label.field].items %}
 							<option value="{{option.value}}">{{option.display}}</option>
 							{% endfor %}

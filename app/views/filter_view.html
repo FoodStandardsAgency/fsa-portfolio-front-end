@@ -41,7 +41,7 @@
 				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}} is:</label></div>
 				<div class="{{input_col}}">
 					{% if options[label.field] %}
-					<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
+					<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
 						{% for option in options[label.field] %}
 						<option value="{{option.value}}" data-tokens="{{option.tokens}}" {{ "selected" if form_values[label.field] and form_values[label.field].includes(option.value) }}>{{option.display}}</option>
 						{% endfor %}
