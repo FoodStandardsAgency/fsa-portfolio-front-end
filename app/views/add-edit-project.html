@@ -65,8 +65,7 @@
 						{% if options[label.field] %}
 						<select class="form-control" id="id_{{label.field}}" name="{{label.field}}">
 							{% for option in options[label.field] %}
-							{% set selected = (option.value == project[label.field]) %}
-							<option value="{{option.value}}" {% if selected %} selected{% endif %}>{{option.display}}</option>
+							<option value="{{option.value}}" {{ "selected" if option.value == project[label.field] }}>{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -79,7 +78,7 @@
 						{% if options[label.field] %}
 						<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
 							{% for option in options[label.field].items %}
-							<option value="{{option.value}}" data-tokens="{{option.tokens}}">{{option.display}}</option>
+							<option value="{{option.value}}" data-tokens="{{option.tokens}}" {{ "selected" if project[label.field] and project[label.field].includes(option.value) }}>{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -92,7 +91,7 @@
 						{% if options[label.field] %}
 						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="true">
 							{% for option in options[label.field].items %}
-							<option value="{{option.value}}" data-tokens="{{option.tokens}}">{{option.display}}</option>
+							<option value="{{option.value}}" data-tokens="{{option.tokens}}" {{ "selected" if option.value == project[label.field] }}>{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -106,7 +105,7 @@
 						{% if options[label.field] %}
 						<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="false" multiple>
 							{% for option in options[label.field].items %}
-							<option value="{{option.value}}">{{option.display}}</option>
+							<option value="{{option.value}}" {{ "selected" if project[label.field] and project[label.field].includes(option.value) }}>{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}

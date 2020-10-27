@@ -164,18 +164,18 @@
 		{% if deps_cnt > 0 %}
 		<h2 class="heading-medium">{{labels.dependencies}}</h2>
 
-		{% for i in range(0, deps_cnt) %}
-		<a href="/projects/{{ deps[i].project_id }}">{{ deps[i].project_name }}</a><br />
+		{% for dep in data.dependencies %}
+		<a href="/projects/{{ dep.project_id }}">{{ dep.project_name }}</a><br />
 		{% endfor %}
 
 		{% endif %}
 
-		{% if rels_cnt > 0 %}
+		{% if data.rels and data.rels.length > 0 %}
 
 		<h2 class="heading-medium">{{labels.rels}}</h2>
 
-		{% for i in range(0, rels_cnt) %}
-		<a href="/projects/{{ rels[i].project_id }}">{{ rels[i].project_name }}</a><br />
+		{% for rel in data.rels %}
+		<a href="/{{portfolio}}/projects/{{ rel.project_id }}">{{ rel.project_name }}</a><br />
 		{% endfor %}
 		<br /><br />
 		{% endif %}

@@ -351,7 +351,7 @@ router.post('/process-project-form', login.requireLogin, async function (req, re
 router.post('/:portfolio/update', login.requireLogin, async (req, res) => {
 	try {
 		var portfolio = req.params.portfolio;
-		//console.log(req.body);
+		console.log(req.body);
 		await queries.project_update(req.body);
 		res.redirect(`/${portfolio}/Projects/${req.body.project_id}`);
 		res.end();

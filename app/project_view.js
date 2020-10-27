@@ -22,23 +22,6 @@ async function project_view(req, res) {
 
 			if (project.link != null && project.link.link != '') { var links = project.link.link.split(","); } else { var links = ''; }
 
-			if (project.rels != '' && project.rels != undefined) {
-				var rels = project.rels
-				var rels = rels.replace(/[^A-Za-z0-9,]/g, '');
-				var rels = rels.split(',').join('\',\'');
-				var rels = '\''.concat(rels);
-				var rels = rels.concat('\'');
-			}
-			else { var rels = ''; }
-
-			if (project.dependencies != '' && project.dependencies != undefined) {
-				var deps = project.dependencies
-				var deps = deps.replace(/[^A-Za-z0-9,]/g, '');
-				var deps = deps.split(',').join('\',\'');
-				var deps = '\''.concat(deps);
-				var deps = deps.concat('\'');
-			}
-			else { var deps = ''; }
 
 			if (project.budget != null && project.budget != '') { var budget = project.budget.split(","); }
 			else { var budget = 0; }
@@ -52,16 +35,11 @@ async function project_view(req, res) {
 			else if (project.budgettype == 'progr') { var budgettype = 'Programme' }
 			else { var budgettype = 'Capital' }
 
-			var rels = await queries.load_related(project_id);
-			var deps = await queries.load_dependant(project_id);
 
 			var labels = projectDTO.body.config.labels.reduce(function (map, obj) {
 				map[obj.field] = obj.label || obj.fieldtitle;
 				return map;
 			}, {});
-
-			//console.log(labels);
-
 
 			res.render('project', {
 				"portfolio": portfolio,
@@ -71,10 +49,6 @@ async function project_view(req, res) {
 				"labels": labels,
 				"docs": docs,
 				"phases": config.phases,
-				"rels": rels.body,
-				"rels_cnt": rels.body.length,
-				"deps": deps.body,
-				"deps_cnt": deps.body.length,
 				"budgettype": budgettype,
 				"budget": currencyFormat(project.budget),
 				"spent": currencyFormat(project.spent),
