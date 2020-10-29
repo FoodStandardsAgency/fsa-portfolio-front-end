@@ -322,15 +322,19 @@ router.get('/:portfolio/Projects/:project_id', login.requireLogin, async functio
 // RENDER FORMS
 //-------------------------------------------------------------------
 router.get('/:portfolio/add', login.requireLogin, async function (req, res) {
-	await update_portfolio.add(req, res);
+	await update_portfolio.renderAddForm(req, res);
 });
 
 router.get('/:portfolio/edit/:project_id', login.requireLogin, async function (req, res) {
-	await update_portfolio.edit(req, res);
+	await update_portfolio.renderEditForm(req, res);
 });
 	
 router.get('/portfolio-update/:project_id', login.requireLogin, async function (req, res) {
-	await update_portfolio.edit(req, res);
+	await update_portfolio.renderEditForm(req, res);
+});
+router.get('/:portfolio/update/:project_id', login.requireLogin, (req, res) => {
+	if (req.session.user == 'portfolio' || req.session.user == 'odd' || req.session.user == 'team_leaders') { update_portfolio.renderEditForm(req, res); }
+	else { res.render('error_page', { message: 'You are not authorised to view this page' }); }
 });
 
 router.get('/portfolio-delete/:project_id', login.requireLogin, function (req, res) {
@@ -338,30 +342,12 @@ router.get('/portfolio-delete/:project_id', login.requireLogin, function (req, r
 	else {res.render('error_page', {message: 'You are not authorised to view this page'})};
 });
 
-router.get('/:portfolio/update/:project_id', login.requireLogin, (req, res) => {
-	if (req.session.user == 'portfolio' || req.session.user == 'odd' || req.session.user == 'team_leaders') { update_portfolio.edit(req, res);}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
-});
 
 //-------------------------------------------------------------------
 // ADD/UPDATE PROJECTS - handle form submissions
 //-------------------------------------------------------------------
 router.post('/process-project-form', login.requireLogin, async function (req, res) { handle_form(req, res); });
-
-router.post('/:portfolio/update', login.requireLogin, async (req, res) => {
-	try {
-		var portfolio = req.params.portfolio;
-		console.log(req.body);
-		await queries.project_update(req.body);
-		res.redirect(`/${portfolio}/Projects/${req.body.project_id}`);
-		res.end();
-	}
-	catch (error) {
-		handleError(error);
-		res.end();
-	}
-
-})
+router.post('/:portfolio/update', login.requireLogin, async (req, res) => { update_portfolio.updateProject(req, res); });
 
 	
 //-------------------------------------------------------------------

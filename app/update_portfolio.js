@@ -2,9 +2,7 @@ const queries = require('./queries');
 const _ = require('lodash');
 const handleError = require('./error');
 
-
-
-async function edit(req, res) {
+async function renderEditForm(req, res) {
 	try {
 		var isAdmin = (req.session.user === 'portfolio');
 		var portfolio = req.params.portfolio;
@@ -43,7 +41,8 @@ async function edit(req, res) {
 		res.end();
 	}
 }
-async function add(req, res) {
+
+async function renderAddForm(req, res) {
 	try {
 		if (req.session.user == 'portfolio') {
 
@@ -85,7 +84,22 @@ async function add(req, res) {
 	}
 }
 
+async function updateProject(req, res) {
+	try {
+		var portfolio = req.params.portfolio;
+		console.log(req.body);
+		await queries.project_update(req.body);
+		res.redirect(`/${portfolio}/Projects/${req.body.project_id}`);
+		res.end();
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+}
+
 module.exports = {
-	edit: edit,
-	add: add
+	renderEditForm: renderEditForm,
+	renderAddForm: renderAddForm,
+	updateProject: updateProject
 };

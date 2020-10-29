@@ -17,8 +17,6 @@ async function project_view(req, res) {
 		var project = projectDTO.body.project;
 		if (project) {
 			//console.log(project);
-			if (project.documents != null && project.documents != '') { var docs = project.documents.split(","); }
-			else { var docs = ''; }
 
 			if (project.link != null && project.link.link != '') { var links = project.link.link.split(","); } else { var links = ''; }
 
@@ -47,7 +45,6 @@ async function project_view(req, res) {
 				"group": group,
 				"data": project,
 				"labels": labels,
-				"docs": docs,
 				"phases": config.phases,
 				"budgettype": budgettype,
 				"budget": currencyFormat(project.budget),

@@ -67,11 +67,11 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
   text-decoration:none;
   text-transform:uppercase;
 }
-.tag.backlog   {background-color:#2E358B;}
-.tag.discovery {background-color:#912B88;}
-.tag.alpha     {background-color:#D53880;}
-.tag.beta      {background-color:#F15D22;}
-.tag.live      {background-color:#85994B;}
+.tag.phase0 {background-color:#2E358B;}
+.tag.phase1	{background-color:#912B88;}
+.tag.phase2 {background-color:#D53880;}
+.tag.phase3 {background-color:#F15D22;}
+.tag.phase4 {background-color:#85994B;}
 
 .big_number {
   font-size:96px;
@@ -79,11 +79,11 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
   text-align:center;
 }
 
-.txt-backlog    {color:#2E358B;}
-.txt-discovery  {color:#912B88;}
-.txt-alpha      {color:#D53880;}
-.txt-beta       {color:#F15D22;}
-.txt-live       {color:#85994B;}
+.txt-phase0  {color:#2E358B;}
+.txt-phase1  {color:#912B88;}
+.txt-phase2  {color:#D53880;}
+.txt-phase3  {color:#F15D22;}
+.txt-phase4  {color:#85994B;}
 
 
 /* Lists of links */
@@ -96,11 +96,11 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
   border-left:5px solid transparent;
 }
 
-.border-backlog   {border-color:#2E358B;}
-.border-discovery {border-color:#912B88;}
-.border-alpha     {border-color:#D53880;}
-.border-beta      {border-color:#F15D22;}
-.border-live      {border-color:#85994B;}
+.border-phase0   {border-color:#2E358B;}
+.border-phase1 {border-color:#912B88;}
+.border-phase2     {border-color:#D53880;}
+.border-phase3      {border-color:#F15D22;}
+.border-phase4      {border-color:#85994B;}
 
 .nodec {color:black; text-decoration:none;}
 

@@ -14,11 +14,11 @@ html,body { height: 100%; margin: 0px; padding: 0px; overflow:hidden }
   max-width:none;
   overflow:hidden;
   background-color:$turquoise;
-  &.phase-backlog { background-color:$backlog-colour;}
-  &.phase-discovery { background-color:$discovery-colour;}
-  &.phase-alpha { background-color:$alpha-colour;}
-  &.phase-beta { background-color:$beta-colour;}
-  &.phase-live { background-color:$live-colour;}
+  &.phase-phase0 { background-color:$backlog-colour;}
+  &.phase-phase1 { background-color:$discovery-colour;}
+  &.phase-phase2 { background-color:$alpha-colour;}
+  &.phase-phase3 { background-color:$beta-colour;}
+  &.phase-phase4 { background-color:$live-colour;}
 
 
     margin:0 auto;

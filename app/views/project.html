@@ -144,20 +144,14 @@
 		{% endif %}
 
 
-		{% if docs %}
+		{% if data.documents and documents.length > 0 %}
 		<h2 class="heading-medium">{{labels.documents}}</h2>
-
+		{% for doc in documents %}
 		<div class="container">
-			<div class="equalsplit2"><a href="{{ docs[1] | safe }}">{{ docs[0] | safe }}</a></div>
-			<div class="equalsplit2"><a href="{{ docs[3] | safe }}">{{ docs[2] | safe }}</a></div>
-			<div class="clear"></div>
+			<div class="equalsplit2"><a href="{{ doc.link | safe }}">{{ doc.name | safe }}</a></div>
 		</div>
 		<br />
-		<div class="container">
-			<div class="equalsplit2"><a href="{{ docs[5] | safe }}">{{ docs[4] | safe }}</a></div>
-			<div class="equalsplit2"><a href="{{ docs[7] | safe }}">{{ docs[6] | safe }}</a></div>
-			<div class="clear"></div>
-		</div>
+		{% endfor %}
 		<br /><br />
 		{% endif %}
 
