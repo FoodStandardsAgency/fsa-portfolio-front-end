@@ -119,8 +119,20 @@ router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
 		res.end();
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (error.response.statusCode == 403) {
+			res.render('error_page', {
+				title: "Configuration Error",
+				message: error.response.statusMessage,
+				link: {
+					url: `/${portfolio}/configure`,
+					text: "Back to configuration"
+				}
+			});
+		}
+		else {
+			handleError(error);
+			res.end();
+		}
 	}
 
 })
