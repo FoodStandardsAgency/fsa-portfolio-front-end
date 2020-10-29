@@ -45,18 +45,30 @@
 
 	<script>
 		//Clone the hidden element and shows it
-		$('.add-one').click(function () {
-			$('.dynamic-element').first().clone().appendTo('.dynamic-stuff').show();
-			attach_delete();
-		});
+		document.querySelector('.add-doc').addEventListener("click", function () {
+			var field = this.dataset.field;
+            var templateId = '#doctemplate-' + field;
+            var docListId = '#doclist-' + field;
+            var docList = document.querySelector(docListId)
+			var template = document.querySelector(templateId);
+			var count = docList.dataset.count;
+            var nameNameAttr = field + '[' + count + '][name]'
+			var linkNameAttr = field + '[' + count + '][link]'
+			docList.dataset.count++;
 
-		//Attach functionality to delete buttons
-		function attach_delete() {
-			$('.delete').off();
-			$('.delete').click(function () {
-				$(this).closest('.form-group').remove();
-			});
-		}
+			var clone = template.content.cloneNode(true);
+            var nameInput = clone.querySelector('input.name');
+			var linkInput = clone.querySelector('input.link');
+            nameInput.setAttribute("name", nameNameAttr);
+            linkInput.setAttribute("name", linkNameAttr);
+
+			var deleteButton = clone.querySelector('p.delete');
+			deleteButton.addEventListener("click", function () {
+                this.closest('.form-group').remove();
+            });
+
+			docList.appendChild(clone);
+		});
 
 	</script>
 	{% block scripts %} {% endblock %}

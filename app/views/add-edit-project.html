@@ -115,23 +115,29 @@
 
 					{% case 'linkeditemlist' %}
 					<div class="{{input_col}}">
-						<!-- HIDDEN DYNAMIC ELEMENT TO CLONE -->
-						<div class="form-group dynamic-element" style="display:none">
-							<div class="row">
-								<div class="col-md-3"><input type="text" class="form-control" name="{{label.field}}[][name]" placeholder="{{label.label}} name"></div>
-								<div class="col-md-8"><input type="text" class="form-control" name="{{label.field}}[][link]" placeholder="{{label.label}} link"></div>
-								<div class="col-md-1"><p class="delete">x</p></div>
+						<template id="doctemplate-{{label.field}}">
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-3"><input type="text" class="form-control name" placeholder="{{label.label}} name"></div>
+									<div class="col-md-8"><input type="text" class="form-control link" placeholder="{{label.label}} link"></div>
+									<div class="col-md-1"><p class="delete" style="cursor:pointer;">x</p></div>
+								</div>
 							</div>
-						</div>
-						<!-- END OF HIDDEN ELEMENT -->
-
+						</template>
 						<fieldset>
-							<div class="dynamic-stuff">
-								<!-- Dynamic element will be cloned here -->
-								<!-- You can call clone function once if you want it to show it a first element-->
+							<div id="doclist-{{label.field}}" data-count="{{project[label.field].length}}">
+								{% for doc in project[label.field] %}
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-3"><input type="text" class="form-control" name="{{label.field}}[{{loop.index}}][name]" placeholder="{{label.label}} name" value="{{doc.name}}"></div>
+										<div class="col-md-8"><input type="text" class="form-control" name="{{label.field}}[{{loop.index}}][link]" placeholder="{{label.label}} link" value="{{doc.link}}"></div>
+										<div class="col-md-1"><p class="delete" style="cursor:pointer;" onclick="this.closest('.form-group').remove();">x</p></div>
+									</div>
+								</div>
+								{% endfor %}
 							</div>
 
-							<p class="add-one">+ add documents</p>
+							<p class="add-doc" data-field="{{label.field}}" style="cursor:pointer;">+ add documents</p>
 						</fieldset>
 					</div>
 
@@ -201,4 +207,5 @@
 	</div>
 	<div class="col-xl-3 col-md-3 col-sm-1 py-3"></div>
 </div>
+
 {% endblock %}
