@@ -4,15 +4,15 @@
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-xl-8 col-md-8 col-sm-10 py-3">
-	
-	<h1 class="project-title">{{title}}</h1>
-	
-	<br /><br />
+
+		<h1 class="project-title">{{title}}</h1>
+
+		<br /><br />
 
 		<form action="/{{portfolio}}/update" method="post">
 
-		{% for fieldgroup in fieldgroups %}
-		{% if fieldgroup.display %}
+			{% for fieldgroup in fieldgroups %}
+			{% if fieldgroup.display %}
 			<div class="project-field-group">
 				<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
 				{% for label in fieldgroup.labels %}
@@ -113,6 +113,17 @@
 						{% endif %}
 					</div>
 
+					{% case 'adusersearch' %}
+					<div class="{{input_col}}">
+						{% if options[label.field] %}
+						<input class="form-control adusersearch" data-url="/{{portfolio}}/users/search" name="{{label.field}}" value="{{project[label.field]}}">
+						{% else %}
+						<span><i>The {{label.label}} field has no options configured. Please contact the portfolio administrator</i></span>
+						{% endif %}
+					</div>
+
+
+
 					{% case 'linkeditemlist' %}
 					<div class="{{input_col}}">
 						<template id="doctemplate-{{label.field}}">
@@ -195,17 +206,28 @@
 				{% endif %}
 				{% endfor %}
 			</div>
-		{% endif %}
-		{% endfor %}
+			{% endif %}
+			{% endfor %}
 
-		<div class="form-group row">
-			<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>
-		</div>
+			<div class="form-group row">
+				<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>
+			</div>
 
 		</form>
-	
+
 	</div>
 	<div class="col-xl-3 col-md-3 col-sm-1 py-3"></div>
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$('.adusersearch').autoComplete();
+	});
+
+</script>
 
 {% endblock %}

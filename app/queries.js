@@ -27,6 +27,11 @@ module.exports = {
 	portfolio_summary: (portfolio) => backend.api(`Portfolios/${portfolio}/summary`),
 	portfolio_filter_options: (portfolio) => backend.api(`Portfolios/${portfolio}/filteroptions`),
 	portfolio_filtered_projects: (portfolio, data) => backend.api.post(q.portfolio_project_query_url(portfolio), { json: data }),
+	portfolio_config: (portfolio) => backend.api(q.portfolio_config_url(portfolio)),
+	portfolio_config_update: (portfolio, data) => backend.api.patch(q.portfolio_config_url(portfolio), { json: data }),
+
+	users_search: (portfolio, term) => backend.api("Users/search", { searchParams: { portfolio: portfolio, term: term }}),
+
 	current_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'current')),
 	completed_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'complete')),
 	latest_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'latest')),
@@ -34,13 +39,12 @@ module.exports = {
 	load_project: (projectId, searchParams) => backend.api(q.project_url(projectId), { searchParams: searchParams }),
 	load_project_foredit: (projectId) => backend.api(q.project_edit_url(projectId)),
 	max_id: (portfolio) => backend.api(`PortfolioConfiguration/MaxId?portfolio=${portfolio}`),
+
 	oddleads: (text, params) => backend.api('Projects/Legacy/ODDLeads'),
 	generic_query: 		(text, params) => pool.query(text, params),
 	unmatched_leads: (text, params) => backend.api('Projects/Legacy/UnmatchedODDLeads'),
 	odd_people:			(text, params) => pool.query(q.odd_people),
 	update_label: (portfolio, field, label, included) => backend.api.post('PortfolioConfiguration/Label', { json: { portfolio: portfolio, field: field, label: label, included: included } }),
-	portfolio_config: (portfolio) => backend.api(q.portfolio_config_url(portfolio)),
-	portfolio_config_update: (portfolio, data) => backend.api.patch(q.portfolio_config_url(portfolio), { json: data }),
 	newproject_config: (portfolio) => backend.api(q.newproject_config_url(portfolio)),
 	project_update: (data) => backend.api.post(q.project_update_url, { json: data })
 

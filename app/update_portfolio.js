@@ -22,8 +22,7 @@ async function renderEditForm(req, res) {
 			}))
 			.value();
 
-		//console.log(fieldGroups);
-		console.log(project.strategic_objectives);
+		//console.log(config.labels);
 
 		res.render('add-edit-project', {
 			"title": "Edit project",
@@ -98,8 +97,30 @@ async function updateProject(req, res) {
 	}
 }
 
+async function searchUsers(req, res) {
+	try {
+		var portfolio = req.params.portfolio;
+		var term = req.query.q;
+		var response = await queries.users_search(portfolio, term);
+
+		// TODO: Bootstrap autocomplete doesn't work correctly with name/value select input: sort the front end, then revisit this
+		//var result = response.body.searchresults.map(function (u) { return { value: u.userPrincipalName, text: u.displayName }; });
+		var result = response.body.searchresults.map(function (u) { return { value: u.userPrincipalName, text: u.userPrincipalName }; });
+
+		var json = JSON.stringify(result);
+		console.log(json);
+		res.setHeader('Content-Type', 'application/json');
+		res.end(json);
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+}
+
 module.exports = {
 	renderEditForm: renderEditForm,
 	renderAddForm: renderAddForm,
-	updateProject: updateProject
+	updateProject: updateProject,
+	searchUsers: searchUsers
 };

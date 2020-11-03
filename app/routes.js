@@ -359,8 +359,8 @@ router.get('/portfolio-delete/:project_id', login.requireLogin, function (req, r
 // ADD/UPDATE PROJECTS - handle form submissions
 //-------------------------------------------------------------------
 router.post('/process-project-form', login.requireLogin, async function (req, res) { handle_form(req, res); });
-router.post('/:portfolio/update', login.requireLogin, async (req, res) => { update_portfolio.updateProject(req, res); });
-
+router.post('/:portfolio/update', login.requireLogin, async function (req, res) { update_portfolio.updateProject(req, res); });
+router.get('/:portfolio/users/search', login.requireLogin, async function (req, res) { update_portfolio.searchUsers(req, res); });
 	
 //-------------------------------------------------------------------
 // DELETE PROJECTS - handle form submissions
