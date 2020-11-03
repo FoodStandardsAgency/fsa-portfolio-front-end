@@ -1,5 +1,6 @@
 const queries 	= require('./queries');
-const config 	= require('./config');
+const config = require('./config');
+const handleError = require('./error');
 
 function currencyFormat(num) { return '£' + num.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
 
@@ -10,8 +11,6 @@ async function project_view(req, res) {
 	var group = req.session.group;
 	var project_id = req.params.project_id;
 	
-	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
 	try {
 		var projectDTO = await queries.load_project(project_id, { includeConfig: true, includeHistory: true });
 		var project = projectDTO.body.project;
@@ -61,9 +60,9 @@ async function project_view(req, res) {
 			res.end();
 		}
 	}
-	catch (e) {
-		if(e.message) console.log(e.message);
-		if(e.stack) console.log(e.stack);
+	catch (error) {
+		handleError(error);
+		res.end();
 	}
 }
 
