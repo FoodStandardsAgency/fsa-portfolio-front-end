@@ -108,7 +108,6 @@ async function searchUsers(req, res) {
 		var result = response.body.searchresults.map(function (u) { return { value: u.userPrincipalName, text: u.userPrincipalName }; });
 
 		var json = JSON.stringify(result);
-		console.log(json);
 		res.setHeader('Content-Type', 'application/json');
 		res.end(json);
 	}
