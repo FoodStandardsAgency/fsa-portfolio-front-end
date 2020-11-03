@@ -8,8 +8,7 @@
     "node": ">= 12.0.0"
   },
   "scripts": {
-    "start": "node server.js",
-    "build": "webpack"
+    "start": "node server.js"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.5",
