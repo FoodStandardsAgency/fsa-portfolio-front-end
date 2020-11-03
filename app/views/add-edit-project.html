@@ -119,9 +119,9 @@
 					<div class="{{input_col}}">
 						{% if options[label.field] %}
 						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/users/search" name="{{label.field}}" data-live-search="true">
-							{% for option in options[label.field].items %}
+							{% if project[label.field] %}
 							<option value="{{project[label.field]}}" select>{{project[label.field]}}</option>
-							{% endfor %}
+							{% endif %}
 						</select>
 
 
