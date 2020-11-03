@@ -57,8 +57,6 @@
     </Content>
     <Content Include="app\styles\app.bundle.js" />
     <Content Include="app\styles\app.scss" />
-    <Content Include="app\styles\bootstrap-select.css" />
-    <Content Include="app\styles\bootstrap-select.js" />
     <Content Include="app\styles\customstyles.css" />
     <Content Include="app\styles\style.js" />
     <Content Include="app\tokens.js" />

@@ -103,9 +103,7 @@ async function searchUsers(req, res) {
 		var term = req.query.q;
 		var response = await queries.users_search(portfolio, term);
 
-		// TODO: Bootstrap autocomplete doesn't work correctly with name/value select input: sort the front end, then revisit this
-		//var result = response.body.searchresults.map(function (u) { return { value: u.userPrincipalName, text: u.displayName }; });
-		var result = response.body.searchresults.map(function (u) { return { value: u.userPrincipalName, text: u.userPrincipalName }; });
+		var result = response.body.searchresults.map(function (u) { return { value: u.userPrincipalName, text: u.displayName }; });
 
 		var json = JSON.stringify(result);
 		res.setHeader('Content-Type', 'application/json');
