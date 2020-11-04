@@ -43,7 +43,7 @@
 		<ul class="link-list border-{{phase.viewkey}}">
 			{% for project in phase.projects %}
 			<li>
-				<a href="{{portfolio}}/Projects/{{ project.project_id }}" class="nodec">{{ project.name | safe}}</a>
+				<a href="/{{portfolio}}/Projects/{{ project.project_id }}" class="nodec">{{ project.name | safe}}</a>
 				{% if project.new_flag == 'Y' %}
 				<span class="new_tag">NEW</span>
 				{% endif %}
