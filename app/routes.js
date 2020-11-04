@@ -143,11 +143,10 @@ router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
 // SUMMARY PAGES
 //-------------------------------------------------------------------
 
-router.get('/:portfolio', login.requireLogin, async (req, res) => {
+router.get('/:portfolio', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
-
 	try {
-		var response = await queries.portfolio_summary(portfolio);
+		var response = await queries.portfolio_summary(portfolio, "category");
 		var summary = response.body;
 		res.render('summary', {
 			"sess": req.session,
@@ -162,25 +161,22 @@ router.get('/:portfolio', login.requireLogin, async (req, res) => {
 });
 
 
-router.get('/:portfolio/priority/', login.requireLogin, function (req, res) {	
+router.get('/:portfolio/priority/', login.requireLogin, async function (req, res) {	
 	var portfolio = req.params.portfolio;
-	
-	if (portfolio == 'odd'){var phase_names = ['Backlog', 'Discovery', 'Alpha', 'Beta', 'Live'];}
-	else if (portfolio == 'serd'){var phase_names = ['In development', 'Awaiting decision', 'Waiting to start', 'Underway', 'Complete'];}
-	else if (portfolio == 'abc'){var phase_names = ['Feasibility', 'Appraise & Select', 'Define', 'Deliver', 'Embed/Close']}
-	else {var phase_names = [];}
-	
-	queries.current_projects(portfolio)
-	.then((result) => {
+	try {
+		var response = await queries.portfolio_summary(portfolio, "priority");
+		var summary = response.body;
 		res.render('summary', {
-			"data": nestedGroupBy(result.body, ['pgroup', 'phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"themes": config.priorities,
-			"phases":config.phases,
 			"sess": req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"summary": summary
 		});
-	});	
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+
 });
 
 router.get('/:portfolio/team/', login.requireLogin, function (req, res) {	
@@ -233,47 +229,40 @@ var portfolio = req.params.portfolio;
 	});	
 });
 
-router.get('/:portfolio/rag/', login.requireLogin, function (req, res) {
+router.get('/:portfolio/rag/', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
-	
-	if (portfolio == 'odd'){var phase_names = ['Backlog', 'Discovery', 'Alpha', 'Beta', 'Live'];}
-	else if (portfolio == 'serd'){var phase_names = ['In development', 'Awaiting decision', 'Waiting to start', 'Underway', 'Complete'];}
-	else if (portfolio == 'abc'){var phase_names = ['Feasibility', 'Appraise & Select', 'Define', 'Deliver', 'Embed/Close']}
-	else {var phase_names = [];}
-	
-	queries.current_projects(portfolio)
-	.then((result) => {
-		  res.render('summary', {
-			"data": 	nestedGroupBy(result.body, ['rag', 'phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"themes": 	config.rags,
-			"phases":	config.phases,
-			"phase_names": phase_names,
+	try {
+		var response = await queries.portfolio_summary(portfolio, "rag");
+		var summary = response.body;
+		res.render('summary', {
 			"sess": req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"summary": summary
 		});
-	});	
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+
 });
 
-router.get('/:portfolio/status/', login.requireLogin, function (req, res) {
+router.get('/:portfolio/status/', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
-	
-	if (portfolio == 'odd'){var phase_names = ['Backlog', 'Discovery', 'Alpha', 'Beta', 'Live'];}
-	else if (portfolio == 'serd'){var phase_names = ['In development', 'Awaiting decision', 'Waiting to start', 'Underway', 'Complete'];}
-	else if (portfolio == 'abc'){var phase_names = ['Feasibility', 'Appraise & Select', 'Define', 'Deliver', 'Embed/Close']}
-	else {var phase_names = [];}
-	
-	queries.current_projects(portfolio)
-	.then((result) => {
-		res.render('phaseview', {
-			"data": nestedGroupBy(result.body, ['phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"phases":	config.phases,
+	try {
+		var response = await queries.portfolio_summary(portfolio, "status");
+		var summary = response.body;
+		res.render('summary', {
 			"sess": req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"summary": summary
 		});
-	})
-	.catch();	
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+
 });
 
 router.get('/:portfolio/new_projects/', login.requireLogin, function (req, res) {	

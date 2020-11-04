@@ -26,16 +26,16 @@
 
 <br />
 <br />
-{% for category in summary.categories %}
+{% for summary in summary.summaries %}
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-	<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="service-area"><a name="{{ category.viewkey }}" class="anchors">{{ category.name }}</a></h2><hr /></div>
+	<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="service-area"><a name="{{ summary.viewkey }}" class="anchors">{{ summary.name }}</a></h2><hr /></div>
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
 </div>
 
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-	{% for phase in category.phases %}
+	{% for phase in summary.phases %}
 
 	<div class="col-xl-2 col-md-2 col-sm-2 py-3">
 		{% if phase.projects.length > 0 %}
