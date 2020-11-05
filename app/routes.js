@@ -179,7 +179,7 @@ router.get('/:portfolio/priority/', login.requireLogin, async function (req, res
 
 });
 
-router.get('/:portfolio/team/', login.requireLogin, function (req, res) {	
+router.get('/:portfolio/team/', login.requireLogin, async function (req, res) {	
 	var portfolio = req.params.portfolio;
 	try {
 		var response = await queries.portfolio_summary(portfolio, "team");
