@@ -1,0 +1,48 @@
+{% extends "theme/layout.html" %}
+
+{% block content %}
+
+<!-- Top navigation links -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+	<div class="col-xl-10 col-md-10 col-sm-10">
+		<p>
+			Order by: <a href="/{{portfolio}}"> theme</a>, <a href="/{{portfolio}}/priority/"> priority</a>, <a href="/{{portfolio}}/team/"> team</a>, <a href="/{{portfolio}}/rag/"> rag status</a> or <a href="/{{portfolio}}/status/"> stage</a>. You can also <a href="/{{portfolio}}/filter-view">filter projects</a>.
+		</p>
+	</div>
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+</div>
+
+<!-- Numbers in each stage -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	{% for phase in summary.phases %}
+	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/{{portfolio}}/status#{{phase.viewkey}}" class="summ_links"><div class="tag {{phase.viewkey}}">	{{phase.name}}		</div><div class="big_number txt-{{phase.viewkey}}">	{{ phase.count }}	</div></a></div>
+	{% endfor %}
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
+
+<br />
+<br />
+{% for summary in summary.summaries %}
+<h2 class="heading-large service-area"><a name="{{ summary.viewkey }}" class="anchors">{{ summary.name | safe | capitalize }}</a></h2>
+{% for phase in summary.phases %}
+{% if phase.projects.length > 0 %}
+	<ul class="link-list border-{{phase.viewkey}}">
+		{% for project in phase.projects %}
+		<li>
+			<a href="/{{portfolio}}/Projects/{{ project.project_id }}">{{ project.name | safe}}</a>
+			{% if project.new_flag == 'Y' %}
+			<span class="new_tag">NEW</span>
+			{% endif %}
+		</li>
+		<br />
+		{% endfor %}
+	</ul>
+{% else %}
+{% endif %}
+{% endfor %}
+<br />
+<br />
+{% endfor %}
+{% endblock %}

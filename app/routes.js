@@ -250,9 +250,9 @@ router.get('/:portfolio/rag/', login.requireLogin, async function (req, res) {
 router.get('/:portfolio/status/', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
 	try {
-		var response = await queries.portfolio_summary(portfolio, "status");
+		var response = await queries.portfolio_summary(portfolio, "phase");
 		var summary = response.body;
-		res.render('summary', {
+		res.render('summary_list', {
 			"sess": req.session,
 			"portfolio": portfolio,
 			"summary": summary
