@@ -180,53 +180,20 @@ router.get('/:portfolio/priority/', login.requireLogin, async function (req, res
 });
 
 router.get('/:portfolio/team/', login.requireLogin, function (req, res) {	
-var portfolio = req.params.portfolio;
-
-	if (portfolio == 'odd'){
-		var phase_names = ['Backlog', 'Discovery', 'Alpha', 'Beta', 'Live'];
-		
-		var teams_map = [
-		['Data', 'Data'],
-		['Digital', 'Digital'],
-		['KIM', 'KIM'],
-		['IT', 'IT'],
-		['', 'Not assigned'],
-		];
-		}
-	else if (portfolio == 'serd'){
-		var phase_names = ['In development', 'Awaiting decision', 'Waiting to start', 'Underway', 'Complete'];
-		var teams_map = [
-		['Data', 'SERD team 1'],
-		['Digital', 'SERD team 2'],
-		['KIM', 'SERD team 3'],
-		['IT', 'SERD team 4'],
-		['', 'Not assigned'],
-		];
-		}
-	else if (portfolio == 'abc'){
-		var phase_names = ['Feasibility', 'Appraise & Select', 'Define', 'Deliver', 'Embed/Close']
-		var teams_map = [
-		['Data', 'ABC team 1'],
-		['Digital', 'ABC team 2'],
-		['KIM', 'ABC team 3'],
-		['IT', 'ABC team 4'],
-		['', 'Not assigned'],
-		];
-		}
-	else {var phase_names = [];}
-	
-	queries.current_projects(portfolio)
-	.then((result) => {
+	var portfolio = req.params.portfolio;
+	try {
+		var response = await queries.portfolio_summary(portfolio, "team");
+		var summary = response.body;
 		res.render('summary', {
-			"data": nestedGroupBy(result.body, ['g6team', 'phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"themes": teams_map,
-			"phases":config.phases,
-			"phase_names": phase_names,
 			"sess": req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"summary": summary
 		});
-	});	
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
 });
 
 router.get('/:portfolio/rag/', login.requireLogin, async function (req, res) {

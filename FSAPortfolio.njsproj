@@ -103,7 +103,6 @@
     <Content Include="app\views\index.html" />
     <Content Include="app\views\layout.html" />
     <Content Include="app\views\login.html" />
-    <Content Include="app\views\phaseview.html" />
     <Content Include="app\views\project.html" />
     <Content Include="app\views\team-page.html" />
     <Content Include="app\views\thank_you.html" />
