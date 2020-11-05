@@ -123,14 +123,23 @@
 							<option value="{{project[label.field].value}}" selected>{{project[label.field].text}}</option>
 							{% endif %}
 						</select>
-
-
 						{% else %}
 						<span><i>The {{label.label}} field has no options configured. Please contact the portfolio administrator</i></span>
 						{% endif %}
 					</div>
 
-
+					{% case 'adusermultisearch' %}
+					<div class="{{input_col}}">
+						{% if options[label.field] %}
+						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/users/search" name="{{label.field}}" data-live-search="true" multiple>
+							{% for item in project[label.field] %}
+							<option value="{{item.value}}" selected>{{item.text}}</option>
+							{% endfor %}
+						</select>
+						{% else %}
+						<span><i>The {{label.label}} field has no options configured. Please contact the portfolio administrator</i></span>
+						{% endif %}
+					</div>
 
 					{% case 'linkeditemlist' %}
 					<div class="{{input_col}}">
