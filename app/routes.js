@@ -328,81 +328,39 @@ router.post('/delete_project_process', login.requireLogin, function (req, res) {
 // Export latest projects as a csv
 //-------------------------------------------------------------------	
 
-router.get('/:portfolio/download/csv', login.requireLogin, function(req,res){
+router.get('/:portfolio/download/csv', login.requireLogin, async function(req,res){
 
 	var portfolio = req.params.portfolio;
 	
-	if(req.session.user == 'portfolio') {
-		queries.latest_projects(portfolio)
-		.then( (result) => {
-						
-			for (i = 0; i < result.body.length; i++){
-			/*Project size*/
-			if(result.body[i].project_size == 's') {result.body[i].project_size = 'Small'}
-			else if(result.body[i].project_size == 'm') {result.body[i].project_size = 'Medium'}
-			else if(result.body[i].project_size == 'l') {result.body[i].project_size = 'Large'}
-			else if(result.body[i].project_size == 'x') {result.body[i].project_size = 'Extra Large'}
-			else {result.body[i].project_size = 'Not set'}
-			
-			/*Phase*/
-			if(result.body[i].phase == 'backlog') 	{result.body[i].phase = 'Backlog'}
-			else if(result.body[i].phase == 'discovery') {result.body[i].phase = 'Discovery'}
-			else if(result.body[i].phase == 'alpha') 	{result.body[i].phase = 'Alpha'}
-			else if(result.body[i].phase == 'beta') 		{result.body[i].phase = 'Beta'}
-			else if(result.body[i].phase == 'live') 		{result.body[i].phase = 'Live'}
-			else if(result.body[i].phase == 'completed') {result.body[i].phase = 'Completed'}
-			else {result.body[i].phase = 'Not set'}
-			
-			/*Category*/
-			if(result.body[i].category == 'cap') 	{result.body[i].category = 'Developing our digital capability'}
-			else if(result.body[i].category == 'data')	{result.body[i].category = 'Data driven FSA'}
-			else if(result.body[i].category == 'sm') 	{result.body[i].category = 'IT Service management'}
-			else if(result.body[i].category == 'ser') 	{result.body[i].category = 'Digital services development and support'}
-			else if(result.body[i].category == 'it') 	{result.body[i].category = 'Evergreen IT'}
-			else if(result.body[i].category == 'res') 	{result.body[i].category = 'Protecting data and business resilience'}
-			else {result.body[i].category = 'Not set'}
-				
-			/*Budget*/
-			if(result.body[i].budgettype == 'admin') 	{result.body[i].budgettype = 'Admin'}
-			else if(result.body[i].budgettype == 'progr') 	{result.body[i].budgettype = 'Programme'}
-			else if(result.body[i].budgettype == 'capit') 	{result.body[i].budgettype = 'Capital'}
-			else {result.body[i].budgettype = 'Not set'}
-			
-			/*Directorate*/
-			if(result.body[i].direct == 'ODD') 	{result.body[i].direct = 'Openness Data & Digital'}
-			else if(result.body[i].direct == 'COMMS') 	{result.body[i].direct = 'Communications'}
-			else if(result.body[i].direct == 'IR') 	{result.body[i].direct = 'Incidents & Resilience'}
-			else if(result.body[i].direct == 'FO') 	{result.body[i].direct = 'Field Operations'}
-			else if(result.body[i].direct == 'FP') 	{result.body[i].direct = 'Finance & Performance'}
-			else if(result.body[i].direct == 'FSP') 	{result.body[i].direct = 'Food Safety Policy'}
-			else if(result.body[i].direct == 'FSA') 	{result.body[i].direct = 'FSA Wide'}
-			else if(result.body[i].direct == 'NFCU') 	{result.body[i].direct = 'National Food Crime Unit'}
-			else if(result.body[i].direct == 'NI') 	{result.body[i].direct = 'Northern Ireland'}
-			else if(result.body[i].direct == 'PEOP') 	{result.body[i].direct = 'People'}
-			else if(result.body[i].direct == 'RC') 	{result.body[i].direct = 'Regulatory Compliance'}
-			else if(result.body[i].direct == 'SERD') 	{result.body[i].direct = 'Science Evidence & Research'}
-			else if(result.body[i].direct == 'SLG') 	{result.body[i].direct = 'Strategy Legal & Governance'}
-			else if(result.body[i].direct == 'WAL') 	{result.body[i].direct = 'Wales'}
-			else {result.body[i].direct = 'Not set'}	
-			
-			/*RAG*/
-			if(result.body[i].rag == 'gre') {result.body[i].rag = 'Green'}
-			else if(result.body[i].rag == 'nor') {result.body[i].rag = 'Not set'}
-			else if(result.body[i].rag == 'amb') {result.body[i].rag = 'Amber'}
-			else if(result.body[i].rag == 'red') {result.body[i].rag = 'Red'}
-			else {result.body[i].rag = 'Not set'}
-			}
+	if (req.session.user == 'portfolio') {
+		try {
+			var result = await queries.portfolio_export(portfolio);
+			res.setHeader('Content-Type', 'text/csv');
+			res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'latest_projects-' + Date.now() + '.csv\"');
+			res.setHeader('Cache-Control', 'no-cache');
+			res.setHeader('Pragma', 'no-cache');
+			var config = result.body.config;
+			var projects = result.body.projects
 
-		  res.setHeader('Content-Type', 'text/csv');
-		  res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'latest_projects-' + Date.now() + '.csv\"');
-		  res.setHeader('Cache-Control', 'no-cache');
-		  res.setHeader('Pragma', 'no-cache');
+			var columns = _.chain(config.labels)
+				.orderBy("grouporder", "fieldorder")
+				.map((value) => ({
+					key: value.field,
+					header: value.label
+				}))
+				.value();
 
-		  stringify(result.body, { header: true })
-			.pipe(res);
+			//console.log("Columns...");
+			//console.log(columns);
 
-		})
-		.catch();
+			stringify(projects, { header: true, columns: columns })
+				.pipe(res);
+
+		}
+		catch (error) {
+			handleError(error);
+			res.end();
+        }
 	}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 })

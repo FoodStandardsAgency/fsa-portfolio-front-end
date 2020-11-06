@@ -25,6 +25,7 @@ module.exports = {
 	// Actions
 	portfolio_index: () => backend.api('Portfolios'),
 	portfolio_summary: (portfolio, type) => backend.api(`Portfolios/${portfolio}/summary`, { searchParams: { type: type } }),
+	portfolio_export: (portfolio) => backend.api(`Portfolios/${portfolio}/export`),
 	portfolio_filter_options: (portfolio) => backend.api(`Portfolios/${portfolio}/filteroptions`),
 	portfolio_filtered_projects: (portfolio, data) => backend.api.post(q.portfolio_project_query_url(portfolio), { json: data }),
 	portfolio_config: (portfolio) => backend.api(q.portfolio_config_url(portfolio)),
