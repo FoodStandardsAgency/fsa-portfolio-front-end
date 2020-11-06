@@ -17,6 +17,8 @@
 			{% for fieldgroup in fieldgroups %}
 			<h2 class="heading-medium" style="margin-bottom:10px;">{{fieldgroup.fieldgroup}}</h2><br />
 			{% for label in fieldgroup.labels %}
+			{% set labelIncluded = (label.included and ((not label.admin) or (label.admin and (isAdmin or label.editorcanview)))) %}
+			{% if labelIncluded %}
 			<div class="form-group row ">
 				{% switch label.inputtype %}
 				{% case 'auto' %}
@@ -51,9 +53,26 @@
 					<span><i>The {{label.label}} field has no options configured. Please contact the portfolio administrator</i></span>
 					{% endif %}
 				</div>
+
+				{% case 'date' %}
+				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
+				<div class="{{input_col}}">
+					<input type="date" class="form-control" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" value="{{form_values[label.field]}}" >
+				</div>
+
+				{% case 'nullableboolean' %}
+				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
+				<div class="{{input_col}}">
+					<select class="selectpicker form-control" name="{{label.field}}">
+						<option value="" {{ "selected" if form_values[label.field] == "" }} >None selected</option>
+						<option value="true" {{ "selected" if form_values[label.field] == "true" }}>Yes</option>
+						<option value="false"{{ "selected" if form_values[label.field] == "false" }}>No</option>
+					</select>
+				</div>
+
 				{% endswitch %}
 			</div>
-
+			{% endif %}
 			{% endfor %}
 			{% endfor %}
 			<div class="row">
