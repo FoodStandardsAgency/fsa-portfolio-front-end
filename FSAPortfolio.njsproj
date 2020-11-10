@@ -51,24 +51,25 @@
     <Content Include="app\assets\sass\_multicolour.scss" />
     <Content Include="app\authentication.js" />
     <Content Include="app\backend.js" />
+    <Content Include="app\error.js" />
     <Content Include="app\graph.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\styles\app.bundle.js" />
     <Content Include="app\styles\app.scss" />
-    <Content Include="app\styles\bootstrap-select.css" />
-    <Content Include="app\styles\bootstrap-select.js" />
     <Content Include="app\styles\customstyles.css" />
     <Content Include="app\styles\style.js" />
     <Content Include="app\tokens.js" />
     <Content Include="app\views\add-edit-project.html" />
     <Content Include="app\views\configure.html" />
     <Content Include="app\views\landing.html" />
+    <Content Include="app\views\summary_list.html" />
     <Content Include="app\views\summary.html" />
     <Content Include="app\views\theme\foot.html" />
     <Content Include="app\views\theme\header.html" />
     <Content Include="app\views\theme\layout.html" />
     <Content Include="app\views\theme\scripts.html" />
+    <Content Include="app\views\_globals.html" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -102,7 +103,6 @@
     <Content Include="app\views\index.html" />
     <Content Include="app\views\layout.html" />
     <Content Include="app\views\login.html" />
-    <Content Include="app\views\phaseview.html" />
     <Content Include="app\views\project.html" />
     <Content Include="app\views\team-page.html" />
     <Content Include="app\views\thank_you.html" />

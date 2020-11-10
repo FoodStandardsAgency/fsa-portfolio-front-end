@@ -5,15 +5,18 @@
 <div class="row">
 <div class="col-sm-1"></div>
 <div class="col-sm-10">
-
+	{% if title %}
+	<h1 class="heading-xlarge" style="margin-bottom:15px;">{{title}}</h1><br />
+	{% else %}
 	<h1 class="heading-xlarge" style="margin-bottom:15px;">Oops...</h1><br />
-
-	
-		<p>{{ message }}</p>
-		
-		<p><a href="/">Go back to the homepage</a></p>
-			
-	</div>
+	{% endif %}
+	<p>{{ message }}</p>
+	{% if link %}
+	<p><a href="{{link.url}}">{{link.text}}</a></p>
+	{% else %}
+	<p><a href="/">Go back to the homepage</a></p>
+	{% endif %}
+</div>
 </div>
 <div class="col-sm-1"></div>
 </div>

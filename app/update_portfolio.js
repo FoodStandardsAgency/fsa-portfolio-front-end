@@ -1,66 +1,51 @@
 const queries = require('./queries');
 const _ = require('lodash');
+const handleError = require('./error');
 
-
-function handleError(error) {
-	console.log('***************************');
-	console.log(error.message);
-	if (error.stack) console.log(error.stack);
-	if (error.response) {
-		console.log('Response from server:');
-		console.log(error.response.url);
-		console.log(error.response.body.ExceptionMessage);
-		console.log(error.response.body);
-	}
-	console.log('***************************');
-}
-
-
-async function edit(req, res) {
+async function renderEditForm(req, res) {
 	try {
-		if (req.session.user == 'portfolio') {
+		var isAdmin = (req.session.user === 'portfolio');
+		var portfolio = req.params.portfolio;
+		var project_id = req.params.project_id;
+		var result = await queries.load_project_foredit(project_id);
+		var project = result.body.project;
+		var config = result.body.config;
+		var options = result.body.options;
 
-			var portfolio = req.params.portfolio;
-			var project_id = req.params.project_id;
-			var result = await queries.load_project(project_id, { includeConfig: true, includeOptions: true });
-			var project = result.body.project;
-			var config = result.body.config;
-			var options = result.body.options;
+		var fieldGroups = _.chain(config.labels)
+			.orderBy("grouporder", "fieldorder")
+			.groupBy("fieldgroup")
+			.map((value, key) => ({
+				"fieldgroup": key,
+				labels: value,
+				display: (_.findIndex(value, { included: true }) >= 0)
+			}))
+			.value();
 
-			var fieldGroups = _.chain(config.labels)
-				.orderBy("grouporder", "fieldorder")
-				.groupBy("fieldgroup")
-				.map((value, key) => ({
-					"fieldgroup": key,
-					labels: value,
-					display: (_.findIndex(value, { included: true }) >= 0)
-				}))
-				.value();
+		//console.log(config.labels);
 
-			//console.log(fieldGroups);
-
-			res.render('add-edit-project', {
-				"title": "Edit project",
-				"user": req.session.user, // need access-level to determine whether user can add projects
-				"project": project,
-				"options": options,
-				"sess": req.session,
-				"portfolio": portfolio,
-				"fieldgroups": fieldGroups
-			});
-
-		}
-		else { res.render('error_page', { message: 'You are not authorised to view this page' }); }
+		res.render('add-edit-project', {
+			"title": "Edit project",
+			"user": req.session.user, // need access-level to determine whether user can add projects
+			"isAdmin": isAdmin,
+			"project": project,
+			"options": options,
+			"sess": req.session,
+			"portfolio": portfolio,
+			"fieldgroups": fieldGroups
+		});
 	}
 	catch (error) {
 		handleError(error);
 		res.end();
 	}
 }
-async function add(req, res) {
+
+async function renderAddForm(req, res) {
 	try {
 		if (req.session.user == 'portfolio') {
 
+			var isAdmin = (req.session.user === 'portfolio');
 			var portfolio = req.params.portfolio;
 			var result = await queries.newproject_config(portfolio);
 			var project = result.body.project;
@@ -98,7 +83,41 @@ async function add(req, res) {
 	}
 }
 
+async function updateProject(req, res) {
+	try {
+		var portfolio = req.params.portfolio;
+		console.log(req.body);
+		await queries.project_update(req.body);
+		res.redirect(`/${portfolio}/Projects/${req.body.project_id}`);
+		res.end();
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+}
+
+async function searchUsers(req, res) {
+	try {
+		var portfolio = req.params.portfolio;
+		var term = req.query.q;
+		var response = await queries.users_search(portfolio, term);
+
+		var result = response.body.searchresults.map(function (u) { return { value: u.userPrincipalName, text: u.displayName }; });
+
+		var json = JSON.stringify(result);
+		res.setHeader('Content-Type', 'application/json');
+		res.end(json);
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+}
+
 module.exports = {
-	edit: edit,
-	add: add
+	renderEditForm: renderEditForm,
+	renderAddForm: renderAddForm,
+	updateProject: updateProject,
+	searchUsers: searchUsers
 };

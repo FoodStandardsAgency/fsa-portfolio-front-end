@@ -2,6 +2,8 @@ const crypto	= require('crypto');
 const tokens = require('./tokens');
 const graph = require('./graph');
 const backend = require('./backend');
+const handleError = require('./error');
+
 
 // Redirect not logged in users to the login page
 function requireLogin(req, res, next) {
@@ -36,7 +38,7 @@ function login(req, res) {
 
 	(async () => {
 		try {
-			const { body } = await backend.api.post('Users', {
+			const { body } = await backend.api.post('Users/legacy', {
 				json: {
 					userName: user,
 					passwordHash: prov_hash
@@ -60,6 +62,7 @@ function login(req, res) {
 		}
 		catch (error) {
 			console.log(`Login failed: received error from API - ${error.message}`)
+			handleError(error);
 			req.session.destroy;
 			res.redirect('/login');
 			res.end();
@@ -89,7 +92,7 @@ function loginUser(req, res, loginUser) {
 
 	(async () => {
 		try {
-			const { body } = await backend.api.post('ADUsers', {
+			const { body } = await backend.api.post('Users/LegacyADUsers', {
 				json: {
 					userName: loginUser
 				}

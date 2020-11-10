@@ -1,24 +1,26 @@
 {% extends "theme/layout.html" %}
-{% block head %}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ajax-bootstrap-select/1.4.5/css/ajax-bootstrap-select.min.css" integrity="sha512-k9D6Fzp2d9BxewMk+gYYmlGYxv7DLVC46DiCRv3DrAwBkbjSBZCnhBhWCugLuhkTS36QgQ3h7BwkkkfkJk7cXQ==" crossorigin="anonymous" />
+{% endblock %}
 {% block content %}
-
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-xl-8 col-md-8 col-sm-10 py-3">
-	
-	<h1 class="project-title">{{title}}</h1>
-	
-	<br /><br />
+
+		<h1 class="project-title">{{title}}</h1>
+
+		<br /><br />
 
 		<form action="/{{portfolio}}/update" method="post">
 
-		{% for fieldgroup in fieldgroups %}
-		{% if fieldgroup.display %}
+			{% for fieldgroup in fieldgroups %}
+			{% if fieldgroup.display %}
 			<div class="project-field-group">
 				<h2 class="heading-medium">{{fieldgroup.fieldgroup}}</h2>
 				{% for label in fieldgroup.labels %}
-				{% if label.included %}
-				{% set readonly = ((label.admin and user !='portfolio') or label.inputtype == 'auto') %}
+				{% set labelIncluded = (label.included and ((not label.admin) or (label.admin and (isAdmin or label.editorcanview)))) %}
+				{% if labelIncluded %}
+				{% set readonly = ((label.admin and not isAdmin) or label.inputtype == 'auto') %}
 				{% set label_col = 'col-sm-4 col-md-4' %}
 				{% set input_col = 'col-sm-8 col-md-8' %}
 				{% set date_input_col = 'col-sm-6 col-md-5' %}
@@ -33,20 +35,39 @@
 						<input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {% if readonly %}readonly{% endif %}>
 					</div>
 
-					{% case 'freetextarea' %}
+					{% case 'smallfreetextarea' %}
 					<div class="{{input_col}}">
 						<textarea type="text" rows="2" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+					</div>
+					{% case 'mediumfreetextarea' %}
+					<div class="{{input_col}}">
+						<textarea type="text" rows="4" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+					</div>
+					{% case 'largefreetextarea' %}
+					<div class="{{input_col}}">
+						<textarea type="text" rows="6" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+					</div>
+					{% case 'projectupdatetext' %}
+					<div class="{{input_col}}">
+						<div>
+							<textarea type="text" rows="6" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+						</div>
+						{% if project.lastupdate %}
+						<div class="last-update-text">
+							<p style="white-space: pre-wrap;"><span style="font-weight:700">{{ project.lastupdate.timestamp | date(globals.timestampFormat) | safe }}</span> - {{ project.lastupdate.text | safe }}</p>
+						</div>
+						{% endif %}
 					</div>
 
 					{% case 'optionlist' %}
 					{% case 'predefinedlist' %}
 					{% case 'ragchoice' %}
+					{% case 'phasechoice' %}
 					<div class="{{input_col}}">
 						{% if options[label.field] %}
 						<select class="form-control" id="id_{{label.field}}" name="{{label.field}}">
 							{% for option in options[label.field] %}
-							{% set selected = option.value == project[label.field] %}
-							<option value="{{option.value}}" {% if selected %} selected{% endif %}>{{option.display}}</option>
+							<option value="{{option.value}}" {{ "selected" if option.value == project[label.field] }}>{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -57,9 +78,9 @@
 					{% case 'projectmultiselect' %}
 					<div class="{{input_col}}">
 						{% if options[label.field] %}
-						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
+						<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
 							{% for option in options[label.field].items %}
-							<option value="{{option.value}}" data-tokens="{{option.tokens}}">{{option.display}}</option>
+							<option value="{{option.value}}" data-tokens="{{option.tokens}}" {{ "selected" if project[label.field] and project[label.field].includes(option.value) }}>{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -72,7 +93,7 @@
 						{% if options[label.field] %}
 						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="true">
 							{% for option in options[label.field].items %}
-							<option value="{{option.value}}" data-tokens="{{option.tokens}}">{{option.display}}</option>
+							<option value="{{option.value}}" data-tokens="{{option.tokens}}" {{ "selected" if option.value == project[label.field] }}>{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -84,9 +105,35 @@
 					{% case 'predefinedmultilist' %}
 					<div class="{{input_col}}">
 						{% if options[label.field] %}
-						<select class="selectpicker form-control" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="false" multiple>
+						<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="false" multiple>
 							{% for option in options[label.field].items %}
-							<option value="{{option.value}}">{{option.display}}</option>
+							<option value="{{option.value}}" {{ "selected" if project[label.field] and project[label.field].includes(option.value) }}>{{option.display}}</option>
+							{% endfor %}
+						</select>
+						{% else %}
+						<span><i>The {{label.label}} field has no options configured. Please contact the portfolio administrator</i></span>
+						{% endif %}
+					</div>
+
+					{% case 'adusersearch' %}
+					<div class="{{input_col}}">
+						{% if options[label.field] %}
+						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/users/search" name="{{label.field}}[value]" data-live-search="true">
+							{% if project[label.field] %}
+							<option value="{{project[label.field].value}}" selected>{{project[label.field].text}}</option>
+							{% endif %}
+						</select>
+						{% else %}
+						<span><i>The {{label.label}} field has no options configured. Please contact the portfolio administrator</i></span>
+						{% endif %}
+					</div>
+
+					{% case 'adusermultisearch' %}
+					<div class="{{input_col}}">
+						{% if options[label.field] %}
+						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/users/search" name="{{label.field}}[]" data-live-search="true" multiple>
+							{% for item in project[label.field] %}
+							<option value="{{item.value}}" selected>{{item.text}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -96,23 +143,29 @@
 
 					{% case 'linkeditemlist' %}
 					<div class="{{input_col}}">
-						<!-- HIDDEN DYNAMIC ELEMENT TO CLONE -->
-						<div class="form-group dynamic-element" style="display:none">
-							<div class="row">
-								<div class="col-md-3"><input type="text" class="form-control" name="{{label.field}}[][name]" placeholder="{{label.label}} name"></div>
-								<div class="col-md-8"><input type="text" class="form-control" name="{{label.field}}[][link]" placeholder="{{label.label}} link"></div>
-								<div class="col-md-1"><p class="delete">x</p></div>
+						<template id="doctemplate-{{label.field}}">
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-3"><input type="text" class="form-control name" placeholder="{{label.label}} name"></div>
+									<div class="col-md-8"><input type="text" class="form-control link" placeholder="{{label.label}} link"></div>
+									<div class="col-md-1"><p class="delete" style="cursor:pointer;">x</p></div>
+								</div>
 							</div>
-						</div>
-						<!-- END OF HIDDEN ELEMENT -->
-
+						</template>
 						<fieldset>
-							<div class="dynamic-stuff">
-								<!-- Dynamic element will be cloned here -->
-								<!-- You can call clone function once if you want it to show it a first element-->
+							<div id="doclist-{{label.field}}" data-count="{{project[label.field].length}}">
+								{% for doc in project[label.field] %}
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-3"><input type="text" class="form-control" name="{{label.field}}[{{loop.index}}][name]" placeholder="{{label.label}} name" value="{{doc.name}}"></div>
+										<div class="col-md-8"><input type="text" class="form-control" name="{{label.field}}[{{loop.index}}][link]" placeholder="{{label.label}} link" value="{{doc.link}}"></div>
+										<div class="col-md-1"><p class="delete" style="cursor:pointer;" onclick="this.closest('.form-group').remove();">x</p></div>
+									</div>
+								</div>
+								{% endfor %}
 							</div>
 
-							<p class="add-one">+ add documents</p>
+							<p class="add-doc" data-field="{{label.field}}" style="cursor:pointer;">+ add documents</p>
 						</fieldset>
 					</div>
 
@@ -149,7 +202,12 @@
 
 					{% case 'date' %}
 					<div class="{{date_input_col}}">
-						<input type="date" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}" class="form-control" aria-label="Date" {% if readonly %}readonly{% endif %}>
+						<input type="date" name="{{label.field}}" value="{{project[label.field] | date('YYYY-MM-DD')}}" id="ID_{{label.field}}" class="form-control" aria-label="Date" {% if readonly %}readonly{% endif %}>
+					</div>
+
+					{% case 'month' %}
+					<div class="{{date_input_col}}">
+						<input type="month" name="{{label.field}}" value="{{project[label.field] | date('YYYY-MM')}}" id="ID_{{label.field}}" class="form-control" aria-label="Date" {% if readonly %}readonly{% endif %}>
 					</div>
 
 
@@ -165,16 +223,28 @@
 				{% endif %}
 				{% endfor %}
 			</div>
-		{% endif %}
-		{% endfor %}
+			{% endif %}
+			{% endfor %}
 
-		<div class="form-group row">
-			<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>
-		</div>
+			<div class="form-group row">
+				<div class="col-sm-12"><button class="btn btn-primary" type="submit">Submit</button></div>
+			</div>
 
 		</form>
-	
+
 	</div>
 	<div class="col-xl-3 col-md-3 col-sm-1 py-3"></div>
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ajax-bootstrap-select/1.4.5/js/ajax-bootstrap-select.min.js" integrity="sha512-HExUHcDgB9r00YwaaDe5z9lTFmTChuW9lDkPEnz+6/I26/mGtwg58OHI324cfqcnejphCl48MHR3SFQzIGXmOA==" crossorigin="anonymous"></script>
+<script>
+	$(document).ready(function () {
+		$('.adusersearch').selectpicker({ liveSearch: true }).ajaxSelectPicker();
+	});
+
+</script>
+
 {% endblock %}

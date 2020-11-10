@@ -1,4 +1,4 @@
-var express 			= require('express');
+var express = require('express');
 var { check } 		= require('express-validator');
 const _ 				= require('lodash');
 const multer			= require('multer');
@@ -7,6 +7,7 @@ const xss				= require('xss');
 const stringify 		= require('csv-stringify')
 
 // Custom modules
+const handleError		= require('./error');
 const config 			= require('./config');
 var queries 			= require('./queries');
 
@@ -23,8 +24,6 @@ const project_view 		= require('./project_view');
 const odd_view			= require('./oddleads_view');
 
 var router = express.Router();
-const backend = require('./backend');
-
 
 // Add timestamps to logs
 require('log-timestamp');
@@ -43,18 +42,7 @@ function nestedGroupBy(data, keys) {
  return grouped;
 }
 
-function handleError(error) {
-	console.log('***************************');
-	if (error.response) {
-		console.log(error.response.url);
-		console.log(error.response.body.ExceptionMessage);
-		console.log(error.response.body);
-	}
-	else {
-		console.log(error.message);
-	}
-	console.log('***************************');
-}
+
 
 
 
@@ -99,16 +87,11 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
 
 		var portfolio = req.params.portfolio;
 		var result = await queries.portfolio_config(portfolio);
-		var config = result.body;
+		var portfolioconfig = result.body;
 
 		//console.log(config.labels);
 
-
-		var fieldGroups = _.chain(config.labels)
-			.orderBy("grouporder", "fieldorder")
-			.groupBy("fieldgroup")
-			.map((value, key) => ({ "fieldgroup": key, labels: value }))
-			.value();
+		var fieldGroups = config.getFieldGroups(portfolioconfig);
 
 		//console.log(fieldGroups);
 
@@ -136,8 +119,20 @@ router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
 		res.end();
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (error.response.statusCode == 403) {
+			res.render('error_page', {
+				title: "Configuration Error",
+				message: error.response.statusMessage,
+				link: {
+					url: `/${portfolio}/configure`,
+					text: "Back to configuration"
+				}
+			});
+		}
+		else {
+			handleError(error);
+			res.end();
+		}
 	}
 
 })
@@ -148,136 +143,93 @@ router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
 // SUMMARY PAGES
 //-------------------------------------------------------------------
 
-router.get('/:portfolio', login.requireLogin, async (req, res) => {
+router.get('/:portfolio', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
-
-	var response = await queries.portfolio_summary(portfolio);
-	var summary = response.body;
-	
-	queries.current_projects(portfolio)
-	.then((result) => {
+	try {
+		var response = await queries.portfolio_summary(portfolio, "category");
+		var summary = response.body;
 		res.render('summary', {
 			"sess": req.session,
 			"portfolio": portfolio,
 			"summary": summary
 		});
-	})
-	.catch();
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+    }
 });
 
 
-router.get('/:portfolio/priority/', login.requireLogin, function (req, res) {	
+router.get('/:portfolio/priority/', login.requireLogin, async function (req, res) {	
 	var portfolio = req.params.portfolio;
-	
-	if (portfolio == 'odd'){var phase_names = ['Backlog', 'Discovery', 'Alpha', 'Beta', 'Live'];}
-	else if (portfolio == 'serd'){var phase_names = ['In development', 'Awaiting decision', 'Waiting to start', 'Underway', 'Complete'];}
-	else if (portfolio == 'abc'){var phase_names = ['Feasibility', 'Appraise & Select', 'Define', 'Deliver', 'Embed/Close']}
-	else {var phase_names = [];}
-	
-	queries.current_projects(portfolio)
-	.then((result) => {
+	try {
+		var response = await queries.portfolio_summary(portfolio, "priority");
+		var summary = response.body;
 		res.render('summary', {
-			"data": nestedGroupBy(result.body, ['pgroup', 'phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"themes": config.priorities,
-			"phases":config.phases,
 			"sess": req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"summary": summary
 		});
-	});	
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+
 });
 
-router.get('/:portfolio/team/', login.requireLogin, function (req, res) {	
-var portfolio = req.params.portfolio;
-
-	if (portfolio == 'odd'){
-		var phase_names = ['Backlog', 'Discovery', 'Alpha', 'Beta', 'Live'];
-		
-		var teams_map = [
-		['Data', 'Data'],
-		['Digital', 'Digital'],
-		['KIM', 'KIM'],
-		['IT', 'IT'],
-		['', 'Not assigned'],
-		];
-		}
-	else if (portfolio == 'serd'){
-		var phase_names = ['In development', 'Awaiting decision', 'Waiting to start', 'Underway', 'Complete'];
-		var teams_map = [
-		['Data', 'SERD team 1'],
-		['Digital', 'SERD team 2'],
-		['KIM', 'SERD team 3'],
-		['IT', 'SERD team 4'],
-		['', 'Not assigned'],
-		];
-		}
-	else if (portfolio == 'abc'){
-		var phase_names = ['Feasibility', 'Appraise & Select', 'Define', 'Deliver', 'Embed/Close']
-		var teams_map = [
-		['Data', 'ABC team 1'],
-		['Digital', 'ABC team 2'],
-		['KIM', 'ABC team 3'],
-		['IT', 'ABC team 4'],
-		['', 'Not assigned'],
-		];
-		}
-	else {var phase_names = [];}
-	
-	queries.current_projects(portfolio)
-	.then((result) => {
+router.get('/:portfolio/team/', login.requireLogin, async function (req, res) {	
+	var portfolio = req.params.portfolio;
+	try {
+		var response = await queries.portfolio_summary(portfolio, "team");
+		var summary = response.body;
 		res.render('summary', {
-			"data": nestedGroupBy(result.body, ['g6team', 'phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"themes": teams_map,
-			"phases":config.phases,
-			"phase_names": phase_names,
 			"sess": req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"summary": summary
 		});
-	});	
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
 });
 
-router.get('/:portfolio/rag/', login.requireLogin, function (req, res) {
+router.get('/:portfolio/rag/', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
-	
-	if (portfolio == 'odd'){var phase_names = ['Backlog', 'Discovery', 'Alpha', 'Beta', 'Live'];}
-	else if (portfolio == 'serd'){var phase_names = ['In development', 'Awaiting decision', 'Waiting to start', 'Underway', 'Complete'];}
-	else if (portfolio == 'abc'){var phase_names = ['Feasibility', 'Appraise & Select', 'Define', 'Deliver', 'Embed/Close']}
-	else {var phase_names = [];}
-	
-	queries.current_projects(portfolio)
-	.then((result) => {
-		  res.render('summary', {
-			"data": 	nestedGroupBy(result.body, ['rag', 'phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"themes": 	config.rags,
-			"phases":	config.phases,
-			"phase_names": phase_names,
+	try {
+		var response = await queries.portfolio_summary(portfolio, "rag");
+		var summary = response.body;
+		res.render('summary', {
 			"sess": req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"summary": summary
 		});
-	});	
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+
 });
 
-router.get('/:portfolio/status/', login.requireLogin, function (req, res) {
+router.get('/:portfolio/status/', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
-	
-	if (portfolio == 'odd'){var phase_names = ['Backlog', 'Discovery', 'Alpha', 'Beta', 'Live'];}
-	else if (portfolio == 'serd'){var phase_names = ['In development', 'Awaiting decision', 'Waiting to start', 'Underway', 'Complete'];}
-	else if (portfolio == 'abc'){var phase_names = ['Feasibility', 'Appraise & Select', 'Define', 'Deliver', 'Embed/Close']}
-	else {var phase_names = [];}
-	
-	queries.current_projects(portfolio)
-	.then((result) => {
-		res.render('phaseview', {
-			"data": nestedGroupBy(result.body, ['phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"phases":	config.phases,
+	try {
+		var response = await queries.portfolio_summary(portfolio, "phase");
+		var summary = response.body;
+		res.render('summary_list', {
 			"sess": req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"summary": summary
 		});
-	})
-	.catch();	
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+
 });
 
 router.get('/:portfolio/new_projects/', login.requireLogin, function (req, res) {	
@@ -316,7 +268,6 @@ router.get('/:portfolio/completed', login.requireLogin, function (req, res){res.
 
 router.get('/:portfolio/portfolio-team', login.requireLogin, (req, res) => {
 	var portfolio = req.params.portfolio;
-	
 	if(req.session.user == 'portfolio') {res.render('team-page', {"sess": req.session, "portfolio":portfolio});}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 });
@@ -326,8 +277,8 @@ router.get('/:portfolio/portfolio-team', login.requireLogin, (req, res) => {
 // FILTER VIEW
 //-------------------------------------------------------------------
 
-router.get ('/:portfolio/filter-view', login.requireLogin, function (req,res) {res.render('filter_view', {"sess": req.session});});
-router.post('/:portfolio/filter-view', login.requireLogin, function (req,res) {filter_view(req,res)});
+router.get('/:portfolio/filter-view', login.requireLogin, async function (req, res) { await filter_view.view(req, res); });
+router.post('/:portfolio/filter-view', login.requireLogin, async function (req,res) { await filter_view.getResults(req,res)});
 
 //-------------------------------------------------------------------
 // PROJECT VIEW
@@ -339,15 +290,19 @@ router.get('/:portfolio/Projects/:project_id', login.requireLogin, async functio
 // RENDER FORMS
 //-------------------------------------------------------------------
 router.get('/:portfolio/add', login.requireLogin, async function (req, res) {
-	await update_portfolio.add(req, res);
+	await update_portfolio.renderAddForm(req, res);
 });
 
 router.get('/:portfolio/edit/:project_id', login.requireLogin, async function (req, res) {
-	await update_portfolio.edit(req, res);
+	await update_portfolio.renderEditForm(req, res);
 });
 	
 router.get('/portfolio-update/:project_id', login.requireLogin, async function (req, res) {
-	await update_portfolio.edit(req, res);
+	await update_portfolio.renderEditForm(req, res);
+});
+router.get('/:portfolio/update/:project_id', login.requireLogin, (req, res) => {
+	if (req.session.user == 'portfolio' || req.session.user == 'odd' || req.session.user == 'team_leaders') { update_portfolio.renderEditForm(req, res); }
+	else { res.render('error_page', { message: 'You are not authorised to view this page' }); }
 });
 
 router.get('/portfolio-delete/:project_id', login.requireLogin, function (req, res) {
@@ -355,31 +310,13 @@ router.get('/portfolio-delete/:project_id', login.requireLogin, function (req, r
 	else {res.render('error_page', {message: 'You are not authorised to view this page'})};
 });
 
-router.get('/:portfolio/update/:project_id', login.requireLogin, (req, res) => {
-	if (req.session.user == 'portfolio' || req.session.user == 'odd' || req.session.user == 'team_leaders') { update_portfolio.edit(req, res);}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
-});
 
 //-------------------------------------------------------------------
 // ADD/UPDATE PROJECTS - handle form submissions
 //-------------------------------------------------------------------
 router.post('/process-project-form', login.requireLogin, async function (req, res) { handle_form(req, res); });
-
-router.post('/:portfolio/update', login.requireLogin, async (req, res) => {
-	try {
-		var portfolio = req.params.portfolio;
-		//console.log(req.body);
-		await queries.project_update(req.body);
-		res.redirect(`/${portfolio}/Projects/${req.body.project_id}`);
-		res.end();
-	}
-	catch (error) {
-		handleError(error);
-		res.end();
-	}
-
-})
-
+router.post('/:portfolio/update', login.requireLogin, async function (req, res) { update_portfolio.updateProject(req, res); });
+router.get('/:portfolio/users/search', login.requireLogin, async function (req, res) { update_portfolio.searchUsers(req, res); });
 	
 //-------------------------------------------------------------------
 // DELETE PROJECTS - handle form submissions
@@ -391,81 +328,39 @@ router.post('/delete_project_process', login.requireLogin, function (req, res) {
 // Export latest projects as a csv
 //-------------------------------------------------------------------	
 
-router.get('/:portfolio/download/csv', login.requireLogin, function(req,res){
+router.get('/:portfolio/download/csv', login.requireLogin, async function(req,res){
 
 	var portfolio = req.params.portfolio;
 	
-	if(req.session.user == 'portfolio') {
-		queries.latest_projects(portfolio)
-		.then( (result) => {
-						
-			for (i = 0; i < result.body.length; i++){
-			/*Project size*/
-			if(result.body[i].project_size == 's') {result.body[i].project_size = 'Small'}
-			else if(result.body[i].project_size == 'm') {result.body[i].project_size = 'Medium'}
-			else if(result.body[i].project_size == 'l') {result.body[i].project_size = 'Large'}
-			else if(result.body[i].project_size == 'x') {result.body[i].project_size = 'Extra Large'}
-			else {result.body[i].project_size = 'Not set'}
-			
-			/*Phase*/
-			if(result.body[i].phase == 'backlog') 	{result.body[i].phase = 'Backlog'}
-			else if(result.body[i].phase == 'discovery') {result.body[i].phase = 'Discovery'}
-			else if(result.body[i].phase == 'alpha') 	{result.body[i].phase = 'Alpha'}
-			else if(result.body[i].phase == 'beta') 		{result.body[i].phase = 'Beta'}
-			else if(result.body[i].phase == 'live') 		{result.body[i].phase = 'Live'}
-			else if(result.body[i].phase == 'completed') {result.body[i].phase = 'Completed'}
-			else {result.body[i].phase = 'Not set'}
-			
-			/*Category*/
-			if(result.body[i].category == 'cap') 	{result.body[i].category = 'Developing our digital capability'}
-			else if(result.body[i].category == 'data')	{result.body[i].category = 'Data driven FSA'}
-			else if(result.body[i].category == 'sm') 	{result.body[i].category = 'IT Service management'}
-			else if(result.body[i].category == 'ser') 	{result.body[i].category = 'Digital services development and support'}
-			else if(result.body[i].category == 'it') 	{result.body[i].category = 'Evergreen IT'}
-			else if(result.body[i].category == 'res') 	{result.body[i].category = 'Protecting data and business resilience'}
-			else {result.body[i].category = 'Not set'}
-				
-			/*Budget*/
-			if(result.body[i].budgettype == 'admin') 	{result.body[i].budgettype = 'Admin'}
-			else if(result.body[i].budgettype == 'progr') 	{result.body[i].budgettype = 'Programme'}
-			else if(result.body[i].budgettype == 'capit') 	{result.body[i].budgettype = 'Capital'}
-			else {result.body[i].budgettype = 'Not set'}
-			
-			/*Directorate*/
-			if(result.body[i].direct == 'ODD') 	{result.body[i].direct = 'Openness Data & Digital'}
-			else if(result.body[i].direct == 'COMMS') 	{result.body[i].direct = 'Communications'}
-			else if(result.body[i].direct == 'IR') 	{result.body[i].direct = 'Incidents & Resilience'}
-			else if(result.body[i].direct == 'FO') 	{result.body[i].direct = 'Field Operations'}
-			else if(result.body[i].direct == 'FP') 	{result.body[i].direct = 'Finance & Performance'}
-			else if(result.body[i].direct == 'FSP') 	{result.body[i].direct = 'Food Safety Policy'}
-			else if(result.body[i].direct == 'FSA') 	{result.body[i].direct = 'FSA Wide'}
-			else if(result.body[i].direct == 'NFCU') 	{result.body[i].direct = 'National Food Crime Unit'}
-			else if(result.body[i].direct == 'NI') 	{result.body[i].direct = 'Northern Ireland'}
-			else if(result.body[i].direct == 'PEOP') 	{result.body[i].direct = 'People'}
-			else if(result.body[i].direct == 'RC') 	{result.body[i].direct = 'Regulatory Compliance'}
-			else if(result.body[i].direct == 'SERD') 	{result.body[i].direct = 'Science Evidence & Research'}
-			else if(result.body[i].direct == 'SLG') 	{result.body[i].direct = 'Strategy Legal & Governance'}
-			else if(result.body[i].direct == 'WAL') 	{result.body[i].direct = 'Wales'}
-			else {result.body[i].direct = 'Not set'}	
-			
-			/*RAG*/
-			if(result.body[i].rag == 'gre') {result.body[i].rag = 'Green'}
-			else if(result.body[i].rag == 'nor') {result.body[i].rag = 'Not set'}
-			else if(result.body[i].rag == 'amb') {result.body[i].rag = 'Amber'}
-			else if(result.body[i].rag == 'red') {result.body[i].rag = 'Red'}
-			else {result.body[i].rag = 'Not set'}
-			}
+	if (req.session.user == 'portfolio') {
+		try {
+			var result = await queries.portfolio_export(portfolio);
+			res.setHeader('Content-Type', 'text/csv');
+			res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'latest_projects-' + Date.now() + '.csv\"');
+			res.setHeader('Cache-Control', 'no-cache');
+			res.setHeader('Pragma', 'no-cache');
+			var config = result.body.config;
+			var projects = result.body.projects
 
-		  res.setHeader('Content-Type', 'text/csv');
-		  res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'latest_projects-' + Date.now() + '.csv\"');
-		  res.setHeader('Cache-Control', 'no-cache');
-		  res.setHeader('Pragma', 'no-cache');
+			var columns = _.chain(config.labels)
+				.orderBy("grouporder", "fieldorder")
+				.map((value) => ({
+					key: value.field,
+					header: value.label
+				}))
+				.value();
 
-		  stringify(result.body, { header: true })
-			.pipe(res);
+			//console.log("Columns...");
+			//console.log(columns);
 
-		})
-		.catch();
+			stringify(projects, { header: true, columns: columns })
+				.pipe(res);
+
+		}
+		catch (error) {
+			handleError(error);
+			res.end();
+        }
 	}
 	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
 })

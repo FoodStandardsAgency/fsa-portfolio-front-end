@@ -4,9 +4,10 @@ const express 	= require('express');
 const session = require('express-session');
 //const session	= require('client-sessions');
 const flash = require('connect-flash');
-const nunjucks  = require('nunjucks');
+const nunjucks = require('nunjucks');
+const dateFilter = require('nunjucks-date-filter');
+
 const queries 	= require('./app/queries');
-const moment	= require('moment');
 var CronJob = require('cron').CronJob;
 
 const passport = require('passport');
@@ -55,13 +56,15 @@ app.use(function (req, res, next) {
 
 // Views & Nunjucks
 app.set('view engine', 'html');
-nunjucks.configure(__dirname + '/app/views', {
+var njenv = nunjucks.configure(__dirname + '/app/views', {
     autoescape: true,
 	trimBlocks: true, 
 	lstripBlocks: true, 
 	watch: true,
     express: app
 });
+dateFilter.setDefaultFormat('DD MMM YYYY');
+dateFilter.install(njenv, 'date');
 
 app.use(morgan('dev'));
 

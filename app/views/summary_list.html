@@ -13,8 +13,6 @@
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
 </div>
 
-
-
 <!-- Numbers in each stage -->
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
@@ -26,24 +24,17 @@
 
 <br />
 <br />
-{% for summary in summary.summaries %}
-<div class="row">
-	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-	<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="service-area"><a name="{{ summary.viewkey }}" class="anchors">{{ summary.name }}</a></h2><hr /></div>
-	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-</div>
-
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
-	{% for phase in summary.phases %}
-
-	<div class="col-xl-2 col-md-2 col-sm-2 py-3">
+	<div class="col-sm-10">
+		{% for summary in summary.summaries %}
+		<h2 class="heading-large service-area"><a name="{{ summary.viewkey }}" class="anchors">{{ summary.name | safe | capitalize }}</a></h2>
+		{% for phase in summary.phases %}
 		{% if phase.projects.length > 0 %}
-
 		<ul class="link-list border-{{phase.viewkey}}">
 			{% for project in phase.projects %}
 			<li>
-				<a href="/{{portfolio}}/Projects/{{ project.project_id }}" class="nodec">{{ project.name | safe}}</a>
+				<a href="/{{portfolio}}/Projects/{{ project.project_id }}">{{ project.name | safe}}</a>
 				{% if project.new_flag == 'Y' %}
 				<span class="new_tag">NEW</span>
 				{% endif %}
@@ -51,18 +42,13 @@
 			<br />
 			{% endfor %}
 		</ul>
-
 		{% else %}
-		&nbsp;
 		{% endif %}
+		{% endfor %}
+		{% endfor %}
 	</div>
-
-	{% endfor %}
-
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 </div>
 <br />
 <br />
-{% endfor %}
-
 {% endblock %}

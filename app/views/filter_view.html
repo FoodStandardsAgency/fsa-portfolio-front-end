@@ -5,227 +5,98 @@
 	<div class="row">
 	<div class="col-sm-1"></div>
 	<div class="col-sm-10 py-1">
+		<h1 class="project-title" style="margin-bottom:15px;">Filter projects</h1><br />
 
+		<form action="/{{portfolio}}/filter-view" method="post" id="filter">
+			<input type="hidden" name="portfolio" value="{{portfolio}}" id="id_portfolio">
 
-	<h1 class="project-title" style="margin-bottom:15px;">Filter projects</h1><br />
+			{% set label_col = 'col-sm-2 col-md-2' %}
+			{% set input_col = 'col-sm-10 col-md-10 py-1' %}
+			{% set date_input_col = 'col-sm-6 col-md-5' %}
 
-			<form action="/{{portfolio}}/filter-view" method="post" id="filter">
-			
-			<h2 class="heading-medium" style="margin-bottom:10px;">About the project</h2><br />
-					
-			<div class="row">
-			<div class="col-sm-2"><label for="project_name">Project title or ID includes:&nbsp; &nbsp;</label></div>
-			<div class="col-sm-10 py-1"><input id="project_name" type="text" name="project_name" class="form-control" placeholder="Project title or ID includes" value= "{{form_values[0] | safe}}" /></div>
-			</div>
-					
-			<div class="row">
-			<div class="col-sm-2"><label for="phase">Phase:&nbsp; &nbsp;</label></div>								
-			<div class="col-sm-10 py-1">
-				<select name="phase" class="form-control">
-					<option value="none" 		{% if form_values[1] == 'none' %}		selected {% endif %}>None selected</option>
-					<option value="backlog" 	{% if form_values[1] == 'backlog' %}	selected {% endif %}>Backlog</option>
-					<option value="discovery" 	{% if form_values[1] == 'discovery' %}	selected {% endif %}>Discovery</option>
-					<option value="alpha" 		{% if form_values[1] == 'alpha' %}		selected {% endif %}>Alpha</option>
-					<option value="beta" 		{% if form_values[1] == 'beta' %}		selected {% endif %}>Beta</option>
-					<option value="live" 		{% if form_values[1] == 'live' %}		selected {% endif %}>Live</option>
-					<option value="completed" 	{% if form_values[1] == 'completed' %}	selected {% endif %}>Archived</option>
-					<option disabled>--------------</option>
-					<option value="nback" 		{% if form_values[1] == 'nback' %}	selected {% endif %}>Not in backlog</option>
-					<option value="dab" 		{% if form_values[1] == 'dab' %}	selected {% endif %}>Discovery, Alpha or Beta only</option>
-				</select>
-			</div>
-			</div>
-			
-			<div class="row">
-			<div class="col-sm-2"><label for="onhold">On hold or blocked?:&nbsp; &nbsp;</label></div>								
-			<div class="col-sm-10 py-1">
-				<select name="onhold" class="form-control">
-					<option value="none" 		{% if form_values[8] == 'none' %}		selected {% endif %}>None selected</option>
-					<option value="y" 			{% if form_values[8] == 'y' %}			selected {% endif %}>On hold</option>
-					<option value="b" 			{% if form_values[8] == 'b' %}			selected {% endif %}>Blocked</option>
-					<option value="c" 			{% if form_values[8] == 'b' %}			selected {% endif %}>Covid-19 on hold</option>
-					<option value="n" 			{% if form_values[8] == 'n' %}			selected {% endif %}>No</option>
-				</select>
-			</div>
-			</div>
-			
-			<div class="row">
-			<div class="col-sm-2"><label for="rag">RAG:&nbsp; &nbsp;</label></div>									
-			<div class="col-sm-10 py-1">
-				<select name="rag" class="form-control">
-					<option value="none"{% if form_values[2] == 'none' %}		selected {% endif %}>None selected</option>
-					<option value="red" {% if form_values[2] == 'red' %}		selected {% endif %}>Red</option>
-					<option value="amb" {% if form_values[2] == 'amb' %}		selected {% endif %}>Amber</option>
-					<option value="gre" {% if form_values[2] == 'gre' %}		selected {% endif %}>Green</option>
-					<option value="nor" {% if form_values[2] == 'nor' %}		selected {% endif %}>Undecided</option>
-				</select></div>
-			
-			</div>
+			{% for fieldgroup in fieldgroups %}
+			<h2 class="heading-medium" style="margin-bottom:10px;">{{fieldgroup.fieldgroup}}</h2><br />
+			{% for label in fieldgroup.labels %}
+			{% set labelIncluded = (label.included and ((not label.admin) or (label.admin and (isAdmin or label.editorcanview)))) %}
+			{% if labelIncluded %}
+			<div class="form-group row ">
+				{% switch label.inputtype %}
+				{% case 'auto' %}
+				{% case 'freetext' %}
+				{% case 'smallfreetextarea' %}
+				{% case 'mediumfreetextarea' %}
+				{% case 'largefreetextarea' %}
+				{% case 'projectupdatetext' %}
+				{% case 'adusersearch' %}
+				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}} includes:</label></div>
+				<div class="{{input_col}}">
+					<input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="{{label.label}} includes" value="{{form_values[label.field]}}">
+				</div>
 
-			<div class="row">
-			<div class="col-sm-2"><label for="pgroup">Priority:&nbsp; &nbsp;</label></div>									
-			<div class="col-sm-10 py-1">
-				<select name="pgroup" class="form-control">
-					<option value="none" 		{% if form_values[3] == 'none' %}		selected {% endif %}>None selected</option>
-					<option value="high" 		{% if form_values[3] == 'high' %}		selected {% endif %}>High</option>
-					<option value="medium" 		{% if form_values[3] == 'medium' %}		selected {% endif %}>Medium</option>
-					<option value="low" 		{% if form_values[3] == 'low' %}		selected {% endif %}>Low</option>
-				</select></div>
-			
-			</div>
-				
-			<div class="row">
-			<div class="col-sm-2"><label for="category">Category:&nbsp; &nbsp;</label></div>						
-			<div class="col-sm-10 py-1">
-				<select name="category" class="form-control">
-					<option value="none" {% if form_values[4] == 'none' %}	selected {% endif %}>None selected</option>
-					<option value="data" {% if form_values[4] == 'data' %}	selected {% endif %}>Data driven FSA</option>
-					<option value="cap"  {% if form_values[4] == 'cap' %}	selected {% endif %}>Developing out digital capability</option>
-					<option value="ser"  {% if form_values[4] == 'ser' %}	selected {% endif %}>Digital services development and support</option>
-					<option value="it"   {% if form_values[4] == 'it' %}		selected {% endif %}>Evergreen IT</option>
-					<option value="res"  {% if form_values[4] == 'res' %}	selected {% endif %}>Protecting data and business resilience</option>
-					<option value="sm"   {% if form_values[4] == 'sm' %}		selected {% endif %}>IT Service improvements</option>
-				</select>
-			</div>
-			
-			</div>
-			
-			<div class="row">
-			<div class="col-sm-2"><label for="category">Directorate:&nbsp; &nbsp;</label></div>						
-			<div class="col-sm-10 py-1">
-			<select name="direct" class="form-control">
-				<option value="NONE"  {% if form_values[13] == 'NONE' %}  	selected {% endif %}>None</option>
-				<option value="COMMS" {% if form_values[13] == 'COMMS' %} 	selected {% endif %}>Communications</option>
-				<option value="IR"    {% if form_values[13] == 'IR' %}	  	selected {% endif %}>Incidents & Resilience</option>
-				<option value="FO"    {% if form_values[13] == 'FO' %}	  	selected {% endif %}>Field Operations</option>
-				<option value="FP"    {% if form_values[13] == 'FP' %}	  	selected {% endif %}>Finance & Performance</option>
-				<option value="FSP"   {% if form_values[13] == 'FSP' %}		selected {% endif %}>Food Safety Policy</option>
-				<option value="FSA"   {% if form_values[13] == 'FSA' %}		selected {% endif %}>FSA wide</option>
-				<option value="NFCU"  {% if form_values[13] == 'NFCU' %}	selected {% endif %}>National Food Crime Unit</option>
-				<option value="NI" 	  {% if form_values[13] == 'NI' %}		selected {% endif %}>Northern Ireland</option>
-				<option value="ODD"   {% if form_values[13] == 'ODD' %}		selected {% endif %}>Openness, Data & Digital</option>
-				<option value="PEOP"  {% if form_values[13] == 'PEOP' %}	selected {% endif %}>People</option>
-				<option value="RC"    {% if form_values[13] == 'RC' %}		selected {% endif %}>Regulatory Compliance</option>
-				<option value="SERD"  {% if form_values[13] == 'SERD' %}	selected {% endif %}>Science, Evidence and Research</option>
-				<option value="SLG"   {% if form_values[13] == 'SLG' %}		selected {% endif %}>Strategy, Legal & Governance</option>
-				<option value="WAL"   {% if form_values[13] == 'WAL' %}		selected {% endif %}>Wales</option>
-			</select>
-			</div>
-			
-			</div>
-			
-			<br /><br />
-			
-			<h2 class="heading-medium" style="margin-bottom:10px; ">Project team</h2><br />
-			
-			{% if sess.user == 'portfolio' or sess.user == 'team_leaders' %}
-			<div class="row">
-			<div class="col-sm-2"><label for="g6team">Team:&nbsp; &nbsp;</label></div>				
-			<div class="col-sm-10 py-1">
-			<select name="g6team" class="form-control">
-				<option value="none"  	{% if form_values[5] == 'none' %}	  selected {% endif %}>None selected</option>
-				<option value="Data"  	{% if form_values[5] == 'Data' %}	  selected {% endif %}>Data</option>
-				<option value="Digital" {% if form_values[5] == 'Digital' %} selected {% endif %}>Digital</option>
-				<option value="KIM"  	{% if form_values[5] == 'KIM' %}	  selected {% endif %}>KIM</option>
-				<option value="IT"  	{% if form_values[5] == 'IT' %}	  selected {% endif %}>IT</option>
-				<option value="null"  	{% if form_values[5] == 'null' %}	  selected {% endif %}>Not assigned</option>
-			</select>			
-			</div>
-			
+				{% case 'optionlist' %}
+				{% case 'predefinedlist' %}
+				{% case 'ragchoice' %}
+				{% case 'phasechoice' %}
+				{% case 'projectmultiselect' %}
+				{% case 'predefinedsearchablelist' %}
+				{% case 'multioptionlist' %}
+				{% case 'predefinedmultilist' %}
+				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}} is:</label></div>
+				<div class="{{input_col}}">
+					{% if options[label.field] %}
+					<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
+						{% for option in options[label.field] %}
+						<option value="{{option.value}}" data-tokens="{{option.tokens}}" {{ "selected" if form_values[label.field] and form_values[label.field].includes(option.value) }}>{{option.display}}</option>
+						{% endfor %}
+					</select>
+					{% else %}
+					<span><i>The {{label.label}} field has no options configured. Please contact the portfolio administrator</i></span>
+					{% endif %}
+				</div>
+
+				{% case 'date' %}
+				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
+				<div class="{{input_col}}">
+					<input type="date" class="form-control" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" value="{{form_values[label.field]}}" >
+				</div>
+
+				{% case 'nullableboolean' %}
+				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
+				<div class="{{input_col}}">
+					<select class="selectpicker form-control" name="{{label.field}}">
+						<option value="" {{ "selected" if form_values[label.field] == "" }} >None selected</option>
+						<option value="true" {{ "selected" if form_values[label.field] == "true" }}>Yes</option>
+						<option value="false"{{ "selected" if form_values[label.field] == "false" }}>No</option>
+					</select>
+				</div>
+
+				{% endswitch %}
 			</div>
 			{% endif %}
-			
+			{% endfor %}
+			{% endfor %}
 			<div class="row">
-			<div class="col-sm-2"><label for="oddlead">ODD lead:&nbsp; &nbsp;</label></div>				
-			<div class="col-sm-10 py-1"><input id="oddlead" type="text" name="oddlead" class="form-control" placeholder="ODD lead includes" value= "{{form_values[6] | safe}}" /></div>
-			
+				<div class="col-sm-2"><button class="btn btn-primary" type="submit">Submit</button></div>
+				<div class="col-sm-2"><button class="btn btn-primary" type="reset">Reset</button></div>
 			</div>
-										
-			<div class="row">
-			<div class="col-sm-2"><label for="team">Project team including:&nbsp; &nbsp;</label></div>
-			<div class="col-sm-10 py-1"><input id="team" type="text" name="team" class="form-control" placeholder="Team members include" value= "{{form_values[7] | safe}}" /></div>
-			
-			</div>
-			
-			<br /><br />
-			
-			{% if sess.user == 'portfolio' or sess.user == 'odd' %}
-			<h2 class="heading-medium" style="margin-bottom:10px; ">Updates</h2><br />
-			
-			<div class="row">
-			<div class="col-sm-2"><label for="update_date">Last update before:&nbsp; &nbsp;</label></div>
-			<div class="col-sm-10 py-1"><input id="update_date" type="date" name="update_date" class="form-control" placeholder="dd/mm/yyyy" value= "{{form_values[9] | safe}}" /></div>
-			
-			</div>
-				
-			<div class="row">
-			<div class="col-sm-2"><label for="no_updates">Show projects with no updates:&nbsp; &nbsp;</label></div>
-			<div class="col-sm-10 py-1">
-			<select name="no_updates" class="form-control">
-					<option value="none" {% if form_values[10] == 'none' %}	selected {% endif %}>None selected</option>
-					<option value="y" 	 {% if form_values[10] == 'y' %}	selected {% endif %}>Yes</option>
-					<option value="n" 	 {% if form_values[10] == 'n' %}	selected {% endif %}>No</option>
-			</select>
-			</div>
-			
-			</div>
-			
-			{% endif %}
-			
-			<br /><br />
-			
-			<h2 class="heading-medium" style="margin-bottom:10px; ">Key dates</h2><br />
-			
-			<div class="row">
-			<div class="col-sm-2"><label for="past_start">Past intended start date:&nbsp; &nbsp;</label></div>
-			<div class="col-sm-10 py-1">
-			<select name="past_start" class="form-control">
-					<option value="none" {% if form_values[11] == 'none' %}	selected {% endif %}>None selected</option>
-					<option value="y" 	 {% if form_values[11] == 'y' %}	selected {% endif %}>Yes</option>
-					<option value="n" 	 {% if form_values[11] == 'n' %}	selected {% endif %}>No</option>
-			</select>
-			</div>
-			
-			</div>
-			
-			<div class="row">
-			<div class="col-sm-2"><label for="missed_dead">Missed end date or deadline:&nbsp; &nbsp;</label></div>
-			<div class="col-sm-10 py-1">
-			<select name="missed_dead" class="form-control">
-					<option value="none" {% if form_values[12] == 'none' %}	selected {% endif %}>None selected</option>
-					<option value="y" 	 {% if form_values[12] == 'y' %}	selected {% endif %}>Yes</option>
-					<option value="n" 	 {% if form_values[12] == 'n' %}	selected {% endif %}>No</option>
-			</select>
-			</div>
-			
-			</div>
-			
-			<input name="form_type" 		value="{{ form_type }}" 			hidden />
-			<br />
-			
-			<div class="row">
-			<div class="col-sm-1"><button class="btn btn-primary" type="submit">Submit</button></div>
-			<div class="col-sm-1"><button class="btn btn-primary" type="reset">Reset</button></div>
-			</div>
-			<br /><br /><br />
-		
-			
-			</form>
-			
-			
-			{% if stage == 'results' %}
-			<br />
-			<hr />
-			<br />
-			<h1 class="heading-xlarge" style="margin-bottom:15px; "><a name="results">Results</a></h1><br />
-			
-				<p style=""><strong>Number of projects:</strong> {{ project_cnt }}</p>
-			
-				{% for project in data %}
-				<p style=""><a href="/projects/{{ project.project_id }}">{{ project.project_name | safe}} {{ projects.priority_main }}</a></p>
-				{% endfor %}
 
-			{% endif %}
+		</form>
+
+
+		{% if stage == 'results' %}
+		<br />
+		<hr />
+		<br />
+		<h1 class="heading-xlarge" style="margin-bottom:15px; "><a name="results">Results</a></h1><br />
+
+		<p style=""><strong>Number of projects:</strong> {{ data.project_cnt }}</p>
+
+		{% for project in data.projects %}
+		<p style=""><a href="/{{portfolio}}/Projects/{{ project.project_id }}">{{ project.project_id }} {{ project.project_name | safe}}</a> {{ label_priority_main }}: {{ project.priority_main }} </p>
+		{% endfor %}
+
+		{% endif %}
+
 	</div>
 <div class="col-sm-1"></div>
 </div>
