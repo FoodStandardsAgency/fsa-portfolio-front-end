@@ -350,9 +350,6 @@ router.get('/:portfolio/download/csv', login.requireLogin, async function(req,re
 				}))
 				.value();
 
-			//console.log("Columns...");
-			//console.log(columns);
-
 			stringify(projects, { header: true, columns: columns })
 				.pipe(res);
 
