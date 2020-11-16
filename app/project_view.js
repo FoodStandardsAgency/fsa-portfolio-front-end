@@ -15,7 +15,6 @@ async function project_view(req, res) {
 		var projectDTO = await queries.load_project(project_id, { includeConfig: true, includeHistory: true });
 		var project = projectDTO.body.project;
 		if (project) {
-			//console.log(project);
 
 			if (project.link != null && project.link.link != '') { var links = project.link.link.split(","); } else { var links = ''; }
 

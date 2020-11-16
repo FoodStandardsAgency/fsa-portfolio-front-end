@@ -23,7 +23,7 @@
 				{% set readonly = ((label.admin and not isAdmin) or label.inputtype == 'auto') %}
 				{% set label_col = 'col-sm-4 col-md-4' %}
 				{% set input_col = 'col-sm-8 col-md-8' %}
-				{% set date_input_col = 'col-sm-6 col-md-5' %}
+				{% set date_input_col = 'col-sm-8 col-md-8' %}
 				{% set link1_input_col = 'col-sm-4 col-md-3' %}
 				{% set link2_input_col = 'col-sm-4 col-md-5' %}
 				<div class="form-group row">
@@ -197,9 +197,11 @@
 						<input type="date" name="{{label.field}}" value="{{project[label.field] | date('YYYY-MM-DD')}}" id="ID_{{label.field}}" class="form-control" aria-label="Date" {% if readonly %}readonly{% endif %}>
 					</div>
 
-					{% case 'month' %}
+					{% case 'projectdate' %}
 					<div class="{{date_input_col}}">
-						<input type="month" name="{{label.field}}" value="{{project[label.field] | date('YYYY-MM')}}" id="ID_{{label.field}}" class="form-control" aria-label="Date" {% if readonly %}readonly{% endif %}>
+						<input type="number" id="ID_{{label.field}}_day" name="{{label.field}}[day]" class="form_input" style="width:20%;" placeholder="DD" min="1" max="31" value="{{project[label.field].day | safe}}" />
+						<input type="number" id="ID_{{label.field}}_month" name="{{label.field}}[month]" class="form_input" style="width:20%;" placeholder="MM" min="1" max="12" value="{{project[label.field].month | safe}}" />
+						<input type="number" id="ID_{{label.field}}_year" name="{{label.field}}[year]" class="form_input" style="width:40%;" placeholder="YYYY" min="2016" max="2025" value="{{project[label.field].year | safe}}" />
 					</div>
 
 

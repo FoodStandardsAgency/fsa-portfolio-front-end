@@ -284,7 +284,7 @@ router.post('/:portfolio/filter-view', login.requireLogin, async function (req,r
 // PROJECT VIEW
 //-------------------------------------------------------------------
 
-router.get('/:portfolio/Projects/:project_id', login.requireLogin, async function (req, res) {project_view(req, res);});
+router.get('/:portfolio/Projects/:project_id', login.requireLogin, async function (req, res) { project_view(req, res); });
 
 //-------------------------------------------------------------------
 // RENDER FORMS
