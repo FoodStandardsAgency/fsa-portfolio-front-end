@@ -15,16 +15,6 @@ async function project_view(req, res) {
 		var projectDTO = await queries.load_project(project_id, { includeConfig: true, includeHistory: true });
 		var project = projectDTO.body.project;
 		if (project) {
-			//console.log(project);
-
-			if (project.link != null && project.link.link != '') { var links = project.link.link.split(","); } else { var links = ''; }
-
-
-			if (project.budget != null && project.budget != '') { var budget = project.budget.split(","); }
-			else { var budget = 0; }
-
-			if (project.spent != null && project.spent != '') { var spent = project.spent.split(","); }
-			else { var spent = 0; }
 
 			/*Budget type*/
 			if (project.budgettype == 'none' || project.budgettype == undefined) { var budgettype = 'Not set' }
@@ -48,7 +38,6 @@ async function project_view(req, res) {
 				"budgettype": budgettype,
 				"budget": currencyFormat(project.budget),
 				"spent": currencyFormat(project.spent),
-				"link": links,
 				"sess": sess
 			});
 		} 

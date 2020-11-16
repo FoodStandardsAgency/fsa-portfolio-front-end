@@ -28,7 +28,7 @@
 				{% case 'largefreetextarea' %}
 				{% case 'projectupdatetext' %}
 				{% case 'adusersearch' %}
-				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}} includes:</label></div>
+				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
 				<div class="{{input_col}}">
 					<input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="{{label.label}} includes" value="{{form_values[label.field]}}">
 				</div>
@@ -41,7 +41,7 @@
 				{% case 'predefinedsearchablelist' %}
 				{% case 'multioptionlist' %}
 				{% case 'predefinedmultilist' %}
-				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}} is:</label></div>
+				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
 				<div class="{{input_col}}">
 					{% if options[label.field] %}
 					<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="true" multiple>

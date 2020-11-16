@@ -63,6 +63,15 @@ var njenv = nunjucks.configure(__dirname + '/app/views', {
 	watch: true,
     express: app
 });
+
+function getProjectDateFormat(flag) {
+	var format = "ddd, DD MMM YY";
+	if (flag === "day") format = "ddd, DD MMM YY";
+	else if (flag === "month") format = "MMM YYYY";
+	else if (flag === "year") format = "YYYY";
+	return format;
+}
+njenv.addGlobal("getProjectDateFormat", getProjectDateFormat);
 dateFilter.setDefaultFormat('DD MMM YYYY');
 dateFilter.install(njenv, 'date');
 

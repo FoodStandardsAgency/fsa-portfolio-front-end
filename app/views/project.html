@@ -230,12 +230,12 @@
 		{% if data.start_date or data.actstart or data.expendp or data.expend or data.hardend or data.first_completed %}
 		<br /><h3 class="heading-small">Key dates</h3>
 			  <p>
-			  	{% if data.start_date %}{{labels.start_date}}:<br /> {{ data.start_date | date(globals.datemonthFormat) }} <br /><br />{% endif %}
-			  	{% if data.actstart %}{{labels.actstart}}:<br /> {{ data.actstart | date }}<br /><br />{% endif %}
-			  	{% if data.expendp %}{{labels.expendp}}:<br /> {{ data.expendp | date }} <br /><br />{% endif %}
-			  	{% if data.expend %}{{labels.expend}}:<br /> {{ data.expend | date(globals.datemonthFormat) }} <br /><br />{% endif %}
-			  	{% if data.hardend %}{{labels.hardend}}:<br /> {{ data.hardend | date }}<br /><br />{% endif %}
-			  	{% if data.actual_end_date %}{{labels.actual_end_date}}:<br /> {{ data.actual_end_date | date }}<br /><br />{% endif %}
+			  	{% if data.start_date.date %}{{labels.start_date}}:<br /> {{ data.start_date.date | date(getProjectDateFormat(data.start_date.flag)) }} <br /><br />{% endif %}
+			  	{% if data.actstart.date %}{{labels.actstart}}:<br /> {{ data.actstart.date | date(getProjectDateFormat(data.actstart.flag)) }}<br /><br />{% endif %}
+			  	{% if data.expendp.date %}{{labels.expendp}}:<br /> {{ data.expendp.date | date(getProjectDateFormat(data.expendp.flag)) }} <br /><br />{% endif %}
+			  	{% if data.expend.date %}{{labels.expend}}:<br /> {{ data.expend.date | date(getProjectDateFormat(data.expend.flag)) }} <br /><br />{% endif %}
+			  	{% if data.hardend.date %}{{labels.hardend}}:<br /> {{ data.hardend.date | date(getProjectDateFormat(data.hardend.flag)) }}<br /><br />{% endif %}
+			  	{% if data.actual_end_date.date %}{{labels.actual_end_date}}:<br /> {{ data.actual_end_date.date | date(getProjectDateFormat(data.actual_end_date.flag)) }}<br /><br />{% endif %}
 			  </p>
 
 		{% endif %}
@@ -247,7 +247,7 @@
 		</p>
 		{% endif %}
 
-		{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' or link[1] %} <br /> {% endif %}
+		{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' or data.link %} <br /> {% endif %}
 
 		{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' %}
 		<h3 class="heading-small">{{labels.project_size}}</h3>
@@ -260,11 +260,11 @@
 		</p>
 		{% endif %}
 
-		{% if link[1] %}
+		{% if data.link %}
 		<h3 class="heading-small">{{labels.link}}</h3>
 
-		<a href="{{ link[1] }}" target="_blank" title="Project channel">
-			<p>{{ link[0]}}</p>
+		<a href="{{ link.link }}" target="_blank" title="Project channel">
+			<p>{{ link.name }}</p>
 		</a>
 		{% endif %}
 
