@@ -247,7 +247,7 @@
 		</p>
 		{% endif %}
 
-		{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' or link[1] %} <br /> {% endif %}
+		{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' or data.link %} <br /> {% endif %}
 
 		{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' %}
 		<h3 class="heading-small">{{labels.project_size}}</h3>
@@ -260,11 +260,11 @@
 		</p>
 		{% endif %}
 
-		{% if link[1] %}
+		{% if data.link %}
 		<h3 class="heading-small">{{labels.link}}</h3>
 
-		<a href="{{ link[1] }}" target="_blank" title="Project channel">
-			<p>{{ link[0]}}</p>
+		<a href="{{ link.link }}" target="_blank" title="Project channel">
+			<p>{{ link.name }}</p>
 		</a>
 		{% endif %}
 
