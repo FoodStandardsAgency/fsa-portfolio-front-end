@@ -248,24 +248,6 @@ router.get('/:portfolio/new_projects/', login.requireLogin, async function (req,
 	}
 });
 
-router.get('/:portfolio/archived', login.requireLogin, function (req, res) {
-	var portfolio = req.params.portfolio;
-	
-	queries.completed_projects(portfolio)
-	.then((result) => {
-		res.render('completed', {
-			"user": req.session.user,
-			"data": result.body,
-			"counts": _.countBy(result.body, 'phase'),
-			"sess":req.session,
-			"portfolio": portfolio
-		});
-	})
-	.catch();	
-});
-
-router.get('/:portfolio/completed', login.requireLogin, function (req, res){res.redirect('/archived');});
-
 router.get('/:portfolio/portfolio-team', login.requireLogin, (req, res) => {
 	var portfolio = req.params.portfolio;
 	if(req.session.user == 'portfolio') {res.render('team-page', {"sess": req.session, "portfolio":portfolio});}

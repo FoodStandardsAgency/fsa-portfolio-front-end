@@ -9,12 +9,11 @@ var router = express.Router();
 // SUPPLIER ACCOUNT
 //-------------------------------------------------------------------
 
-router.get('/:portfolio/add-supplier', login.requireLogin, function (req, res) {
-	var portfolio = req.params.portfolio;
-	if (req.session.user == 'portfolio') { render_add_supplier(req, res) }
+router.get('/:portfolio/add-supplier', login.requireLogin, async function (req, res) {
+	if (req.session.user == 'portfolio') { await render_add_supplier(req, res) }
 	else { res.render('error_page', { message: 'You are not authorised to view this page' }); }
 });
 
-router.post('/add-supplier', [check('user').escape()], function (req, res) { add_supplier(req, res); });
+router.post('/:portfolio/add-supplier', [check('user').escape()], async function (req, res) { await add_supplier(req, res); });
 
 module.exports = router;

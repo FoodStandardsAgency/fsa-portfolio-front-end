@@ -1,75 +1,65 @@
 const crypto	= require('crypto');
-const queries 	= require('./queries');
+const queries = require('./queries');
+const handleError = require('./error');
 
-function add_supplier(req, res) {
-	// Get form data
-	const user = req.body.user_supp;
-	const password = req.body.password_supp;
 
-	// Calculate hash
-	const hash = crypto.createHash('sha256').update(password).digest('hex').toUpperCase();
-	
-	// Check if proposed usearname is already in the db, and return an error if sort
-	
-	var sql = 'select * from users where username = $1';
-	var sqlvals = [user];
-	
-	queries.generic_query(sql, sqlvals)
-	.then((result) => {
-		
-		if (result.rowCount > 0){var msg = '0';}	
+async function add_supplier(req, res) {
+	try {
+		// Get form data
+		const user = req.body.user_supp;
+		const password = req.body.password_supp;
+		var portfolio = req.params.portfolio;
+
+		// Calculate hash
+		const hash = crypto.createHash('sha256').update(password).digest('hex').toUpperCase();
+
+		// Check if proposed usearname is already in the db, and return an error if sort
+		var response = await queries.users_add_supplier(user, hash);
+		if (response.body.result == 'Ok')
+			var msg = '1'; // Success
+		else if (response.body.result == 'Duplicate')
+			var msg = '0'; // Duplicate user
 		else {
-			var msg = '1';
-			
-			// Insert query - to create the account
-			var text = 'INSERT into users (username, pass_hash, access_group) VALUES ($1, $2, $3)';
-			var values = [user, hash, 4];
-
-			queries.generic_query(text, values).then().catch();
+			// What to do here?
 		}
-		
-		var url = 'suppliers/add-supplier?msg='.concat(msg);
+
+		var url = `/${portfolio}/add-supplier?msg=${msg}`;
 		console.log(url);
-		
+
 		// Redirect
 		setTimeout(function () {
 			res.redirect(url);
-		}, 3000); 
-	})
-	.catch();
-
+		}, 3000);
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
 }
 
-function render_add_supplier(req,res){
-	
+async function render_add_supplier(req,res){
+	try {
 		var sess = req.session;
-		var text = 'SELECT * from users where access_group = $1';
-		var values = [4];
-		
+		var portfolio = req.params.portfolio;
+		var response = await queries.users_list_suppliers();
+
 		var msg = req.query.msg;
-		
-		if(msg == '0'){var message = '<br /><span style="color:red">Error: This username is already in use</span>';}
-		else if (msg == '1'){var message = '<br /><span style="color:green">Supplier account created successfully</span>';}
-		else {var message = '';}
+		if (msg == '0') { var message = '<br /><span style="color:red">Error: This username is already in use</span>'; }
+		else if (msg == '1') { var message = '<br /><span style="color:green">Supplier account created successfully</span>'; }
+		else { var message = ''; }
 
-		queries.generic_query(text, values)
-		.then((result)=>{
-
-			if(result.rowCount > 0){
-				
-				var supps = []; for (i = 0; i < result.rowCount; i++){supps.push(result.rows[i].username);}
-				
-				res.render("add_supplier", {
-					"cnt": result.rowCount,
-					"supps": supps,
-					"sess": sess,
-					"msg": message
-				});
-			}
-			else {res.render("add_supplier", {"msg": message});}
-		})
-		.catch();
-	
+		res.render("add_supplier", {
+			"portfolio": portfolio,
+			"cnt": response.body.suppliers.length,
+			"supps": response.body.suppliers,
+			"sess": sess,
+			"msg": message
+		});
+    }
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
 }
 
 module.exports = {add_supplier, render_add_supplier};

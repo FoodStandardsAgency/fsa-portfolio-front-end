@@ -145,7 +145,7 @@ var suppliersrouter = require('./routes/suppliers.js');
 app.use("/", router);
 app.use("/auth", authrouter);
 app.use("/odd_people", teamsrouter);
-app.use("/suppliers", suppliersrouter);
+app.use("/", suppliersrouter);
 
 //-------------------------------------------------------------------
 // Error handling
