@@ -17,11 +17,7 @@ async function project_view(req, res) {
 		if (project) {
 
 			/*Budget type*/
-			if (project.budgettype == 'none' || project.budgettype == undefined) { var budgettype = 'Not set' }
-			else if (project.budgettype == 'admin') { var budgettype = 'Admin' }
-			else if (project.budgettype == 'progr') { var budgettype = 'Programme' }
-			else { var budgettype = 'Capital' }
-
+			if (project.budgettype == undefined) { var budgettype = 'Not set' }
 
 			var labels = projectDTO.body.config.labels.reduce(function (map, obj) {
 				map[obj.field] = obj.label || obj.fieldtitle;
