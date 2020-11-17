@@ -10,15 +10,15 @@ function delete_portfolio(req, res) {
 	var	values = [project_id];
 
 	//Run the query to prepopulate form (asynch)
-	queries.generic_query(text, values)
-	.then ((result) => {
+	//queries.generic_query(text, values)
+	//.then ((result) => {
 		
-			res.render('delete_project', {
-			"data": result.rows[0],
-			"sess": sess
-			});
-	})
-	.catch();
+	//		res.render('delete_project', {
+	//		"data": result.rows[0],
+	//		"sess": sess
+	//		});
+	//})
+	//.catch();
 }
 
 module.exports = delete_portfolio;

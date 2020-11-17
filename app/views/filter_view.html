@@ -92,7 +92,7 @@
 		<p style=""><strong>Number of projects:</strong> {{ data.project_cnt }}</p>
 
 		{% for project in data.projects %}
-		<p style=""><a href="/{{portfolio}}/Projects/{{ project.project_id }}">{{ project.project_id }} {{ project.project_name | safe}}</a> {{ label_priority_main }}: {{ project.priority_main }} </p>
+		<p style=""><a href="/{{portfolio}}/Projects/{{ project.project_id }}">{{ project.project_id }} {{ project.project_name | safe}}</a></p>
 		{% endfor %}
 
 		{% endif %}

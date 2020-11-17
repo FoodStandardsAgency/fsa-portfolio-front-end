@@ -229,23 +229,23 @@ router.get('/:portfolio/status/', login.requireLogin, async function (req, res) 
 		handleError(error);
 		res.end();
 	}
-
 });
 
-router.get('/:portfolio/new_projects/', login.requireLogin, function (req, res) {	
-var portfolio = req.params.portfolio;
-	
-	queries.new_projects(portfolio)
-	.then((result) => {
-		res.render('summary', {
-			"data": nestedGroupBy(result.body, ['g6team', 'phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"themes": config.teams,
-			"phases":config.phases,
+router.get('/:portfolio/new_projects/', login.requireLogin, async function (req, res) {	
+	var portfolio = req.params.portfolio;
+	try {
+		var response = await queries.portfolio_summary(portfolio, "newbyteam");
+		var summary = response.body;
+		res.render('summary_list', {
 			"sess": req.session,
-			"portfolio": portfolio
+			"portfolio": portfolio,
+			"summary": summary
 		});
-	});	
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
 });
 
 router.get('/:portfolio/archived', login.requireLogin, function (req, res) {
