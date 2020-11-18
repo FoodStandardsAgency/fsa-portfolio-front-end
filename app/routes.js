@@ -236,7 +236,7 @@ router.get('/:portfolio/lead/', login.requireLogin, async function (req, res) {
 	try {
 		var response = await queries.portfolio_summary(portfolio, "lead");
 		var summary = response.body;
-		res.render('summary_list', {
+		res.render('summary', {
 			"sess": req.session,
 			"portfolio": portfolio,
 			"summary": summary
