@@ -231,6 +231,23 @@ router.get('/:portfolio/status/', login.requireLogin, async function (req, res) 
 	}
 });
 
+router.get('/:portfolio/lead/', login.requireLogin, async function (req, res) {
+	var portfolio = req.params.portfolio;
+	try {
+		var response = await queries.portfolio_summary(portfolio, "lead");
+		var summary = response.body;
+		res.render('summary_list', {
+			"sess": req.session,
+			"portfolio": portfolio,
+			"summary": summary
+		});
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+});
+
 router.get('/:portfolio/new_projects/', login.requireLogin, async function (req, res) {	
 	var portfolio = req.params.portfolio;
 	try {
