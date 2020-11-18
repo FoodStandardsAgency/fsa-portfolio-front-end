@@ -31,7 +31,7 @@ module.exports = {
 	portfolio_config: (portfolio) => backend.api(q.portfolio_config_url(portfolio)),
 	portfolio_config_update: (portfolio, data) => backend.api.patch(q.portfolio_config_url(portfolio), { json: data }),
 
-	users_search: (portfolio, term) => backend.api("Users/search", { searchParams: { portfolio: portfolio, term: term } }),
+	users_search: (portfolio, term, addnone) => backend.api("Users/search", { searchParams: { portfolio: portfolio, term: term, addnone: addnone } }),
 	users_list_suppliers: () => backend.api("Users/suppliers"),
 	users_add_supplier: (userName, passwordHash) => backend.api.post("Users/addsupplier", { json: { userName: userName, passwordHash: passwordHash }}),
 

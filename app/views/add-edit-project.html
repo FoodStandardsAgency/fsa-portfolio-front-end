@@ -104,7 +104,7 @@
 					{% case 'multioptionlist' %}
 					{% case 'predefinedmultilist' %}
 					<div class="{{input_col}}">
-						{% if options[label.field]  and options[label.field].items.length > 0 %}
+						{% if options[label.field] and options[label.field].items.length > 0 %}
 						<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="false" multiple>
 							{% for option in options[label.field].items %}
 							<option value="{{option.value}}" {{ "selected" if project[label.field] and project[label.field].includes(option.value) }}>{{option.display}}</option>
@@ -117,7 +117,12 @@
 
 					{% case 'adusersearch' %}
 					<div class="{{input_col}}">
-						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/users/search" name="{{label.field}}[value]" data-live-search="true">
+						{% if options[label.field].nouseroption %}
+						{% set ajaxData = 'data-abs-ajax-data={"addnone":"true"}' %}
+						{% else %}
+						{% set ajaxData = '' %}
+						{% endif %}
+						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/users/search" {{ajaxData}} name="{{label.field}}[value]" data-live-search="true">
 							{% if project[label.field] %}
 							<option value="{{project[label.field].value}}" selected>{{project[label.field].text}}</option>
 							{% endif %}
