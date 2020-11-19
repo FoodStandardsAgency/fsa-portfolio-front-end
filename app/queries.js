@@ -39,6 +39,7 @@ module.exports = {
 	completed_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'complete')),
 	load_project: (projectId, searchParams) => backend.api(q.project_url(projectId), { searchParams: searchParams }),
 	load_project_foredit: (projectId) => backend.api(q.project_edit_url(projectId), { searchParams: { includeLastUpdate: true } }),
+	delete_project: (projectId) => backend.api.delete(q.project_url(projectId)),
 	max_id: (portfolio) => backend.api(`PortfolioConfiguration/MaxId?portfolio=${portfolio}`),
 
 	oddleads: (text, params) => backend.api('Projects/Legacy/ODDLeads'),

@@ -304,8 +304,8 @@ router.get('/:portfolio/update/:project_id', login.requireLogin, (req, res) => {
 	else { res.render('error_page', { message: 'You are not authorised to view this page' }); }
 });
 
-router.get('/portfolio-delete/:project_id', login.requireLogin, function (req, res) {
-	if(req.session.user == 'portfolio'){delete_portfolio(req, res);}
+router.get('/:portfolio/delete/:project_id', login.requireLogin, async function (req, res) {
+	if(req.session.user == 'portfolio'){ await delete_portfolio(req, res); }
 	else {res.render('error_page', {message: 'You are not authorised to view this page'})};
 });
 
@@ -320,7 +320,7 @@ router.get('/:portfolio/users/search', login.requireLogin, async function (req, 
 //-------------------------------------------------------------------
 // DELETE PROJECTS - handle form submissions
 //-------------------------------------------------------------------	
-router.post('/delete_project_process', login.requireLogin, function (req, res) {handle_delete(req, res)});
+router.post('/:portfolio/delete_project_process', login.requireLogin, async function (req, res) { await handle_delete(req, res)});
 
 
 //-------------------------------------------------------------------

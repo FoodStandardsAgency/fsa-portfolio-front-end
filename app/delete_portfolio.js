@@ -1,24 +1,39 @@
 const queries 	= require('./queries');
 
-function delete_portfolio(req, res) {
-	// Get the project_id from URL
-	const project_id = req.params.project_id;
+async function delete_portfolio(req, res) {
+	var portfolio = req.params.portfolio;
 	var sess = req.session;
-	
-	//Pull data from the DB to pre-populate the form
-	var text = 'SELECT project_id, project_name from latest_projects where project_id = $1';
-	var	values = [project_id];
+	var user = req.session.user;
+	var group = req.session.group;
+	var project_id = req.params.project_id;
 
-	//Run the query to prepopulate form (asynch)
-	//queries.generic_query(text, values)
-	//.then ((result) => {
-		
-	//		res.render('delete_project', {
-	//		"data": result.rows[0],
-	//		"sess": sess
-	//		});
-	//})
-	//.catch();
+	try {
+		var projectDTO = await queries.load_project(project_id, { includeConfig: true });
+		var project = projectDTO.body.project;
+		if (project) {
+
+			/*Budget type*/
+			if (project.budgettype == undefined) { var budgettype = 'Not set' }
+
+			var labels = projectDTO.body.config.labels.reduce(function (map, obj) {
+				map[obj.field] = obj.label || obj.fieldtitle;
+				return map;
+			}, {});
+			res.render('delete_project', {
+				"portfolio": portfolio,
+				"data": project,
+				"labels": labels,
+				"sess": sess
+			});
+
+		} 
+
+
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
 }
 
 module.exports = delete_portfolio;

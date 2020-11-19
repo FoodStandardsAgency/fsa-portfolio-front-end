@@ -1,24 +1,29 @@
-const queries 	= require('./queries');
+const queries = require('./queries');
+const handleError = require('./error');
 
-function handle_form(req, res) {
+async function handle_form(req, res) {
 	var id = req.body.project_id;
-	
-	var text = 'delete from projects where project_id = $1';
-	var values = [id];
-	
-	queries.generic_query(text, values)
-	.then( (result) => {
-		console.log('deleted project')
-		console.log(id)
-	})
-	.catch();
+	var portfolio = req.params.portfolio;
 
-	res.render('thank_you', {
-	"id": id,
-	"message": "deleted",
-	"form": "delete"
-	});
-	
+	try {
+		var response = await queries.delete_project(id);
+		if (response.statusCode == 200) {
+			console.log(`Deleted project ${id}`);
+			res.render('thank_you', {
+				"portfolio": portfolio,
+				"id": id,
+				"message": "deleted",
+				"form": "delete"
+			});
+		}
+		else {
+			res.render('error_page', { message: `Delete failed for project ${id}. Please contact support quoting the project id and error code ${response.statusCode}.` });
+        }
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
 }
 
 module.exports = handle_form;

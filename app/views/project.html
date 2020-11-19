@@ -44,7 +44,7 @@
 	<!-- Change for access groups -->
 	<div class="col-xl-3 col-md-3 col-sm-4 py-3 text-right">
 		{% if user == 'portfolio' %}
-		<a href="/portfolio-delete/{{ data.project_id }}">Delete</a> |
+		<a href="/{{portfolio}}/delete/{{ data.project_id }}">Delete</a> |
 		<a href="/{{portfolio}}/edit/{{ data.project_id }}">Update</a>
 		{% elif user == 'odd' or  user == 'team_leaders'%}
 		<a href="/{{portfolio}}/edit/{{ data.project_id }}">Update this project</a>
