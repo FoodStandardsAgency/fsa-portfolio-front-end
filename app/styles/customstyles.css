@@ -169,3 +169,7 @@ div.last-update-text
 	margin-top: 1em;
 	font-size: 0.9em;
 }
+
+.bootstrap-select .filter-option {
+	white-space: normal;
+}

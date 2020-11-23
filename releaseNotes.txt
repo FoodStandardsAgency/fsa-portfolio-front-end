@@ -2,3 +2,4 @@ Version 0.1
 ===========
 - Phase colour styling in project view not showing correctly: fixed.
 - Only admin can access portfolio configuration screen.
+- Wordwrap select picker so can see all selected options.
