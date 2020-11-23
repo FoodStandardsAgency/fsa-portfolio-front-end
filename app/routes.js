@@ -80,7 +80,7 @@ router.get('/', login.requireLogin, async (req, res) => {
 // CONFIGURATION
 //-------------------------------------------------------------------
 
-router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
+router.get('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 
 	try {
 		// Need to get current configuration data to pre-populate the form
@@ -108,7 +108,7 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
     }
 })
 
-router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
+router.post('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 	try {
 		var portfolio = req.params.portfolio;
 
@@ -265,10 +265,9 @@ router.get('/:portfolio/new_projects/', login.requireLogin, async function (req,
 	}
 });
 
-router.get('/:portfolio/portfolio-team', login.requireLogin, (req, res) => {
+router.get('/:portfolio/portfolio-team', login.requireAdmin, (req, res) => {
 	var portfolio = req.params.portfolio;
-	if(req.session.user == 'portfolio') {res.render('team-page', {"sess": req.session, "portfolio":portfolio});}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
+	res.render('team-page', {"sess": req.session, "portfolio":portfolio});
 });
 		
 	
@@ -299,14 +298,12 @@ router.get('/:portfolio/edit/:project_id', login.requireLogin, async function (r
 router.get('/portfolio-update/:project_id', login.requireLogin, async function (req, res) {
 	await update_portfolio.renderEditForm(req, res);
 });
-router.get('/:portfolio/update/:project_id', login.requireLogin, (req, res) => {
-	if (req.session.user == 'portfolio' || req.session.user == 'odd' || req.session.user == 'team_leaders') { update_portfolio.renderEditForm(req, res); }
-	else { res.render('error_page', { message: 'You are not authorised to view this page' }); }
+router.get('/:portfolio/update/:project_id', login.requireEditor, async function (req, res) {
+	update_portfolio.renderEditForm(req, res);
 });
 
-router.get('/:portfolio/delete/:project_id', login.requireLogin, async function (req, res) {
-	if(req.session.user == 'portfolio'){ await delete_portfolio(req, res); }
-	else {res.render('error_page', {message: 'You are not authorised to view this page'})};
+router.get('/:portfolio/delete/:project_id', login.requireAdmin, async function (req, res) {
+	await delete_portfolio(req, res);
 });
 
 
@@ -327,38 +324,35 @@ router.post('/:portfolio/delete_project_process', login.requireLogin, async func
 // Export latest projects as a csv
 //-------------------------------------------------------------------	
 
-router.get('/:portfolio/download/csv', login.requireLogin, async function(req,res){
+router.get('/:portfolio/download/csv', login.requireAdmin, async function (req, res) {
 
 	var portfolio = req.params.portfolio;
 	
-	if (req.session.user == 'portfolio') {
-		try {
-			var result = await queries.portfolio_export(portfolio);
-			res.setHeader('Content-Type', 'text/csv');
-			res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'latest_projects-' + Date.now() + '.csv\"');
-			res.setHeader('Cache-Control', 'no-cache');
-			res.setHeader('Pragma', 'no-cache');
-			var config = result.body.config;
-			var projects = result.body.projects
+	try {
+		var result = await queries.portfolio_export(portfolio);
+		res.setHeader('Content-Type', 'text/csv');
+		res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'latest_projects-' + Date.now() + '.csv\"');
+		res.setHeader('Cache-Control', 'no-cache');
+		res.setHeader('Pragma', 'no-cache');
+		var config = result.body.config;
+		var projects = result.body.projects
 
-			var columns = _.chain(config.labels)
-				.orderBy("grouporder", "fieldorder")
-				.map((value) => ({
-					key: value.field,
-					header: value.label
-				}))
-				.value();
+		var columns = _.chain(config.labels)
+			.orderBy("grouporder", "fieldorder")
+			.map((value) => ({
+				key: value.field,
+				header: value.label
+			}))
+			.value();
 
-			stringify(projects, { header: true, columns: columns })
-				.pipe(res);
+		stringify(projects, { header: true, columns: columns })
+			.pipe(res);
 
-		}
-		catch (error) {
-			handleError(error);
-			res.end();
-        }
 	}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
 })
 
 

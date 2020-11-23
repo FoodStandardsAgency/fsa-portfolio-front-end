@@ -27,6 +27,29 @@ function requireLogin(req, res, next) {
 	}
 };
 
+function requireAdmin(req, res, next) {
+	requireLogin(req, res, () => {
+		if (req.session.user == 'portfolio') {
+			next();
+		}
+		else {
+			res.render('error_page', { message: 'You are not authorised to view this page' });
+		}
+
+	});
+}
+function requireEditor(req, res, next) {
+	requireLogin(req, res, () => {
+		if (req.session.user == 'portfolio' || req.session.user == 'odd' || req.session.user == 'team_leaders') {
+			next();
+		}
+		else {
+			res.render('error_page', { message: 'You are not authorised to view this page' });
+		}
+
+	});
+}
+
 
 function login(req, res) {
 	// Get form data
@@ -138,4 +161,4 @@ function translateUserGroup(user, groups) {
 }
 
 
-module.exports = { requireLogin, login, loginADUser };
+module.exports = { requireLogin, requireAdmin, requireEditor, login, loginADUser };
