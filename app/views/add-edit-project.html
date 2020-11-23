@@ -49,6 +49,7 @@
 					</div>
 					{% case 'projectupdatetext' %}
 					<div class="{{input_col}}">
+						<p>Enter your new update below. You can only amend an update on the day it was posted.</p>
 						<div>
 							<textarea type="text" rows="6" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
 						</div>
