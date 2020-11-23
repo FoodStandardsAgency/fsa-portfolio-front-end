@@ -104,8 +104,7 @@
 	</div>
 
 	<!-- Phase indicator -->
-	{% set phase_num = 3 %}
-	<div class="col-sm-2 py-3 phase phase-{{phase_num}}">
+	<div class="col-sm-2 py-3 phase {{data.phaseviewkey}}">
 		<p class="phase-label">{{ data.phase | title }}</p>
 	</div>
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>

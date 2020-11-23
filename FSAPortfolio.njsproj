@@ -73,6 +73,7 @@
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <None Include="releaseNotes.txt" />
     <Content Include="routes\auth.js" />
     <Content Include="routes\suppliers.js" />
     <Content Include="routes\teams.js" />
