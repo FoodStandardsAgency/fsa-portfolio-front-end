@@ -1,0 +1,534 @@
+{% extends "theme/layout.html" %}
+{% block head %}
+<!-- Script for hiding/ showing updates -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function () {
+		size_li = $("#myList li").length;
+		x = 2;
+		$('#myList li:lt(' + x + ')').show();
+		$('#loadMore').click(function () {
+			x = (x + 1 <= size_li) ? x + 2 : size_li;
+			$('#myList li:lt(' + x + ')').show();
+			$('#showLess').show();
+			if (x == size_li) {
+				$('#loadMore').hide();
+			}
+		});
+		$('#showLess').click(function () {
+			x = (x - 1 < 0) ? 1 : x - 1;
+			$('#myList li').not(':lt(' + x + ')').hide();
+			$('#loadMore').show();
+			$('#showLess').show();
+			if (x == 1) {
+				$('#showLess').hide();
+			}
+		});
+	});
+</script>
+
+<script>
+function showhide(id) {
+  var s1 = document.getElementById(id);
+   
+  var flex_sections = ["s1", "s2", "s5", "s6", "s7", "s8"];
+  var initial_sections = ["s3", "s4", "s9", "s10", "s11", "s12"];
+      
+  if (flex_sections.indexOf(id) >= 0 && s1.style.display === "none") {s1.style.display = "flex";} 
+  else if (initial_sections.indexOf(id) >= 0 && s1.style.display === "none") {s1.style.display = "initial";} 
+  else {s1.style.display = "none";}
+  
+} 
+
+function arrow(id) {
+	var ai = document.getElementById(id);
+        
+  if (ai.classList.contains("down")) {ai.classList.remove("down"); ai.classList.add("up");} 
+  else if (ai.classList.contains("up")) {ai.classList.remove("up"); ai.classList.add("down");} 
+  
+} 
+</script>
+
+{% endblock %}
+
+{% block content %}
+<!-- Project IDs & Edit/ Delete links -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-7 col-md-7 col-sm-6 py-3">
+		<p>
+			<strong>Project ID: </strong>ODD2001001 / BC0001 / IB0001
+
+			<!-- Test if up to two other project IDs are passed, and display -->
+
+		</p>
+	</div>
+
+	<!-- Change for access groups -->
+	{% set group = 1 %}
+	<div class="col-xl-3 col-md-3 col-sm-4 py-3 text-right">
+		{% if group <= 2 %}<a href="/portfolio-delete/{{ data.project_id }}" class="special-link"><button class="delete-button">Delete</button></a>{% endif %}
+		{% if group <= 3 %}<a href="/{{portfolio}}/edit/{{ data.project_id }}" class="special-link"><button class="update-button">Update</button></a>{% endif %}
+	</div>
+
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
+
+<!-- Project title -->
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-10 col-md-10 col-sm-10 py-3">
+		<h1 class="project-title">
+			Sample project title
+			<span class="project-new">NEW</span>{% if data.new_flag == 'Y' %}{% endif %}
+		</h1>
+	</div>
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+</div>
+
+<div class="row">
+	<div class="col-sm-1 pb-3"></div>
+	<div class="col-sm-10 pb-3 pr-5">
+	
+	<hr />
+	<h2 class=" accordion section" onclick="showhide('s1'); arrow('a1')">Project description &nbsp;&nbsp; <i id="a1" class="arrow up"></i> </h2></div>
+	<div class="col-sm-1 pb-3"></div>
+	
+</div>
+
+
+<!-- Project description, flags and status -->
+<div class="row" id="s1">
+	<div class="col-sm-1 pb-3"></div>
+
+	<div class="col-sm-8 pb-3 pr-5" >
+
+		<!-- Short description -->
+		<p class="desc-para">
+		<strong>Project description</strong><br />
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum lacus vel condimentum eleifend. Aliquam porttitor purus at quam sagittis facilisis. Ut vitae hendrerit sapien. Nunc semper, lacus ut ultricies elementum, enim dolor faucibus arcu, ac congue diam leo id justo. Proin volutpat tincidunt lacus, ac imperdiet lectus consequat non. Fusce consequat non augue vitae euismod. Maecenas dignissim massa at nibh congue, non placerat metus pellentesque. Proin in condimentum nibh, eget fermentum tellus. Mauris aliquet, enim quis lacinia aliquet, mi enim consectetur enim, ac molestie urna turpis sit amet diam. Donec bibendum est a tincidunt elementum. Duis facilisis dui risus, ut varius nisl efficitur fermentum. Maecenas id urna in dui convallis malesuada a quis justo. Ut iaculis, risus eget dapibus faucibus, tortor sem ultricies orci, ac efficitur mi nisl vitae eros. Vivamus nunc tortor, imperdiet id convallis sit amet, condimentum sit amet metus.
+		{% if data.short_desc %}{{ data.short_desc | safe }}
+		{% endif %}
+		</p>
+		
+		<!-- Programme -->
+		<p class="programme"><strong>Part of: Programme name</strong><br />
+		Vestibulum eget ipsum eros. Maecenas consequat justo a dignissim placerat. Mauris malesuada feugiat viverra. Nulla pharetra mi dolor, vel facilisis metus hendrerit eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+	</div>
+
+	<!-- Phase indicator -->
+	{% set phase_num = 3 %}
+	<div class="col-sm-2 mb-3 phase phase-1">
+		<p class="phase-label">Phase{{ data.phase | title }}</p>
+	</div>
+	<div class="col-sm-1 py-3"></div>
+</div>
+
+
+<!-- Flags, Project team - list + lead, lead role, DM and directorate -->
+<div class="row">
+	<div class="col-sm-1 py-3"></div>
+	<div class="col-sm-8 py-3 pr-5">
+	
+		<hr />
+		<h2 class="accordion section mb-3" onclick="showhide('s2'); arrow('a2')">Progress indicators &nbsp;&nbsp; <i id="a2" class="arrow down"></i></h2>
+		
+		<div class="row" id="s2" style="display:none;">
+			<div class="col-sm-6">
+			<!-- Flags & extra text fields-->
+			<div class="small-flag rag-1">RAG: Green</div>
+			<div class="small-flag">Priority: High</div>
+			<div class="small-flag risk">Risk: Low</div>
+			<div class="small-flag">Status: On hold</div>
+			<div class="small-flag">O1: Option 1</div>
+			<div class="small-flag">O2: Option 2</div>
+			
+			
+			<p><strong>Progress text 1:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			<br /><strong>Progress text 2:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			
+			</div>
+			
+			<div class="col-sm-6">
+			<!-- How to get to green -->
+			<p class="infobox"><strong>How to get to Green</strong><br />
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum lacus vel condimentum eleifend. Aliquam porttitor purus at quam sagittis facilisis. Ut vitae hendrerit sapien. Nunc semper, lacus ut ultricies elementum, enim dolor faucibus arcu, ac congue diam leo id justo. Proin volutpat tincidunt lacus, ac imperdiet lectus consequat non.
+			</p>
+			</div>
+		</div>
+
+		<!-- Priority -->
+		{% if data.priority_main %}
+		<strong>{{labels.priority_main}}:</strong>
+		<div class="small-flag priority">{{data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;&nbsp;&nbsp;
+		{% endif %}
+
+		<!-- RAG -->
+		{% set rags = { 'red': 'Red', 'redamb': 'Red-Amber', 'amb': 'Amber', 'ambgre': 'Amber-Green', 'gre': 'Green']%}
+		{% if rags[data.rag] %}
+		<strong>{{labels.rag}}:</strong>
+		<div class="small-flag rag-{{data.rag}}">{{ rags[data.rag] }}</div>
+		{% endif%}
+
+		<!-- Status --><!-- drop-down position shouldn't be the one indicating the onhold status is unset for a particular projet -->
+		{% if data.onhold and data.onhold != 'No' %}
+		<strong>{{labels.onhold}}:</strong>
+		<div class="small-flag onhold"><strong>{{ data.onhold }}</strong></div>
+		{% endif %}
+
+		<!-- Risk rating -->
+		{% if data.risk_rating %}
+		<strong>{{labels.risk_rating}}:</strong>
+		<div class="small-flag risk"><strong>{{ data.risk_rating }}</strong></div>
+		{% endif %}
+		
+		
+		<!-- Project team -->
+		<br />
+		<hr />
+		<h2 class="accordion section" onclick="showhide('s3'); arrow('a3')">Project team &nbsp;&nbsp; <i id="a3" class="arrow down"></i></h2>
+		<!-- Key contacts -->
+		<div id="s3" style="display:none">
+		<div class="d-flex flex-row bd-highlight mb-3">
+		  <div class="p-2 flex-fill bd-highlight lead-box">
+		  <p><strong>Project lead</strong><br />
+		  Lead name<br />
+		  <a href="mailto:xyz">project.lead@food.gov.uk</a><br />
+		  Lead role<br />
+		  Lead team</p>
+		  </div>
+		  <div class="p-2 flex-fill bd-highlight key-contact">
+		  <p><strong>Key contact 1</strong><br />
+		  Contact One<br />
+		  <a href="mailto:xyz">contact.one@food.gov.uk</a></p>
+		  </div>
+		  <div class="p-2 flex-fill bd-highlight key-contact">
+		  <p><strong>Key contact 2</strong><br />
+		  Contact Two<br />
+		  <a href="mailto:xyz">contact.two@food.gov.uk</a></p>
+		  </div>
+		  <div class="p-2 flex-fill bd-highlight key-contact">
+		  <p><strong>Key contact 3</strong><br />
+		  Contact Three<br />
+		  <a href="mailto:xyz">contact.three@food.gov.uk</a></p>
+		  </div>
+		</div>
+				
+		<div class="mb-3">
+		<p><strong>Project team: </strong>Name1, Name2, Name3, Name4 <br />
+		<strong>Supplier: </strong>Supplier<br /></p>
+		</div>
+		
+		<div class="small-flag mb-3">O1: Option 1</div>
+		<div class="small-flag mb-3">O2: Option 2</div>
+		
+		
+		<div class="mb-3">
+		<p><strong>Team text 1:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+		<strong>Team text 2:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+		</div>
+		</div>
+
+		<!-- Project team -->
+		<br />
+		<hr />
+		<h2 class="accordion section" onclick="showhide('s4'); arrow('a4')">Updates &nbsp;&nbsp; <i id="a4" class="arrow down"></i></h2>
+		<div id="s4" style="display:none;">
+		<ul id="myList" class="updates">
+			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">Mon, 28th Sept 2020 </span> - Duis et justo et dolor eleifend rhoncus eu id magna. Ut ut mollis justo, ut hendrerit urna. Mauris porttitor sem vitae tincidunt aliquam. Donec in ligula vestibulum, ullamcorper enim non, hendrerit tortor. Vestibulum congue imperdiet dolor. Nunc in suscipit mauris. Quisque dictum urna id ex accumsan lacinia.</p></li>
+			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">Mon, 21th Sept 2020</span> - Vivamus non magna tortor. Suspendisse tempus faucibus dui, non vehicula odio mattis et. Etiam sit amet fermentum enim. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec et ante id lorem interdum congue. Nulla sit amet diam vel dui porttitor condimentum a et arcu. </p></li>
+			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">Mon, 14th Sept 2020</span> - Mauris ut enim ipsum. Cras in scelerisque ipsum. Integer efficitur dapibus mi a accumsan. Integer gravida venenatis enim. Phasellus eu congue orci, semper dictum orci. </p></li>
+			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">Mon, 7th Sept 2020</span> - Nulla vel velit consequat, convallis quam et, consequat dui. Phasellus velit massa, scelerisque sit amet erat ut, vehicula molestie urna.</p></li>
+		</ul>
+		<p><span id="loadMore" style="font-weight:800;">Load more</span> <span id="showLess" style="font-weight:800;">| Show less</span></p>
+		
+		<br />
+		<p class="infobox"><strong>Forward look</strong><br />
+		Mauris ut enim ipsum. Cras in scelerisque ipsum. Integer efficitur dapibus mi a accumsan. Integer gravida venenatis enim. Phasellus eu congue orci, semper dictum orci. Donec dolor sapien, rhoncus quis sem quis, mattis ultrices ante. Suspendisse sed eros efficitur, facilisis lacus ut, maximus libero. Vivamus at erat vulputate, ultricies massa vel, rhoncus nunc. Quisque semper aliquam turpis eget molestie. Vestibulum nec arcu ullamcorper, suscipit nibh sit amet, consequat nunc. Morbi nisi ante, egestas vel turpis ut, commodo sodales arcu. Donec efficitur tellus eget mauris scelerisque, nec convallis tellus accumsan.
+		</p>
+		
+		<br />
+		<p class="infobox"><strong>Emerging risks</strong><br />
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur id purus in lacinia. Maecenas accumsan dolor magna, mollis ullamcorper leo aliquet in.
+		</p>
+		</div>
+		
+		
+		<!--{% if data.updates.length > 0 %}
+		<h2 class="heading-medium">{{labels.update}}</h2>
+
+		<ul id="myList">
+			{% for update in data.updates %}
+			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">{{ update.timestamp | date(globals.timestampFormat) | safe }}</span> - {{ update.text | safe }}</p></li>
+			{% endfor %}
+		</ul>
+
+		<p><span id="loadMore" style="font-weight:800;">Load more</span> <span id="showLess" style="font-weight:800;">| Show less</span></p>
+		<br /><br />
+		{% else %}
+
+		<h2 class="heading-medium"> No updates</h2>
+		<br /><br />
+		{% endif %}-->
+		
+		<br />
+		<hr />
+		<h2 class="accordion section" onclick="showhide('s5'); arrow('a5')">Milestones&nbsp;&nbsp; <i id="a5" class="arrow down"></i></h2>
+		
+		<div class="mb-3" id="s5" style="display:none;">
+		<table class="table">
+		  <thead class="thead-light">
+			<tr>
+			  <th scope="col">#</th>
+			  <th scope="col">Name</th>
+			  <th scope="col">Deadline</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr>
+			  <th scope="row">1</th>
+			  <td>Milestone 1</td>
+			  <td>30th Sept 2020</td>
+			</tr>
+			<tr>
+			  <th scope="row">2</th>
+			  <td>Milestone 2</td>
+			  <td>1st Nov 2020</td>
+			</tr>
+			<tr>
+			  <th scope="row">3</th>
+			  <td>Milestone 3</td>
+			  <td>31st Dec 2020</td>
+			</tr>
+		  </tbody>
+		</table>
+		</div>
+		
+		<br />
+		<hr />
+		<h2 class="accordion section" onclick="showhide('s6'); arrow('a6')">Key documents&nbsp;&nbsp; <i id="a6" class="arrow down"></i></h2>
+		
+		<div class="row" id="s6" style="display:none;">
+		<div class="col-sm-3 py-3"><a href="#">Test Document 1</a></div>
+		<div class="col-sm-3 py-3"><a href="#">Project plan</a></div>
+		<div class="col-sm-3 py-3"><a href="#">Test document 2</a></div>
+		<div class="col-sm-3 py-3"><a href="#">Test document 3</a></div>
+		<div class="col-sm-3 py-3"><a href="#">Presentation 1</a></div>
+		<div class="col-sm-3 py-3"><a href="#">Meeting notes</a></div>
+		<div class="col-sm-3 py-3"><a href="#">Business case</a></div>
+		<div class="col-sm-3 py-3"><a href="#">Presentation 2</a></div>
+		</div>
+				
+		<!--{% if data.documents and documents.length > 0 %}
+		<h2 class="heading-medium">{{labels.documents}}</h2>
+		{% for doc in documents %}
+		<div class="container">
+			<div class="equalsplit2"><a href="{{ doc.link | safe }}">{{ doc.name | safe }}</a></div>
+		</div>
+		<br />
+		{% endfor %}
+		<br /><br />
+		{% endif %}-->
+		
+		
+		<br />
+		<hr />
+		<h2 class="accordion section" onclick="showhide('s7'); arrow('a7')">Related projects&nbsp;&nbsp; <i id="a7" class="arrow down"></i></h2>
+		<div class="row" id="s7" style="display:none;">
+		<div class="col-sm-6 py-3"><a href="#">Project 1</a></div>
+		<div class="col-sm-6 py-3"><a href="#">Project 2</a></div>
+		<div class="col-sm-6 py-3"><a href="#">Project 3</a></div>
+		</div>
+		
+		
+		<!--{% if data.rels and data.rels.length > 0 %}
+
+		<h2 class="heading-medium">{{labels.rels}}</h2>
+
+		{% for rel in data.rels %}
+		<a href="/{{portfolio}}/projects/{{ rel.project_id }}">{{ rel.project_name }}</a><br />
+		{% endfor %}
+		<br /><br />
+		{% endif %}-->
+		
+		
+		<br />
+		<hr />
+		<h2 class="accordion section" onclick="showhide('s8'); arrow('a8')">This project depends on&nbsp;&nbsp; <i id="a8" class="arrow down"></i></h2>
+		<div class="row" id="s8" style="display:none;">
+		<div class="col-sm-6 py-3"><a href="#">Project 5</a></div>
+		<div class="col-sm-6 py-3"><a href="#">Project 6</a></div>
+		</div>
+		
+		<!--{% if deps_cnt > 0 %}
+		<h2 class="heading-medium">{{labels.dependencies}}</h2>
+
+		{% for dep in data.dependencies %}
+		<a href="/projects/{{ dep.project_id }}">{{ dep.project_name }}</a><br />
+		{% endfor %}
+
+		{% endif %}-->
+			
+
+	</div>
+	<div class="col-sm-2 py-3">
+	<hr />
+	<h2 class="accordion section" onclick="showhide('s9'); arrow('a9')">Project plan&nbsp;&nbsp; <i id="a9" class="arrow down"></i></h2>
+	
+	<div id="s9" style="display:none;">
+		<p><strong>Intended start date</strong><br />1st Sept 2020</p>
+		<p><strong>Actual start date</strong><br /> 12th Sept 2020</p>
+		<p><strong>Expected phase end date</strong><br /> 30th Nov 2020</p>
+		<p><strong>Expected end date</strong><br /> 31st Dec 2020</p>
+		<p><strong>Hard deadline</strong><br /> 31st Dec 2020</p>
+		
+		<p><strong>Percentage completed</strong> 85%</p>
+			
+		<div class="small-flag">Plan o1: Value 1</div>
+		<div class="small-flag">Plan o2: Value 2</div>
+
+		<p><strong>Plan text 1:</strong> Value 1<br />
+		<strong>Plan text 2:</strong> Value 2</p>
+	</div>
+	
+	<!--{% if data.start_date or data.actstart or data.expendp or data.expend or data.hardend or data.first_completed %}
+		<br /><h3 class="heading-small">Key dates</h3>
+		  <p>
+			{% if data.start_date %}{{labels.start_date}}:<br /> {{ data.start_date | date(globals.datemonthFormat) }} <br /><br />{% endif %}
+			{% if data.actstart %}{{labels.actstart}}:<br /> {{ data.actstart | date }}<br /><br />{% endif %}
+			{% if data.expendp %}{{labels.expendp}}:<br /> {{ data.expendp | date }} <br /><br />{% endif %}
+			{% if data.expend %}{{labels.expend}}:<br /> {{ data.expend | date(globals.datemonthFormat) }} <br /><br />{% endif %}
+			{% if data.hardend %}{{labels.hardend}}:<br /> {{ data.hardend | date }}<br /><br />{% endif %}
+			{% if data.actual_end_date %}{{labels.actual_end_date}}:<br /> {{ data.actual_end_date | date }}<br /><br />{% endif %}
+		  </p>
+		  
+	
+	{% endif %}-->
+	
+	<!--{% if data.p_comp > 0 %}
+		<h3 class="heading-small">{{labels.p_comp}}</h3>
+		<p>
+			{{ data.p_comp }}%
+		</p>
+	{% endif %}-->
+	
+	<br />
+	<hr />
+	<h2 class="accordion section" onclick="showhide('s10'); arrow('a10')">About the project&nbsp;&nbsp; <i id="a10" class="arrow down"></i></h2>
+	
+	
+	<!--{% if data.direct and data.direct != 'NONE' %}
+		<h3 class="heading-small">{{labels.direct}}</h3>
+		<p>
+			{% if data.direct == 'COMMS' %} 	Communications
+			{% elif data.direct == 'IR' %}	Incidents & Resilience
+			{% elif data.direct == 'FO' %}	Field Operations
+			{% elif data.direct == 'FP' %}	Finance & Performance
+			{% elif data.direct == 'FSP' %}	Food Safety Policy
+			{% elif data.direct == 'FSA' %}	FSA wide
+			{% elif data.direct == 'NFCU' %}	National Food Crime Unit
+			{% elif data.direct == 'NI' %}	Northern Ireland
+			{% elif data.direct == 'ODD' %}	Openness, Data & Digital
+			{% elif data.direct == 'PEOP' %}	People
+			{% elif data.direct == 'RC' %}	Regulatory Compliance
+			{% elif data.direct == 'SERD' %}	Science, Evidence & Research
+			{% elif data.direct == 'SLG' %}	Strategy, Legal & Governance
+			{% elif data.direct == 'WAL' %}	Wales
+			{% endif %}
+		</p>
+	{% endif %}-->
+	<div id="s10" style="display:none;">
+		<p><strong>Directorate</strong><br />FSA wide</p>
+		<p><strong>Theme</strong><br />Theme1</p>
+		<p><strong>Type</strong><br />	Software development</p>
+		<p><strong>Size</strong><br />	Medium</p>
+		<p><strong>Channel link</strong><br />	<a href="#">SharePoint folder</a>
+		<p><strong>Strategic objectives</strong><br />Strategic objective 1, Strategic objective 2<br />
+		<p><strong>Categories</strong><br />Category 1, Category 2, Category 3<br />
+	</div>
+	
+	<br />
+	<hr />
+	<h2 class="accordion section" onclick="showhide('s11'); arrow('a11')">Budget&nbsp;&nbsp; <i id="a11" class="arrow down"></i></h2>
+	
+	<div id="s11" style="display:none">
+		<p><strong>Category</strong><br />Budget category</p>
+		<p><strong>Cost centre</strong><br />123456</p>
+		<p><strong>Amount</strong><br />£100 000</p>
+		<p><strong>Spent</strong><br />£50 000</p>
+		<p><strong>Forecast</strong><br />£100 000</p>
+		
+		<div class="small-flag">Budget o1: Value 1</div>
+		<div class="small-flag">Budget o2: Value 2</div>
+		
+		<p><strong>Budget text 1:</strong> Value 1<br />
+		<strong>Budget text 2:</strong> Value 2</p>
+	</div>
+
+	
+	
+	<br />
+	<hr />
+	<h2 class="accordion section" onclick="showhide('s12'); arrow('a12')">FSA processes &nbsp;&nbsp; <i id="a12" class="arrow down"></i></h2>
+	
+	<div id="s12" style="display:none;">
+		<p><strong>Assurance gate number</strong><br />GATE001</p>
+		<p><strong>Assurance gate completed</strong><br />13th Nov 2020</p>
+		<p><strong>Next gate</strong><br />30th Nov 2020</p>
+		
+		<div class="small-flag">Process o1: Value 1</div>
+		<div class="small-flag">Process o2: Value 2</div>
+		
+		<p><strong>Process text 1:</strong> Value 1<br />
+		<strong>Process text 2:</strong> Value 2</p>
+	</div>
+		
+
+
+
+		
+
+	<!--{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' or link[1] %} <br /> {% endif %}
+
+		{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' %}
+		<h3 class="heading-small">{{labels.project_size}}</h3>
+		<p>
+			{% if data.project_size == 's' %} Small
+			{% elif data.project_size == 'm' %} Medium
+			{% elif data.project_size == 'l' %} Large
+			{% elif data.project_size == 'x' %} Extra large
+			{% endif %}
+		</p>
+		{% endif %}
+
+		{% if link[1] %}
+		<h3 class="heading-small">{{labels.link}}</h3>
+
+		<a href="{{ link[1] }}" target="_blank" title="Project channel">
+			<p>{{ link[0]}}</p>
+		</a>
+		{% endif %}
+
+
+		{% if (data.budget) and (group != '4') %}
+
+		<br /><h3 class="heading-small">Budget</h3>
+		{% if data.budget == 0 %}	Not applicable
+
+		{% else %}
+		<strong>{{labels.budgettype}}:</strong> {{ budgettype }} <br />
+		<strong>{{labels.budget}}:</strong> {{ budget }} <br />
+		{% if data.spent %}	<strong>{{labels.spent}}:</strong> {{ spent }} {% endif %}
+		{% endif %}
+
+
+		{% endif %}-->
+	</div>
+
+</div>
+<div class="col-sm-1 py-3">
+</div>
+<div class="col-sm-1 py-3"></div>
+</div>
+
+{% endblock %}
