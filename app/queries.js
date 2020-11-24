@@ -31,14 +31,15 @@ module.exports = {
 	portfolio_config: (portfolio) => backend.api(q.portfolio_config_url(portfolio)),
 	portfolio_config_update: (portfolio, data) => backend.api.patch(q.portfolio_config_url(portfolio), { json: data }),
 
-	users_search: (portfolio, term) => backend.api("Users/search", { searchParams: { portfolio: portfolio, term: term }}),
+	users_search: (portfolio, term, addnone) => backend.api("Users/search", { searchParams: { portfolio: portfolio, term: term, addnone: addnone } }),
+	users_list_suppliers: () => backend.api("Users/suppliers"),
+	users_add_supplier: (userName, passwordHash) => backend.api.post("Users/addsupplier", { json: { userName: userName, passwordHash: passwordHash }}),
 
 	current_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'current')),
 	completed_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'complete')),
-	latest_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'latest')),
-	new_projects: (portfolio) => backend.api(q.portfolio_projects_url(portfolio, 'new')),
 	load_project: (projectId, searchParams) => backend.api(q.project_url(projectId), { searchParams: searchParams }),
 	load_project_foredit: (projectId) => backend.api(q.project_edit_url(projectId), { searchParams: { includeLastUpdate: true } }),
+	delete_project: (projectId) => backend.api.delete(q.project_url(projectId)),
 	max_id: (portfolio) => backend.api(`PortfolioConfiguration/MaxId?portfolio=${portfolio}`),
 
 	oddleads: (text, params) => backend.api('Projects/Legacy/ODDLeads'),

@@ -9,6 +9,8 @@ function handleError(error) {
 		console.log(error.response.body);
 	}
 	console.log('***************************');
+	res.render('error_page', { message: `System error. Please contact support (error code ${response.statusCode}).` });
+
 }
 
 

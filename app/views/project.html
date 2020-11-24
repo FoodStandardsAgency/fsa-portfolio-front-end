@@ -44,7 +44,7 @@
 	<!-- Change for access groups -->
 	<div class="col-xl-3 col-md-3 col-sm-4 py-3 text-right">
 		{% if user == 'portfolio' %}
-		<a href="/portfolio-delete/{{ data.project_id }}">Delete</a> |
+		<a href="/{{portfolio}}/delete/{{ data.project_id }}">Delete</a> |
 		<a href="/{{portfolio}}/edit/{{ data.project_id }}">Update</a>
 		{% elif user == 'odd' or  user == 'team_leaders'%}
 		<a href="/{{portfolio}}/edit/{{ data.project_id }}">Update this project</a>
@@ -104,8 +104,7 @@
 	</div>
 
 	<!-- Phase indicator -->
-	{% set phase_num = 3 %}
-	<div class="col-sm-2 py-3 phase phase-{{phase_num}}">
+	<div class="col-sm-2 py-3 phase {{data.phaseviewkey}}">
 		<p class="phase-label">{{ data.phase | title }}</p>
 	</div>
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
@@ -144,9 +143,9 @@
 		{% endif %}
 
 
-		{% if data.documents and documents.length > 0 %}
+		{% if data.documents.length > 0 %}
 		<h2 class="heading-medium">{{labels.documents}}</h2>
-		{% for doc in documents %}
+		{% for doc in data.documents %}
 		<div class="container">
 			<div class="equalsplit2"><a href="{{ doc.link | safe }}">{{ doc.name | safe }}</a></div>
 		</div>
@@ -179,23 +178,7 @@
 		<br />
 		{% if data.direct and data.direct != 'NONE' %}
 		<h3 class="heading-small">{{labels.direct}}</h3>
-		<p>
-			{% if data.direct == 'COMMS' %} 	Communications
-			{% elif data.direct == 'IR' %}	Incidents & Resilience
-			{% elif data.direct == 'FO' %}	Field Operations
-			{% elif data.direct == 'FP' %}	Finance & Performance
-			{% elif data.direct == 'FSP' %}	Food Safety Policy
-			{% elif data.direct == 'FSA' %}	FSA wide
-			{% elif data.direct == 'NFCU' %}	National Food Crime Unit
-			{% elif data.direct == 'NI' %}	Northern Ireland
-			{% elif data.direct == 'ODD' %}	Openness, Data & Digital
-			{% elif data.direct == 'PEOP' %}	People
-			{% elif data.direct == 'RC' %}	Regulatory Compliance
-			{% elif data.direct == 'SERD' %}	Science, Evidence & Research
-			{% elif data.direct == 'SLG' %}	Strategy, Legal & Governance
-			{% elif data.direct == 'WAL' %}	Wales
-			{% endif %}
-		</p>
+		<p>{{ data.direct }}</p>
 		{% endif %}
 
 		{% if data.oddlead %}<h3 class="heading-small">{{labels.oddlead}}</h3>
@@ -247,17 +230,11 @@
 		</p>
 		{% endif %}
 
-		{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' or data.link %} <br /> {% endif %}
+		{% if data.project_size or data.link %} <br /> {% endif %}
 
-		{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' %}
+		{% if data.project_size %}
 		<h3 class="heading-small">{{labels.project_size}}</h3>
-		<p>
-			{% if data.project_size == 's' %} Small
-			{% elif data.project_size == 'm' %} Medium
-			{% elif data.project_size == 'l' %} Large
-			{% elif data.project_size == 'x' %} Extra large
-			{% endif %}
-		</p>
+		<p>{{ data.project_size }}</p>
 		{% endif %}
 
 		{% if data.link %}
@@ -269,13 +246,13 @@
 		{% endif %}
 
 
-		{% if (data.budget) and (group != '4') %}
+		{% if (data.budget) and (group != 'supplier') %}
 
 		<br /><h3 class="heading-small">Budget</h3>
 		{% if data.budget == 0 %}	Not applicable
 
 		{% else %}
-		<strong>{{labels.budgettype}}:</strong> {{ budgettype }} <br />
+		<strong>{{labels.budgettype}}:</strong> {{ data.budgettype }} <br />
 		<strong>{{labels.budget}}:</strong> {{ budget }} <br />
 		{% if data.spent %}	<strong>{{labels.spent}}:</strong> {{ spent }} {% endif %}
 		{% endif %}

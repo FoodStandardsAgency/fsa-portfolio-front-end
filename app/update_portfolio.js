@@ -101,7 +101,10 @@ async function searchUsers(req, res) {
 	try {
 		var portfolio = req.params.portfolio;
 		var term = req.query.q;
-		var response = await queries.users_search(portfolio, term);
+		var addnone = req.query.addnone;
+
+		console.log(req.query);
+		var response = await queries.users_search(portfolio, term, addnone);
 
 		var result = response.body.searchresults.map(function (u) { return { value: u.userPrincipalName, text: u.displayName }; });
 

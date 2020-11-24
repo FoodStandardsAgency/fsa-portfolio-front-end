@@ -65,8 +65,8 @@ var njenv = nunjucks.configure(__dirname + '/app/views', {
 });
 
 function getProjectDateFormat(flag) {
-	var format = "ddd, DD MMM YY";
-	if (flag === "day") format = "ddd, DD MMM YY";
+	var format = "DD MMM YY";
+	if (flag === "day") format = "DD MMM YY";
 	else if (flag === "month") format = "MMM YYYY";
 	else if (flag === "year") format = "YYYY";
 	return format;
@@ -145,7 +145,7 @@ var suppliersrouter = require('./routes/suppliers.js');
 app.use("/", router);
 app.use("/auth", authrouter);
 app.use("/odd_people", teamsrouter);
-app.use("/suppliers", suppliersrouter);
+app.use("/", suppliersrouter);
 
 //-------------------------------------------------------------------
 // Error handling

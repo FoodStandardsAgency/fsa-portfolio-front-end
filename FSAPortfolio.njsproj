@@ -73,6 +73,7 @@
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <None Include="releaseNotes.txt" />
     <Content Include="routes\auth.js" />
     <Content Include="routes\suppliers.js" />
     <Content Include="routes\teams.js" />
@@ -95,7 +96,6 @@
     <Content Include="app\update_portfolio.js" />
     <Content Include="app\views\add_project.html" />
     <Content Include="app\views\add_supplier.html" />
-    <Content Include="app\views\completed.html" />
     <Content Include="app\views\delete_project.html" />
     <Content Include="app\views\error_page.html" />
     <Content Include="app\views\filter_view.html" />

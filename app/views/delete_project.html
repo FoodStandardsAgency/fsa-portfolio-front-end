@@ -7,7 +7,7 @@
 <div class="col-sm-10">
 	<h1 class="heading-xlarge" style="margin-bottom:15px;">Delete project</h1><br />
 
-	<form action="/delete_project_process" method="post">
+	<form action="/{{portfolio}}/delete_project_process" method="post">
 	<input id="project_id"  name="project_id"  	value = "{{ data.project_id }}"  hidden />
 	
 	<p>Are you sure you want to delete {{ data.project_name }} ({{ data.project_id }})?<br /><br />	This action cannot be reversed.</p>

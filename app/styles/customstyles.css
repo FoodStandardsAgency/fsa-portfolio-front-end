@@ -44,12 +44,12 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 .risk					{background-color: #006f9e; border-radius: 5px;}
 
 .phase 					{border-radius: 5px;}
-.phase-1  				{background-color:#2E358B}
-.phase-2 				{background-color:#912B88;}
-.phase-3    			{background-color:#D53880;}
-.phase-4      			{background-color:#F15D22;}
-.phase-5      			{background-color:#85994B;}
-.phase-6      			{background-color:#454545;}
+.phase0  				{background-color:#2E358B}
+.phase1 				{background-color:#912B88;}
+.phase2    				{background-color:#D53880;}
+.phase3      			{background-color:#F15D22;}
+.phase4      			{background-color:#85994B;}
+.phase5      			{background-color:#454545;}
 .phase-label 			{ position:absolute; top:50%; left:0; width:100%; margin-top:-25px; text-align:center; color:white; font-weight:800;  font-size:36px;}
 
 
@@ -168,4 +168,8 @@ div.last-update-text
 {
 	margin-top: 1em;
 	font-size: 0.9em;
+}
+
+.bootstrap-select .filter-option {
+	white-space: normal;
 }
