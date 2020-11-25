@@ -47,19 +47,19 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 .heading-small			{font-size:1em; font-weight:900; margin:10px 0 0;}
 
 .small-flag				{font-weight:600; font-size:1em; display: inline-block; color:black; border: 1px solid #939e91;  text-transform: none; padding: 5px 20px; border-radius:5px; margin-bottom:15px;}
-.rag-5					{background-color:red; color: white;}
-.rag-4					{background-color:brown; color: white;}
-.rag-3					{background-color:orange; color: white;}
-.rag-2					{background-color:lime; color: white;}
-.rag-1					{background-color:green; color: white;}
+.rag-red				{background-color:red; color: white;}
+.rag-redamb				{background-color:brown; color: white;}
+.rag-amb				{background-color:orange; color: white;}
+.rag-ambgre				{background-color:lime; color: white;}
+.rag-gre				{background-color:green; color: white;}
 
 .phase 					{border-radius: 5px; min-height: 150px; max-height: 300px; border: 1px solid #000000;}
-.phase-0  				{background-color:#2E358B}
-.phase-1 				{background-color:#912B88;}
-.phase-2    			{background-color:#D53880;}
-.phase-3      			{background-color:#F15D22;}
-.phase-4      			{background-color:#85994B;}
-.phase-5      			{background-color:#454545;}
+.phase0  				{background-color:#2E358B}
+.phase1 				{background-color:#912B88;}
+.phase2	    			{background-color:#D53880;}
+.phase3      			{background-color:#F15D22;}
+.phase4      			{background-color:#85994B;}
+.phase5      			{background-color:#454545;}
 .phase-label 			{position:absolute; top:50%; left:0; width:100%; margin-top:-25px; text-align:center; color:white; font-weight:800;  font-size:36px;}
 
 .update-button			{border: 1px solid black; color:black; padding:10px; margin:5px; background-color:white; border-radius:5px;}

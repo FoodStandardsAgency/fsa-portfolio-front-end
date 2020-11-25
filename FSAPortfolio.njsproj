@@ -63,6 +63,7 @@
     <Content Include="app\views\add-edit-project.html" />
     <Content Include="app\views\configure.html" />
     <Content Include="app\views\landing.html" />
+    <Content Include="app\views\project_static.html" />
     <Content Include="app\views\summary_list.html" />
     <Content Include="app\views\summary.html" />
     <Content Include="app\views\theme\foot.html" />
@@ -94,19 +95,16 @@
     <Content Include="app\routes.js" />
     <Content Include="app\update_odd.js" />
     <Content Include="app\update_portfolio.js" />
-    <Content Include="app\views\add_project.html" />
     <Content Include="app\views\add_supplier.html" />
     <Content Include="app\views\delete_project.html" />
     <Content Include="app\views\error_page.html" />
     <Content Include="app\views\filter_view.html" />
-    <Content Include="app\views\govuk_template.html" />
     <Content Include="app\views\index.html" />
     <Content Include="app\views\layout.html" />
     <Content Include="app\views\login.html" />
     <Content Include="app\views\project.html" />
     <Content Include="app\views\team-page.html" />
     <Content Include="app\views\thank_you.html" />
-    <Content Include="app\views\update_project.html" />
     <Content Include="app\assets\images\favicon_fsa.png" />
     <Content Include="app\assets\images\separator-2x.png" />
     <Content Include="app\assets\images\separator.png" />
@@ -115,13 +113,6 @@
     <Content Include="app\assets\javascripts\jquery-1.11.3.js" />
     <Content Include="app\assets\javascripts\jquery-1.9.1.min.js" />
     <Content Include="app\assets\javascripts\govuk\selection-buttons.js" />
-    <Content Include="app\views\display bak\index.html" />
-    <Content Include="app\views\display bak\layout.html" />
-    <Content Include="app\views\includes\examples_head.bak.html" />
-    <Content Include="app\views\includes\head.html" />
-    <Content Include="app\views\includes\propositional_navigation.html" />
-    <Content Include="app\views\includes\propositional_navigation_alpha.html" />
-    <Content Include="app\views\includes\scripts.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app" />
@@ -135,8 +126,6 @@
     <Folder Include="app\assets\sass\patterns" />
     <Folder Include="app\styles\" />
     <Folder Include="app\views" />
-    <Folder Include="app\views\display bak" />
-    <Folder Include="app\views\includes" />
     <Folder Include="app\views\theme\" />
     <Folder Include="routes\" />
   </ItemGroup>
