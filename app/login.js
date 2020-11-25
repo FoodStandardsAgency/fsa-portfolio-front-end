@@ -61,10 +61,11 @@ function login(req, res) {
 
 	(async () => {
 		try {
-			const { body } = await backend.api.post('Users/legacy', {
-				json: {
-					userName: user,
-					passwordHash: prov_hash
+			const { body } = await backend.api.post('Token', {
+				form: {
+					username: user,
+					password: prov_hash,
+					grant_type: 'password'
 				}
 			});
 
