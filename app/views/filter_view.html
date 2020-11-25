@@ -15,7 +15,7 @@
 			{% set date_input_col = 'col-sm-6 col-md-5' %}
 
 			{% for fieldgroup in fieldgroups %}
-			<h2 class="heading-medium" style="margin-bottom:10px;">{{fieldgroup.fieldgroup}}</h2><br />
+			<h2 class="section" style="margin-top:2.25em; margin-bottom:10px;">{{fieldgroup.fieldgroup}}</h2><br />
 			{% for label in fieldgroup.labels %}
 			{% set labelIncluded = (label.included and ((not label.admin) or (label.admin and (isAdmin or label.editorcanview)))) %}
 			{% if labelIncluded %}
@@ -30,7 +30,7 @@
 				{% case 'adusersearch' %}
 				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
 				<div class="{{input_col}}">
-					<input type="text" class="form-control" id="id_{{label.field}}" name="{{label.field}}" placeholder="{{label.label}} includes" value="{{form_values[label.field]}}">
+					<input type="text" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" placeholder="{{label.label}} includes" value="{{form_values[label.field]}}">
 				</div>
 
 				{% case 'optionlist' %}
@@ -44,7 +44,7 @@
 				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
 				<div class="{{input_col}}">
 					{% if options[label.field] %}
-					<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="true" multiple>
+					<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="true" data-style="form-input-box" multiple>
 						{% for option in options[label.field] %}
 						<option value="{{option.value}}" data-tokens="{{option.tokens}}" {{ "selected" if form_values[label.field] and form_values[label.field].includes(option.value) }}>{{option.display}}</option>
 						{% endfor %}
@@ -57,13 +57,13 @@
 				{% case 'date' %}
 				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
 				<div class="{{input_col}}">
-					<input type="date" class="form-control" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" value="{{form_values[label.field]}}" >
+					<input type="date" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" value="{{form_values[label.field]}}" >
 				</div>
 
 				{% case 'nullableboolean' %}
 				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
 				<div class="{{input_col}}">
-					<select class="selectpicker form-control" name="{{label.field}}">
+					<select class="selectpicker form-control" data-style="form-input-box" name="{{label.field}}">
 						<option value="" {{ "selected" if form_values[label.field] == "" }} >None selected</option>
 						<option value="true" {{ "selected" if form_values[label.field] == "true" }}>Yes</option>
 						<option value="false"{{ "selected" if form_values[label.field] == "false" }}>No</option>
@@ -75,9 +75,9 @@
 			{% endif %}
 			{% endfor %}
 			{% endfor %}
-			<div class="row">
-				<div class="col-sm-2"><button class="btn btn-primary" type="submit">Submit</button></div>
-				<div class="col-sm-2"><button class="btn btn-primary" type="reset">Reset</button></div>
+			<div class="row my-5">
+				<div class="col-sm-1"><button class="general-button" type="submit">Submit</button></div>
+				<div class="col-sm-1"><button class="general-button" type="reset">Reset</button></div>
 			</div>
 
 		</form>
@@ -92,7 +92,7 @@
 		<p style=""><strong>Number of projects:</strong> {{ data.project_cnt }}</p>
 
 		{% for project in data.projects %}
-		<p style=""><a href="/{{portfolio}}/Projects/{{ project.project_id }}">{{ project.project_id }} {{ project.project_name | safe}}</a></p>
+		<p style=""><a href="/{{portfolio}}/projects/{{ project.project_id }}">{{ project.project_id }} {{ project.project_name | safe}}</a></p>
 		{% endfor %}
 
 		{% endif %}
