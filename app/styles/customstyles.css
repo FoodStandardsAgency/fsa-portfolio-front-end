@@ -1,7 +1,7 @@
 /* Fonts */
 
 h1, h2, h3, h4			{font-family: 'Fira Sans', sans-serif;}
-p						{font-family: 'Open Sans', sans-serif;}
+p						{font-family: 'Open Sans', sans-serif; font-size:1.08em;}
 
 ul {
     list-style-type: none;
@@ -10,7 +10,12 @@ ul {
 	padding-right:5px;
 }
 
-a:hover {text-decoration:none;}
+a 		{color:#2d4c7d; text-decoration:underline; font-size:1.08em;}
+a:hover {background-color:#ebedad; border-bottom:2px solid black; color:black; text-decoration:none;}
+
+a.special-link {text-decoration: none;}
+a.special-link:hover {background-color:transparent; border:none; text-decoration:none;}
+
 
 
 /* Text styling */
@@ -27,33 +32,67 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 /* Project page */
 .project-title			{font-family: 'Open Sans', sans-serif; font-weight:900; font-size:3em; margin-bottom:15px;} 
 .project-new			{background-color:#007FB2; color:white; font-size:0.5em; padding: 5px; border-radius:5px;}
+.section				{font-family: 'Open Sans', sans-serif; font-weight:800; font-size:1.5em; margin-bottom:15px;} 
 
-.desc-para				{border:1px solid #006F51; background-color:#f7fffd; padding:10px; margin:0;}
+
+.desc-para				{border:1px solid #939e91; background-color:#f7fffd; padding:10px; margin:0; margin-bottom:15px; border-radius:5px;}
+.programme				{border:1px solid #939e91; background-color:#e6e8e6; padding:10px; margin:0; margin-bottom:15px; border-radius:5px;}
+.infobox				{border:1px solid #939e91; padding:10px; margin:0; margin-bottom:15px; border-radius:5px;}
+
+.lead-box, .key-contact	{border: 1px solid #939e91; padding:10px; margin:0 15px 15px 0; border-radius:5px;}
+.lead-box				{background-color:#f7fffd;}
+.key-contact			{background-color:#ffffff;}
 
 .heading-medium			{font-size:1.5em; font-weight:900; margin:10px 0 0;}
 .heading-small			{font-size:1em; font-weight:900; margin:10px 0 0;}
 
-.small-flag				{font-weight:800; font-size:1em; display: inline-block; color: white;  text-transform: none; padding: 4px 16px; border-radius:5px;}
-.priority 				{background-color: purple;}
-.rag-red				{background-color:red;}
-.rag-redamb				{background-color:brown;}
-.rag-amb				{background-color:orange;}
-.rag-ambgre				{background-color:lime;}
-.rag-gre				{background-color:green;}
-.onhold					{color:black; border: 1px solid black; border-radius: 5px;}
-.risk					{background-color: #006f9e; border-radius: 5px;}
+.small-flag				{font-weight:600; font-size:1em; display: inline-block; color:black; border: 1px solid #939e91;  text-transform: none; padding: 5px 20px; border-radius:5px; margin-bottom:15px;}
+.rag-5					{background-color:red; color: white;}
+.rag-4					{background-color:brown; color: white;}
+.rag-3					{background-color:orange; color: white;}
+.rag-2					{background-color:lime; color: white;}
+.rag-1					{background-color:green; color: white;}
 
-.phase 					{border-radius: 5px;}
-.phase0  				{background-color:#2E358B}
-.phase1 				{background-color:#912B88;}
-.phase2    				{background-color:#D53880;}
-.phase3      			{background-color:#F15D22;}
-.phase4      			{background-color:#85994B;}
-.phase5      			{background-color:#454545;}
-.phase-label 			{ position:absolute; top:50%; left:0; width:100%; margin-top:-25px; text-align:center; color:white; font-weight:800;  font-size:36px;}
+.phase 					{border-radius: 5px; min-height: 150px; max-height: 300px; border: 1px solid #000000;}
+.phase-0  				{background-color:#2E358B}
+.phase-1 				{background-color:#912B88;}
+.phase-2    			{background-color:#D53880;}
+.phase-3      			{background-color:#F15D22;}
+.phase-4      			{background-color:#85994B;}
+.phase-5      			{background-color:#454545;}
+.phase-label 			{position:absolute; top:50%; left:0; width:100%; margin-top:-25px; text-align:center; color:white; font-weight:800;  font-size:36px;}
 
+.update-button			{border: 1px solid black; color:black; padding:10px; margin:5px; background-color:white; border-radius:5px;}
+.update-button:hover	{border: 1px solid green; color:white; background-color:green;}
+.delete-button			{border: 1px solid black; color:black; padding:10px; margin:5px; background-color:white; border-radius:5px;}
+.delete-button:hover	{border: 1px solid red; color:white; background-color:red;}
 
 #myList li{display:none;}
+
+ul.updates {margin-left: 0; padding-left:0}
+
+
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion 				{ cursor: pointer;  transition: 0.4s;  margin-right:15px;}
+.arrow {
+  border: solid #939e91;
+  border-width: 0 5px 5px 0;
+  display: inline-block;
+  padding: 5px;
+  
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
 
 
 /*Summary page*/
