@@ -79,7 +79,7 @@ router.get('/', login.requireLogin, async (req, res) => {
 // CONFIGURATION
 //-------------------------------------------------------------------
 
-router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
+router.get('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 
 	try {
 		// Need to get current configuration data to pre-populate the form
@@ -107,7 +107,7 @@ router.get('/:portfolio/configure', login.requireLogin, async (req, res) => {
     }
 })
 
-router.post('/:portfolio/configure', login.requireLogin, async (req, res) => {
+router.post('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 	try {
 		var portfolio = req.params.portfolio;
 
@@ -228,47 +228,47 @@ router.get('/:portfolio/status/', login.requireLogin, async function (req, res) 
 		handleError(error);
 		res.end();
 	}
-
 });
 
-router.get('/:portfolio/new_projects/', login.requireLogin, function (req, res) {	
-var portfolio = req.params.portfolio;
-	
-	queries.new_projects(portfolio)
-	.then((result) => {
-		res.render('summary', {
-			"data": nestedGroupBy(result.body, ['g6team', 'phase']),
-			"counts": _.countBy(result.body, 'phase'),
-			"themes": config.teams,
-			"phases":config.phases,
-			"sess": req.session,
-			"portfolio": portfolio
-		});
-	});	
-});
-
-router.get('/:portfolio/archived', login.requireLogin, function (req, res) {
+router.get('/:portfolio/lead/', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
-	
-	queries.completed_projects(portfolio)
-	.then((result) => {
-		res.render('completed', {
-			"user": req.session.user,
-			"data": result.body,
-			"counts": _.countBy(result.body, 'phase'),
-			"sess":req.session,
-			"portfolio": portfolio
+	try {
+		var response = await queries.portfolio_summary(portfolio, "lead");
+		var summary = response.body;
+		res.render('summary', {
+			"sess": req.session,
+			"portfolio": portfolio,
+			"summary": summary
 		});
-	})
-	.catch();	
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+});
+
+router.get('/:portfolio/new_projects/', login.requireLogin, async function (req, res) {
+	var portfolio = req.params.portfolio;
+	try {
+		var response = await queries.portfolio_summary(portfolio, "newbyteam");
+		var summary = response.body;
+		res.render('summary_list', {
+			"sess": req.session,
+			"portfolio": portfolio,
+			"summary": summary
+		});
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
 });
 
 router.get('/:portfolio/completed', login.requireLogin, function (req, res){res.redirect('/archived');});
 
-router.get('/:portfolio/portfolio-team', login.requireLogin, (req, res) => {
+router.get('/:portfolio/portfolio-team', login.requireAdmin, (req, res) => {
 	var portfolio = req.params.portfolio;
-	if(req.session.user == 'portfolio') {res.render('team-page', {"sess": req.session, "portfolio":portfolio});}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
+	res.render('team-page', { "sess": req.session, "portfolio": portfolio });
 });
 		
 	
@@ -301,14 +301,12 @@ router.get('/:portfolio/edit/:project_id', login.requireLogin, async function (r
 router.get('/portfolio-update/:project_id', login.requireLogin, async function (req, res) {
 	await update_portfolio.renderEditForm(req, res);
 });
-router.get('/:portfolio/update/:project_id', login.requireLogin, (req, res) => {
-	if (req.session.user == 'portfolio' || req.session.user == 'odd' || req.session.user == 'team_leaders') { update_portfolio.renderEditForm(req, res); }
-	else { res.render('error_page', { message: 'You are not authorised to view this page' }); }
+router.get('/:portfolio/update/:project_id', login.requireEditor, async function (req, res) {
+	update_portfolio.renderEditForm(req, res);
 });
 
-router.get('/portfolio-delete/:project_id', login.requireLogin, function (req, res) {
-	if(req.session.user == 'portfolio'){delete_portfolio(req, res);}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'})};
+router.get('/:portfolio/delete/:project_id', login.requireAdmin, async function (req, res) {
+	await delete_portfolio(req, res);
 });
 
 
@@ -322,45 +320,42 @@ router.get('/:portfolio/users/search', login.requireLogin, async function (req, 
 //-------------------------------------------------------------------
 // DELETE PROJECTS - handle form submissions
 //-------------------------------------------------------------------	
-router.post('/delete_project_process', login.requireLogin, function (req, res) {handle_delete(req, res)});
+router.post('/:portfolio/delete_project_process', login.requireLogin, async function (req, res) { await handle_delete(req, res) });
 
 
 //-------------------------------------------------------------------
 // Export latest projects as a csv
 //-------------------------------------------------------------------	
 
-router.get('/:portfolio/download/csv', login.requireLogin, async function(req,res){
+router.get('/:portfolio/download/csv', login.requireAdmin, async function (req, res) {
 
 	var portfolio = req.params.portfolio;
-	
-	if (req.session.user == 'portfolio') {
-		try {
-			var result = await queries.portfolio_export(portfolio);
-			res.setHeader('Content-Type', 'text/csv');
-			res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'latest_projects-' + Date.now() + '.csv\"');
-			res.setHeader('Cache-Control', 'no-cache');
-			res.setHeader('Pragma', 'no-cache');
-			var config = result.body.config;
-			var projects = result.body.projects
 
-			var columns = _.chain(config.labels)
-				.orderBy("grouporder", "fieldorder")
-				.map((value) => ({
-					key: value.field,
-					header: value.label
-				}))
-				.value();
+	try {
+		var result = await queries.portfolio_export(portfolio);
+		res.setHeader('Content-Type', 'text/csv');
+		res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'latest_projects-' + Date.now() + '.csv\"');
+		res.setHeader('Cache-Control', 'no-cache');
+		res.setHeader('Pragma', 'no-cache');
+		var config = result.body.config;
+		var projects = result.body.projects
 
-			stringify(projects, { header: true, columns: columns })
-				.pipe(res);
+		var columns = _.chain(config.labels)
+			.orderBy("grouporder", "fieldorder")
+			.map((value) => ({
+				key: value.field,
+				header: value.label
+			}))
+			.value();
 
-		}
-		catch (error) {
-			handleError(error);
-			res.end();
-        }
+		stringify(projects, { header: true, columns: columns })
+			.pipe(res);
+
 	}
-	else {res.render('error_page', {message: 'You are not authorised to view this page'});}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
 })
 
 
