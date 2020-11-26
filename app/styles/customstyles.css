@@ -52,8 +52,9 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 .rag-amb				{background-color:orange; color: white;}
 .rag-ambgre				{background-color:lime; color: white;}
 .rag-gre				{background-color:green; color: white;}
+.rag-no					{background-color:grey; color: white;}
 
-.phase 					{border-radius: 5px; min-height: 150px; max-height: 300px; border: 1px solid #000000;}
+.phase 					{border-radius: 5px; min-height: 150px; max-height: 300px; border: 1px solid #939e91;}
 .phase0  				{background-color:#2E358B}
 .phase1 				{background-color:#912B88;}
 .phase2	    			{background-color:#D53880;}

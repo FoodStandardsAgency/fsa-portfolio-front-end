@@ -155,33 +155,7 @@ function arrow(id) {
 			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum lacus vel condimentum eleifend. Aliquam porttitor purus at quam sagittis facilisis. Ut vitae hendrerit sapien. Nunc semper, lacus ut ultricies elementum, enim dolor faucibus arcu, ac congue diam leo id justo. Proin volutpat tincidunt lacus, ac imperdiet lectus consequat non.
 			</p>
 			</div>
-		</div>
-
-		<!-- Priority -->
-		{% if data.priority_main %}
-		<strong>{{labels.priority_main}}:</strong>
-		<div class="small-flag priority">{{data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;&nbsp;&nbsp;
-		{% endif %}
-
-		<!-- RAG -->
-		{% set rags = { 'red': 'Red', 'redamb': 'Red-Amber', 'amb': 'Amber', 'ambgre': 'Amber-Green', 'gre': 'Green']%}
-		{% if rags[data.rag] %}
-		<strong>{{labels.rag}}:</strong>
-		<div class="small-flag rag-{{data.rag}}">{{ rags[data.rag] }}</div>
-		{% endif%}
-
-		<!-- Status --><!-- drop-down position shouldn't be the one indicating the onhold status is unset for a particular projet -->
-		{% if data.onhold and data.onhold != 'No' %}
-		<strong>{{labels.onhold}}:</strong>
-		<div class="small-flag onhold"><strong>{{ data.onhold }}</strong></div>
-		{% endif %}
-
-		<!-- Risk rating -->
-		{% if data.risk_rating %}
-		<strong>{{labels.risk_rating}}:</strong>
-		<div class="small-flag risk"><strong>{{ data.risk_rating }}</strong></div>
-		{% endif %}
-		
+		</div>		
 		
 		<!-- Project team -->
 		<br />
@@ -215,8 +189,9 @@ function arrow(id) {
 		</div>
 				
 		<div class="mb-3">
-		<p><strong>Project team: </strong>Name1, Name2, Name3, Name4 <br />
-		<strong>Supplier: </strong>Supplier<br /></p>
+		<p><strong>Project team: </strong><br />
+		Name1, Name2, Name3, Name4 <br /><br />
+		<strong>Supplier: </strong><br />Supplier<br /><br /></p>
 		</div>
 		
 		<div class="small-flag mb-3">O1: Option 1</div>
@@ -318,18 +293,6 @@ function arrow(id) {
 		<div class="col-sm-3 py-3"><a href="#">Business case</a></div>
 		<div class="col-sm-3 py-3"><a href="#">Presentation 2</a></div>
 		</div>
-				
-		<!--{% if data.documents and documents.length > 0 %}
-		<h2 class="heading-medium">{{labels.documents}}</h2>
-		{% for doc in documents %}
-		<div class="container">
-			<div class="equalsplit2"><a href="{{ doc.link | safe }}">{{ doc.name | safe }}</a></div>
-		</div>
-		<br />
-		{% endfor %}
-		<br /><br />
-		{% endif %}-->
-		
 		
 		<br />
 		<hr />
@@ -341,17 +304,6 @@ function arrow(id) {
 		</div>
 		
 		
-		<!--{% if data.rels and data.rels.length > 0 %}
-
-		<h2 class="heading-medium">{{labels.rels}}</h2>
-
-		{% for rel in data.rels %}
-		<a href="/{{portfolio}}/projects/{{ rel.project_id }}">{{ rel.project_name }}</a><br />
-		{% endfor %}
-		<br /><br />
-		{% endif %}-->
-		
-		
 		<br />
 		<hr />
 		<h2 class="accordion section" onclick="showhide('s8'); arrow('a8')">This project depends on&nbsp;&nbsp; <i id="a8" class="arrow down"></i></h2>
@@ -359,15 +311,6 @@ function arrow(id) {
 		<div class="col-sm-6 py-3"><a href="#">Project 5</a></div>
 		<div class="col-sm-6 py-3"><a href="#">Project 6</a></div>
 		</div>
-		
-		<!--{% if deps_cnt > 0 %}
-		<h2 class="heading-medium">{{labels.dependencies}}</h2>
-
-		{% for dep in data.dependencies %}
-		<a href="/projects/{{ dep.project_id }}">{{ dep.project_name }}</a><br />
-		{% endfor %}
-
-		{% endif %}-->
 			
 
 	</div>
@@ -381,29 +324,16 @@ function arrow(id) {
 		<p><strong>Expected phase end date</strong><br /> 30th Nov 2020</p>
 		<p><strong>Expected end date</strong><br /> 31st Dec 2020</p>
 		<p><strong>Hard deadline</strong><br /> 31st Dec 2020</p>
-		
+		<br />
 		<p><strong>Percentage completed</strong> 85%</p>
-			
+		<br />
 		<div class="small-flag">Plan o1: Value 1</div>
 		<div class="small-flag">Plan o2: Value 2</div>
-
+		<br />
 		<p><strong>Plan text 1:</strong> Value 1<br />
 		<strong>Plan text 2:</strong> Value 2</p>
 	</div>
 	
-	<!--{% if data.start_date or data.actstart or data.expendp or data.expend or data.hardend or data.first_completed %}
-		<br /><h3 class="heading-small">Key dates</h3>
-		  <p>
-			{% if data.start_date %}{{labels.start_date}}:<br /> {{ data.start_date | date(globals.datemonthFormat) }} <br /><br />{% endif %}
-			{% if data.actstart %}{{labels.actstart}}:<br /> {{ data.actstart | date }}<br /><br />{% endif %}
-			{% if data.expendp %}{{labels.expendp}}:<br /> {{ data.expendp | date }} <br /><br />{% endif %}
-			{% if data.expend %}{{labels.expend}}:<br /> {{ data.expend | date(globals.datemonthFormat) }} <br /><br />{% endif %}
-			{% if data.hardend %}{{labels.hardend}}:<br /> {{ data.hardend | date }}<br /><br />{% endif %}
-			{% if data.actual_end_date %}{{labels.actual_end_date}}:<br /> {{ data.actual_end_date | date }}<br /><br />{% endif %}
-		  </p>
-		  
-	
-	{% endif %}-->
 	
 	<!--{% if data.p_comp > 0 %}
 		<h3 class="heading-small">{{labels.p_comp}}</h3>

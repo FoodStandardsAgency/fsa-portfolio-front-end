@@ -25,7 +25,7 @@ async function project_view(req, res) {
 			}, {});
 
 			// TODO: test suppliers can't access budget (key has changed from number 4 to 'supplier')
-			res.render('project', {
+			res.render('project_new', {
 				"portfolio": portfolio,
 				"user": user,
 				"group": group,
