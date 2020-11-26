@@ -1,5 +1,6 @@
 const queries = require('./queries');
-const handleError = require('./error');
+const errors = require('./error');
+const handleError = errors.handleError;
 const config = require('./config');
 const moment	= require('moment');
 

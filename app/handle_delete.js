@@ -1,5 +1,6 @@
 const queries = require('./queries');
-const handleError = require('./error');
+const errors = require('./error');
+const handleError = errors.handleError;
 
 async function handle_form(req, res) {
 	var id = req.body.project_id;

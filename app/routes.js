@@ -7,7 +7,8 @@ const xss				= require('xss');
 const stringify 		= require('csv-stringify')
 
 // Custom modules
-const handleError		= require('./error');
+const errors			= require('./error');
+const handleError		= errors.handleError;
 const config 			= require('./config');
 var queries 			= require('./queries');
 
@@ -21,7 +22,6 @@ const bulk				= require('./bulk');
 const login 			= require('./login');
 const filter_view 		= require('./filter_view');
 const project_view 		= require('./project_view');
-const odd_view			= require('./oddleads_view');
 
 var router = express.Router();
 
@@ -67,13 +67,19 @@ router.get('/log-out', (req, res) => {
 //-------------------------------------------------------------------
 
 router.get('/', login.requireLogin, async (req, res) => {
-	var result = await queries.portfolio_index();
-	var portfolios = result.body;
-	res.render('landing', {
-		"data":portfolios,
-		"sess": req.session
-	});
-})
+	try {
+		var result = await queries.portfolio_index(req);
+		var portfolios = result.body;
+		res.render('landing', {
+			"data": portfolios,
+			"sess": req.session
+		});
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+});
 
 
 //-------------------------------------------------------------------
@@ -146,7 +152,7 @@ router.post('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 router.get('/:portfolio', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
 	try {
-		var response = await queries.portfolio_summary(portfolio, "category");
+		var response = await queries.portfolio_summary(portfolio, "category", req);
 		var summary = response.body;
 		res.render('summary', {
 			"sess": req.session,

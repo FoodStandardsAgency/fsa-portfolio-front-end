@@ -2,7 +2,8 @@ const crypto	= require('crypto');
 const tokens = require('./tokens');
 const graph = require('./graph');
 const backend = require('./backend');
-const handleError = require('./error');
+const errors = require('./error');
+const handleError = errors.handleError;
 
 
 // Redirect not logged in users to the login page
@@ -11,7 +12,8 @@ function requireLogin(req, res, next) {
 	//console.log(req.session.user);
 	//console.log(req.session.group);
 	if (req.session.login == undefined) {
-		loginADUser(req, res).then(result => {
+		(async () => {
+			var result = await loginADUser(req, res);
 			if (!result) {
 				console.log("login undefined - redirecting");
 				req.session.destroy();
@@ -21,7 +23,7 @@ function requireLogin(req, res, next) {
 			else {
 				next();
 			}
-		});
+		})();
 	} else {
 		next();
 	}
@@ -61,7 +63,7 @@ function login(req, res) {
 
 	(async () => {
 		try {
-			const { body } = await backend.api.post('Token', {
+			var result = await backend.api.post('Token', {
 				form: {
 					username: user,
 					password: prov_hash,
@@ -69,20 +71,48 @@ function login(req, res) {
 				}
 			});
 
-			if (body && body.userName && body.accessGroup) {
-				req.session.user = body.userName;
-				req.session.group = body.accessGroup;
-				req.session.login = 'yes';
+			if (result.statusCode == 200) {
+				var tokenbody = result.body;
+				res.cookie('access_token', tokenbody.access_token, { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: 60000 });
+				//console.log(tokenbody);
 
-				res.redirect('/');
-				res.end();
+				// TODO: call again using token to get the user details (access group etc)
+				result = await backend.api.post('Users/legacy', {
+					json: {
+						userName: user,
+						passwordHash: prov_hash
+					},
+					context: { token: tokenbody.access_token }
+				});
+				var body = result.body;
+
+				if (result.statusCode == 200) {
+
+					if (body && body.userName && body.accessGroup) {
+						req.session.user = body.userName;
+						req.session.group = body.accessGroup;
+						req.session.login = 'yes';
+
+						res.redirect('/');
+						res.end();
+					}
+					else {
+						console.log('Login failed: user not found.')
+						req.session.destroy;
+						res.redirect('/login');
+						res.end();
+					}
+				}
+				else {
+					req.session.destroy;
+					errors.handleUnauthorised(res);
+				}
 			}
 			else {
-				console.log('Login failed: user not found.')
 				req.session.destroy;
-				res.redirect('/login');
-				res.end();
-            }
+				errors.handleUnauthorised(res);
+			}
+
 		}
 		catch (error) {
 			console.log(`Login failed: received error from API - ${error.message}`)
@@ -91,6 +121,7 @@ function login(req, res) {
 			res.redirect('/login');
 			res.end();
         }
+
 	})();
 
 
@@ -105,39 +136,38 @@ async function loginADUser(req, res) {
 			const groups = await graph.getUserGroups(accessToken);
 			if (groups) {
 				var userName = translateUserGroup(user, groups.value);
-				loginUser(req, res, userName).then((result) => { return true; });
+				await loginUser(req, res, userName, accessToken);
+				return true; 
 			}
 		}
 		return false;
 	}
 }
 
-function loginUser(req, res, loginUser) {
+async function loginUser(req, res, loginUser, accessToken) {
+	try {
+		var response = await backend.api.post('Users/LegacyADUsers', {
+			json: {
+				userName: loginUser
+			},
+			context: { token: accessToken }
+		});
+		var body = response.body;
 
-	(async () => {
-		try {
-			const { body } = await backend.api.post('Users/LegacyADUsers', {
-				json: {
-					userName: loginUser
-				}
-			});
+		req.session.user = body.userName;
+		req.session.group = body.accessGroup;
+		req.session.login = 'yes';
 
-			req.session.user = body.userName;
-			req.session.group = body.accessGroup;
-			req.session.login = 'yes';
-
-			res.redirect('/');
-			res.end();
-		}
-		catch (error) {
-			console.log('couldnt log in')
-			console.log(error.response.body);
-			req.session.destroy;
-			res.redirect('/login');
-			res.end();
-		}
-	})();
-
+		res.redirect('/');
+		res.end();
+	}
+	catch (error) {
+		console.log('couldnt log in')
+		console.log(error.response.body);
+		req.session.destroy;
+		res.redirect('/login');
+		res.end();
+	}
 }
 
 
@@ -162,4 +192,4 @@ function translateUserGroup(user, groups) {
 }
 
 
-module.exports = { requireLogin, requireAdmin, requireEditor, login, loginADUser };
+module.exports = { requireLogin, requireAdmin, requireEditor, login };

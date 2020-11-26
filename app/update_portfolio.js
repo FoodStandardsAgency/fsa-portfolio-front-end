@@ -1,6 +1,7 @@
 const queries = require('./queries');
 const _ = require('lodash');
-const handleError = require('./error');
+const errors = require('./error');
+const handleError = errors.handleError;
 
 async function renderEditForm(req, res) {
 	try {

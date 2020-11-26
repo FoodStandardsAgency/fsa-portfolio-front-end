@@ -1,5 +1,6 @@
 const { Pool } = require('pg');
 const backend = require('./backend');
+const tokens = require('./tokens');
 
 
 // Connection pool
@@ -23,8 +24,17 @@ const q = {
 // Export promises
 module.exports = {
 	// Actions
-	portfolio_index: () => backend.api('Portfolios'),
-	portfolio_summary: (portfolio, type) => backend.api(`Portfolios/${portfolio}/summary`, { searchParams: { type: type } }),
+	portfolio_index: async (req) => await backend.api('Portfolios', { context: { token: req.cookies.access_token } }),
+	portfolio_summary: async (portfolio, type, req) => {
+		await backend.api(`Portfolios/${portfolio}/summary`, {
+			searchParams: {
+				type: type
+			},
+			context: {
+				token: req.cookies.access_token
+			}
+		});
+	},
 	portfolio_export: (portfolio) => backend.api(`Portfolios/${portfolio}/export`),
 	portfolio_filter_options: (portfolio) => backend.api(`Portfolios/${portfolio}/filteroptions`),
 	portfolio_filtered_projects: (portfolio, data) => backend.api.post(q.portfolio_project_query_url(portfolio), { json: data }),

@@ -1,6 +1,7 @@
 const crypto	= require('crypto');
 const queries = require('./queries');
-const handleError = require('./error');
+const errors = require('./error');
+const handleError = errors.handleError;
 
 
 async function add_supplier(req, res) {

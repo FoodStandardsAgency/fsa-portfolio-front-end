@@ -1,6 +1,7 @@
 const queries 	= require('./queries');
 const config = require('./config');
-const handleError = require('./error');
+const errors = require('./error');
+const handleError = errors.handleError;
 
 function currencyFormat(num) { return '£' + num.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
 

@@ -50,8 +50,6 @@ function getFieldGroups(config) {
 }
 
 
-// ODD leads - load from the database
-queries.oddleads();
 
 // Exports
 exports.categories = categories_map;
@@ -59,5 +57,4 @@ exports.phases = phases_map;
 exports.priorities = priorities_order;
 exports.rags = rag_map;
 exports.teams = teams_map;
-exports.odd_leads = queries.oddleads();
 exports.getFieldGroups = getFieldGroups;

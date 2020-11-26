@@ -1,6 +1,7 @@
 require('dotenv').config();
 const path 		= require('path');
 const express 	= require('express');
+var cookieParser = require('cookie-parser')
 const session = require('express-session');
 //const session	= require('client-sessions');
 const flash = require('connect-flash');
@@ -21,8 +22,8 @@ const app = express();
 const port = process.env.PORT || 3100;
 const dev	= true;
 
-app.use(express.urlencoded({extended: true}));
-
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser())
 app.use(session({
   cookieName: 'session',
   secret: process.env.COOKIE_SECRET,
