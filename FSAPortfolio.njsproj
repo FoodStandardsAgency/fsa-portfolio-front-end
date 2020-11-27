@@ -90,7 +90,6 @@
     <Content Include="app\oddleads_view.js" />
     <Content Include="app\project_view.js" />
     <Content Include="app\queries.js" />
-    <Content Include="app\render_add_project.js" />
     <Content Include="app\routes.js" />
     <Content Include="app\update_odd.js" />
     <Content Include="app\update_portfolio.js" />

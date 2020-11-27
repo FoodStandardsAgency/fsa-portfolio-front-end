@@ -3,6 +3,8 @@ const tokens = require('./tokens');
 const graph = require('./graph');
 const backend = require('./backend');
 const errors = require('./error');
+var queries = require('./queries');
+
 const handleError = errors.handleError;
 
 
@@ -11,7 +13,8 @@ function requireLogin(req, res, next) {
 	//console.log("Login");
 	//console.log(req.session.user);
 	//console.log(req.session.group);
-	if (req.session.login == undefined) {
+
+	if (req.cookies.identity == undefined || req.session.login == undefined) {
 		(async () => {
 			var result = await loginADUser(req, res);
 			if (!result) {
@@ -29,26 +32,29 @@ function requireLogin(req, res, next) {
 	}
 };
 
+function hasRole(req, role) {
+	var portfolio = req.params.portfolio;
+	return req.cookies.identity.roles.includes(`${portfolio}.${role}`);
+}
+
 function requireAdmin(req, res, next) {
 	requireLogin(req, res, () => {
-		if (req.session.user == 'portfolio') {
+		if (hasRole(req, 'admin')) {
 			next();
 		}
 		else {
 			res.render('error_page', { message: 'You are not authorised to view this page' });
 		}
-
 	});
 }
 function requireEditor(req, res, next) {
 	requireLogin(req, res, () => {
-		if (req.session.user == 'portfolio' || req.session.user == 'odd' || req.session.user == 'team_leaders') {
+		if (hasRole(req, 'admin') || hasRole(req, 'editor') || hasRole(req, 'lead')) {
 			next();
 		}
 		else {
 			res.render('error_page', { message: 'You are not authorised to view this page' });
 		}
-
 	});
 }
 
@@ -73,8 +79,7 @@ function login(req, res) {
 
 			if (result.statusCode == 200) {
 				var tokenbody = result.body;
-				res.cookie('access_token', tokenbody.access_token, { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: 60000 });
-				//console.log(tokenbody);
+				await tokens.setBearerToken(req, res, tokenbody);
 
 				// TODO: call again using token to get the user details (access group etc)
 				result = await backend.api.post('Users/legacy', {
@@ -160,8 +165,7 @@ async function loginUser(req, res, loginUser, accessToken) {
 
 		if (result.statusCode == 200) {
 			var tokenbody = result.body;
-			res.cookie('access_token', tokenbody.access_token, { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: 60000 });
-
+			await tokens.setBearerToken(req, res, tokenbody);
 
 			var response = await backend.api.post('Users/LegacyADUsers', {
 				json: {
@@ -213,5 +217,14 @@ function translateUserGroup(user, groups) {
 	return u;
 }
 
+function logout(req, res) {
+	// Destroy session and log out
+	tokens.logout(req, res);
+	req.session.destroy(function (err) {
+		req.logout();
+		res.redirect('/login');
+	});
+}
 
-module.exports = { requireLogin, requireAdmin, requireEditor, login };
+
+module.exports = { requireLogin, requireAdmin, requireEditor, login, logout };

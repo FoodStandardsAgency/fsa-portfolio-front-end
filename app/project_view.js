@@ -13,7 +13,7 @@ async function project_view(req, res) {
 	var project_id = req.params.project_id;
 	
 	try {
-		var projectDTO = await queries.load_project(project_id, { includeConfig: true, includeHistory: true });
+		var projectDTO = await queries.load_project(project_id, { includeConfig: true, includeHistory: true }, req);
 		var project = projectDTO.body.project;
 		if (project) {
 

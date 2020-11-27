@@ -2,13 +2,14 @@ const queries = require('./queries');
 const _ = require('lodash');
 const errors = require('./error');
 const handleError = errors.handleError;
+const login = require('./login');
 
 async function renderEditForm(req, res) {
 	try {
-		var isAdmin = (req.session.user === 'portfolio');
+		var isAdmin = login.hasRole(req, 'admin');
 		var portfolio = req.params.portfolio;
 		var project_id = req.params.project_id;
-		var result = await queries.load_project_foredit(project_id);
+		var result = await queries.load_project_foredit(project_id, req);
 		var project = result.body.project;
 		var config = result.body.config;
 		var options = result.body.options;
@@ -44,11 +45,10 @@ async function renderEditForm(req, res) {
 
 async function renderAddForm(req, res) {
 	try {
-		if (req.session.user == 'portfolio') {
-
-			var isAdmin = (req.session.user === 'portfolio');
+		var isAdmin = login.hasRole(req, 'admin');
+		if (isAdmin) {
 			var portfolio = req.params.portfolio;
-			var result = await queries.newproject_config(portfolio);
+			var result = await queries.newproject_config(portfolio, req);
 			var project = result.body.project;
 			var config1 = result.body.config;
 			var options = result.body.options;
@@ -88,7 +88,7 @@ async function updateProject(req, res) {
 	try {
 		var portfolio = req.params.portfolio;
 		console.log(req.body);
-		await queries.project_update(req.body);
+		await queries.project_update(req);
 		res.redirect(`/${portfolio}/Projects/${req.body.project_id}`);
 		res.end();
 	}
@@ -105,7 +105,7 @@ async function searchUsers(req, res) {
 		var addnone = req.query.addnone;
 
 		console.log(req.query);
-		var response = await queries.users_search(portfolio, term, addnone);
+		var response = await queries.users_search(portfolio, term, addnone, req);
 
 		var result = response.body.searchresults.map(function (u) { return { value: u.userPrincipalName, text: u.displayName }; });
 

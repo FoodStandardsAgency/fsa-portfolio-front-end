@@ -7,7 +7,7 @@ async function handle_form(req, res) {
 	var portfolio = req.params.portfolio;
 
 	try {
-		var response = await queries.delete_project(id);
+		var response = await queries.delete_project(id, req);
 		if (response.statusCode == 200) {
 			console.log(`Deleted project ${id}`);
 			res.render('thank_you', {

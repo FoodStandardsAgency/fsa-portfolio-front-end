@@ -10,7 +10,7 @@ const moment	= require('moment');
 async function view(req, res) {
 	try {
 		var portfolio = req.params.portfolio;
-		var result = await queries.portfolio_filter_options(portfolio);
+		var result = await queries.portfolio_filter_options(portfolio, req);
 		var portfolioconfig = result.body.config;
 		var options = result.body.options;
 		var fieldGroups = config.getFieldGroups(portfolioconfig);
@@ -36,8 +36,8 @@ async function getResults(req, res) {
 		var portfolio = req.params.portfolio;
 		console.log(req.body);
 
-		var queryResult = await queries.portfolio_filtered_projects(portfolio, req.body);
-		var optionsResult = await queries.portfolio_filter_options(portfolio);
+		var queryResult = await queries.portfolio_filtered_projects(portfolio, req);
+		var optionsResult = await queries.portfolio_filter_options(portfolio, req);
 		var portfolioconfig = optionsResult.body.config;
 		var options = optionsResult.body.options;
 		var fieldGroups = config.getFieldGroups(portfolioconfig);
