@@ -146,20 +146,42 @@ async function loginADUser(req, res) {
 
 async function loginUser(req, res, loginUser, accessToken) {
 	try {
-		var response = await backend.api.post('Users/LegacyADUsers', {
-			json: {
-				userName: loginUser
+
+		var result = await backend.api.post('Token', {
+			form: {
+				username: loginUser,
+				password: '',
+				grant_type: 'password'
 			},
-			context: { token: accessToken }
+			context: {
+				accessToken: accessToken
+            }
 		});
-		var body = response.body;
 
-		req.session.user = body.userName;
-		req.session.group = body.accessGroup;
-		req.session.login = 'yes';
+		if (result.statusCode == 200) {
+			var tokenbody = result.body;
+			res.cookie('access_token', tokenbody.access_token, { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: 60000 });
 
-		res.redirect('/');
-		res.end();
+
+			var response = await backend.api.post('Users/LegacyADUsers', {
+				json: {
+					userName: loginUser
+				},
+				context: { token: tokenbody.access_token }
+			});
+			var body = response.body;
+
+			req.session.user = body.userName;
+			req.session.group = body.accessGroup;
+			req.session.login = 'yes';
+
+			res.redirect('/');
+			res.end();
+		}
+		else {
+			req.session.destroy;
+			errors.handleUnauthorised(res);
+		}
 	}
 	catch (error) {
 		console.log('couldnt log in')

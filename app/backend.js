@@ -7,13 +7,14 @@ const api = got.extend({
 	hooks: {
 		beforeRequest: [
 			options => {
-				if (!options.context || !options.context.token) {
-					//throw new Error('Token required');
+				if (options.context) {
+					if (options.context.accessToken) {
+						options.headers.Authorization = `AccessToken ${options.context.accessToken}`;
+					}
+					else if (options.context.token) {
+						options.headers.Authorization = `Bearer ${options.context.token}`;
+					}
 				}
-				else {
-					options.headers.Authorization = `Bearer ${options.context.token}`;
-					//console.log(options.headers);
-                }
             }
 		]
 	}
