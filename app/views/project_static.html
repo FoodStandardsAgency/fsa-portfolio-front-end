@@ -229,23 +229,6 @@ function arrow(id) {
 		</div>
 		
 		
-		<!--{% if data.updates.length > 0 %}
-		<h2 class="heading-medium">{{labels.update}}</h2>
-
-		<ul id="myList">
-			{% for update in data.updates %}
-			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">{{ update.timestamp | date(globals.timestampFormat) | safe }}</span> - {{ update.text | safe }}</p></li>
-			{% endfor %}
-		</ul>
-
-		<p><span id="loadMore" style="font-weight:800;">Load more</span> <span id="showLess" style="font-weight:800;">| Show less</span></p>
-		<br /><br />
-		{% else %}
-
-		<h2 class="heading-medium"> No updates</h2>
-		<br /><br />
-		{% endif %}-->
-		
 		<br />
 		<hr />
 		<h2 class="accordion section" onclick="showhide('s5'); arrow('a5')">Milestones&nbsp;&nbsp; <i id="a5" class="arrow down"></i></h2>
@@ -333,40 +316,13 @@ function arrow(id) {
 		<p><strong>Plan text 1:</strong> Value 1<br />
 		<strong>Plan text 2:</strong> Value 2</p>
 	</div>
-	
-	
-	<!--{% if data.p_comp > 0 %}
-		<h3 class="heading-small">{{labels.p_comp}}</h3>
-		<p>
-			{{ data.p_comp }}%
-		</p>
-	{% endif %}-->
+
 	
 	<br />
 	<hr />
 	<h2 class="accordion section" onclick="showhide('s10'); arrow('a10')">About the project&nbsp;&nbsp; <i id="a10" class="arrow down"></i></h2>
 	
-	
-	<!--{% if data.direct and data.direct != 'NONE' %}
-		<h3 class="heading-small">{{labels.direct}}</h3>
-		<p>
-			{% if data.direct == 'COMMS' %} 	Communications
-			{% elif data.direct == 'IR' %}	Incidents & Resilience
-			{% elif data.direct == 'FO' %}	Field Operations
-			{% elif data.direct == 'FP' %}	Finance & Performance
-			{% elif data.direct == 'FSP' %}	Food Safety Policy
-			{% elif data.direct == 'FSA' %}	FSA wide
-			{% elif data.direct == 'NFCU' %}	National Food Crime Unit
-			{% elif data.direct == 'NI' %}	Northern Ireland
-			{% elif data.direct == 'ODD' %}	Openness, Data & Digital
-			{% elif data.direct == 'PEOP' %}	People
-			{% elif data.direct == 'RC' %}	Regulatory Compliance
-			{% elif data.direct == 'SERD' %}	Science, Evidence & Research
-			{% elif data.direct == 'SLG' %}	Strategy, Legal & Governance
-			{% elif data.direct == 'WAL' %}	Wales
-			{% endif %}
-		</p>
-	{% endif %}-->
+
 	<div id="s10" style="display:none;">
 		<p><strong>Directorate</strong><br />FSA wide</p>
 		<p><strong>Theme</strong><br />Theme1</p>
@@ -412,53 +368,12 @@ function arrow(id) {
 		<p><strong>Process text 1:</strong> Value 1<br />
 		<strong>Process text 2:</strong> Value 2</p>
 	</div>
-		
 
-
-
-		
-
-	<!--{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' or link[1] %} <br /> {% endif %}
-
-		{% if data.project_size == 's' or data.project_size == 'm' or data.project_size == 'l'  or data.project_size == 'x' %}
-		<h3 class="heading-small">{{labels.project_size}}</h3>
-		<p>
-			{% if data.project_size == 's' %} Small
-			{% elif data.project_size == 'm' %} Medium
-			{% elif data.project_size == 'l' %} Large
-			{% elif data.project_size == 'x' %} Extra large
-			{% endif %}
-		</p>
-		{% endif %}
-
-		{% if link[1] %}
-		<h3 class="heading-small">{{labels.link}}</h3>
-
-		<a href="{{ link[1] }}" target="_blank" title="Project channel">
-			<p>{{ link[0]}}</p>
-		</a>
-		{% endif %}
-
-
-		{% if (data.budget) and (group != '4') %}
-
-		<br /><h3 class="heading-small">Budget</h3>
-		{% if data.budget == 0 %}	Not applicable
-
-		{% else %}
-		<strong>{{labels.budgettype}}:</strong> {{ budgettype }} <br />
-		<strong>{{labels.budget}}:</strong> {{ budget }} <br />
-		{% if data.spent %}	<strong>{{labels.spent}}:</strong> {{ spent }} {% endif %}
-		{% endif %}
-
-
-		{% endif %}-->
 	</div>
 
 </div>
 <div class="col-sm-1 py-3">
 </div>
-<div class="col-sm-1 py-3"></div>
-</div>
+
 
 {% endblock %}
