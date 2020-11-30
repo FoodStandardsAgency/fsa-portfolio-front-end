@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ajax-bootstrap-select/1.4.5/css/ajax-bootstrap-select.min.css" integrity="sha512-k9D6Fzp2d9BxewMk+gYYmlGYxv7DLVC46DiCRv3DrAwBkbjSBZCnhBhWCugLuhkTS36QgQ3h7BwkkkfkJk7cXQ==" crossorigin="anonymous" />
 {% endblock %}
 {% block content %}
+{% set isAdmin = hasAdminRole(portfolio) %}
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-xl-10 col-md-10 col-sm-10 py-3">

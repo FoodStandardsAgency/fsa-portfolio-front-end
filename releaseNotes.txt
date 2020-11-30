@@ -2,6 +2,7 @@ Version 0.1.1
 =============
 - Capilization removed for summary titles in summary lists
 - Recently added projects uses summary display template
+- Access restrictions on budget
 
 
 Version 0.1 - Released 23/11/2020 16:20

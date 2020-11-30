@@ -335,6 +335,8 @@ function arrow(id) {
 	
 	<br />
 	<hr />
+
+	{% if hasBudgetClaim() %}
 	<h2 class="accordion section" onclick="showhide('s11'); arrow('a11')">Budget&nbsp;&nbsp; <i id="a11" class="arrow down"></i></h2>
 	
 	<div id="s11" style="display:none">
@@ -350,7 +352,7 @@ function arrow(id) {
 		<p><strong>Budget text 1:</strong> Value 1<br />
 		<strong>Budget text 2:</strong> Value 2</p>
 	</div>
-
+	{% endif %}
 	
 	
 	<br />

@@ -6,7 +6,6 @@ const login = require('./login');
 
 async function renderEditForm(req, res) {
 	try {
-		var isAdmin = login.hasRole(req, 'admin');
 		var portfolio = req.params.portfolio;
 		var project_id = req.params.project_id;
 		var result = await queries.load_project_foredit(project_id, req);
@@ -29,10 +28,8 @@ async function renderEditForm(req, res) {
 		res.render('add-edit-project', {
 			"title": "Edit project",
 			"user": req.session.user, // need access-level to determine whether user can add projects
-			"isAdmin": isAdmin,
 			"project": project,
 			"options": options,
-			"sess": req.session,
 			"portfolio": portfolio,
 			"fieldgroups": fieldGroups
 		});

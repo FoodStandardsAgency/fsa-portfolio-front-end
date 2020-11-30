@@ -63,8 +63,8 @@ function arrow(id) {
 	<!-- Change for access groups -->
 	{% set group = 1 %}
 	<div class="col-xl-3 col-md-3 col-sm-4 py-3 text-right">
-		{% if group == 'admin' or group == 'superadmin' %}<a href="/odd/delete/{{ data.project_id }}" class="special-link"><button class="delete-button">Delete</button></a>{% endif %}
-		{% if group == 'admin' or group == 'superadmin' or group == 'editor' %}<a href="/{{portfolio}}/edit/{{ data.project_id }}" class="special-link"><button class="update-button">Update</button></a>{% endif %}
+		{% if hasAdminRole(portfolio) %}<a href="/odd/delete/{{ data.project_id }}" class="special-link"><button class="delete-button">Delete</button></a>{% endif %}
+		{% if hasEditorRole(portfolio) %}<a href="/{{portfolio}}/edit/{{ data.project_id }}" class="special-link"><button class="update-button">Update</button></a>{% endif %}
 	</div>
 
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
@@ -409,6 +409,7 @@ function arrow(id) {
 
 
 	<!-- Budget --> 
+	{% if hasBudgetClaim() %}
 	{% if data.budgettype or data.cost_centre or data.budget or data.spent or data.forecast_spend or data.budget_option1 or data.budget_option2 or data.budget_field1 or data.budget_field2 %}
 	<br />
 	<hr />
@@ -431,6 +432,7 @@ function arrow(id) {
 		{% if data.budget_option1 %}<div class="small-flag">{{ labels.budget_option1 }}: {{ data.budget_option1 }}</div>{% endif %}
 		{% if data.budget_option2 %}<div class="small-flag">{{ labels.budget_option2 }}: {{ data.budget_option2 }}</div>{% endif %}
 	</div>
+	{% endif %}
 	{% endif %}
 
 
