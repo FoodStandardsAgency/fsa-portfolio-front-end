@@ -251,8 +251,7 @@ router.get('/:portfolio/new_projects/', login.requireLogin, async function (req,
 	try {
 		var response = await queries.portfolio_summary(portfolio, "newbyteam", req);
 		var summary = response.body;
-		console.log(summary);
-		res.render('summary_list', {
+		res.render('summary', {
 			"sess": req.session,
 			"portfolio": portfolio,
 			"summary": summary

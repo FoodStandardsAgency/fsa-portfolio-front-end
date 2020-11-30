@@ -1,3 +1,9 @@
+Version 0.1.1
+=============
+- Capilization removed for summary titles in summary lists
+- Recently added projects uses summary display template
+
+
 Version 0.1 - Released 23/11/2020 16:20
 =======================================
 - Phase colour styling in project view not showing correctly: fixed.

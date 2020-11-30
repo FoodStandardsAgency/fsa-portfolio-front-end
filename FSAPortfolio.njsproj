@@ -63,6 +63,7 @@
     <Content Include="app\views\add-edit-project.html" />
     <Content Include="app\views\configure.html" />
     <Content Include="app\views\landing.html" />
+    <Content Include="app\views\project_new.html" />
     <Content Include="app\views\project_static.html" />
     <Content Include="app\views\summary_list.html" />
     <Content Include="app\views\summary.html" />
