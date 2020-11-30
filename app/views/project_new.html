@@ -299,21 +299,13 @@ function arrow(id) {
 			</tr>
 		  </thead>
 		  <tbody>
+			{% for milestone in data.milestones %}
 			<tr>
-			  <th scope="row">1</th>
-			  <td>Milestone 1</td>
-			  <td>30th Sept 2020</td>
+				<th scope="row">{{milestone.order}}</th>
+				<td>{{milestone.name | safe }}</td>
+				<td>{{ milestone.deadline.date | date(getProjectDateFormat(milestone.deadline.flag)) if milestone.deadline.date}}</td>
 			</tr>
-			<tr>
-			  <th scope="row">2</th>
-			  <td>Milestone 2</td>
-			  <td>1st Nov 2020</td>
-			</tr>
-			<tr>
-			  <th scope="row">3</th>
-			  <td>Milestone 3</td>
-			  <td>31st Dec 2020</td>
-			</tr>
+			{% endfor %}
 		  </tbody>
 		</table>
 		</div>
