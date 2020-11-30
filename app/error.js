@@ -9,9 +9,19 @@ function handleError(error) {
 		console.log(error.response.body);
 	}
 	console.log('***************************');
-	res.render('error_page', { message: `System error. Please contact support (error code ${response.statusCode}).` });
+	//res.render('error_page', { message: `System error. Please contact support (error code ${error.response.statusCode}).` });
+}
+
+
+function handleUnauthorised(res, action) {
+	res.render('error_page', { message: `You are not authorised to view this page.` });
+	if(action)
+		console.log(`${action} failed: user is not authorised.`)
+	else
+		console.log('User not authorised.')
+	res.end();
 
 }
 
 
-module.exports = handleError;
+module.exports = { handleError, handleUnauthorised };

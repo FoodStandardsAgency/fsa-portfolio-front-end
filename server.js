@@ -1,6 +1,7 @@
 require('dotenv').config();
 const path 		= require('path');
 const express 	= require('express');
+var cookieParser = require('cookie-parser')
 const session = require('express-session');
 //const session	= require('client-sessions');
 const flash = require('connect-flash');
@@ -21,8 +22,8 @@ const app = express();
 const port = process.env.PORT || 3100;
 const dev	= true;
 
-app.use(express.urlencoded({extended: true}));
-
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser())
 app.use(session({
   cookieName: 'session',
   secret: process.env.COOKIE_SECRET,
@@ -37,6 +38,17 @@ app.use(session({
 // Flash middleware
 app.use(flash());
 
+// Views & Nunjucks
+app.set('view engine', 'html');
+var njenv = nunjucks.configure(__dirname + '/app/views', {
+	autoescape: true,
+	trimBlocks: true,
+	lstripBlocks: true,
+	watch: true,
+	express: app
+});
+app.set('engine', njenv);
+
 // Set up local vars for template layout
 app.use(function (req, res, next) {
 	// Read any flashed errors and save
@@ -50,19 +62,23 @@ app.use(function (req, res, next) {
 		res.locals.error.push({ message: 'An error occurred', debug: errs[i] });
 	}
 
+	// Inject identity into view engine
+	var engine = res.app.get('engine');
+	var identity = req.cookies.identity;
+	engine.addGlobal('identity', identity);
+	var isAdmin = (portfolio) => identity && identity.roles.includes(`${portfolio}.admin`);
+	var isLead = (portfolio) => identity && identity.roles.includes(`${portfolio}.lead`);
+	var isEditor = (portfolio) => identity && (isAdmin(portfolio) || isLead(portfolio) || identity.roles.includes(`${portfolio}.editor`));
+	var isSupplier = (portfolio) => identity && identity.accessGroup === 'supplier';
+	engine.addGlobal('isAdmin', isAdmin);
+	engine.addGlobal('isEditor', isEditor);
+	engine.addGlobal('isLead', isLead);
+	engine.addGlobal('isSupplier', isSupplier);
+
 	next();
 });
 
 
-// Views & Nunjucks
-app.set('view engine', 'html');
-var njenv = nunjucks.configure(__dirname + '/app/views', {
-    autoescape: true,
-	trimBlocks: true, 
-	lstripBlocks: true, 
-	watch: true,
-    express: app
-});
 
 function getProjectDateFormat(flag) {
 	var format = "DD MMM YY";

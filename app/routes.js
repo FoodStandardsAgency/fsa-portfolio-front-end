@@ -7,11 +7,11 @@ const xss				= require('xss');
 const stringify 		= require('csv-stringify')
 
 // Custom modules
-const handleError		= require('./error');
+const errors			= require('./error');
+const handleError		= errors.handleError;
 const config 			= require('./config');
 var queries 			= require('./queries');
 
-const add_project 		= require('./render_add_project');
 const update_portfolio 	= require('./update_portfolio');
 const delete_portfolio	= require('./delete_portfolio');
 const update_odd 		= require('./update_odd');
@@ -20,7 +20,6 @@ const handle_delete		= require('./handle_delete');
 const login 			= require('./login');
 const filter_view 		= require('./filter_view');
 const project_view 		= require('./project_view');
-const odd_view			= require('./oddleads_view');
 
 var router = express.Router();
 
@@ -52,13 +51,7 @@ function nestedGroupBy(data, keys) {
 router.get ('/login', function (req, res) {res.render("login");});
 router.post('/login', [check('user').escape()], function (req, res) { login.login(req, res); });
 
-router.get('/log-out', (req, res) => {
-	// Destroy session and log out
-	req.session.destroy(function (err) {
-		req.logout();
-		res.redirect('/login');
-	});
-});
+router.get('/log-out', (req, res) => { login.logout(req, res); });
 
 
 //-------------------------------------------------------------------
@@ -66,13 +59,19 @@ router.get('/log-out', (req, res) => {
 //-------------------------------------------------------------------
 
 router.get('/', login.requireLogin, async (req, res) => {
-	var result = await queries.portfolio_index();
-	var portfolios = result.body;
-	res.render('landing', {
-		"data":portfolios,
-		"sess": req.session
-	});
-})
+	try {
+		var result = await queries.portfolio_index(req);
+		var portfolios = result.body;
+		res.render('landing', {
+			"data": portfolios,
+			"sess": req.session
+		});
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+});
 
 
 //-------------------------------------------------------------------
@@ -85,7 +84,7 @@ router.get('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 		// Need to get current configuration data to pre-populate the form
 
 		var portfolio = req.params.portfolio;
-		var result = await queries.portfolio_config(portfolio);
+		var result = await queries.portfolio_config(portfolio, req);
 		var portfolioconfig = result.body;
 
 		//console.log(config.labels);
@@ -113,7 +112,7 @@ router.post('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 
 		//console.log(req.body);
 
-		await queries.portfolio_config_update(portfolio, req.body);
+		await queries.portfolio_config_update(portfolio, req);
 		res.redirect(`/${portfolio}/configure`);
 		res.end();
 	}
@@ -145,7 +144,7 @@ router.post('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 router.get('/:portfolio', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
 	try {
-		var response = await queries.portfolio_summary(portfolio, "category");
+		var response = await queries.portfolio_summary(portfolio, "category", req);
 		var summary = response.body;
 		res.render('summary', {
 			"sess": req.session,
@@ -163,7 +162,7 @@ router.get('/:portfolio', login.requireLogin, async function (req, res) {
 router.get('/:portfolio/priority/', login.requireLogin, async function (req, res) {	
 	var portfolio = req.params.portfolio;
 	try {
-		var response = await queries.portfolio_summary(portfolio, "priority");
+		var response = await queries.portfolio_summary(portfolio, "priority", req);
 		var summary = response.body;
 		res.render('summary', {
 			"sess": req.session,
@@ -181,7 +180,7 @@ router.get('/:portfolio/priority/', login.requireLogin, async function (req, res
 router.get('/:portfolio/team/', login.requireLogin, async function (req, res) {	
 	var portfolio = req.params.portfolio;
 	try {
-		var response = await queries.portfolio_summary(portfolio, "team");
+		var response = await queries.portfolio_summary(portfolio, "team", req);
 		var summary = response.body;
 		res.render('summary', {
 			"sess": req.session,
@@ -198,7 +197,7 @@ router.get('/:portfolio/team/', login.requireLogin, async function (req, res) {
 router.get('/:portfolio/rag/', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
 	try {
-		var response = await queries.portfolio_summary(portfolio, "rag");
+		var response = await queries.portfolio_summary(portfolio, "rag", req);
 		var summary = response.body;
 		res.render('summary', {
 			"sess": req.session,
@@ -216,7 +215,7 @@ router.get('/:portfolio/rag/', login.requireLogin, async function (req, res) {
 router.get('/:portfolio/status/', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
 	try {
-		var response = await queries.portfolio_summary(portfolio, "phase");
+		var response = await queries.portfolio_summary(portfolio, "phase", req);
 		var summary = response.body;
 		res.render('summary_list', {
 			"sess": req.session,
@@ -233,7 +232,7 @@ router.get('/:portfolio/status/', login.requireLogin, async function (req, res) 
 router.get('/:portfolio/lead/', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
 	try {
-		var response = await queries.portfolio_summary(portfolio, "lead");
+		var response = await queries.portfolio_summary(portfolio, "lead", req);
 		var summary = response.body;
 		res.render('summary', {
 			"sess": req.session,
@@ -250,7 +249,7 @@ router.get('/:portfolio/lead/', login.requireLogin, async function (req, res) {
 router.get('/:portfolio/new_projects/', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
 	try {
-		var response = await queries.portfolio_summary(portfolio, "newbyteam");
+		var response = await queries.portfolio_summary(portfolio, "newbyteam", req);
 		var summary = response.body;
 		res.render('summary_list', {
 			"sess": req.session,
@@ -332,7 +331,7 @@ router.get('/:portfolio/download/csv', login.requireAdmin, async function (req, 
 	var portfolio = req.params.portfolio;
 
 	try {
-		var result = await queries.portfolio_export(portfolio);
+		var result = await queries.portfolio_export(portfolio, req);
 		res.setHeader('Content-Type', 'text/csv');
 		res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'latest_projects-' + Date.now() + '.csv\"');
 		res.setHeader('Cache-Control', 'no-cache');

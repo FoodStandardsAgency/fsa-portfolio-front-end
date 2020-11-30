@@ -1,12 +1,13 @@
 const queries = require('./queries');
-const handleError = require('./error');
+const errors = require('./error');
+const handleError = errors.handleError;
 
 async function handle_form(req, res) {
 	var id = req.body.project_id;
 	var portfolio = req.params.portfolio;
 
 	try {
-		var response = await queries.delete_project(id);
+		var response = await queries.delete_project(id, req);
 		if (response.statusCode == 200) {
 			console.log(`Deleted project ${id}`);
 			res.render('thank_you', {
