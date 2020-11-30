@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ajax-bootstrap-select/1.4.5/css/ajax-bootstrap-select.min.css" integrity="sha512-k9D6Fzp2d9BxewMk+gYYmlGYxv7DLVC46DiCRv3DrAwBkbjSBZCnhBhWCugLuhkTS36QgQ3h7BwkkkfkJk7cXQ==" crossorigin="anonymous" />
 {% endblock %}
 {% block content %}
+{% set isAdmin = hasAdminRole(portfolio) %}
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-xl-10 col-md-10 col-sm-10 py-3">
@@ -132,7 +133,7 @@
 
 					{% case 'adusermultisearch' %}
 					<div class="{{input_col}}">
-						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/users/search" name="{{label.field}}[]" data-live-search="true"  data-style="form-input-box" multiple>
+						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/users/search" name="{{label.field}}[]" data-live-search="true" data-style="form-input-box" multiple>
 							{% for item in project[label.field] %}
 							<option value="{{item.value}}" selected>{{item.text}}</option>
 							{% endfor %}
@@ -146,7 +147,7 @@
 								<div class="row">
 									<div class="col-md-3"><input type="text" class="form-control name form-input-box" placeholder="{{label.label}} name"></div>
 									<div class="col-md-7"><input type="text" class="form-control link form-input-box" placeholder="{{label.label}} link"></div>
-									<div class="col-md-2"><p class="delete doc-buttons" style="margin:0; cursor:pointer;">Remove</p></div>
+									<div class="col-md-2"><p class="delete doc-buttons" style="margin:0; cursor:pointer;">X</p></div>
 								</div>
 							</div>
 						</template>
@@ -157,13 +158,59 @@
 									<div class="row">
 										<div class="col-md-3"><input type="text" class="form-control form-input-box" name="{{label.field}}[{{loop.index}}][name]" placeholder="{{label.label}} name" value="{{doc.name}}"></div>
 										<div class="col-md-7"><input type="text" class="form-control form-input-box" name="{{label.field}}[{{loop.index}}][link]" placeholder="{{label.label}} link" value="{{doc.link}}"></div>
-										<div class="col-md-2"><span class="delete doc-buttons" style="cursor:pointer;" onclick="this.closest('.form-group').remove();">X</span></div>
+										<div class="col-md-2"><p class="delete doc-buttons" style="cursor:pointer;" onclick="this.closest('.form-group').remove();">X</p></div>
 									</div>
 								</div>
 								{% endfor %}
 							</div>
 
 							<span class="doc-buttons add-doc" data-field="{{label.field}}" style="margin:0; cursor:pointer;">Add document</span>
+						</fieldset>
+					</div>
+
+					{% case 'milestones' %}
+					<div class="{{input_col}}">
+						<template id="milestonetemplate-{{label.field}}">
+							<div class="milestone-wrapper">
+								<div class="form-row">
+									<input type="hidden" class="id" value="">
+									<div class="form-group col-md-3"><input type="number" class="form-control order form-input-box" placeholder="Order"></div>
+									<div class="form-group col-md-9"><input type="text" class="form-control name form-input-box" placeholder="Name"></div>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-3"><input type="number" class="form-control day form-input-box" placeholder="DD" min="1" max="31" /></div>
+									<div class="form-group col-3"><input type="number" class="form-control month form-input-box" placeholder="MM" min="1" max="12" /></div>
+									<div class="form-group col-6"><input type="number" class="form-control year form-input-box" placeholder="YYYY" min="2016" max="2025" /></div>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-10"></div>
+									<div class="form-group col-md-2"><p class="delete milestone-buttons" style="margin:0; cursor:pointer;">X</p></div>
+								</div>
+							</div>
+						</template>
+						<fieldset>
+							<div id="milestonelist-{{label.field}}" data-count="{{project[label.field].length}}">
+								{% for milestone in project[label.field] %}
+								<div class="milestone-wrapper">
+									<div class="form-row">
+										<input type="hidden" name="{{label.field}}[{{loop.index}}][id]" value="{{milestone.id}}" >
+										<div class="form-group col-md-3"><input type="number" class="form-control form-input-box" name="{{label.field}}[{{loop.index}}][order]" placeholder="Order" value="{{milestone.order}}"></div>
+										<div class="form-group col-md-9"><input type="text" class="form-control form-input-box" name="{{label.field}}[{{loop.index}}][name]" placeholder="Name" value="{{milestone.name}}"></div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-3"><input type="number" name="{{label.field}}[{{loop.index}}][deadline][day]" class="form-control form-input-box" placeholder="DD" min="1" max="31" value="{{milestone.deadline.day | safe}}" /></div>
+										<div class="form-group col-3"><input type="number" name="{{label.field}}[{{loop.index}}][deadline][month]" class="form-control form-input-box" placeholder="MM" min="1" max="12" value="{{milestone.deadline.month | safe}}" /></div>
+										<div class="form-group col-6"><input type="number" name="{{label.field}}[{{loop.index}}][deadline][year]" class="form-control form-input-box" placeholder="YYYY" min="2016" max="2025" value="{{milestone.deadline.year | safe}}" /></div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-10"></div>
+										<div class="form-group col-md-2"><p class="delete milestone-buttons" style="cursor:pointer;" onclick="this.closest('.milestone-wrapper').remove();">X</p></div>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+
+							<span class="milestone-buttons add-milestone" data-field="{{label.field}}" style="margin:0; cursor:pointer;">Add milestone</span>
 						</fieldset>
 					</div>
 

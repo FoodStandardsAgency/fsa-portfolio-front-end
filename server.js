@@ -68,12 +68,17 @@ app.use(function (req, res, next) {
 	engine.addGlobal('identity', identity);
 	var hasAdminRole = (portfolio) => identity && identity.roles.includes(`${portfolio}.admin`);
 	var hasLeadRole = (portfolio) => identity && identity.roles.includes(`${portfolio}.lead`);
-	var hasEditorRole = (portfolio) => identity && (isAdmin(portfolio) || isLead(portfolio) || identity.roles.includes(`${portfolio}.editor`));
+	var hasEditorRole = (portfolio) => identity && (hasAdminRole(portfolio) || hasLeadRole(portfolio) || identity.roles.includes(`${portfolio}.editor`));
 	var hasSupplierClaim = () => identity && identity.accessGroup === 'supplier';
+	var hasBudgetClaim = () => identity && ['fsa', 'editor', 'admin', 'superuser'].includes(identity.accessGroup);
 	engine.addGlobal('hasAdminRole', hasAdminRole);
 	engine.addGlobal('hasEditorRole', hasEditorRole);
 	engine.addGlobal('hasLeadRole', hasLeadRole);
+	engine.addGlobal('hasLeadRole', hasLeadRole);
 	engine.addGlobal('hasSupplierClaim', hasSupplierClaim);
+	engine.addGlobal('hasBudgetClaim', hasBudgetClaim);
+
+	engine.addGlobal('currency', x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "));
 
 	next();
 });

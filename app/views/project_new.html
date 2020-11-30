@@ -63,8 +63,8 @@ function arrow(id) {
 	<!-- Change for access groups -->
 	{% set group = 1 %}
 	<div class="col-xl-3 col-md-3 col-sm-4 py-3 text-right">
-		{% if group == 'admin' or group == 'superadmin' %}<a href="/odd/delete/{{ data.project_id }}" class="special-link"><button class="delete-button">Delete</button></a>{% endif %}
-		{% if group == 'admin' or group == 'superadmin' or group == 'editor' %}<a href="/{{portfolio}}/edit/{{ data.project_id }}" class="special-link"><button class="update-button">Update</button></a>{% endif %}
+		{% if hasAdminRole(portfolio) %}<a href="/odd/delete/{{ data.project_id }}" class="special-link"><button class="delete-button">Delete</button></a>{% endif %}
+		{% if hasEditorRole(portfolio) %}<a href="/{{portfolio}}/edit/{{ data.project_id }}" class="special-link"><button class="update-button">Update</button></a>{% endif %}
 	</div>
 
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
@@ -299,21 +299,13 @@ function arrow(id) {
 			</tr>
 		  </thead>
 		  <tbody>
+			{% for milestone in data.milestones %}
 			<tr>
-			  <th scope="row">1</th>
-			  <td>Milestone 1</td>
-			  <td>30th Sept 2020</td>
+				<th scope="row">{{milestone.order}}</th>
+				<td>{{milestone.name | safe }}</td>
+				<td>{{ milestone.deadline.date | date(getProjectDateFormat(milestone.deadline.flag)) if milestone.deadline.date}}</td>
 			</tr>
-			<tr>
-			  <th scope="row">2</th>
-			  <td>Milestone 2</td>
-			  <td>1st Nov 2020</td>
-			</tr>
-			<tr>
-			  <th scope="row">3</th>
-			  <td>Milestone 3</td>
-			  <td>31st Dec 2020</td>
-			</tr>
+			{% endfor %}
 		  </tbody>
 		</table>
 		</div>
@@ -409,6 +401,7 @@ function arrow(id) {
 
 
 	<!-- Budget --> 
+	{% if hasBudgetClaim() %}
 	{% if data.budgettype or data.cost_centre or data.budget or data.spent or data.forecast_spend or data.budget_option1 or data.budget_option2 or data.budget_field1 or data.budget_field2 %}
 	<br />
 	<hr />
@@ -417,9 +410,9 @@ function arrow(id) {
 	<div id="s11" style="display:none">
 		{% if data.budgettype %}	<p><strong>{{ labels.budgettype }}</strong><br />{{ data.budgettype }}</p>{% endif %}
 		{% if data.cost_centre %}	<p><strong>{{ labels.cost_centre }}</strong><br />{{ data.cost_centre }}</p>{% endif %}
-		{% if data.budget %}		<p><strong>{{ labels.budget }}</strong><br />£{{ data.budget }}</p>{% endif %}
-		{% if data.spent %}			<p><strong>{{ labels.spent }}</strong><br />£{{ data.spent }}</p>{% endif %}
-		{% if data.forecast_spend %}<p><strong>{{ labels.forecast_spend }}</strong><br />£{{ data.forecast_spend }}</p>{% endif %}
+		{% if data.budget %}		<p><strong>{{ labels.budget }}</strong><br />£{{ currency(data.budget) }}</p>{% endif %}
+		{% if data.spent %}			<p><strong>{{ labels.spent }}</strong><br />£{{ currency(data.spent) }}</p>{% endif %}
+		{% if data.forecast_spend %}<p><strong>{{ labels.forecast_spend }}</strong><br />£{{ currency(data.forecast_spend) }}</p>{% endif %}
 				
 		{% if data.budget_field1 or data.budget_field2 %}
 			<p>
@@ -431,6 +424,7 @@ function arrow(id) {
 		{% if data.budget_option1 %}<div class="small-flag">{{ labels.budget_option1 }}: {{ data.budget_option1 }}</div>{% endif %}
 		{% if data.budget_option2 %}<div class="small-flag">{{ labels.budget_option2 }}: {{ data.budget_option2 }}</div>{% endif %}
 	</div>
+	{% endif %}
 	{% endif %}
 
 

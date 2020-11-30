@@ -71,8 +71,8 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 .general-button			{border: 1px solid black; color:black; padding:5px 10px; margin:10px; background-color:white; border-radius:5px;}
 .general-button:hover	{border: 1px solid #006F51; color:white; background-color:#006F51;}
 
-.doc-buttons 			{border: 1px solid #939e91; color:black; padding:5px 10px; margin:10px; background-color:#f3f7f0; border-radius:5px;}
-.doc-buttons:hover		{border: 1px solid #939e91; color:black; background-color:white;}
+.doc-buttons, .milestone-buttons				{border: 1px solid #939e91; color:black; padding:5px 10px; margin:10px; background-color:#f3f7f0; border-radius:5px;}
+.doc-buttons:hover, .milestone-buttons:hover	{border: 1px solid #939e91; color:black; background-color:white;}
 
 #myList li{display:none;}
 
