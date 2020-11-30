@@ -2,7 +2,10 @@ const crypto	= require('crypto');
 const tokens = require('./tokens');
 const graph = require('./graph');
 const backend = require('./backend');
-const handleError = require('./error');
+const errors = require('./error');
+var queries = require('./queries');
+
+const handleError = errors.handleError;
 
 
 // Redirect not logged in users to the login page
@@ -10,8 +13,10 @@ function requireLogin(req, res, next) {
 	//console.log("Login");
 	//console.log(req.session.user);
 	//console.log(req.session.group);
-	if (req.session.login == undefined) {
-		loginADUser(req, res).then(result => {
+
+	if (req.cookies.identity == undefined || req.session.login == undefined) {
+		(async () => {
+			var result = await loginADUser(req, res);
 			if (!result) {
 				console.log("login undefined - redirecting");
 				req.session.destroy();
@@ -21,32 +26,35 @@ function requireLogin(req, res, next) {
 			else {
 				next();
 			}
-		});
+		})();
 	} else {
 		next();
 	}
 };
 
+function hasRole(req, role) {
+	var portfolio = req.params.portfolio;
+	return req.cookies.identity.roles.includes(`${portfolio}.${role}`);
+}
+
 function requireAdmin(req, res, next) {
 	requireLogin(req, res, () => {
-		if (req.session.user == 'portfolio') {
+		if (hasRole(req, 'admin')) {
 			next();
 		}
 		else {
 			res.render('error_page', { message: 'You are not authorised to view this page' });
 		}
-
 	});
 }
 function requireEditor(req, res, next) {
 	requireLogin(req, res, () => {
-		if (req.session.user == 'portfolio' || req.session.user == 'odd' || req.session.user == 'team_leaders') {
+		if (hasRole(req, 'admin') || hasRole(req, 'editor') || hasRole(req, 'lead')) {
 			next();
 		}
 		else {
 			res.render('error_page', { message: 'You are not authorised to view this page' });
 		}
-
 	});
 }
 
@@ -61,27 +69,55 @@ function login(req, res) {
 
 	(async () => {
 		try {
-			const { body } = await backend.api.post('Users/legacy', {
-				json: {
-					userName: user,
-					passwordHash: prov_hash
+			var result = await backend.api.post('Token', {
+				form: {
+					username: user,
+					password: prov_hash,
+					grant_type: 'password'
 				}
 			});
 
-			if (body && body.userName && body.accessGroup) {
-				req.session.user = body.userName;
-				req.session.group = body.accessGroup;
-				req.session.login = 'yes';
+			if (result.statusCode == 200) {
+				var tokenbody = result.body;
+				await tokens.setBearerToken(req, res, tokenbody);
 
-				res.redirect('/');
-				res.end();
+				// TODO: call again using token to get the user details (access group etc)
+				result = await backend.api.post('Users/legacy', {
+					json: {
+						userName: user,
+						passwordHash: prov_hash
+					},
+					context: { token: tokenbody.access_token }
+				});
+				var body = result.body;
+
+				if (result.statusCode == 200) {
+
+					if (body && body.userName && body.accessGroup) {
+						req.session.user = body.userName;
+						req.session.group = body.accessGroup;
+						req.session.login = 'yes';
+
+						res.redirect('/');
+						res.end();
+					}
+					else {
+						console.log('Login failed: user not found.')
+						req.session.destroy;
+						res.redirect('/login');
+						res.end();
+					}
+				}
+				else {
+					req.session.destroy;
+					errors.handleUnauthorised(res);
+				}
 			}
 			else {
-				console.log('Login failed: user not found.')
 				req.session.destroy;
-				res.redirect('/login');
-				res.end();
-            }
+				errors.handleUnauthorised(res);
+			}
+
 		}
 		catch (error) {
 			console.log(`Login failed: received error from API - ${error.message}`)
@@ -90,6 +126,7 @@ function login(req, res) {
 			res.redirect('/login');
 			res.end();
         }
+
 	})();
 
 
@@ -104,22 +141,39 @@ async function loginADUser(req, res) {
 			const groups = await graph.getUserGroups(accessToken);
 			if (groups) {
 				var userName = translateUserGroup(user, groups.value);
-				loginUser(req, res, userName).then((result) => { return true; });
+				await loginUser(req, res, userName, accessToken);
+				return true; 
 			}
 		}
 		return false;
 	}
 }
 
-function loginUser(req, res, loginUser) {
+async function loginUser(req, res, loginUser, accessToken) {
+	try {
 
-	(async () => {
-		try {
-			const { body } = await backend.api.post('Users/LegacyADUsers', {
+		var result = await backend.api.post('Token', {
+			form: {
+				username: loginUser,
+				password: '',
+				grant_type: 'password'
+			},
+			context: {
+				accessToken: accessToken
+            }
+		});
+
+		if (result.statusCode == 200) {
+			var tokenbody = result.body;
+			await tokens.setBearerToken(req, res, tokenbody);
+
+			var response = await backend.api.post('Users/LegacyADUsers', {
 				json: {
 					userName: loginUser
-				}
+				},
+				context: { token: tokenbody.access_token }
 			});
+			var body = response.body;
 
 			req.session.user = body.userName;
 			req.session.group = body.accessGroup;
@@ -128,15 +182,18 @@ function loginUser(req, res, loginUser) {
 			res.redirect('/');
 			res.end();
 		}
-		catch (error) {
-			console.log('couldnt log in')
-			console.log(error.response.body);
+		else {
 			req.session.destroy;
-			res.redirect('/login');
-			res.end();
+			errors.handleUnauthorised(res);
 		}
-	})();
-
+	}
+	catch (error) {
+		console.log('couldnt log in')
+		console.log(error.response.body);
+		req.session.destroy;
+		res.redirect('/login');
+		res.end();
+	}
 }
 
 
@@ -160,5 +217,14 @@ function translateUserGroup(user, groups) {
 	return u;
 }
 
+function logout(req, res) {
+	// Destroy session and log out
+	tokens.logout(req, res);
+	req.session.destroy(function (err) {
+		req.logout();
+		res.redirect('/login');
+	});
+}
 
-module.exports = { requireLogin, requireAdmin, requireEditor, login, loginADUser };
+
+module.exports = { hasRole, requireLogin, requireAdmin, requireEditor, login, logout };

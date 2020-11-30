@@ -8,7 +8,7 @@ async function delete_portfolio(req, res) {
 	var project_id = req.params.project_id;
 
 	try {
-		var projectDTO = await queries.load_project(project_id, { includeConfig: true });
+		var projectDTO = await queries.load_project(project_id, { includeConfig: true }, req);
 		var project = projectDTO.body.project;
 		if (project) {
 

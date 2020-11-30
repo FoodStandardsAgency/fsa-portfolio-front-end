@@ -29,6 +29,7 @@
     "chokidar": "latest",
     "client-sessions": "latest",
     "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.5",
     "cron": "^1.7.2",
     "crypto": "latest",
     "csv-stringify": "^5.5.1",
