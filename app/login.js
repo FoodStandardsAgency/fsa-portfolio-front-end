@@ -227,4 +227,4 @@ function logout(req, res) {
 }
 
 
-module.exports = { requireLogin, requireAdmin, requireEditor, login, logout };
+module.exports = { hasRole, requireLogin, requireAdmin, requireEditor, login, logout };

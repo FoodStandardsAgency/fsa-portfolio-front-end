@@ -66,14 +66,14 @@ app.use(function (req, res, next) {
 	var engine = res.app.get('engine');
 	var identity = req.cookies.identity;
 	engine.addGlobal('identity', identity);
-	var isAdmin = (portfolio) => identity && identity.roles.includes(`${portfolio}.admin`);
-	var isLead = (portfolio) => identity && identity.roles.includes(`${portfolio}.lead`);
-	var isEditor = (portfolio) => identity && (isAdmin(portfolio) || isLead(portfolio) || identity.roles.includes(`${portfolio}.editor`));
-	var isSupplier = (portfolio) => identity && identity.accessGroup === 'supplier';
-	engine.addGlobal('isAdmin', isAdmin);
-	engine.addGlobal('isEditor', isEditor);
-	engine.addGlobal('isLead', isLead);
-	engine.addGlobal('isSupplier', isSupplier);
+	var hasAdminRole = (portfolio) => identity && identity.roles.includes(`${portfolio}.admin`);
+	var hasLeadRole = (portfolio) => identity && identity.roles.includes(`${portfolio}.lead`);
+	var hasEditorRole = (portfolio) => identity && (isAdmin(portfolio) || isLead(portfolio) || identity.roles.includes(`${portfolio}.editor`));
+	var hasSupplierClaim = () => identity && identity.accessGroup === 'supplier';
+	engine.addGlobal('hasAdminRole', hasAdminRole);
+	engine.addGlobal('hasEditorRole', hasEditorRole);
+	engine.addGlobal('hasLeadRole', hasLeadRole);
+	engine.addGlobal('hasSupplierClaim', hasSupplierClaim);
 
 	next();
 });
