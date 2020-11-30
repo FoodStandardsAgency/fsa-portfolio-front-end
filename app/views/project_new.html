@@ -418,9 +418,9 @@ function arrow(id) {
 	<div id="s11" style="display:none">
 		{% if data.budgettype %}	<p><strong>{{ labels.budgettype }}</strong><br />{{ data.budgettype }}</p>{% endif %}
 		{% if data.cost_centre %}	<p><strong>{{ labels.cost_centre }}</strong><br />{{ data.cost_centre }}</p>{% endif %}
-		{% if data.budget %}		<p><strong>{{ labels.budget }}</strong><br />£{{ data.budget }}</p>{% endif %}
-		{% if data.spent %}			<p><strong>{{ labels.spent }}</strong><br />£{{ data.spent }}</p>{% endif %}
-		{% if data.forecast_spend %}<p><strong>{{ labels.forecast_spend }}</strong><br />£{{ data.forecast_spend }}</p>{% endif %}
+		{% if data.budget %}		<p><strong>{{ labels.budget }}</strong><br />£{{ currency(data.budget) }}</p>{% endif %}
+		{% if data.spent %}			<p><strong>{{ labels.spent }}</strong><br />£{{ currency(data.spent) }}</p>{% endif %}
+		{% if data.forecast_spend %}<p><strong>{{ labels.forecast_spend }}</strong><br />£{{ currency(data.forecast_spend) }}</p>{% endif %}
 				
 		{% if data.budget_field1 or data.budget_field2 %}
 			<p>

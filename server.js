@@ -78,6 +78,8 @@ app.use(function (req, res, next) {
 	engine.addGlobal('hasSupplierClaim', hasSupplierClaim);
 	engine.addGlobal('hasBudgetClaim', hasBudgetClaim);
 
+	engine.addGlobal('currency', x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "));
+
 	next();
 });
 
