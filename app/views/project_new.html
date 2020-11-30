@@ -143,7 +143,7 @@ function arrow(id) {
 			{% if data.how_get_green %}<div class="col-sm-6">{% else %}<div class="col-sm-12">{% endif %}
 			
 			<!-- Flags & extra text fields-->
-			{% set rags = { 'red': 'Red', 'redamb': 'Red-Amber', 'amb': 'Amber', 'ambgre': 'Amber-Green', 'gre': 'Green']%}
+			{% set rags = { 'red': 'Red', 'redamb': 'Red-Amber', 'amb': 'Amber', 'ambgre': 'Amber-Green', 'gre': 'Green', 'nor': 'No RAG']%}
 			{% if rags[data.rag] %}
 			<div class="small-flag rag-{{data.rag}}">{{labels.rag}}: {{ rags[data.rag] }}</div>
 			{% endif%}
@@ -201,16 +201,16 @@ function arrow(id) {
 		  <p><strong>{{ labels.oddlead}}</strong><br />
 		  {{ data.oddlead}} <br />
 		  <a href="mailto:{{ data.oddlead_email }}">{{ data.oddlead_email }}</a><br />
-		  {% if data.oddlead_role and data.oddlead_role != 'Role' %}<strong>{{ labels.oddlead_role}}</strong> {{ data.oddlead_role }}<br />{% endif %}
-		  {% if data.g6team %}<strong>{{ labels.g6team}}</strong>{{ data.g6team }}</p>{% endif %}
+		  {% if data.oddlead_role and data.oddlead_role != 'Role' %}<strong>{{ labels.oddlead_role}}: </strong>{{ data.oddlead_role }}<br />{% endif %}
+		  {% if data.g6team %}<strong>{{ labels.g6team}}: </strong>{{ data.g6team }}</p>{% endif %}
 		  </div>
 		  {% endif %}
 		  
 		  {% if data.key_contact1 %}
 		  <div class="p-2 flex-fill bd-highlight key-contact">
 		  <p><strong>{{ labels.key_contact1 }}</strong><br />
-		  {{ data.key_contact1 }}<br />
-		  <a href="mailto:xyz">contact.one@food.gov.uk</a></p>
+		  {{ data.key_contact1.name }}<br />
+		  <a href="mailto:{{ data.key_contact1_email }}">{{ data.key_contact1.email }}</a></p>
 		  </div>
 		  {% endif %}
 		  
@@ -284,7 +284,7 @@ function arrow(id) {
 		
 		
 
-		<!-- Milestones TODO -->
+		{% if data.milestones %}
 		<br />
 		<hr />
 		<h2 class="accordion section" onclick="showhide('s5'); arrow('a5')">Milestones&nbsp;&nbsp; <i id="a5" class="arrow down"></i></h2>
@@ -309,16 +309,17 @@ function arrow(id) {
 		  </tbody>
 		</table>
 		</div>
+		{% endif %}
 		
 		
 		
 		<!-- Key documents -->
-		{% if data.documents and documents.length > 0 %}
+		{% if data.documents and data.documents.length > 0 %}
 		<br />
 		<hr />
 		<h2 class="accordion section" onclick="showhide('s6'); arrow('a6')">{{labels.documents}}&nbsp;&nbsp; <i id="a6" class="arrow down"></i></h2>
 		<div class="row" id="s6" style="display:none;">
-		{% for doc in documents %}<div class="col-sm-3 py-3"><a href="{{ doc.link | safe }}">{{ doc.name | safe }}</a></div>{% endfor %}
+		{% for doc in data.documents %}<div class="col-sm-3 py-3"><a href="{{ doc.link | safe }}">{{ doc.name | safe }}</a></div>{% endfor %}
 		</div>
 		{% endif %}		
 		
@@ -365,7 +366,7 @@ function arrow(id) {
 		{% if data.actual_end_date.date %}<p><strong>{{labels.actual_end_date}}</strong><br /> {{ data.actual_end_date.date | date(getProjectDateFormat(data.actual_end_date.flag)) }}</p>{% endif %}
 		{% if data.hardend.date %}<p><strong>{{labels.hardend}}</strong><br /> {{ data.hardend.date | date(getProjectDateFormat(data.hardend.flag)) }}</p>{% endif %}		
 		
-		{% if data.p_comp > 0 %}<br /><p><strong>{{labels.p_comp}}</strong> {{ data.p_comp }}%</p>{% endif %}
+		{% if data.p_comp > 0 %}<br /><p><strong>{{labels.p_comp}}</strong><br /> {{ data.p_comp }}%</p>{% endif %}
 
 		{% if data.project_plan_setting1 or data.project_plan_setting2 %}
 			<br />
@@ -430,14 +431,14 @@ function arrow(id) {
 
 	
 	<!-- FSA processes -->
-	{% if data.fsaproc_assurance_gatenumber or data.fsaproc_assurance_gatecompleted or data.fsaproc_assurance_nextgate or data.processes_option1 or data.processes_option2 or data.processes_setting1 or data.processes_setting2 %}
+	{% if data.fsaproc_assurance_gatenumber or (data.fsaproc_assurance_gatecompleted and data.fsaproc_assurance_gatecompleted.date != null) or data.fsaproc_assurance_nextgate or data.processes_option1 or data.processes_option2 or data.processes_setting1 or data.processes_setting2  %}
 	<br />
 	<hr />
 	<h2 class="accordion section" onclick="showhide('s12'); arrow('a12')">FSA processes &nbsp;&nbsp; <i id="a12" class="arrow down"></i></h2>
 	
 	<div id="s12" style="display:none;">
 		{% if data.fsaproc_assurance_gatenumber %}		<p><strong>{{ labels.fsaproc_assurance_gatenumber }}</strong><br />		{{ data.fsaproc_assurance_gatenumber }}		</p>{% endif %}
-		{% if data.fsaproc_assurance_gatecompleted %}	<p><strong>{{ labels.fsaproc_assurance_gatecompleted }}</strong><br />	{{ data.fsaproc_assurance_gatecompleted.date | date(getProjectDateFormat(data.fsaproc_assurance_gatecompleted.flag)) }}	</p>{% endif %}
+		{% if data.fsaproc_assurance_gatecompleted and data.fsaproc_assurance_gatecompleted.date != null %}	<p><strong>{{ labels.fsaproc_assurance_gatecompleted }}</strong><br />	{{ data.fsaproc_assurance_gatecompleted.date | date(getProjectDateFormat(data.fsaproc_assurance_gatecompleted.flag)) }}	</p>{% endif %}
 		{% if data.fsaproc_assurance_nextgate %}				<p><strong>{{ labels.fsaproc_assurance_nextgate }}</strong><br />		{{ data.fsaproc_assurance_nextgate }}		</p>{% endif %}
 		
 		{% if data.processes_option1 %}<div class="small-flag">{{ labels.processes_option1 }}: {{ data.processes_option1 }}</div>{% endif %}
