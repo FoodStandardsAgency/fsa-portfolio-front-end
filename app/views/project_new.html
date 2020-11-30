@@ -209,7 +209,7 @@ function arrow(id) {
 		  {% if data.key_contact1 %}
 		  <div class="p-2 flex-fill bd-highlight key-contact">
 		  <p><strong>{{ labels.key_contact1 }}</strong><br />
-		  {{ data.key_contact1.name }}<br />
+		  {{ data.key_contact1.text }}<br />
 		  <a href="mailto:{{ data.key_contact1_email }}">{{ data.key_contact1.email }}</a></p>
 		  </div>
 		  {% endif %}
@@ -217,16 +217,16 @@ function arrow(id) {
 		  {% if data.key_contact2 %}
 		  <div class="p-2 flex-fill bd-highlight key-contact">
 		  <p><strong>{{ labels.key_contact2 }}</strong><br />
-		  {{ data.key_contact2 }}<br />
-		  <a href="mailto:xyz">contact.two@food.gov.uk</a></p>
+		  {{ data.key_contact2.text }}<br />
+		  <a href="mailto:{{ data.key_contact2.email }}">{{ data.key_contact2.email }}</a></p>
 		  </div>
 		  {% endif %}
 		  
 		  {% if data.key_contact3 %}
 		  <div class="p-2 flex-fill bd-highlight key-contact">
 		  <p><strong>{{ labels.key_contact3 }}</strong><br />
-		  {{ data.key_contact3 }}<br />
-		  <a href="mailto:xyz">contact.three@food.gov.uk</a></p>
+		  {{ data.key_contact3.text }}<br />
+		  <a href="mailto:{{ data.key_contact3.email }}">{{ data.key_contact3.email }}</a></p>
 		  </div>
 		  {% endif %}
 		</div>
@@ -284,7 +284,7 @@ function arrow(id) {
 		
 		
 
-		{% if data.milestones %}
+		{% if data.milestones and data.milestones.length > 0 %}
 		<br />
 		<hr />
 		<h2 class="accordion section" onclick="showhide('s5'); arrow('a5')">Milestones&nbsp;&nbsp; <i id="a5" class="arrow down"></i></h2>
