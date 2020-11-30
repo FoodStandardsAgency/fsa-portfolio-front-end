@@ -26,12 +26,12 @@
 
 	{% block body_start %}{% endblock %}
 
-	<div class="container-fluid" style="min-height:100vh;">
+	<div class="container-fluid">
 
 		{% block header %} {% include "theme/header.html" %} {% endblock %}
-
+		<div style="min-height:70vh;">
 		{% block content %}{% endblock %}
-
+		</div>
 
 		{% block body_end %} {# {% include "theme/scripts.html" %} #} {% endblock %}
 		{% block foot %} {% include "theme/foot.html" %} {% endblock %}

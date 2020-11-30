@@ -52,8 +52,9 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 .rag-amb				{background-color:orange; color: white;}
 .rag-ambgre				{background-color:lime; color: white;}
 .rag-gre				{background-color:green; color: white;}
+.rag-no					{background-color:grey; color: white;}
 
-.phase 					{border-radius: 5px; min-height: 150px; max-height: 300px; border: 1px solid #000000;}
+.phase 					{border-radius: 5px; min-height: 150px; max-height: 300px; border: 1px solid #939e91;}
 .phase0  				{background-color:#2E358B}
 .phase1 				{background-color:#912B88;}
 .phase2	    			{background-color:#D53880;}
@@ -62,10 +63,16 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 .phase5      			{background-color:#454545;}
 .phase-label 			{position:absolute; top:50%; left:0; width:100%; margin-top:-25px; text-align:center; color:white; font-weight:800;  font-size:36px;}
 
-.update-button			{border: 1px solid black; color:black; padding:10px; margin:5px; background-color:white; border-radius:5px;}
+.update-button			{border: 1px solid black; color:black; padding:5px 10px; margin:10px; background-color:white; border-radius:5px;}
 .update-button:hover	{border: 1px solid green; color:white; background-color:green;}
-.delete-button			{border: 1px solid black; color:black; padding:10px; margin:5px; background-color:white; border-radius:5px;}
+.delete-button			{border: 1px solid black; color:black; padding:5px 10px; margin:10px; background-color:white; border-radius:5px;}
 .delete-button:hover	{border: 1px solid red; color:white; background-color:red;}
+
+.general-button			{border: 1px solid black; color:black; padding:5px 10px; margin:10px; background-color:white; border-radius:5px;}
+.general-button:hover	{border: 1px solid #006F51; color:white; background-color:#006F51;}
+
+.doc-buttons 			{border: 1px solid #939e91; color:black; padding:5px 10px; margin:10px; background-color:#f3f7f0; border-radius:5px;}
+.doc-buttons:hover		{border: 1px solid #939e91; color:black; background-color:white;}
 
 #myList li{display:none;}
 
@@ -73,27 +80,10 @@ ul.updates {margin-left: 0; padding-left:0}
 
 
 /* Style the buttons that are used to open and close the accordion panel */
-.accordion 				{ cursor: pointer;  transition: 0.4s;  margin-right:15px;}
-.arrow {
-  border: solid #939e91;
-  border-width: 0 5px 5px 0;
-  display: inline-block;
-  padding: 5px;
-  
-}
-
-.down {
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-}
-
-
-.up {
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-}
-
-
+.accordion 				{cursor: pointer;  transition: 0.4s;  margin-right:15px;}
+.arrow 					{border: solid #939e91;  border-width: 0 5px 5px 0;  display: inline-block;  padding: 5px;}
+.down					{transform: rotate(45deg);  -webkit-transform: rotate(45deg);}
+.up 					{transform: rotate(-135deg);  -webkit-transform: rotate(-135deg);}
 
 /*Summary page*/
 .summ_links {text-decoration:none;}
@@ -135,9 +125,9 @@ ul.updates {margin-left: 0; padding-left:0}
   border-left:5px solid transparent;
 }
 
-.border-phase0   {border-color:#2E358B;}
-.border-phase1 {border-color:#912B88;}
-.border-phase2     {border-color:#D53880;}
+.border-phase0   	{border-color:#2E358B;}
+.border-phase1 		{border-color:#912B88;}
+.border-phase2     	{border-color:#D53880;}
 .border-phase3      {border-color:#F15D22;}
 .border-phase4      {border-color:#85994B;}
 
@@ -211,4 +201,18 @@ div.last-update-text
 
 .bootstrap-select .filter-option {
 	white-space: normal;
+	color:black;
 }
+
+.form-input-box  		{background-color:#f3f7f0; color:black; border:1px solid #939e91; }
+.form-input-box:hover 	{background-color:white; border-color:black;}
+.form-input-box::placeholder {color:black;}
+
+.dropdown-item:hover {border:0; color:black; background-color:#ebedad;}
+
+.input-group-text		{background-color:#f3f7f0; border:1px solid #939e91; color:black;} 
+
+#id_project_id {border:0; background-color:white;}
+#id_project_id:hover {border:0; background-color:white;}
+
+
