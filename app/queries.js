@@ -33,7 +33,8 @@ module.exports = {
 	portfolio_config_update: (portfolio, req) => backend.api.patch(q.portfolio_config_url(portfolio), { json: req.body, context: { token: req.cookies.access_token }}),
 
 	user_identity: (req) => backend.api(`Users/identity`, { context: { token: req.cookies.access_token }}),
-	users_search: (portfolio, term, addnone, req) => backend.api("Users/search", { searchParams: { portfolio: portfolio, term: term, addnone: addnone }, context: { token: req.cookies.access_token }}),
+	users_search: (portfolio, term, addnone, req) => backend.api("Users/search", { searchParams: { portfolio: portfolio, term: term, addnone: addnone }, context: { token: req.cookies.access_token } }),
+	search_projectid: (portfolio, term, addnone, req) => backend.api("Projects", { searchParams: { portfolio: portfolio, term: term, addnone: addnone }, context: { token: req.cookies.access_token } }),
 	users_list_suppliers: (req) => backend.api("Users/suppliers", { context: { token: req.cookies.access_token }}),
 	users_add_supplier: (userName, passwordHash, req) => backend.api.post("Users/addsupplier", { json: { userName: userName, passwordHash: passwordHash }, context: { token: req.cookies.access_token }}),
 

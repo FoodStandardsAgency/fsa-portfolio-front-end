@@ -124,7 +124,7 @@
 						{% else %}
 						{% set ajaxData = '' %}
 						{% endif %}
-						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/users/search" {{ajaxData}} name="{{label.field}}[value]" data-live-search="true" data-style="form-input-box">
+						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/search/users" {{ajaxData}} name="{{label.field}}[value]" data-live-search="true" data-style="form-input-box">
 							{% if project[label.field] %}
 							<option value="{{project[label.field].value}}" selected>{{project[label.field].text}}</option>
 							{% endif %}
@@ -133,12 +133,22 @@
 
 					{% case 'adusermultisearch' %}
 					<div class="{{input_col}}">
-						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/users/search" name="{{label.field}}[]" data-live-search="true" data-style="form-input-box" multiple>
+						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/search/users" name="{{label.field}}[]" data-live-search="true" data-style="form-input-box" multiple>
 							{% for item in project[label.field] %}
 							<option value="{{item.value}}" selected>{{item.text}}</option>
 							{% endfor %}
 						</select>
 					</div>
+
+					{% case 'ajaxmultisearch' %}
+					<div class="{{input_col}}">
+						<select class="form-control ajaxmultisearch" data-abs-ajax-type="GET" data-abs-ajax-url="{{options[label.field].ajaxurl}}" name="{{label.field}}[]" data-live-search="true" data-style="form-input-box" multiple>
+							{% for item in project[label.field] %}
+							<option value="{{item.value}}" selected>{{item.text}}</option>
+							{% endfor %}
+						</select>
+					</div>
+
 
 					{% case 'linkeditemlist' %}
 					<div class="{{input_col}}">
@@ -188,7 +198,7 @@
 								{% for milestone in project[label.field] %}
 								<div class="milestone-wrapper">
 									<div class="form-row">
-										<input type="hidden" name="{{label.field}}[{{loop.index}}][id]" value="{{milestone.id}}" >
+										<input type="hidden" name="{{label.field}}[{{loop.index}}][id]" value="{{milestone.id}}">
 										<div class="form-group col-md-1"><input type="number" class="form-control form-input-box" name="{{label.field}}[{{loop.index}}][order]" placeholder="Order" value="{{milestone.order}}"></div>
 										<div class="form-group col-md-5"><input type="text" class="form-control form-input-box" name="{{label.field}}[{{loop.index}}][name]" placeholder="Name" value="{{milestone.name}}"></div>
 										<div class="form-group col-1"><input type="number" name="{{label.field}}[{{loop.index}}][deadline][day]" class="form-control form-input-box" placeholder="DD" min="1" max="31" value="{{milestone.deadline.day | safe}}" /></div>
@@ -281,7 +291,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ajax-bootstrap-select/1.4.5/js/ajax-bootstrap-select.min.js" integrity="sha512-HExUHcDgB9r00YwaaDe5z9lTFmTChuW9lDkPEnz+6/I26/mGtwg58OHI324cfqcnejphCl48MHR3SFQzIGXmOA==" crossorigin="anonymous"></script>
 <script>
 	$(document).ready(function () {
-		$('.adusersearch').selectpicker({ liveSearch: true }).ajaxSelectPicker();
+        var $ums = $('.adusersearch').selectpicker({ liveSearch: true }).ajaxSelectPicker();
+		$ums.trigger('change').data('AjaxBootstrapSelect').list.cache = {};
+
+		var $ms = $('.ajaxmultisearch').selectpicker({ liveSearch: true }).ajaxSelectPicker({ preserveSelected: true });
+		$ms.trigger('change').data('AjaxBootstrapSelect').list.cache = {};
 	});
 
 </script>

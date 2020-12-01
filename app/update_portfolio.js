@@ -13,6 +13,11 @@ async function renderEditForm(req, res) {
 		var config = result.body.config;
 		var options = result.body.options;
 
+		options.rels = { ajaxurl: `/${portfolio}/search/projectid` };
+		options.dependencies = { ajaxurl: `/${portfolio}/search/projectid` };
+
+		console.log(project.rels); // TODO: get rid
+
 		var fieldGroups = _.chain(config.labels)
 			.orderBy("grouporder", "fieldorder")
 			.groupBy("fieldgroup")
@@ -27,7 +32,6 @@ async function renderEditForm(req, res) {
 
 		res.render('add-edit-project', {
 			"title": "Edit project",
-			"user": req.session.user, // need access-level to determine whether user can add projects
 			"project": project,
 			"options": options,
 			"portfolio": portfolio,
@@ -50,6 +54,9 @@ async function renderAddForm(req, res) {
 			var config1 = result.body.config;
 			var options = result.body.options;
 
+			options.rels = { ajaxurl: `/${portfolio}/search/projectid` };
+			options.dependencies = { ajaxurl: `/${portfolio}/search/projectid` };
+
 			var fieldGroups = _.chain(config1.labels)
 				.orderBy("grouporder", "fieldorder")
 				.groupBy("fieldgroup")
@@ -64,10 +71,8 @@ async function renderAddForm(req, res) {
 
 			res.render('add-edit-project', {
 				"title": "Add project",
-				"user": req.session.user, // need access-level to determine whether user can add projects
 				"project": project,
 				"options": options,
-				"sess": req.session,
 				"portfolio": portfolio,
 				"fieldgroups": fieldGroups
 			});
@@ -101,10 +106,31 @@ async function searchUsers(req, res) {
 		var term = req.query.q;
 		var addnone = req.query.addnone;
 
-		console.log(req.query);
+		console.log(req.query); // TODO: remove
 		var response = await queries.users_search(portfolio, term, addnone, req);
 
 		var result = response.body.searchresults.map(function (u) { return { value: u.userPrincipalName, text: u.displayName }; });
+
+		var json = JSON.stringify(result);
+		res.setHeader('Content-Type', 'application/json');
+		res.end(json);
+	}
+	catch (error) {
+		handleError(error);
+		res.end();
+	}
+}
+
+async function searchProjectId(req, res) {
+	try {
+		var portfolio = req.params.portfolio;
+		var term = req.query.q;
+		var addnone = req.query.addnone;
+
+		console.log(req.query);
+		var response = await queries.search_projectid(portfolio, term, addnone, req);
+
+		var result = response.body;
 
 		var json = JSON.stringify(result);
 		res.setHeader('Content-Type', 'application/json');
@@ -120,5 +146,6 @@ module.exports = {
 	renderEditForm: renderEditForm,
 	renderAddForm: renderAddForm,
 	updateProject: updateProject,
-	searchUsers: searchUsers
+	searchUsers: searchUsers,
+	searchProjectId: searchProjectId
 };

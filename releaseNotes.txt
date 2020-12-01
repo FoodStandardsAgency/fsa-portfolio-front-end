@@ -4,6 +4,8 @@ Version 0.1.1
 - Recently added projects uses summary display template
 - Access restrictions on budget
 - Separators for budget
+- Milestones
+- Search related projects using ajax.
 
 Version 0.1 - Released 23/11/2020 16:20
 =======================================
