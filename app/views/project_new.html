@@ -144,24 +144,12 @@ function arrow(id) {
 			
 			<!-- Flags & extra text fields-->
 			{% set rags = { 'red': 'Red', 'redamb': 'Red-Amber', 'amb': 'Amber', 'ambgre': 'Amber-Green', 'gre': 'Green', 'nor': 'No RAG']%}
-			{% if rags[data.rag] %}
-			<div class="small-flag rag-{{data.rag}}">{{labels.rag}}: {{ rags[data.rag] }}</div>
-			{% endif%}
-			
-			{% if data.priority_main %}<div class="small-flag">{{labels.priority_main}}: {{data.pgroup | capitalize }} ({{ data.priority_main }})</div>{% endif %}
-			
-			{% if data.risk_rating and data.risk_rating != 'No' %}
-			<strong>{{labels.risk_rating}}:</strong>
-			<div class="small-flag"><strong>{{ data.risk_rating }}</strong></div>
-			{% endif %}
-			
-			{% if data.onhold and data.onhold != 'No' %}
-			<strong>{{labels.onhold}}:</strong>
-			<div class="small-flag"><strong>{{ data.onhold }}</strong></div>
-			{% endif %}
-			
-			{% if data.progress_option1 %}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option1 }}</div>{% endif %}
-			{% if data.progress_option2 %}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option2 }}</div>{% endif %}
+			{% if rags[data.rag] %}<div class="small-flag rag-{{data.rag}}">{{labels.rag}}: {{ rags[data.rag] }}</div>&nbsp;{% endif%}
+			{% if data.priority_main %}<div class="small-flag">{{labels.priority_main}}: {{data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;{% endif %}
+			{% if data.risk_rating and data.risk_rating != 'No' %}<div class="small-flag">{{labels.risk_rating}}: {{ data.risk_rating }}</div>&nbsp;{% endif %}
+			{% if data.onhold and data.onhold != 'No' %}<div class="small-flag">{{labels.onhold}}: {{ data.onhold }}</div>&nbsp;{% endif %}
+			{% if data.progress_option1 and data.progress_option1 != 'No'%}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option1 }}</div>&nbsp;{% endif %}
+			{% if data.progress_option2 and data.progress_option2 != 'No'%}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option2 }}</div>{% endif %}
 			
 			<p>
 			{% if data.progress_setting1 %}<strong>{{ labels.progress_setting1 }}:</strong> {{ data.progress_setting1 }} {% endif %}
@@ -171,8 +159,8 @@ function arrow(id) {
 			</div>
 			
 			{% if data.how_get_green %}
-			<div class="col-sm-6">
 			<!-- How to get to green -->
+			<div class="col-sm-6">
 				<p class="infobox"><strong>{{ labels.how_get_green }}</strong><br />
 				{{ data.how_get_green }}
 				</p>
