@@ -1,4 +1,5 @@
 const backend = require('./backend');
+const cookieExpiryMillis = 24 * 60 * 60 * 1000;
 
 module.exports = {
     getAccessToken: async function (req) {
@@ -24,8 +25,8 @@ module.exports = {
     setBearerToken: async function (req, res, tokenbody) {
         var idresult = await backend.api(`Users/identity`, { context: { token: tokenbody.access_token } });
         var identity = idresult.body;
-        res.cookie('access_token', tokenbody.access_token, { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: 360000 });
-        res.cookie('identity', identity, { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: 360000 });
+        res.cookie('access_token', tokenbody.access_token, { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: cookieExpiryMillis });
+        res.cookie('identity', identity, { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: cookieExpiryMillis });
     },
     logout: function (req, res) {
         res.clearCookie('access_token');

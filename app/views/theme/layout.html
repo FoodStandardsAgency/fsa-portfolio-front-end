@@ -49,7 +49,7 @@
             var docListId = '#doclist-' + field;
             var docList = document.querySelector(docListId)
             var template = document.querySelector(templateId);
-            var count = docList.dataset.count + 1;
+            var count = docList.dataset.count;
             var nameNameAttr = field + '[' + count + '][name]'
             var linkNameAttr = field + '[' + count + '][link]'
             docList.dataset.count++;
@@ -75,9 +75,9 @@
             var milestoneListId = '#milestonelist-' + field;
             var milestoneList = document.querySelector(milestoneListId)
             var template = document.querySelector(templateId);
-            var count = milestoneList.dataset.count + 1;
+            var count = milestoneList.dataset.count;
 
-            var idNameAttr = field + '[' + count + '][id]'
+            //var idNameAttr = field + '[' + count + '][id]'
             var orderNameAttr = field + '[' + count + '][order]'
             var nameNameAttr = field + '[' + count + '][name]'
             var dayNameAttr = field + '[' + count + '][deadline][day]'
@@ -87,14 +87,14 @@
             milestoneList.dataset.count++;
             var clone = template.content.cloneNode(true);
 
-            var idInput = clone.querySelector('input.id');
+            //var idInput = clone.querySelector('input.id');
             var orderInput = clone.querySelector('input.order');
             var nameInput = clone.querySelector('input.name');
             var dayInput = clone.querySelector('input.day');
             var monthInput = clone.querySelector('input.month');
             var yearInput = clone.querySelector('input.year');
 
-            idInput.setAttribute("name", idNameAttr);
+            //idInput.setAttribute("name", idNameAttr);
             orderInput.setAttribute("name", orderNameAttr);
             nameInput.setAttribute("name", nameNameAttr);
             dayInput.setAttribute("name", dayNameAttr);
