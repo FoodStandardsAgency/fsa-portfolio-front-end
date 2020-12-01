@@ -2,9 +2,9 @@
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3 headbar-margin"></div>
 	<div class="col-xl-5 col-md-6 col-sm-8 py-3 headbar"><span><a href="/{{portfolio}}" class="headbar-title special-link">{{ portfolio | upper }} Online Portfolio</a></span></div>
 	<div class="col-xl-5 col-md-4 col-sm-2 py-3 text-right headbar">
-		{%if portfolio %}<a href="/" class="headbar-text">Portfolio Index</a> <span class="headbar-text">|</span> {% endif %}
-		{%if hasAdminRole(portfolio) %}<a href="/{{portfolio}}/portfolio-team" class="headbar-text"> Admin area</a> <span class="headbar-text">|</span> {% endif %}
-		<a href="/log-out" class="headbar-text">Log out</a>
+		{%if portfolio %}<a href="/" class="headbar-text special-link">Portfolio Index</a> <span class="headbar-text">|</span> {% endif %}
+		{%if hasAdminRole(portfolio) %}<a href="/{{portfolio}}/portfolio-team" class="headbar-text special-link"> Admin area</a> <span class="headbar-text">|</span> {% endif %}
+		<a href="/log-out" class="headbar-text special-link">Log out</a>
 	</div>
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3 headbar-margin"></div>
 </div>

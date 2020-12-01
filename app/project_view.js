@@ -24,6 +24,8 @@ async function project_view(req, res) {
 				map[obj.field] = obj.label || obj.fieldtitle;
 				return map;
 			}, {});
+			
+			console.log(project);
 
 			// TODO: test suppliers can't access budget (key has changed from number 4 to 'supplier')
 			res.render('project_new', {
