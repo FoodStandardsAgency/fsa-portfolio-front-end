@@ -12,7 +12,7 @@
 
 		<br /><br />
 
-		<form action="/{{portfolio}}/update" method="post">
+		<form action="/{{portfolio}}/update" class="needs-validation" method="post" novalidate>
 
 			{% for fieldgroup in fieldgroups %}
 			{% if fieldgroup.display %}
@@ -33,7 +33,10 @@
 					{% case 'auto' %}
 					{% case 'freetext' %}
 					<div class="{{input_col}}">
-						<input type="text" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {% if readonly %}readonly{% endif %}>
+						<input type="text" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}"{{ " readonly" if readonly }}{{" required" if label.required }}>
+						{% if label.required %}
+						<div class="invalid-feedback">Please enter a value for {{label.label}}</div>
+						{% endif %}
 					</div>
 
 					{% case 'smallfreetextarea' %}
@@ -298,6 +301,25 @@
 		$ms.trigger('change').data('AjaxBootstrapSelect').list.cache = {};
 	});
 
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+						event.stopPropagation();
+						var invalidOptions = document.querySelectorAll(".form-control:invalid");
+                        $('html, body').animate({ scrollTop: $(invalidOptions[0]).offset().top }, 1000);
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
 </script>
 
 {% endblock %}
