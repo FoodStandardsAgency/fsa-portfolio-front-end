@@ -3,7 +3,6 @@ const tokens = require('./tokens');
 const graph = require('./graph');
 const backend = require('./backend');
 const errors = require('./error');
-const os = require('os');
 
 const handleError = errors.handleError;
 
@@ -20,7 +19,6 @@ function requireLogin(req, res, next) {
 				res.end();
 			}
 			else {
-				console.log(os.userInfo()); // TODO: remove
 				next();
 			}
 		})();
@@ -57,6 +55,10 @@ function requireEditor(req, res, next) {
 
 
 function login(req, res) {
+
+	console.log(req.connection.user);
+	console.log(req.connection.userSid);
+
 	// Get form data
 	const user = req.body.user;
 	const password = req.body.password;

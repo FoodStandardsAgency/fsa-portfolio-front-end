@@ -1,6 +1,7 @@
 require('dotenv').config();
 const path 		= require('path');
-const express 	= require('express');
+const express = require('express');
+var nodeSSPI = require('express-node-sspi');
 var cookieParser = require('cookie-parser')
 const session = require('express-session');
 //const session	= require('client-sessions');
@@ -21,6 +22,7 @@ const app = express();
 
 const port = process.env.PORT || 3100;
 const dev	= true;
+app.use(nodeSSPI({ retrieveGroups: false }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
@@ -82,6 +84,7 @@ app.use(function (req, res, next) {
 
 	next();
 });
+
 
 
 
