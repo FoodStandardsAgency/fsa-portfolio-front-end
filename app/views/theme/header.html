@@ -8,4 +8,21 @@
 	</div>
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3 headbar-margin"></div>
 </div>
+
+{%if page and page == 'login' %}
 <br /><br />
+{% else %}
+
+<div class="row">
+	<div class="col-1 my-3"></div>
+	<div class="col-10 pt-3 mb-3" style="background-color:#f8f8f8; border-bottom:1px solid lightgrey;" >
+		<p>
+		<strong class="beta-tag">BETA</strong>
+		<span>This is a new service – your <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=-VAcircBikym-pDrkG8Y6dEMeKXPakZImmNP3H9NsDNUNkE2R0ZLM0NaWk85OVY1MjE0WkExWlVPVi4u">feedback</a> will help us to improve it.</span>
+		</p>
+	 
+	</div>
+	<div class="col-1 my-3"></div>
+</div>
+
+{% endif %}
