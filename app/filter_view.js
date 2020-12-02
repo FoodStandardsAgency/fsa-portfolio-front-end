@@ -16,7 +16,6 @@ async function view(req, res) {
 		var fieldGroups = config.getFieldGroups(portfolioconfig);
 
 		res.render('filter_view', {
-			"sess": req.session,
 			"portfolio": portfolio,
 			"options": options,
 			"fieldgroups": fieldGroups,
@@ -46,7 +45,6 @@ async function getResults(req, res) {
 
 		res.render('filter_view', {
 			"stage": 'results',
-			"sess": req.session,
 			"portfolio": portfolio,
 			"options": options,
 			"fieldgroups": fieldGroups,

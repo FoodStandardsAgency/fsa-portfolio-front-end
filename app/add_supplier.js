@@ -40,7 +40,6 @@ async function add_supplier(req, res) {
 
 async function render_add_supplier(req,res){
 	try {
-		var sess = req.session;
 		var portfolio = req.params.portfolio;
 		var response = await queries.users_list_suppliers(req);
 
@@ -53,7 +52,6 @@ async function render_add_supplier(req,res){
 			"portfolio": portfolio,
 			"cnt": response.body.suppliers.length,
 			"supps": response.body.suppliers,
-			"sess": sess,
 			"msg": message
 		});
     }

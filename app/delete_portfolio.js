@@ -2,9 +2,6 @@ const queries 	= require('./queries');
 
 async function delete_portfolio(req, res) {
 	var portfolio = req.params.portfolio;
-	var sess = req.session;
-	var user = req.session.user;
-	var group = req.session.group;
 	var project_id = req.params.project_id;
 
 	try {
@@ -22,8 +19,7 @@ async function delete_portfolio(req, res) {
 			res.render('delete_project', {
 				"portfolio": portfolio,
 				"data": project,
-				"labels": labels,
-				"sess": sess
+				"labels": labels
 			});
 
 		} 

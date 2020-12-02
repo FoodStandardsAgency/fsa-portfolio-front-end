@@ -61,7 +61,6 @@ function arrow(id) {
 	</div>
 	
 	<!-- Change for access groups -->
-	{% set group = 1 %}
 	<div class="col-xl-3 col-md-3 col-sm-4 py-3 text-right">
 		{% if hasAdminRole(portfolio) %}<a href="/odd/delete/{{ data.project_id }}" class="special-link"><button class="delete-button">Delete</button></a>{% endif %}
 		{% if hasEditorRole(portfolio) %}<a href="/{{portfolio}}/edit/{{ data.project_id }}" class="special-link"><button class="update-button">Update</button></a>{% endif %}

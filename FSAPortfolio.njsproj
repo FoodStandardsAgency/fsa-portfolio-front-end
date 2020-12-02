@@ -78,7 +78,6 @@
     <None Include="releaseNotes.txt" />
     <Content Include="routes\auth.js" />
     <Content Include="routes\suppliers.js" />
-    <Content Include="routes\teams.js" />
     <Content Include="server.js" />
     <Content Include="webpack.config.js" />
     <Content Include="app\add_supplier.js" />

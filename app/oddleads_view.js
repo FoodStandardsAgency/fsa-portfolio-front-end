@@ -40,8 +40,7 @@ function odd_view(req, res) {
 				"data": 	nestedGroupBy(projects.body, ['oddlead', 'phase']),
 				"counts": _.countBy(projects.body, 'phase'),
 				"themes": 	odd_leads_arr,
-				"phases":	config.phases,
-				"sess": req.session
+				"phases":	config.phases
 			});
 		})  
 	})

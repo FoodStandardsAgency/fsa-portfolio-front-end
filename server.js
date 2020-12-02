@@ -158,14 +158,12 @@ odd_authenticate.configurePassport();
 // Router
 var router = require('./app/routes.js');
 var authrouter = require('./routes/auth.js');
-var teamsrouter = require('./routes/teams.js');
 var suppliersrouter = require('./routes/suppliers.js');
 
 
 
 app.use("/", router);
 app.use("/auth", authrouter);
-app.use("/odd_people", teamsrouter);
 app.use("/", suppliersrouter);
 
 //-------------------------------------------------------------------

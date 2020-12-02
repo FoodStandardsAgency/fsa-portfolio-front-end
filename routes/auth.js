@@ -38,10 +38,8 @@ router.post('/callback',
 
 router.get('/signout',
     function (req, res) {
-        req.session.destroy(function (err) {
-            req.logout();
-            res.redirect('/');
-        });
+        req.logout();
+        res.redirect('/');
     }
 );
 
