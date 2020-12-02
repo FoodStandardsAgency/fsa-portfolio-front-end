@@ -2,7 +2,7 @@
 
 {% block content %}
 
-	<div class="row">
+<div class="row">
 	<div class="col-sm-1"></div>
 	<div class="col-sm-10 py-1">
 		<h1 class="project-title" style="margin-bottom:15px;">Filter projects</h1><br />
@@ -57,16 +57,16 @@
 				{% case 'date' %}
 				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
 				<div class="{{input_col}}">
-					<input type="date" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" value="{{form_values[label.field]}}" >
+					<input type="date" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" value="{{form_values[label.field]}}">
 				</div>
 
 				{% case 'nullableboolean' %}
 				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
 				<div class="{{input_col}}">
 					<select class="selectpicker form-control" data-style="form-input-box" name="{{label.field}}">
-						<option value="" {{ "selected" if form_values[label.field] == "" }} >None selected</option>
+						<option value="" {{ "selected" if form_values[label.field] == "" }}>None selected</option>
 						<option value="true" {{ "selected" if form_values[label.field] == "true" }}>Yes</option>
-						<option value="false"{{ "selected" if form_values[label.field] == "false" }}>No</option>
+						<option value="false" {{ "selected" if form_values[label.field] == "false" }}>No</option>
 					</select>
 				</div>
 
@@ -76,8 +76,8 @@
 			{% endfor %}
 			{% endfor %}
 			<div class="row my-5">
-				<div class="col-sm-1"><button class="general-button" type="submit">Submit</button></div>
-				<div class="col-sm-1"><button class="general-button" type="reset">Reset</button></div>
+				<div class="form-group"><button class="general-button" type="submit">Submit</button></div>
+				<div class="form-group"><button class="general-button" type="reset" onClick="window.location.href=window.location.href;">Reset</button></div>
 			</div>
 
 		</form>
@@ -87,17 +87,27 @@
 		<br />
 		<hr />
 		<br />
-		<h1 class="heading-xlarge" style="margin-bottom:15px; "><a name="results">Results</a></h1><br />
-
-		<p style=""><strong>Number of projects:</strong> {{ data.project_cnt }}</p>
-
-		{% for project in data.projects %}
-		<p style=""><a href="/{{portfolio}}/projects/{{ project.project_id }}">{{ project.project_id }} {{ project.project_name | safe}}</a></p>
-		{% endfor %}
-
+		<div id="results">
+			<h1 class="heading-xlarge" style="margin-bottom:15px; "><a name="results">Results</a></h1><br />
+			<p style=""><strong>Number of projects:</strong> {{ data.project_cnt }}</p>
+			{% for project in data.projects %}
+			<p style=""><a href="/{{portfolio}}/projects/{{ project.project_id }}">{{ project.project_id }} {{ project.project_name | safe}}</a></p>
+			{% endfor %}
+		</div>
 		{% endif %}
 
 	</div>
-<div class="col-sm-1"></div>
+	<div class="col-sm-1"></div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script>
+	$(document).ready(function () {
+		var results = document.getElementById('results');
+		if (results) {
+            $('html, body').animate({ scrollTop: $(results).offset().top }, 1000);
+        }
+	});
+</script>
+
 {% endblock %}

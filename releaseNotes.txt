@@ -5,7 +5,10 @@ Version 0.1.1
 - Access restrictions on budget
 - Separators for budget
 - Milestones
-- Search related projects using ajax.
+- Search related projects using ajax
+- Add control validation for required freetext fields
+- Filter: reset button fixed
+- Filter: scroll to results
 
 Version 0.1 - Released 23/11/2020 16:20
 =======================================

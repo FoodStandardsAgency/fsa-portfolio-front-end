@@ -312,8 +312,9 @@
                     if (form.checkValidity() === false) {
                         event.preventDefault();
 						event.stopPropagation();
-						var invalidOptions = document.querySelectorAll(".form-control:invalid");
-                        $('html, body').animate({ scrollTop: $(invalidOptions[0]).offset().top }, 1000);
+						// Scroll to the first invalid control
+						var invalidcontrols = document.querySelectorAll(".form-control:invalid");
+                        $('html, body').animate({ scrollTop: $(invalidcontrols[0]).offset().top }, 1000);
                     }
                     form.classList.add('was-validated');
                 }, false);
