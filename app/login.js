@@ -3,7 +3,7 @@ const tokens = require('./tokens');
 const graph = require('./graph');
 const backend = require('./backend');
 const errors = require('./error');
-const os = require('os');
+var queries = require('./queries');
 
 const handleError = errors.handleError;
 
@@ -20,7 +20,6 @@ function requireLogin(req, res, next) {
 				res.end();
 			}
 			else {
-				console.log(os.userInfo()); // TODO: remove
 				next();
 			}
 		})();
