@@ -48,7 +48,7 @@ function nestedGroupBy(data, keys) {
 // LOGIN PAGE
 //-------------------------------------------------------------------
 
-router.get ('/login', function (req, res) {res.render("login", {"page":'login'});});
+router.get ('/login', function (req, res) {res.render("login");});
 router.post('/login', [check('user').escape()], function (req, res) { login.login(req, res); });
 
 router.get('/log-out', (req, res) => { login.logout(req, res); });
