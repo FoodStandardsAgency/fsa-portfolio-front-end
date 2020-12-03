@@ -57,7 +57,7 @@ function arrow(id) {
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-xl-7 col-md-7 col-sm-6 py-3">
-		<p><strong>Project ID: </strong>{{ data.project_id }} {% if business_case_number %} / {{ data.business_case_number }} {% endif %} {% if fs_number %} / {{ data.fs_number }} {% endif %}</p>
+		<p><strong>Project ID: </strong>{{ data.project_id }} {% if data.business_case_number %} / {{ data.business_case_number }} {% endif %} {% if data.fs_number %} / {{ data.fs_number }} {% endif %}</p>
 	</div>
 	
 	<!-- Change for access groups -->
