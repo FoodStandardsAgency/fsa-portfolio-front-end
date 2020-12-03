@@ -65,7 +65,7 @@ function configurePassport() {
             responseType: 'code id_token',
             responseMode: 'form_post',
             redirectUrl: process.env.OAUTH_REDIRECT_URI,
-            allowHttpForRedirectUrl: false, // TODO: for prod this should be false
+            allowHttpForRedirectUrl: true, // TODO: for prod this should be false
             clientSecret: process.env.OAUTH_APP_PASSWORD,
             validateIssuer: false,
             passReqToCallback: false,
