@@ -19,6 +19,7 @@
 					<div class="col-sm-2">Field name</div>
 					<div class="col-sm-1">Included?</div>
 					<div class="col-sm-1">Admin only?</div>
+					<div class="col-sm-2">Filter?</div>
 					<div class="col-sm-2">Label</div>
 					<div class="col-sm-6">Values</div>
 				</div>
@@ -31,6 +32,8 @@
 					<input type="hidden" name="labels[{{labelNo}}][fieldtitle]" value="{{label.fieldtitle}}" id="fieldtitle_{{label.field}}">
 					<input type="hidden" name="labels[{{labelNo}}][inputtype]" value="{{label.inputtype}}" id="inputtype_{{label.field}}">
 					<input type="hidden" name="labels[{{labelNo}}][inputtype_locked]" value="{{label.inputtype_locked}}" id="inputtype_locked_{{label.field}}">
+					<input type="hidden" name="labels[{{labelNo}}][included_lock]" value="{{label.included_lock}}" id="included_lock_{{label.field}}">
+					<input type="hidden" name="labels[{{labelNo}}][adminonly_lock]" value="{{label.adminonly_lock}}" id="adminonly_lock_{{label.field}}">
 					{% if label.included_lock %}
 					<input type="hidden" name="labels[{{labelNo}}][included]" value="{{label.included}}" id="idinc2_{{label.field}}">
 					<div class="col-sm-1"><input type="checkbox" id="idinc_{{label.field}}" {% if(label.included) %}checked{% endif %} {% if(label.included_lock) %}disabled{% endif %}></div>
@@ -39,23 +42,29 @@
 					{% endif %}
 					{% if label.adminonly_lock %}
 					<input type="hidden" name="labels[{{labelNo}}][admin]" value="{{label.admin}}" id="idadm2_{{label.field}}">
-					<div class="col-sm-1"><input type="checkbox" id="idadm_{{label.field}}" {% if(label.admin) %}checked{% endif %} {% if(label.adminonly_lock) %}disabled{% endif %}></div>
+					<div class="col-sm-1"><input type="checkbox" id="idadm_{{label.field}}" {% if(label.admin) %}checked{% endif %} disabled></div>
 					{% else %}
-					<div class="col-sm-1"><input type="checkbox" value="true" name="labels[{{labelNo}}][admin]" id="idadm_{{label.field}}" {% if(label.admin) %}checked{% endif %} {% if(label.adminonly_lock) %}disabled{% endif %}></div>
+					<div class="col-sm-1"><input type="checkbox" value="true" name="labels[{{labelNo}}][admin]" id="idadm_{{label.field}}" {% if(label.admin) %}checked{% endif %}></div>
 					{% endif %}
-					<input type="hidden" name="labels[{{labelNo}}][included_lock]" value="{{label.included_lock}}" id="included_lock_{{label.field}}">
-					<input type="hidden" name="labels[{{labelNo}}][adminonly_lock]" value="{{label.adminonly_lock}}" id="adminonly_lock_{{label.field}}">
+					{% if label.filterable %}
+					<div class="col-sm-1"><input type="checkbox" value="true" name="labels[{{labelNo}}][filterproject]" id="idfilterproject_{{label.field}}" {% if(label.filterproject) %}checked{% endif %}></div>
+					{% else %}
+					<input type="hidden" name="labels[{{labelNo}}][filterproject]" value="{{label.filterproject}}" id="idfilterproject2_{{label.field}}">
+					<div class="col-sm-1">
+					<!--<input type="checkbox" id="idfilterproject_{{label.field}}" {% if(label.filterproject) %}checked{% endif %} disabled>-->
+					</div>
+					{% endif %}
 					<div class="col-sm-2"><input type="text" id="idlbl_{{label.field}}" name="labels[{{labelNo}}][label]" placeholder="Value" value="{{label.label}}" class="form-control"></div>
 					{% switch label.inputtype %}
 					{% case 'ragchoice' %}
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<select class="form-control" id="idtyp_{{label.field}}" name="labels[{{labelNo}}][inputvalue]" value="{{label.inputvalue}}">
-							<option value="4" {% if label.inputvalue === "4" %} selected{% endif %}>Red, Amber, Green</option>
-							<option value="6" {% if label.inputvalue === "6" %} selected{% endif %}>Red, Red/Amber, Amber, Amber/Green, Green</option>
+							<option value="4" {% if label.inputvalue==="4" %} selected{% endif %}>Red, Amber, Green</option>
+							<option value="6" {% if label.inputvalue==="6" %} selected{% endif %}>Red, Red/Amber, Amber, Amber/Green, Green</option>
 						</select>
 					</div>
 					{% default %}
-					<div class="col-sm-6"><input type="text" id="idtyp_{{label.field}}" name="labels[{{labelNo}}][inputvalue]" placeholder="{{label.inputdesc}}" value="{{label.inputvalue}}" {% if(label.inputtype_locked) %}readonly{% endif %} class="form-control"></div>
+					<div class="col-sm-5"><input type="text" id="idtyp_{{label.field}}" name="labels[{{labelNo}}][inputvalue]" placeholder="{{label.inputdesc}}" value="{{label.inputvalue}}" {% if(label.inputtype_locked) %}readonly{% endif %} class="form-control"></div>
 					{% endswitch %}
 				</div>
 				{% set labelNo = labelNo + 1 %}

@@ -10,6 +10,7 @@ Version 0.1.1
 - Filter: reset button fixed
 - Filter: scroll to results
 - Login session based on cookies and should survive system reboots
+- Configure filter fields
 
 Version 0.1 - Released 23/11/2020 16:20
 =======================================
