@@ -292,7 +292,7 @@ router.get('/portfolio-update/:project_id', login.requireLogin, async function (
 	await update_portfolio.renderEditForm(req, res);
 });
 router.get('/:portfolio/update/:project_id', login.requireEditor, async function (req, res) {
-	update_portfolio.renderEditForm(req, res);
+	await update_portfolio.renderEditForm(req, res);
 });
 
 router.get('/:portfolio/delete/:project_id', login.requireAdmin, async function (req, res) {
