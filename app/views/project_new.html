@@ -144,9 +144,9 @@ function arrow(id) {
 	
 		
 		<hr />
-		<h2 class="accordion section mb-3" onclick="showhide('s2'); arrow('a2')">Progress indicators &nbsp;&nbsp; <i id="a2" class="arrow down"></i></h2>
+		<h2 class="accordion section mb-3" onclick="showhide('s2'); arrow('a2')">Progress indicators &nbsp;&nbsp; <i id="a2" class="arrow up"></i></h2>
 		
-		<div class="row" id="s2" style="display:none;">
+		<div class="row" id="s2">
 			{% if data.how_get_green %}<div class="col-sm-6">{% else %}<div class="col-sm-12">{% endif %}
 			
 			<!-- Flags & extra text fields-->
@@ -162,8 +162,7 @@ function arrow(id) {
 			{% if data.progress_setting1 %}<strong>{{ labels.progress_setting1 }}:</strong> {{ data.progress_setting1 }} {% endif %}
 			{% if data.progress_setting2 %}<br /><strong>{{ labels.progress_setting2 }}:</strong> {{ data.progress_setting2 }}{% endif %}
 			</p>
-			
-			</div>
+		</div>
 			
 			{% if data.how_get_green %}
 			<!-- How to get to green -->
@@ -185,9 +184,9 @@ function arrow(id) {
 		{% if data.oddlead or data.key_contact1 or data.key_contact1 or data.key_contact1 or data.team or data.supplier or data.project_team_option1 or data.project_team_option2 or data.team or data.supplier %}
 		<br />
 		<hr />
-		<h2 class="accordion section" onclick="showhide('s3'); arrow('a3')">Project team &nbsp;&nbsp; <i id="a3" class="arrow down"></i></h2>
+		<h2 class="accordion section" onclick="showhide('s3'); arrow('a3')">Project team &nbsp;&nbsp; <i id="a3" class="arrow up"></i></h2>
 		<!-- Key contacts -->
-		<div id="s3" style="display:none">
+		<div id="s3">
 		{% if data.oddlead or data.key_contact1 or data.key_contact2 or data.key_contact3 %}
 		<div class="d-flex flex-row flex-wrap bd-highlight mb-3">
 		
@@ -257,12 +256,12 @@ function arrow(id) {
 		<!-- Updates (always displayed, even if just to indicate there are no updates) -->
 		<br />
 		<hr />
-		<h2 class="accordion section" onclick="showhide('s4'); arrow('a4')">Updates &nbsp;&nbsp; <i id="a4" class="arrow down"></i></h2>
-		<div id="s4" style="display:none;">
+		<h2 class="accordion section" onclick="showhide('s4'); arrow('a4')">Updates &nbsp;&nbsp; <i id="a4" class="arrow up"></i></h2>
+		<div id="s4">
 		{% if data.updates.length > 0 %}
 		<ul id="myList" style="padding-left:0;">
 			{% for update in data.updates %}
-			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">{{ update.timestamp | date(globals.timestampFormat) | safe }}</span> - {{ update.text | safe }}</p></li>
+			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">{{ update.timestamp | date(globals.timestampFormat) | safe }}</span> - {{ update.text | safe }}</p><br /></li>
 			{% endfor %}
 		</ul>
 
@@ -351,9 +350,9 @@ function arrow(id) {
 	<!-- Project plan -->
 	{% if data.start_date.date or data.actstart.date or data.expendp.date or data.expend.date or data.hardend.date or data.actual_end_date.date or data.p_comp or data.project_plan_option1 or data.project_plan_option2 or data.project_plan_setting1 or data.project_plan_setting2 %}
 	<hr />
-	<h2 class="accordion section" onclick="showhide('s9'); arrow('a9')">Project plan&nbsp;&nbsp; <i id="a9" class="arrow down"></i></h2>
+	<h2 class="accordion section" onclick="showhide('s9'); arrow('a9')">Project plan&nbsp;&nbsp; <i id="a9" class="arrow up"></i></h2>
 	
-	<div id="s9" style="display:none;">
+	<div id="s9">
 	  
 		{% if data.start_date.date %}<p><strong>{{labels.start_date}}</strong><br /> {{ data.start_date.date | date(getProjectDateFormat(data.start_date.flag)) }}</p>{% endif %}
 		{% if data.actstart.date %}<p><strong>{{labels.actstart}}</strong><br /> {{ data.actstart.date | date(getProjectDateFormat(data.actstart.flag)) }}</p>{% endif %}
@@ -411,9 +410,9 @@ function arrow(id) {
 	{% if (data.budgettype and data.budgettype != 'None') or data.cost_centre or (data.budget and data.budget != 0) or (data.spent and data.spent != 0) or (data.forecast_spend and data.forecast_spend != 0) or (data.budget_option1 and data.budget_option1 != 'None') or (data.budget_option2 and data.budget_option2 != 'None') or data.budget_field1 or data.budget_field2 %}
 	<br />
 	<hr />
-	<h2 class="accordion section" onclick="showhide('s11'); arrow('a11')">Budget&nbsp;&nbsp; <i id="a11" class="arrow down"></i></h2>
+	<h2 class="accordion section" onclick="showhide('s11'); arrow('a11')">Budget&nbsp;&nbsp; <i id="a11" class="arrow up"></i></h2>
 	
-	<div id="s11" style="display:none">
+	<div id="s11">
 		{% if data.budgettype and data.budgettype != 'None' %}	<p><strong>{{ labels.budgettype }}</strong><br />{{ data.budgettype }}</p>{% endif %}
 		{% if data.cost_centre %}	<p><strong>{{ labels.cost_centre }}</strong><br />{{ data.cost_centre }}</p>{% endif %}
 		{% if data.budget and data.budget != 0 %}		<p><strong>{{ labels.budget }}</strong><br />£{{ currency(data.budget) }}</p>{% endif %}
