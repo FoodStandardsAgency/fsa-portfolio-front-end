@@ -16,8 +16,6 @@ async function renderEditForm(req, res) {
 		options.rels = { ajaxurl: `/${portfolio}/search/projectid` };
 		options.dependencies = { ajaxurl: `/${portfolio}/search/projectid` };
 
-		console.log(project.rels); // TODO: get rid
-
 		var fieldGroups = _.chain(config.labels)
 			.orderBy("grouporder", "fieldorder")
 			.groupBy("fieldgroup")
