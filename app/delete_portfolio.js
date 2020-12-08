@@ -1,4 +1,7 @@
-const queries 	= require('./queries');
+const queries = require('./queries');
+const errors = require('./error');
+const handleError = errors.handleError;
+
 
 async function delete_portfolio(req, res) {
 	var portfolio = req.params.portfolio;
