@@ -297,8 +297,9 @@
         var $ums = $('.adusersearch').selectpicker({ liveSearch: true }).ajaxSelectPicker();
 		$ums.trigger('change').data('AjaxBootstrapSelect').list.cache = {};
 
-		var $ms = $('.ajaxmultisearch').selectpicker({ liveSearch: true }).ajaxSelectPicker({ preserveSelected: true });
-		$ms.trigger('change').data('AjaxBootstrapSelect').list.cache = {};
+		var $ms = $('.ajaxmultisearch');
+		$ms.each(function () { $(this).selectpicker({ liveSearch: true }).ajaxSelectPicker({ preserveSelected: true }); });
+		$ms.each(function () { $(this).trigger('change').data('AjaxBootstrapSelect').list.cache = {}; });
 	});
 
     (function () {
