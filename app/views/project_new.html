@@ -5,20 +5,28 @@
 <script>
 	$(document).ready(function () {
 		size_li = $("#myList li").length;
+		
 		x = 2;
+		
+		$('#oneupdate').hide();
+		if (size_li == 1) {$('#loadMore').hide(); $('#showLess').hide(); $('#oneupdate').show();}
+		if (size_li == x) {$('#loadMore').hide(); $('#pipe').hide();}
+		
 		$('#myList li:lt(' + x + ')').show();
 		$('#loadMore').click(function () {
 			x = (x + 1 <= size_li) ? x + 2 : size_li;
 			$('#myList li:lt(' + x + ')').show();
 			$('#showLess').show();
-			if (x == size_li) {
+			if (x >= size_li) {
 				$('#loadMore').hide();
+				$('#pipe').hide();
 			}
 		});
 		$('#showLess').click(function () {
 			x = (x - 1 < 0) ? 1 : x - 1;
 			$('#myList li').not(':lt(' + x + ')').hide();
 			$('#loadMore').show();
+			$('#pipe').show();
 			$('#showLess').show();
 			if (x == 1) {
 				$('#showLess').hide();
@@ -136,26 +144,25 @@ function arrow(id) {
 	
 		
 		<hr />
-		<h2 class="accordion section mb-3" onclick="showhide('s2'); arrow('a2')">Progress indicators &nbsp;&nbsp; <i id="a2" class="arrow down"></i></h2>
+		<h2 class="accordion section mb-3" onclick="showhide('s2'); arrow('a2')">Progress indicators &nbsp;&nbsp; <i id="a2" class="arrow up"></i></h2>
 		
-		<div class="row" id="s2" style="display:none;">
+		<div class="row" id="s2">
 			{% if data.how_get_green %}<div class="col-sm-6">{% else %}<div class="col-sm-12">{% endif %}
 			
 			<!-- Flags & extra text fields-->
 			{% set rags = { 'red': 'Red', 'redamb': 'Red-Amber', 'amb': 'Amber', 'ambgre': 'Amber-Green', 'gre': 'Green', 'nor': 'No RAG']%}
 			{% if rags[data.rag] %}<div class="small-flag rag-{{data.rag}}">{{labels.rag}}: {{ rags[data.rag] }}</div>&nbsp;{% endif%}
 			{% if data.priority_main %}<div class="small-flag">{{labels.priority_main}}: {{data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;{% endif %}
-			{% if data.risk_rating and data.risk_rating != 'No' %}<div class="small-flag">{{labels.risk_rating}}: {{ data.risk_rating }}</div>&nbsp;{% endif %}
-			{% if data.onhold and data.onhold != 'No' %}<div class="small-flag">{{labels.onhold}}: {{ data.onhold }}</div>&nbsp;{% endif %}
-			{% if data.progress_option1 and data.progress_option1 != 'No'%}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option1 }}</div>&nbsp;{% endif %}
-			{% if data.progress_option2 and data.progress_option2 != 'No'%}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option2 }}</div>{% endif %}
+			{% if data.risk_rating and data.risk_rating != 'None' %}<div class="small-flag">{{labels.risk_rating}}: {{ data.risk_rating }}</div>&nbsp;{% endif %}
+			{% if data.onhold and data.onhold != 'None' %}<div class="small-flag">{{labels.onhold}}: {{ data.onhold }}</div>&nbsp;{% endif %}
+			{% if data.progress_option1 and data.progress_option1 != 'None'%}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option1 }}</div>&nbsp;{% endif %}
+			{% if data.progress_option2 and data.progress_option2 != 'None'%}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option2 }}</div>{% endif %}
 			
 			<p>
 			{% if data.progress_setting1 %}<strong>{{ labels.progress_setting1 }}:</strong> {{ data.progress_setting1 }} {% endif %}
 			{% if data.progress_setting2 %}<br /><strong>{{ labels.progress_setting2 }}:</strong> {{ data.progress_setting2 }}{% endif %}
 			</p>
-			
-			</div>
+		</div>
 			
 			{% if data.how_get_green %}
 			<!-- How to get to green -->
@@ -177,11 +184,11 @@ function arrow(id) {
 		{% if data.oddlead or data.key_contact1 or data.key_contact1 or data.key_contact1 or data.team or data.supplier or data.project_team_option1 or data.project_team_option2 or data.team or data.supplier %}
 		<br />
 		<hr />
-		<h2 class="accordion section" onclick="showhide('s3'); arrow('a3')">Project team &nbsp;&nbsp; <i id="a3" class="arrow down"></i></h2>
+		<h2 class="accordion section" onclick="showhide('s3'); arrow('a3')">Project team &nbsp;&nbsp; <i id="a3" class="arrow up"></i></h2>
 		<!-- Key contacts -->
-		<div id="s3" style="display:none">
+		<div id="s3">
 		{% if data.oddlead or data.key_contact1 or data.key_contact2 or data.key_contact3 %}
-		<div class="d-flex flex-row bd-highlight mb-3">
+		<div class="d-flex flex-row flex-wrap bd-highlight mb-3">
 		
 		  {% if data.oddlead %}
 		  <div class="p-2 flex-fill bd-highlight lead-box">
@@ -226,8 +233,8 @@ function arrow(id) {
 		</div>
 		{% endif %}
 		
-		{%if data.project_team_option1 %}<div class="small-flag mb-3">{{labels.project_team_option1}}: {{data.project_team_option1}}</div> {% endif %}
-		{%if data.project_team_option2 %}<div class="small-flag mb-3">{{labels.project_team_option2}}: {{data.project_team_option2}}</div> {% endif %}
+		{%if data.project_team_option1 and data.project_team_option1 != 'None' %}<div class="small-flag mb-3">{{labels.project_team_option1}}: {{data.project_team_option1}}</div> {% endif %}
+		{%if data.project_team_option2 and data.project_team_option2 != 'None' %}<div class="small-flag mb-3">{{labels.project_team_option2}}: {{data.project_team_option2}}</div> {% endif %}
 		
 		
 		{% if data.project_team_setting1 or data.project_team_setting2 %}
@@ -249,16 +256,17 @@ function arrow(id) {
 		<!-- Updates (always displayed, even if just to indicate there are no updates) -->
 		<br />
 		<hr />
-		<h2 class="accordion section" onclick="showhide('s4'); arrow('a4')">Updates &nbsp;&nbsp; <i id="a4" class="arrow down"></i></h2>
-		<div id="s4" style="display:none;">
+		<h2 class="accordion section" onclick="showhide('s4'); arrow('a4')">Updates &nbsp;&nbsp; <i id="a4" class="arrow up"></i></h2>
+		<div id="s4">
 		{% if data.updates.length > 0 %}
-		<ul id="myList">
+		<ul id="myList" style="padding-left:0;">
 			{% for update in data.updates %}
-			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">{{ update.timestamp | date(globals.timestampFormat) | safe }}</span> - {{ update.text | safe }}</p></li>
+			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">{{ update.timestamp | date(globals.timestampFormat) | safe }}</span> - {{ update.text | safe }}</p><br /></li>
 			{% endfor %}
 		</ul>
 
-		<p><span id="loadMore" style="font-weight:800; cursor:pointer;">Load more</span> <span id="showLess" style="font-weight:800; cursor:pointer;">| Show less</span></p>
+		<p><span id="loadMore" style="font-weight:800; cursor:pointer;">Load more</span> <span id="showLess" style="font-weight:800; cursor:pointer;"><span id="pipe">|</span> Show less</span>
+		<span id="oneupdate" style="font-weight:600;">This project has only one update</span></p>
 		{% else %}
 
 		<p><strong> No updates</strong></p>
@@ -340,11 +348,11 @@ function arrow(id) {
 <!-- -------------------------- SIDE BAR -------------------------- -->
 	<div class="col-sm-2 py-3">
 	<!-- Project plan -->
-	{% if data.start_date or data.actstart or data.expendp or data.expend or data.hardend or data.first_completed or data.p_comp or data.project_plan_option1 or data.project_plan_option2 or data.project_plan_setting1 or data.project_plan_setting2 %}
+	{% if data.start_date.date or data.actstart.date or data.expendp.date or data.expend.date or data.hardend.date or data.actual_end_date.date or data.p_comp or data.project_plan_option1 or data.project_plan_option2 or data.project_plan_setting1 or data.project_plan_setting2 %}
 	<hr />
-	<h2 class="accordion section" onclick="showhide('s9'); arrow('a9')">Project plan&nbsp;&nbsp; <i id="a9" class="arrow down"></i></h2>
+	<h2 class="accordion section" onclick="showhide('s9'); arrow('a9')">Project plan&nbsp;&nbsp; <i id="a9" class="arrow up"></i></h2>
 	
-	<div id="s9" style="display:none;">
+	<div id="s9">
 	  
 		{% if data.start_date.date %}<p><strong>{{labels.start_date}}</strong><br /> {{ data.start_date.date | date(getProjectDateFormat(data.start_date.flag)) }}</p>{% endif %}
 		{% if data.actstart.date %}<p><strong>{{labels.actstart}}</strong><br /> {{ data.actstart.date | date(getProjectDateFormat(data.actstart.flag)) }}</p>{% endif %}
@@ -363,43 +371,52 @@ function arrow(id) {
 			</p>
 		{% endif %}
 		
-		{% if data.project_plan_option1 %}<br /><div class="small-flag">{{ labels.project_plan_option1 }}: {{ data.project_plan_option1 }}</div>{% endif %}
-		{% if data.project_plan_option2 %}project_plan_option1<div class="small-flag">{{ labels.project_plan_option2 }}: {{ data.project_plan_option2 }}</div>{% endif %}
+		{% if data.project_plan_option1 and data.project_plan_option1 != 'None' %}<br /><div class="small-flag">{{ labels.project_plan_option1 }}: {{ data.project_plan_option1 }}</div>{% endif %}
+		{% if data.project_plan_option2 and data.project_plan_option2 != 'None'  %}<div class="small-flag">{{ labels.project_plan_option2 }}: {{ data.project_plan_option2 }}</div>{% endif %}
 	</div>
-
+	<br />
 	{% endif %}
 	
 	
 	<!-- About the project -->
-	{% if data.direct or data.theme or data.project_type or data.project_size or data.link.link or data.strategic_objectives or data.category %}
-	<br />
+	{% if (data.direct and data.direct != 'None') or (data.theme and data.theme != 'None') or (data.project_type and data.project_type != 'None') or (data.project_size and data.project_size != 'None') or (data.link.link and data.link.link != 'None') or (data.strategic_objectives and data.strategic_objectives != 'None') or (data.category and data.category != 'None') %}
 	<hr />
 	<h2 class="accordion section" onclick="showhide('s10'); arrow('a10')">About the project&nbsp;&nbsp; <i id="a10" class="arrow down"></i></h2>
 	
 	<div id="s10" style="display:none;">
-		{% if data.direct %}		<p><strong>{{ labels.direct }}</strong><br />{{ data.direct }}</p>{% endif %}
-		{% if data.theme %}			<p><strong>{{ labels.theme }}</strong><br />{{ data.theme }}</p>{% endif %}
-		{% if data.project_type %}	<p><strong>{{ labels.project_type }}</strong><br />	{{ data.project_type }}</p>{% endif %}
-		{% if data.project_size %}	<p><strong>{{ labels.project_size }}</strong><br />{{ data.project_size }}</p>{% endif %}
-		{% if data.link.link %}		<p><strong>{{ labels.link }}</strong><br />	<a href="{{ data.link.link }}">{{ data.link.name }}</a>{% endif %}
-		{% if data.strategic_objectives %}<p><strong>{{ labels.strategic_objectives }}</strong><br />{{ data.strategic_objectives }}<br />{% endif %}
-		{% if data.category %}		<p><strong>{{ labels.category }}</strong><br />{{ data.category }} {{ data.subcat }}<br />{% endif %}
+		{% if data.direct and data.direct != 'None' %}		<p><strong>{{ labels.direct }}</strong><br />{{ data.direct }}</p>{% endif %}
+		{% if data.theme and data.theme != 'None' %}			<p><strong>{{ labels.theme }}</strong><br />{{ data.theme }}</p>{% endif %}
+		{% if data.project_type and data.project_type != 'None' %}	<p><strong>{{ labels.project_type }}</strong><br />	{{ data.project_type }}</p>{% endif %}
+		{% if data.project_size and data.project_size != 'None' %}	<p><strong>{{ labels.project_size }}</strong><br />{{ data.project_size }}</p>{% endif %}
+		{% if data.link.link and data.link.link != 'None' %}		<p><strong>{{ labels.link }}</strong><br />	<a href="{{ data.link.link }}">{{ data.link.name }}</a>{% endif %}
+		{% if data.strategic_objectives and data.strategic_objectives != 'None' %}<p><strong>{{ labels.strategic_objectives }}</strong><br />{{ data.strategic_objectives }}<br />{% endif %}
+		{% if (data.category or data.subcat) and (data.category != 'None' or data.subcat != 'None') %}		
+			<p><strong>{{ labels.category }}</strong><br />{{ data.category }} 
+				{% if data.subcat %}
+				<br />
+				{% for subcat in data.subcat %}
+				{{ subcat }}<br />
+				{% endfor %}
+				{% else %}
+				<br />
+				{% endif %}
+		{% endif %}
 	</div>
 	{% endif %}
 
 
 	<!-- Budget --> 
 	{% if hasBudgetClaim() %}
-	{% if data.budgettype or data.cost_centre or data.budget or data.spent or data.forecast_spend or data.budget_option1 or data.budget_option2 or data.budget_field1 or data.budget_field2 %}
+	{% if (data.budgettype and data.budgettype != 'None') or data.cost_centre or (data.budget and data.budget != 0) or (data.spent and data.spent != 0) or (data.forecast_spend and data.forecast_spend != 0) or (data.budget_option1 and data.budget_option1 != 'None') or (data.budget_option2 and data.budget_option2 != 'None') or data.budget_field1 or data.budget_field2 %}
 	<br />
 	<hr />
-	<h2 class="accordion section" onclick="showhide('s11'); arrow('a11')">Budget&nbsp;&nbsp; <i id="a11" class="arrow down"></i></h2>
+	<h2 class="accordion section" onclick="showhide('s11'); arrow('a11')">Budget&nbsp;&nbsp; <i id="a11" class="arrow up"></i></h2>
 	
-	<div id="s11" style="display:none">
-		{% if data.budgettype %}	<p><strong>{{ labels.budgettype }}</strong><br />{{ data.budgettype }}</p>{% endif %}
+	<div id="s11">
+		{% if data.budgettype and data.budgettype != 'None' %}	<p><strong>{{ labels.budgettype }}</strong><br />{{ data.budgettype }}</p>{% endif %}
 		{% if data.cost_centre %}	<p><strong>{{ labels.cost_centre }}</strong><br />{{ data.cost_centre }}</p>{% endif %}
-		{% if data.budget %}		<p><strong>{{ labels.budget }}</strong><br />£{{ currency(data.budget) }}</p>{% endif %}
-		{% if data.spent %}			<p><strong>{{ labels.spent }}</strong><br />£{{ currency(data.spent) }}</p>{% endif %}
+		{% if data.budget and data.budget != 0 %}		<p><strong>{{ labels.budget }}</strong><br />£{{ currency(data.budget) }}</p>{% endif %}
+		{% if data.spent  and data.spent != 0 %}			<p><strong>{{ labels.spent }}</strong><br />£{{ currency(data.spent) }}</p>{% endif %}
 		{% if data.forecast_spend %}<p><strong>{{ labels.forecast_spend }}</strong><br />£{{ currency(data.forecast_spend) }}</p>{% endif %}
 				
 		{% if data.budget_field1 or data.budget_field2 %}
@@ -409,8 +426,8 @@ function arrow(id) {
 			</p>
 		{% endif %}
 		
-		{% if data.budget_option1 %}<div class="small-flag">{{ labels.budget_option1 }}: {{ data.budget_option1 }}</div>{% endif %}
-		{% if data.budget_option2 %}<div class="small-flag">{{ labels.budget_option2 }}: {{ data.budget_option2 }}</div>{% endif %}
+		{% if data.budget_option1 and data.budget_option1 != 'None' %}<div class="small-flag">{{ labels.budget_option1 }}: {{ data.budget_option1 }}</div>{% endif %}
+		{% if data.budget_option2 and data.budget_option2 != 'None'  %}<div class="small-flag">{{ labels.budget_option2 }}: {{ data.budget_option2 }}</div>{% endif %}
 	</div>
 	{% endif %}
 	{% endif %}
@@ -418,7 +435,7 @@ function arrow(id) {
 
 	
 	<!-- FSA processes -->
-	{% if data.fsaproc_assurance_gatenumber or (data.fsaproc_assurance_gatecompleted and data.fsaproc_assurance_gatecompleted.date != null) or data.fsaproc_assurance_nextgate or data.processes_option1 or data.processes_option2 or data.processes_setting1 or data.processes_setting2  %}
+	{% if data.fsaproc_assurance_gatenumber or (data.fsaproc_assurance_gatecompleted and data.fsaproc_assurance_gatecompleted.date != null) or data.fsaproc_assurance_nextgate or (data.processes_option1 and data.processes_option1 != 'None') or (data.processes_option2 and data.processes_option1 != 'None') or data.processes_setting1 or data.processes_setting2  %}
 	<br />
 	<hr />
 	<h2 class="accordion section" onclick="showhide('s12'); arrow('a12')">FSA processes &nbsp;&nbsp; <i id="a12" class="arrow down"></i></h2>
@@ -428,8 +445,8 @@ function arrow(id) {
 		{% if data.fsaproc_assurance_gatecompleted and data.fsaproc_assurance_gatecompleted.date != null %}	<p><strong>{{ labels.fsaproc_assurance_gatecompleted }}</strong><br />	{{ data.fsaproc_assurance_gatecompleted.date | date(getProjectDateFormat(data.fsaproc_assurance_gatecompleted.flag)) }}	</p>{% endif %}
 		{% if data.fsaproc_assurance_nextgate %}				<p><strong>{{ labels.fsaproc_assurance_nextgate }}</strong><br />		{{ data.fsaproc_assurance_nextgate }}		</p>{% endif %}
 		
-		{% if data.processes_option1 %}<div class="small-flag">{{ labels.processes_option1 }}: {{ data.processes_option1 }}</div>{% endif %}
-		{% if data.processes_option2 %}<div class="small-flag">{{ labels.processes_option2 }}: {{ data.processes_option2 }}</div>{% endif %}
+		{% if data.processes_option1 and data.processes_option1 != 'None' %}<div class="small-flag">{{ labels.processes_option1 }}: {{ data.processes_option1 }}</div>{% endif %}
+		{% if data.processes_option2 and data.processes_option2 != 'None' %}<div class="small-flag">{{ labels.processes_option2 }}: {{ data.processes_option2 }}</div>{% endif %}
 		
 		{% if data.processes_setting1 or data.processes_setting2 %}
 		<p>
