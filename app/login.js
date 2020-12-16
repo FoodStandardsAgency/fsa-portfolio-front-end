@@ -10,7 +10,7 @@ const handleError = errors.handleError;
 
 // Redirect not logged in users to the login page
 function requireLogin(req, res, next) {
-	if (req.cookies.identity == undefined) {
+	if (req.cookies.identity === undefined) {
 		(async () => {
 			var result = await loginADUser(req, res);
 			if (!result) {
@@ -20,7 +20,7 @@ function requireLogin(req, res, next) {
 				res.end();
 			}
 			else {
-				next();
+			// No need to call next here because got redirected further down.
 			}
 		})();
 	} else {
