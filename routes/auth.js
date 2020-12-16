@@ -26,7 +26,9 @@ router.post('/callback',
                 failureFlash: true,
                 successRedirect: '/'
             }
-        )(req, res, next);
+        )(req, res, function () {
+            req.session.save(() => { next(); });
+        });
     },
     function (req, res) {
         // TEMPORARY!

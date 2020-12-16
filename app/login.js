@@ -128,7 +128,7 @@ function login(req, res) {
 async function loginADUser(req, res) {
 	if (req.isAuthenticated()) {
 		// Get the access token
-		console.log("requireLogin()");
+		//console.log("loginADUser()");
 		var accessToken = await tokens.getAccessToken(req);
 		var user = await graph.getUserDetails(accessToken);
 		if (user) {
