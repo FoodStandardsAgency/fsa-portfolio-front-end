@@ -10,6 +10,7 @@ const handleError = errors.handleError;
 
 // Redirect not logged in users to the login page
 function requireLogin(req, res, next) {
+	console.log("requireLogin()");
 	if (req.cookies.identity === undefined) {
 		(async () => {
 			var result = await loginADUser(req, res);
@@ -127,6 +128,7 @@ function login(req, res) {
 async function loginADUser(req, res) {
 	if (req.isAuthenticated()) {
 		// Get the access token
+		console.log("requireLogin()");
 		var accessToken = await tokens.getAccessToken(req);
 		var user = await graph.getUserDetails(accessToken);
 		if (user) {

@@ -60,6 +60,7 @@ router.get('/log-out', (req, res) => { login.logout(req, res); });
 
 router.get('/', login.requireLogin, async (req, res) => {
 	try {
+		console.log("LANDING");
 		var result = await queries.portfolio_index(req);
 		var portfolios = result.body;
 		res.render('landing', {
