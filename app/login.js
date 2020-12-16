@@ -35,7 +35,7 @@ function hasRole(req, role) {
 
 function requireAdmin(req, res, next) {
 	requireLogin(req, res, () => {
-		if (hasRole(req, 'admin')) {
+		if (hasRole(req, 'admin') || hasRole(req, 'superuser') ) {
 			next();
 		}
 		else {
