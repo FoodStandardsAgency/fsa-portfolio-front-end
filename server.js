@@ -67,7 +67,7 @@ app.use(function (req, res, next) {
 	var identity = req.cookies.identity;
 	engine.addGlobal('identity', identity);
 	var isLoggedIn = () => identity;
-	var hasAdminRole = (portfolio) => identity && identity.roles.includes(`${portfolio}.admin`);
+	var hasAdminRole = (portfolio) => identity && (identity.roles.includes(`${portfolio}.admin`) || identity.roles.includes(`${portfolio}.superuser`));
 	var hasLeadRole = (portfolio) => identity && identity.roles.includes(`${portfolio}.lead`);
 	var hasEditorRole = (portfolio) => identity && (hasAdminRole(portfolio) || hasLeadRole(portfolio) || identity.roles.includes(`${portfolio}.editor`));
 	var hasSupplierClaim = () => identity && identity.accessGroup === 'supplier';
