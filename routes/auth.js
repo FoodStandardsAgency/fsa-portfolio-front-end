@@ -5,6 +5,7 @@ var router = express.Router();
 /* GET auth callback. */
 router.get('/signin',
     function (req, res, next) {
+        console.log("/signin");
         passport.authenticate('azuread-openidconnect',
             {
                 response: res,
@@ -19,24 +20,29 @@ router.get('/signin',
 
 router.post('/callback',
     function (req, res, next) {
+        console.log("/callback");
         passport.authenticate('azuread-openidconnect',
             {
                 response: res,
                 failureRedirect: '/',
                 failureFlash: true,
-                successRedirect: '/'
+                successRedirect: '/auth/signincomplete'
             }
-        )(req, res, function () {
-            req.session.save(() => { next(); });
-        });
+        )(req, res, next);
     },
     function (req, res) {
         // TEMPORARY!
         // Flash the access token for testing purposes
+        console.log("/callback - flash");
         req.flash('error_msg', { message: 'Access token', debug: req.user.accessToken });
         res.redirect('/');
     }
 );
+
+router.get('/signincomplete', function (req, res) {
+    console.log("/signincomplete");
+    res.redirect('/');
+});
 
 router.get('/signout',
     function (req, res) {

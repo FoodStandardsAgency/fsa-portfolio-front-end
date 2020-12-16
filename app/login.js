@@ -128,7 +128,7 @@ function login(req, res) {
 async function loginADUser(req, res) {
 	if (req.isAuthenticated()) {
 		// Get the access token
-		//console.log("loginADUser()");
+		console.log("loginADUser()");
 		var accessToken = await tokens.getAccessToken(req);
 		var user = await graph.getUserDetails(accessToken);
 		if (user) {
@@ -136,11 +136,14 @@ async function loginADUser(req, res) {
 			if (groups) {
 				var userName = translateUserGroup(user, groups.value);
 				await loginUser(req, res, userName, accessToken);
-				return true; 
+				return true;
 			}
 		}
 		return false;
 	}
+	else {
+		console.log("loginADUser() - not authenticated");
+    }
 }
 
 async function loginUser(req, res, loginUser, accessToken) {
