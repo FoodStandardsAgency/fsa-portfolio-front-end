@@ -150,8 +150,7 @@ router.get('/:portfolio', login.requireLogin, async function (req, res) {
 		});
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error)) res.end();
     }
 });
 
@@ -167,8 +166,7 @@ router.get('/:portfolio/priority/', login.requireLogin, async function (req, res
 		});
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error)) res.end();
 	}
 
 });
@@ -184,8 +182,7 @@ router.get('/:portfolio/team/', login.requireLogin, async function (req, res) {
 		});
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error)) res.end();
 	}
 });
 
@@ -200,8 +197,7 @@ router.get('/:portfolio/rag/', login.requireLogin, async function (req, res) {
 		});
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error)) res.end();
 	}
 
 });
@@ -217,8 +213,7 @@ router.get('/:portfolio/status/', login.requireLogin, async function (req, res) 
 		});
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error)) res.end();
 	}
 });
 
@@ -233,8 +228,7 @@ router.get('/:portfolio/lead/', login.requireLogin, async function (req, res) {
 		});
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error)) res.end();
 	}
 });
 
@@ -249,8 +243,7 @@ router.get('/:portfolio/new_projects/', login.requireLogin, async function (req,
 		});
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error)) res.end();
 	}
 });
 

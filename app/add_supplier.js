@@ -15,7 +15,7 @@ async function add_supplier(req, res) {
 		const hash = crypto.createHash('sha256').update(password).digest('hex').toUpperCase();
 
 		// Check if proposed usearname is already in the db, and return an error if sort
-		var response = await queries.users_add_supplier(user, hash, req);
+		var response = await queries.users_add_supplier(portfolio, user, hash, req);
 		if (response.body.result == 'Ok')
 			var msg = '1'; // Success
 		else if (response.body.result == 'Duplicate')

@@ -36,7 +36,7 @@ module.exports = {
 	users_search: (portfolio, term, addnone, req) => backend.api("Users/search", { searchParams: { portfolio: portfolio, term: term, addnone: addnone }, context: { token: req.cookies.access_token } }),
 	search_projectid: (portfolio, term, addnone, req) => backend.api("Projects", { searchParams: { portfolio: portfolio, term: term, addnone: addnone }, context: { token: req.cookies.access_token } }),
 	users_list_suppliers: (req) => backend.api("Users/suppliers", { context: { token: req.cookies.access_token }}),
-	users_add_supplier: (userName, passwordHash, req) => backend.api.post("Users/addsupplier", { json: { userName: userName, passwordHash: passwordHash }, context: { token: req.cookies.access_token }}),
+	users_add_supplier: (portfolio, userName, passwordHash, req) => backend.api.post("Users/addsupplier", { json: { portfolio: portfolio, userName: userName, passwordHash: passwordHash }, context: { token: req.cookies.access_token }}),
 
 	current_projects: (portfolio, req) => backend.api(q.portfolio_projects_url(portfolio, 'current'), { context: { token: req.cookies.access_token }}),
 	completed_projects: (portfolio, req) => backend.api(q.portfolio_projects_url(portfolio, 'complete'), { context: { token: req.cookies.access_token }}),
