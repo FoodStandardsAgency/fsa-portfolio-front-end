@@ -30,8 +30,7 @@ async function delete_portfolio(req, res) {
 
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error, res)) res.end();
 	}
 }
 

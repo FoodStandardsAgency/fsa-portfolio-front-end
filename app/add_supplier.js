@@ -33,8 +33,7 @@ async function add_supplier(req, res) {
 		}, 3000);
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error, res)) res.end();
 	}
 }
 
@@ -56,8 +55,7 @@ async function render_add_supplier(req,res){
 		});
     }
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error, res)) res.end();
 	}
 }
 

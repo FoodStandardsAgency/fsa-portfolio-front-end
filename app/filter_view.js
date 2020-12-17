@@ -23,7 +23,7 @@ async function view(req, res) {
 		});
 	}
 	catch (error) {
-		handleError(error);
+		if (!handleError(error, res)) res.end();
     }
 }
 
@@ -33,7 +33,7 @@ async function view(req, res) {
 async function getResults(req, res) {
 	try {
 		var portfolio = req.params.portfolio;
-		console.log(req.body);
+		//console.log(req.body);
 
 		var queryResult = await queries.portfolio_filtered_projects(portfolio, req);
 		var optionsResult = await queries.portfolio_filter_options(portfolio, req);
@@ -54,7 +54,7 @@ async function getResults(req, res) {
 		});
 	}
 	catch (error) {
-		handleError(error);
+		if (!handleError(error, res)) res.end();
     }
 };
 

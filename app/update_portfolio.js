@@ -37,8 +37,7 @@ async function renderEditForm(req, res) {
 		});
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error, res)) res.end();
 	}
 }
 
@@ -79,22 +78,20 @@ async function renderAddForm(req, res) {
 		else { res.render('error_page', { message: 'You are not authorised to view this page' }); }
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error, res)) res.end();
 	}
 }
 
 async function updateProject(req, res) {
 	try {
 		var portfolio = req.params.portfolio;
-		console.log(req.body);
+		//console.log(req.body);
 		await queries.project_update(req);
 		res.redirect(`/${portfolio}/Projects/${req.body.project_id}`);
 		res.end();
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error, res)) res.end();
 	}
 }
 
@@ -104,7 +101,6 @@ async function searchUsers(req, res) {
 		var term = req.query.q;
 		var addnone = req.query.addnone;
 
-		console.log(req.query); // TODO: remove
 		var response = await queries.users_search(portfolio, term, addnone, req);
 
 		var result = response.body.searchresults.map(function (u) { return { value: u.userPrincipalName, text: u.displayName }; });
@@ -114,8 +110,7 @@ async function searchUsers(req, res) {
 		res.end(json);
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error, res)) res.end();
 	}
 }
 
@@ -125,7 +120,6 @@ async function searchProjectId(req, res) {
 		var term = req.query.q;
 		var addnone = req.query.addnone;
 
-		console.log(req.query);
 		var response = await queries.search_projectid(portfolio, term, addnone, req);
 
 		var result = response.body;
@@ -135,8 +129,7 @@ async function searchProjectId(req, res) {
 		res.end(json);
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error, res)) res.end();
 	}
 }
 

@@ -60,7 +60,6 @@ router.get('/log-out', (req, res) => { login.logout(req, res); });
 
 router.get('/', login.requireLogin, async (req, res) => {
 	try {
-		console.log("LANDING");
 		var result = await queries.portfolio_index(req);
 		var portfolios = result.body;
 		res.render('landing', {
@@ -68,8 +67,7 @@ router.get('/', login.requireLogin, async (req, res) => {
 		});
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error, res)) res.end();
 	}
 });
 
@@ -100,8 +98,7 @@ router.get('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 		});
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error, res)) res.end();
     }
 })
 
@@ -127,8 +124,7 @@ router.post('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 			});
 		}
 		else {
-			handleError(error);
-			res.end();
+			if (!handleError(error, res)) res.end();
 		}
 	}
 
@@ -338,8 +334,7 @@ router.get('/:portfolio/download/csv', login.requireAdmin, async function (req, 
 
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if (!handleError(error, res)) res.end();
 	}
 })
 

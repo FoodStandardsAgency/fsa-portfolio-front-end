@@ -22,7 +22,7 @@ async function project_view(req, res) {
 				return map;
 			}, {});
 			
-			console.log(project);
+			//console.log(project);
 
 			// TODO: test suppliers can't access budget (key has changed from number 4 to 'supplier')
 			res.render('project_new', {
@@ -44,8 +44,8 @@ async function project_view(req, res) {
 		}
 	}
 	catch (error) {
-		handleError(error);
-		res.end();
+		if(!handleError(error, res))
+			res.end();
 	}
 }
 
