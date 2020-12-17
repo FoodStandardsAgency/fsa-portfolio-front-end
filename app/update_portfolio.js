@@ -44,7 +44,7 @@ async function renderEditForm(req, res) {
 
 async function renderAddForm(req, res) {
 	try {
-		var isAdmin = login.hasRole(req, 'admin');
+		var isAdmin = login.hasRole(req, 'admin') || login.hasRole(req, 'superuser');
 		if (isAdmin) {
 			var portfolio = req.params.portfolio;
 			var result = await queries.newproject_config(portfolio, req);

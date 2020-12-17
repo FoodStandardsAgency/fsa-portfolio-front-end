@@ -46,7 +46,7 @@ function requireAdmin(req, res, next) {
 }
 function requireEditor(req, res, next) {
 	requireLogin(req, res, () => {
-		if (hasRole(req, 'admin') || hasRole(req, 'editor') || hasRole(req, 'lead')) {
+		if (hasRole(req, 'admin') || hasRole(req, 'superuser') || hasRole(req, 'editor') || hasRole(req, 'lead')) {
 			next();
 		}
 		else {
