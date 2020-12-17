@@ -9,21 +9,19 @@ const handleError = errors.handleError;
 
 
 // Redirect not logged in users to the login page
-function requireLogin(req, res, next) {
+async function requireLogin(req, res, next) {
 	console.log("requireLogin()");
 	if (req.cookies.identity === undefined) {
-		(async () => {
-			var result = await loginADUser(req, res);
-			if (!result) {
-				console.log("login undefined - redirecting");
-				tokens.logout(req, res);
-				res.redirect('/login');
-				res.end();
-			}
-			else {
-			// No need to call next here because got redirected further down.
-			}
-		})();
+		var result = await loginADUser(req, res);
+		if (!result) {
+			console.log("login undefined - redirecting");
+			tokens.logout(req, res);
+			res.redirect('/login');
+			res.end();
+		}
+		else {
+		// No need to call next here because got redirected further down.
+		}
 	} else {
 		next();
 	}
@@ -132,12 +130,18 @@ async function loginADUser(req, res) {
 		var accessToken = await tokens.getAccessToken(req);
 		var user = await graph.getUserDetails(accessToken);
 		if (user) {
-			const groups = await graph.getUserGroups(accessToken);
-			if (groups) {
-				var userName = translateUserGroup(user, groups.value);
-				await loginUser(req, res, userName, accessToken);
-				return true;
+			try {
+				const groups = await graph.getUserGroups(accessToken);
+				if (groups) {
+					var userName = translateUserGroup(user, groups.value);
+					await loginUser(req, res, userName, accessToken);
+					return true;
+				}
 			}
+			catch (error) {
+				handleError(error);
+				return false;
+            }
 		}
 		return false;
 	}
