@@ -1,10 +1,4 @@
-const { Pool } = require('pg');
 const backend = require('./backend');
-const tokens = require('./tokens');
-
-
-// Connection pool
-const pool = new Pool()
 
 // Queries
 const q = {
