@@ -56,13 +56,13 @@
     "nunjucks": "^3.2.2",
     "nunjucks-date-filter": "^0.1.1",
     "passport-azure-ad": "^4.3.0",
+    "pg": "latest",
     "popper.js": "^1.12.9",
+    "serve-favicon": "latest",
     "simple-oauth2": "^4.2.0",
     "striptags": "^3.1.1",
     "webpack": "^4.44.1",
     "webpack-dev-middleware": "latest",
-    "xss": "^1.0.8",
-    "pg": "latest",
-    "serve-favicon": "latest"
+    "xss": "^1.0.8"
   }
 }
