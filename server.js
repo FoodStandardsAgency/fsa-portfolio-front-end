@@ -127,18 +127,20 @@ app.use(function (req, res, next) {
 // Cron job to mark old completed projects as archived
 // Only run on production server
 
-if (process.env.CRON == 'y') {
-	var query = 'select * from projects where phase = $1 and timestamp < now() - interval '.concat('\'','90 days','\'');
-	var values = ['live'];
-	
-	var query_update = 'update projects set phase = $1 where phase = $2 and timestamp < now() - interval '.concat('\'','90 days','\'');
-	var values_update = ['completed', 'live']
-
-	const job = new CronJob('0 1 0 * * *', function() {
-		queries.generic_query(query, values).then( (result)=>{console.log("Auto archiving - rows affected:", result.rowCount);}).catch();
-		queries.generic_query(query_update, values_update).then( (result)=>{console.log("Update query run");}).catch();
+if (process.env.CRON) {
+	const job = new CronJob(process.env.CRON, async () => {
+		try {
+			var response = await queries.portfolio_archive('odd');
+			var summary = response.body;
+			console.log(`Auto archiving - rows affected: ${summary.projectIds.length}`);
+		}
+		catch (error) {
+			console.log("CRON Archving Job failed...");
+			handleError(error);
+        }
 	});
-job.start();
+	job.start();
+	console.log("CRON Archving Job started.");
 }
 
 // Initialize passport
@@ -161,6 +163,7 @@ odd_authenticate.configurePassport();
 var router = require('./app/routes.js');
 var authrouter = require('./routes/auth.js');
 var suppliersrouter = require('./routes/suppliers.js');
+const { handleError } = require('./app/error');
 
 
 

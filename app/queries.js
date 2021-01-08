@@ -17,7 +17,7 @@ const q = {
 
 // Export promises
 module.exports = {
-	// Actions
+	// API calls requiring access token
 	portfolio_index: (req) => backend.api('Portfolios', { context: { token: req.cookies.access_token } }),
 	portfolio_summary: (portfolio, type, req) => backend.api(`Portfolios/${portfolio}/summary`, { searchParams: { type: type }, context: { token: req.cookies.access_token }}),
 	portfolio_export: (portfolio, req) => backend.api(`Portfolios/${portfolio}/export`, { context: { token: req.cookies.access_token }}),
@@ -40,6 +40,10 @@ module.exports = {
 	newproject_config: (portfolio, req) => backend.api(q.newproject_config_url(portfolio), { context: { token: req.cookies.access_token }}),
 	project_update: (req) => backend.api.post(q.project_update_url, { json: req.body, context: { token: req.cookies.access_token }}),
 
+	// API calls relying on API key
+	portfolio_archive: (portfolio) => backend.api(`Portfolios/${portfolio}/archive`),
+
+	// For cleanup
 	oddleads: (text, params) => backend.api('Projects/Legacy/ODDLeads'),
 	generic_query: 		(text, params) => pool.query(text, params),
 	unmatched_leads: (text, params) => backend.api('Projects/Legacy/UnmatchedODDLeads'),
