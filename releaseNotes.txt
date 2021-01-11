@@ -1,12 +1,13 @@
 Pending release
 ===============
+- HTTPS for API
 - Cron job for archiving projects
 	Note that the use of the env variable for CRON has changed. In the .env use:
 		CRON='0 * * * * *'
 	If a value is defined, it is used to configure the cron job. If no value is defined, no job is scheduled.
 
-Version 0.1.1
-=============
+Version 0.1.1 - Released 17/12/2020
+===================================
 - Capilization removed for summary titles in summary lists
 - Recently added projects uses summary display template
 - Access restrictions on budget
