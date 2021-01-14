@@ -62,6 +62,7 @@
     <Content Include="app\tokens.js" />
     <Content Include="app\views\add-edit-project.html" />
     <Content Include="app\views\configure.html" />
+    <Content Include="app\views\import_projects.html" />
     <Content Include="app\views\landing.html" />
     <Content Include="app\views\project_new.html" />
     <Content Include="app\views\project_static.html" />

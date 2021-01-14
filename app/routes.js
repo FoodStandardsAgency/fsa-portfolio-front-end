@@ -305,7 +305,7 @@ router.post('/:portfolio/delete_project_process', login.requireLogin, async func
 
 
 //-------------------------------------------------------------------
-// Export latest projects as a csv
+// Import/Export latest projects as a csv
 //-------------------------------------------------------------------	
 
 router.get('/:portfolio/download/csv', login.requireAdmin, async function (req, res) {
@@ -332,6 +332,31 @@ router.get('/:portfolio/download/csv', login.requireAdmin, async function (req, 
 		stringify(projects, { header: true, columns: columns })
 			.pipe(res);
 
+	}
+	catch (error) {
+		if (!handleError(error, res)) res.end();
+	}
+})
+
+router.get('/:portfolio/upload/csv', login.requireSuperuser, async function (req, res) {
+	var portfolio = req.params.portfolio;
+	res.render('import_projects', {
+		portfolio: portfolio
+	});
+
+
+	try {
+
+	}
+	catch (error) {
+		if (!handleError(error, res)) res.end();
+	}
+})
+
+router.post('/:portfolio/upload/csv', login.requireSuperuser, async function (req, res) {
+	var portfolio = req.params.portfolio;
+	try {
+		console.log("Posted");
 	}
 	catch (error) {
 		if (!handleError(error, res)) res.end();
