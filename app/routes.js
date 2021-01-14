@@ -85,8 +85,6 @@ router.get('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 		var result = await queries.portfolio_config(portfolio, req);
 		var portfolioconfig = result.body;
 
-		//console.log(config.labels);
-
 		var fieldGroups = config.getFieldGroups(portfolioconfig);
 
 		//console.log(fieldGroups);
