@@ -1,4 +1,4 @@
-Pending release
+Pending release 
 ===============
 - HTTPS for API
 - Cron job for archiving projects

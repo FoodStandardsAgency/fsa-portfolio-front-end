@@ -59,8 +59,8 @@
 					{% case 'ragchoice' %}
 					<div class="col-sm-5">
 						<select class="form-control" id="idtyp_{{label.field}}" name="labels[{{labelNo}}][inputvalue]" value="{{label.inputvalue}}">
-							<option value="4" {% if label.inputvalue==="4" %} selected{% endif %}>Red, Amber, Green</option>
-							<option value="6" {% if label.inputvalue==="6" %} selected{% endif %}>Red, Red/Amber, Amber, Amber/Green, Green</option>
+							<option value="4" {% if label.inputvalue=="4" %} selected{% endif %}>Red, Amber, Green</option>
+							<option value="6" {% if label.inputvalue=="6" %} selected{% endif %}>Red, Red/Amber, Amber, Amber/Green, Green</option>
 						</select>
 					</div>
 					{% default %}
