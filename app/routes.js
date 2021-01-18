@@ -2,9 +2,13 @@ var express = require('express');
 var { check } 		= require('express-validator');
 const _ 				= require('lodash');
 const multer			= require('multer');
+const formidable		= require('formidable');
+const fs				= require('fs'); 
+const FormData			= require('form-data');
+
 const jwt 				= require('jsonwebtoken');
 const xss				= require('xss');
-const stringify 		= require('csv-stringify')
+const stringify			= require('csv-stringify')
 
 // Custom modules
 const errors			= require('./error');
@@ -337,14 +341,11 @@ router.get('/:portfolio/download/csv', login.requireAdmin, async function (req, 
 })
 
 router.get('/:portfolio/upload/csv', login.requireSuperuser, async function (req, res) {
-	var portfolio = req.params.portfolio;
-	res.render('import_projects', {
-		portfolio: portfolio
-	});
-
-
 	try {
-
+		var portfolio = req.params.portfolio;
+		res.render('import_projects', {
+			portfolio: portfolio
+		});
 	}
 	catch (error) {
 		if (!handleError(error, res)) res.end();
@@ -354,7 +355,21 @@ router.get('/:portfolio/upload/csv', login.requireSuperuser, async function (req
 router.post('/:portfolio/upload/csv', login.requireSuperuser, async function (req, res) {
 	var portfolio = req.params.portfolio;
 	try {
-		console.log("Posted");
+		var form = formidable({ multiples: false });
+		const formFile = new FormData();
+		var files = await new Promise(function (resolve, reject) {
+			form.parse(req, function (err, fields, files) {
+				formFile.append(files.csv_file.name, fs.createReadStream(files.csv_file.path));
+				resolve(files);
+			});
+		});
+		await queries.portfolio_upload_csv(portfolio, formFile, req);
+		var msg = `Successfully uploaded ${files.csv_file.name}`;
+		console.log(msg);
+		res.render('import_projects', {
+			portfolio: portfolio,
+			msg: msg
+		});
 	}
 	catch (error) {
 		if (!handleError(error, res)) res.end();

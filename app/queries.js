@@ -25,6 +25,7 @@ module.exports = {
 	portfolio_filtered_projects: (portfolio, req) => backend.api.post(q.portfolio_project_query_url(portfolio), { json: req.body, context: { token: req.cookies.access_token }}),
 	portfolio_config: (portfolio, req) => backend.api(q.portfolio_config_url(portfolio), { context: { token: req.cookies.access_token }}),
 	portfolio_config_update: (portfolio, req) => backend.api.patch(q.portfolio_config_url(portfolio), { json: req.body, context: { token: req.cookies.access_token }}),
+	portfolio_upload_csv: (portfolio, form, req) => backend.api.post(`Portfolios/${portfolio}/import`, { body: form, context: { token: req.cookies.access_token } }),
 
 	user_identity: (req) => backend.api(`Users/identity`, { context: { token: req.cookies.access_token }}),
 	users_search: (portfolio, term, addnone, req) => backend.api("Users/search", { searchParams: { portfolio: portfolio, term: term, addnone: addnone }, context: { token: req.cookies.access_token } }),
