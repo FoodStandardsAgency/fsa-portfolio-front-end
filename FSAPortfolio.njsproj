@@ -25,7 +25,7 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
-    <Content Include=".env" />
+    <None Include=".env" />
     <Content Include="app\assets\sass\application.scss" />
     <Content Include="app\assets\sass\display.scss" />
     <Content Include="app\assets\sass\elements.scss" />
@@ -80,6 +80,8 @@
     <Content Include="routes\auth.js" />
     <Content Include="routes\suppliers.js" />
     <Content Include="server.js" />
+    <Content Include="Web.config" />
+    <None Include="Web.Debug.config" />
     <Content Include="webpack.config.js" />
     <Content Include="app\add_supplier.js" />
     <Content Include="app\bulk.js" />
