@@ -1,5 +1,10 @@
-Pending release 
-===============
+Version 0.1.3 - Release Pending
+===============================
+DEV2101006 - Fixed: When viewing "Stage" project summary, there is no "lead" option
+
+
+Version 0.1.2 - Released 14/01/2020
+===================================
 - HTTPS for API
 - Cron job for archiving projects
 	Note that the use of the env variable for CRON has changed. In the .env use:
