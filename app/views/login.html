@@ -2,31 +2,48 @@
 
 {% block content %}
 
+<script>
+function showhide(id) {
+  var section = document.getElementById(id);
+   
+  var flex_sections = ["w"];
+  var initial_sections = ["supplier"];
+      
+  if (flex_sections.indexOf(id) >= 0 && section.style.display === "none") {section.style.display = "flex";} 
+  else if (initial_sections.indexOf(id) >= 0 && section.style.display === "none") {section.style.display = "initial";} 
+  else {section.style.display = "none";}
+} 
+</script>
+
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-xl-5 col-md-7 col-sm-8 py-3">
 	<h1 class="heading-xlarge" style="margin-bottom:15px;">Log in</h1><br />
+	<br />
+	<p><a href="/auth/signin">FSA employees - login with your Microsoft account</a></p>
+	<br />
+	<p><a href="#" onclick="showhide('supplier')">Suppliers - login with credentials provided by FSA Digital</a></p>
 	
-	<form action="/login" method="post">
-	  <div class="form-group row">
-		<label for="user" class="col-sm-2 col-form-label">Username</label>
-		<div class="col-sm-10"><input type="text" class="form-control" id="user" name="user" placeholder="Username"></div>
-	  </div>
-	  
-	  <div class="form-group row">
-		<label for="user" class="col-sm-2 col-form-label">Password</label>
-		<div class="col-sm-10"><input type="password" class="form-control" id="password" name="password" placeholder="Password"></div>
-	 </div>
-	 
-	 <div class="form-group row">
-		<div class="col-sm-2"></div>
-		<div class="col-sm-10"><button class="btn btn-primary" type="submit">Log in</button></div>
-	 </div>
-	</form>
-	
-	<br /><br />
-	<p><a href="/auth/signin">Login with your Microsoft account</a></p>
-	
+	<div id="supplier" style = "display:none;">
+	<br />
+		<form action="/login" method="post">
+		  <div class="form-group row">
+			<label for="user" class="col-sm-2 col-form-label">Username</label>
+			<div class="col-sm-10"><input type="text" class="form-control" id="user" name="user" placeholder="Username"></div>
+		  </div>
+		  
+		  <div class="form-group row">
+			<label for="user" class="col-sm-2 col-form-label">Password</label>
+			<div class="col-sm-10"><input type="password" class="form-control" id="password" name="password" placeholder="Password"></div>
+		 </div>
+		 
+		 <div class="form-group row">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-10"><button class="btn btn-primary" type="submit">Log in</button></div>
+		 </div>
+		</form>
+	</div>
+		
 	</div>
 	<div class="col-xl-5 col-md-3 col-sm-2 py-3"></div>
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
