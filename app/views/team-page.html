@@ -6,33 +6,37 @@
 <div class="col-sm-1"></div>
 <div class="col-sm-10">
 	<p style="margin-top:30px;">
-	Order by: <a href="/{{portfolio}}"> theme</a>, <a href="/{{portfolio}}/priority/"> priority</a>, <a href="/{{portfolio}}/team/"> team</a>, <a href="/{{portfolio}}/rag/"> rag status</a> or <a href="/{{portfolio}}/status/"> stage</a>. You can also <a href="/{{portfolio}}/filter-view">filter projects</a>.</p>
+		Order by: <a href="/{{portfolio}}"> theme</a>, <a href="/{{portfolio}}/priority/"> priority</a>, <a href="/{{portfolio}}/team/"> team</a>, <a href="/{{portfolio}}/rag/"> rag status</a> or <a href="/{{portfolio}}/status/"> stage</a>. You can also <a href="/{{portfolio}}/filter-view">filter projects</a>.
+	</p>
 	<hr />
 	<br />
-	
+
 	<h2 class="heading-medium" style="margin-bottom:10px;">Projects</h2><br />
-	
+
 	<p><a href="/{{portfolio}}/add">Add project</a></p>
 	<p><a href="/{{portfolio}}/filter-view">Filter projects</a></p>
 	<p><a href="/{{portfolio}}/new_projects">Recently added projects</a></p>
-	
+
 	<br /><br />
-		
+
 	<h2 class="heading-medium" style="margin-bottom:10px;">Data</h2><br />
-	
+
 	<p><a href="/{{portfolio}}/download/csv">Extract as a CSV</a></p>
+	{% if hasSuperuserRole(portfolio) %}
+	<p><a href="/{{portfolio}}/upload/csv">Upload projects as a CSV</a></p>
+	{% endif %}
 	<br /><br />
-	
+
 	<h2 class="heading-medium" style="margin-bottom:10px;">People</h2><br />
 
 	<p><a href="/{{portfolio}}/add-supplier">Add suppliers</a></p>
 	<br /><br />
-	
+
 	<h2 class="heading-medium" style="margin-bottom:10px;">Portfolio</h2><br />
 
 	<p><a href="/{{portfolio}}/configure">Modify configuration</a></p>
 	<p><a href="/{{portfolio}}/projects/static">View project page template</a></p>
-	
+
 </div>
 <div class="col-sm-1"></div>
 </div>

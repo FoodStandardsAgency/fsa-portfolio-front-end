@@ -32,9 +32,19 @@ function hasRole(req, role) {
 	return req.cookies.identity.roles.includes(`${portfolio}.${role}`);
 }
 
+function requireSuperuser(req, res, next) {
+	requireLogin(req, res, () => {
+		if (hasRole(req, 'superuser')) {
+			next();
+		}
+		else {
+			res.render('error_page', { message: 'You are not authorised to view this page' });
+		}
+	});
+}
 function requireAdmin(req, res, next) {
 	requireLogin(req, res, () => {
-		if (hasRole(req, 'admin') || hasRole(req, 'superuser') ) {
+		if (hasRole(req, 'admin') || hasRole(req, 'superuser')) {
 			next();
 		}
 		else {
@@ -213,4 +223,4 @@ function logout(req, res) {
 }
 
 
-module.exports = { hasRole, requireLogin, requireAdmin, requireEditor, login, logout };
+module.exports = { hasRole, requireLogin, requireSuperuser, requireAdmin, requireEditor, login, logout };

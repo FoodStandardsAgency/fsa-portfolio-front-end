@@ -1,0 +1,37 @@
+{% extends "theme/layout.html" %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-sm-1"></div>
+	<div class="col-sm-10">
+
+		<h1 class="heading-xlarge" style="margin-bottom:15px;">Import projects</h1><br />
+
+				<p>Select a file to import:</p>
+			
+				<form action="/{{portfolio}}/upload/csv" enctype="multipart/form-data" method="post">
+			
+				<div class="row">
+					<div class="col-sm-12">
+						<label for="csv_file">CSV file:</label>
+						<input id="csv_file" type="file" name="csv_file" class="form-control" placeholder="CSV file" required />
+					</div>
+				</div>
+			
+				<br />
+			
+				<input type="submit" value="Import">
+
+				</form>
+			
+				{% if msg %}
+				<p>{{ msg | safe}}</p>
+				{% endif %}
+				<br /><hr /><br />
+
+	</div>
+	<div class="col-sm-1"></div>
+</div>
+
+{% endblock %}
