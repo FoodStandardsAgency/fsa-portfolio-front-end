@@ -1,7 +1,7 @@
 {% extends "theme/layout.html" %}
 
 {% block content %}
-
+{% set isAdmin = hasAdminRole(portfolio) %}
 <div class="row">
 	<div class="col-sm-1"></div>
 	<div class="col-sm-10 py-1">
@@ -105,8 +105,8 @@
 	$(document).ready(function () {
 		var results = document.getElementById('results');
 		if (results) {
-            $('html, body').animate({ scrollTop: $(results).offset().top }, 1000);
-        }
+			$('html, body').animate({ scrollTop: $(results).offset().top }, 1000);
+		}
 	});
 </script>
 
