@@ -124,6 +124,9 @@
 					<div class="{{input_col}}">
 						{% if options[label.field].nouseroption %}
 						{% set ajaxData = 'data-abs-ajax-data={"addnone":"true"}' %}
+						{% if project[label.field] %}
+						<small class="text-muted">To remove the entry, type and then select "None"</small>
+						{% endif %}
 						{% else %}
 						{% set ajaxData = '' %}
 						{% endif %}

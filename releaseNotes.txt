@@ -1,6 +1,8 @@
 Version 0.1.4 - Release Pending...
 ==================================
 DEV2102001 - BUG: fields with "Admin only?" don't appear in filters. Fixed.
+DEV2102004 - BUG: entering values for key_contact2 or key_contact3 don't display team in project view. Fixed
+DEV2102005 - BUG: User select drop down has no None option until enter a search. Workaround added.
 
 Version 0.1.3 - Released 28/1/2021
 ==================================
