@@ -9,29 +9,35 @@ function handleError(error, res) {
 			handleBadRequest(res, error.message);
 			return true;
 		}
+		else {
+			var message = error.response.statusCode;
+			if (error.message) {
+				message = error.message;
+				console.log(error.message);
+			}
+			statusCode = ` (error code ${error.response.statusCode})`;
+			res.render('error_page', { message: `System error. Please contact support: ${message}` });
+			return true;
+        }
 
 	}
 	else {
 
 		console.log('***************************');
-		var message = "Unknown error."
-		var statusCode = "";
 		if (error.message) {
-			message = error.message;
 			console.log(error.message);
 		}
 		if (error.stack) {
 			console.log(error.stack);
 		}
 		if (error.response) {
-			statusCode = ` (error code ${error.response.statusCode})`;
 			console.log('Response from server:');
 			console.log(error.response.url);
 			console.log(error.response.body.ExceptionMessage);
 			console.log(error.response.body);
 		}
 		console.log('***************************');
-		res.render('error_page', { message: `System error. Please contact support${statusCode}.` });
+		//res.render('error_page', { message: `System error. Please contact support${statusCode}.` });
 		return false;
 	}
 }
