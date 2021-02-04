@@ -1,9 +1,9 @@
-const crypto	= require('crypto');
+const crypto = require('crypto');
 const tokens = require('./tokens');
 const graph = require('./graph');
 const backend = require('./backend');
 const errors = require('./error');
-var passport = require('passport');
+var queries = require('./queries');
 
 const handleError = errors.handleError;
 
@@ -20,7 +20,7 @@ async function requireLogin(req, res, next) {
 			res.end();
 		}
 		else {
-		// No need to call next here because got redirected further down.
+			// No need to call next here because got redirected further down.
 		}
 	} else {
 		next();
@@ -126,7 +126,7 @@ function login(req, res) {
 			tokens.logout(req, res);
 			res.redirect('/login');
 			res.end();
-        }
+		}
 
 	})();
 
@@ -134,10 +134,10 @@ function login(req, res) {
 }
 
 async function loginADUser(req, res) {
-	// Get the access token
-	console.log("loginADUser()");
-	var accessToken = await tokens.getAccessToken(req);
-	if (accessToken) {
+	if (req.isAuthenticated()) {
+		// Get the access token
+		console.log("loginADUser()");
+		var accessToken = await tokens.getAccessToken(req);
 		var user = await graph.getUserDetails(accessToken);
 		if (user) {
 			try {
@@ -153,8 +153,11 @@ async function loginADUser(req, res) {
 				return false;
 			}
 		}
+		return false;
 	}
-	return false;
+	else {
+		console.log("loginADUser() - not authenticated");
+	}
 }
 
 async function loginUser(req, res, loginUser, accessToken) {
@@ -168,7 +171,7 @@ async function loginUser(req, res, loginUser, accessToken) {
 			},
 			context: {
 				accessToken: accessToken
-            }
+			}
 		});
 
 		if (result.statusCode == 200) {
