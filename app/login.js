@@ -3,7 +3,7 @@ const tokens = require('./tokens');
 const graph = require('./graph');
 const backend = require('./backend');
 const errors = require('./error');
-var passport = require('passport');
+var queries = require('./queries');
 
 const handleError = errors.handleError;
 
@@ -134,10 +134,10 @@ function login(req, res) {
 }
 
 async function loginADUser(req, res) {
-	// Get the access token
-	console.log("loginADUser()");
-	var accessToken = await tokens.getAccessToken(req);
-	if (accessToken) {
+	if (req.isAuthenticated()) {
+		// Get the access token
+		console.log("loginADUser()");
+		var accessToken = await tokens.getAccessToken(req);
 		var user = await graph.getUserDetails(accessToken);
 		if (user) {
 			try {
@@ -151,10 +151,13 @@ async function loginADUser(req, res) {
 			catch (error) {
 				handleError(error);
 				return false;
-			}
+            }
 		}
+		return false;
 	}
-	return false;
+	else {
+		console.log("loginADUser() - not authenticated");
+    }
 }
 
 async function loginUser(req, res, loginUser, accessToken) {
