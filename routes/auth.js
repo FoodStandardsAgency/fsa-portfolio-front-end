@@ -3,7 +3,6 @@ var passport = require('passport');
 var router = express.Router();
 const graph = require('../app/graph');
 const tokens = require('../app/tokens');
-const login = require('../app/login');
 
 
 /* GET auth callback. */
@@ -35,24 +34,19 @@ function regenerateSessionAfterAuthentication(req, res, next) {
 
 router.post('/callback',
     passport.authenticate('azuread-openidconnect', { failureRedirect: '/' } ),
-    async function (req, res) {
+    async function (req, res, next) {
         console.log("/callback: logging in...");
         var result = await loginWithIdToken(req, res);
         if (!result) {
             console.log("loginWithIdToken failed");
             tokens.logout(req, res);
-            return false;
+            res.redirect('/login');
         }
         else {
             console.log("loginWithIdToken success");
-            return true;
+            res.redirect('/');
         }
-    },
-    function (req, res) {
-        console.log("/callback: redirecting");
-        res.redirect('/');
     }
-
 );
 
 async function loginWithIdToken(req, res) {
@@ -64,7 +58,7 @@ async function loginWithIdToken(req, res) {
         try {
             const groups = await graph.getUserGroups(accessToken);
             if (groups) {
-                await login.loginUser(req, res, user.userPrincipalName, accessToken);
+                await loginUser(req, res, user.userPrincipalName, accessToken);
                 return true;
             }
         }
@@ -75,6 +69,29 @@ async function loginWithIdToken(req, res) {
     }
     return false;
 }
+
+async function loginUser(req, res, loginUser, accessToken) {
+    var result = await backend.api.post('Token', {
+        form: {
+            username: loginUser,
+            password: '',
+            grant_type: 'password'
+        },
+        context: {
+            accessToken: accessToken
+        }
+    });
+
+    if (result.statusCode == 200) {
+        var tokenbody = result.body;
+        await tokens.setBearerToken(req, res, tokenbody);
+    }
+    else {
+        tokens.logout(req, res);
+        errors.handleUnauthorised(res);
+    }
+}
+
 
 router.get('/signout',
     function (req, res) {
