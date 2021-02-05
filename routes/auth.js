@@ -1,8 +1,12 @@
 var express = require('express');
 var passport = require('passport');
 var router = express.Router();
+const backend = require('../app/backend');
 const graph = require('../app/graph');
 const tokens = require('../app/tokens');
+const errors = require('./error');
+const handleError = errors.handleError;
+
 
 
 /* GET auth callback. */
