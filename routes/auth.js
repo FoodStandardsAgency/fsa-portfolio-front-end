@@ -1,6 +1,10 @@
 var express = require('express');
 var passport = require('passport');
 var router = express.Router();
+const graph = require('./graph');
+const tokens = require('./tokens');
+const login = require('./login');
+
 
 /* GET auth callback. */
 router.get('/signin',
@@ -32,13 +36,44 @@ function regenerateSessionAfterAuthentication(req, res, next) {
 router.post('/callback',
     passport.authenticate('azuread-openidconnect', { failureRedirect: '/' } ),
     function (req, res) {
-        console.log("/callback: saving session...");
-        req.session.save(() => {
-            console.log("/callback: session saved.");
-            res.redirect('/');
-        });
+        console.log("/callback: logging in...");
+        var result = await loginWithIdToken(req, res);
+        if (!result) {
+            console.log("loginWithIdToken failed - redirecting");
+            tokens.logout(req, res);
+            res.redirect('/login');
+            res.end();
+        }
+        else {
+            console.log("loginWithIdToken success - redirecting");
+            req.session.save(() => {
+                console.log("/callback: session saved.");
+                res.redirect('/');
+            });
+        }
     }
 );
+
+async function loginWithIdToken(req, res) {
+    // Get the access token
+    console.log("loginWithIdToken()");
+    var accessToken = await tokens.getAccessToken(req);
+    var user = await graph.getUserDetails(accessToken);
+    if (user) {
+        try {
+            const groups = await graph.getUserGroups(accessToken);
+            if (groups) {
+                await login.loginUser(req, res, user.userPrincipalName, accessToken);
+                return true;
+            }
+        }
+        catch (error) {
+            handleError(error);
+            return false;
+        }
+    }
+    return false;
+}
 
 router.get('/signout',
     function (req, res) {
