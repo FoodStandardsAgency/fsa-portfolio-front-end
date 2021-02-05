@@ -31,10 +31,12 @@ function regenerateSessionAfterAuthentication(req, res, next) {
 
 router.post('/callback',
     passport.authenticate('azuread-openidconnect', { failureRedirect: '/' } ),
-    regenerateSessionAfterAuthentication,
     function (req, res) {
-        console.log("/callback");
-        res.redirect('/');
+        console.log("/callback: saving session...");
+        req.session.save(() => {
+            console.log("/callback: session saved.");
+            res.redirect('/');
+        });
     }
 );
 
