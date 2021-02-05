@@ -42,14 +42,10 @@ router.post('/callback',
             console.log("loginWithIdToken failed - redirecting");
             tokens.logout(req, res);
             res.redirect('/login');
-            res.end();
         }
         else {
             console.log("loginWithIdToken success - redirecting");
-            req.session.save(() => {
-                console.log("/callback: session saved.");
-                res.redirect('/');
-            });
+            res.redirect('/');
         }
     }
 );
