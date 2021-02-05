@@ -4,7 +4,7 @@ var router = express.Router();
 const backend = require('../app/backend');
 const graph = require('../app/graph');
 const tokens = require('../app/tokens');
-const errors = require('./error');
+const errors = require('../app/error');
 const handleError = errors.handleError;
 
 
