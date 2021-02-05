@@ -1,9 +1,9 @@
 var express = require('express');
 var passport = require('passport');
 var router = express.Router();
-const graph = require('./graph');
-const tokens = require('./tokens');
-const login = require('./login');
+const graph = require('../app/graph');
+const tokens = require('../app/tokens');
+const login = require('../app/login');
 
 
 /* GET auth callback. */
@@ -35,7 +35,7 @@ function regenerateSessionAfterAuthentication(req, res, next) {
 
 router.post('/callback',
     passport.authenticate('azuread-openidconnect', { failureRedirect: '/' } ),
-    function (req, res) {
+    async function (req, res) {
         console.log("/callback: logging in...");
         var result = await loginWithIdToken(req, res);
         if (!result) {
