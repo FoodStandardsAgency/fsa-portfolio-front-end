@@ -1,8 +1,6 @@
 var passport = require('passport');
 var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 var graph = require('./graph');
-const login = require('./login');
-
 
 // In-memory storage of logged-in users
 // For demo purposes only, production apps should store
@@ -34,24 +32,6 @@ async function signInComplete(iss, sub, profile, accessToken, refreshToken, para
     // Create a simple-oauth2 token from raw tokens
     const oauth2client = new ClientCredentials(oauth2Config);
     let oauthToken = await oauth2client.createToken(params);
-
-    console.log("signInComplete: logging in user...");
-    var user = await graph.getUserDetails(oauthToken);
-    if (user) {
-        try {
-            const groups = await graph.getUserGroups(oauthToken);
-            if (groups) {
-                var userName = translateUserGroup(user, groups.value);
-                await login.loginUser(req, res, userName, oauthToken);
-                console.log("signInComplete: logged in ok.");
-                return true;
-            }
-        }
-        catch (error) {
-            handleError(error);
-            return false;
-        }
-    }
 
     // Save the profile and tokens in user storage
     users[profile.oid] = { profile, oauthToken };
