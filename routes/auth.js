@@ -39,15 +39,20 @@ router.post('/callback',
         console.log("/callback: logging in...");
         var result = await loginWithIdToken(req, res);
         if (!result) {
-            console.log("loginWithIdToken failed - redirecting");
+            console.log("loginWithIdToken failed");
             tokens.logout(req, res);
-            res.redirect('/login');
+            return false;
         }
         else {
-            console.log("loginWithIdToken success - redirecting");
-            res.redirect('/');
+            console.log("loginWithIdToken success");
+            return true;
         }
+    },
+    function (req, res) {
+        console.log("/callback: redirecting");
+        res.redirect('/');
     }
+
 );
 
 async function loginWithIdToken(req, res) {
