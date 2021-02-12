@@ -279,35 +279,53 @@
 				{% case 'projectmultiselect' %}
 				{% case 'multioptionlist' %}
 				{% case 'predefinedmultilist' %}
-				{% case 'adusermultisearch' %}
-				{% case 'ajaxmultisearch' %}
-				{% if project[label.field] and project[label.field].items.length > 0 %}
+				{% if project[label.field] and project[label.field].length > 0 %}
 				{% for item in project[label.field] %}
 				<input type="hidden" name="{{label.field}}[{{loop.index0}}]" value="{{item}}">
 				{% endfor %}
 				{% endif %}
 
+				{% case 'ajaxmultisearch' %}
+				{% if project[label.field] and project[label.field].length > 0 %}
+				{% for item in project[label.field] %}
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}]" value="{{item.value}}">
+				{% endfor %}
+				{% endif %}
+
+
+				{% case 'adusermultisearch' %}
+				{% if project[label.field] and project[label.field].length > 0 %}
+				{% for item in project[label.field] %}
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}]" value="{{item.value}}">
+				{% endfor %}
+				{% endif %}
+
+
 				{% case 'linkeditemlist' %}
-				{% case 'namedlink' %}
 				{% for doc in project[label.field] %}
 				<input type="hidden" name="{{label.field}}[{{loop.index0}}][name]" value="{{doc.name}}">
 				<input type="hidden" name="{{label.field}}[{{loop.index0}}][link]" value="{{doc.link}}">
 				{% endfor %}
+
+				{% case 'namedlink' %}
+				<input type="hidden" name="{{label.field}}[name]" value="{{project[label.field].name}}">
+				<input type="hidden" name="{{label.field}}[link]" value="{{project[label.field].link}}">
+
 
 				{% case 'milestones' %}
 				{% for milestone in project[label.field] %}
 				<input type="hidden" name="{{label.field}}[{{loop.index0}}][id]" value="{{milestone.id}}">
 				<input type="hidden" name="{{label.field}}[{{loop.index0}}][order]" value="{{milestone.order}}">
 				<input type="hidden" name="{{label.field}}[{{loop.index0}}][name]" value="{{milestone.name}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][day]" value="{{milestone.deadline.day}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][month]" value="{{milestone.deadline.month}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][year]" value="{{milestone.deadline.year}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][deadline][day]" value="{{milestone.deadline.day}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][deadline][month]" value="{{milestone.deadline.month}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][deadline][year]" value="{{milestone.deadline.year}}">
 				{% endfor %}
 
 				{% case 'projectdate' %}
-				<input type="hidden" name="{{label.field}}[day]" value="{{project[label.field][day]}}">
-				<input type="hidden" name="{{label.field}}[month]" value="{{project[label.field][month]}}">
-				<input type="hidden" name="{{label.field}}[year]" value="{{project[label.field][year]}}">
+				<input type="hidden" name="{{label.field}}[day]" value="{{project[label.field].day}}">
+				<input type="hidden" name="{{label.field}}[month]" value="{{project[label.field].month}}">
+				<input type="hidden" name="{{label.field}}[year]" value="{{project[label.field].year}}">
 
 				{% case 'adusersearch' %}
 				<input type="hidden" name="{{label.field}}[value]" value="{{project[label.field].value}}" id="ID_{{label.field}}">
