@@ -37,8 +37,13 @@ function handleError(error, res) {
 			console.log(error.response.body);
 		}
 		console.log('***************************');
-		//res.render('error_page', { message: `System error. Please contact support${statusCode}.` });
-		return false;
+		if (res) {
+			res.render('error_page', { message: `System error. Please contact support${statusCode}.` });
+			return true;
+		}
+		else {
+			return false;
+        }
 	}
 }
 

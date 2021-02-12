@@ -66,19 +66,24 @@ app.use(function (req, res, next) {
 	var engine = res.app.get('engine');
 	var identity = req.cookies.identity;
 	engine.addGlobal('identity', identity);
+
 	var isLoggedIn = () => identity;
+
 	var hasSuperuserRole = (portfolio) => identity && identity.roles.includes(`${portfolio}.superuser`);
 	var hasAdminRole = (portfolio) => identity && (identity.roles.includes(`${portfolio}.admin`) || identity.roles.includes(`${portfolio}.superuser`));
 	var hasLeadRole = (portfolio) => identity && identity.roles.includes(`${portfolio}.lead`);
 	var hasEditorRole = (portfolio) => identity && (hasAdminRole(portfolio) || hasLeadRole(portfolio) || identity.roles.includes(`${portfolio}.editor`));
+
 	var hasSupplierClaim = () => identity && identity.accessGroup === 'supplier';
 	var hasBudgetClaim = () => identity && ['fsa', 'editor', 'admin', 'superuser'].includes(identity.accessGroup);
+
 	engine.addGlobal('isLoggedIn', isLoggedIn);
+
 	engine.addGlobal('hasSuperuserRole', hasSuperuserRole);
 	engine.addGlobal('hasAdminRole', hasAdminRole);
 	engine.addGlobal('hasEditorRole', hasEditorRole);
 	engine.addGlobal('hasLeadRole', hasLeadRole);
-	engine.addGlobal('hasLeadRole', hasLeadRole);
+
 	engine.addGlobal('hasSupplierClaim', hasSupplierClaim);
 	engine.addGlobal('hasBudgetClaim', hasBudgetClaim);
 

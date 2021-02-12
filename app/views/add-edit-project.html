@@ -308,6 +308,10 @@
 				<input type="hidden" name="{{label.field}}[day]" value="{{project[label.field][day]}}">
 				<input type="hidden" name="{{label.field}}[month]" value="{{project[label.field][month]}}">
 				<input type="hidden" name="{{label.field}}[year]" value="{{project[label.field][year]}}">
+
+				{% case 'adusersearch' %}
+				<input type="hidden" name="{{label.field}}[value]" value="{{project[label.field].value}}" id="ID_{{label.field}}">
+
 				{% case 'predefinedfield' %}
 				{% default %}
 				<input type="hidden" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}">
