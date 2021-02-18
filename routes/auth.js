@@ -16,7 +16,7 @@ router.get('/signin',
     },
     passport.authenticate('azuread-openidconnect',
         {
-            response: res,
+            //response: res,
             prompt: 'login',
             failureRedirect: '/',
             failureFlash: true,
