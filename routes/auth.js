@@ -18,11 +18,15 @@ router.get('/signin',
                 response: res,
                 prompt: 'login',
                 failureRedirect: '/',
-                failureFlash: true,
-                successRedirect: '/'
+                failureFlash: true
             }
         )(req, res, next);
+    },
+    function (req, res, next) {
+        console.log("/signin - response received from Azure");
+        res.redirect('/');
     }
+
 );
 
 function regenerateSessionAfterAuthentication(req, res, next) {
@@ -37,7 +41,7 @@ function regenerateSessionAfterAuthentication(req, res, next) {
 }
 
 router.post('/callback',
-    passport.authenticate('azuread-openidconnect', { failureRedirect: '/auth/openidfail' } ),
+    passport.authenticate('azuread-openidconnect', { response: res, failureRedirect: '/auth/openidfail' } ),
     async function (req, res, next) {
         console.log("/callback: logging in...");
         var result = await loginWithIdToken(req, res);
