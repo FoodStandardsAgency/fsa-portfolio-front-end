@@ -22,6 +22,8 @@ const app = express();
 const port = process.env.PORT || 3100;
 const dev	= true;
 
+console.log("Starting Portolio V0.1.5");
+
 app.use(express.urlencoded({ extended: true, parameterLimit: 2000 }));
 app.use(cookieParser())
 app.use(session({
