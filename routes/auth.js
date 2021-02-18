@@ -41,7 +41,9 @@ function regenerateSessionAfterAuthentication(req, res, next) {
 }
 
 router.post('/callback',
-    passport.authenticate('azuread-openidconnect', { response: res, failureRedirect: '/auth/openidfail' } ),
+    function (req, res, next) {
+        passport.authenticate('azuread-openidconnect', { response: res, failureRedirect: '/auth/openidfail' })(req, res, next);
+    },
     async function (req, res, next) {
         console.log("/callback: logging in...");
         var result = await loginWithIdToken(req, res);
