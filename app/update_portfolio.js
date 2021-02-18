@@ -26,7 +26,7 @@ async function renderEditForm(req, res) {
 			}))
 			.value();
 
-		//console.log(JSON.stringify(project));
+		console.log(JSON.stringify(project));
 
 		res.render('add-edit-project', {
 			"title": "Edit project",

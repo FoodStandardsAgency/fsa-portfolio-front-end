@@ -22,7 +22,7 @@ const app = express();
 const port = process.env.PORT || 3100;
 const dev	= true;
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, parameterLimit: 2000 }));
 app.use(cookieParser())
 app.use(session({
   cookieName: 'session',
