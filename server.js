@@ -23,6 +23,9 @@ const port = process.env.PORT || 3100;
 const dev	= true;
 
 console.log("Starting Portolio V0.1.5");
+if (process.env.NODE_ENV == 'development') {
+	console.log("NODE_ENV == 'development'");
+}
 
 app.use(express.urlencoded({ extended: true, parameterLimit: 2000 }));
 app.use(cookieParser())
