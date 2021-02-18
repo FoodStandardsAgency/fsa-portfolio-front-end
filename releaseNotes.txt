@@ -1,5 +1,9 @@
-Version 0.1.4 - Release Pending...
-==================================
+Version 0.1.4 - Released 18/02/2021
+===================================
+DEV2012003 - AD login fails first try: trying latest fix
+
+Version 0.1.4 - Released 04/02/2021
+===================================
 DEV2102001 - BUG: fields with "Admin only?" don't appear in filters. Fixed.
 DEV2102004 - BUG: entering values for key_contact2 or key_contact3 don't display team in project view. Fixed
 DEV2102005 - BUG: User select drop down has no None option until enter a search. Workaround added.
