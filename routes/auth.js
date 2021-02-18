@@ -13,16 +13,16 @@ const handleError = errors.handleError;
 router.get('/signin',
     function (req, res, next) {
         console.log("/signin");
-        passport.authenticate('azuread-openidconnect',
-            {
-                response: res,
-                prompt: 'login',
-                failureRedirect: '/',
-                failureFlash: true,
-                successRedirect: '/'
-            }
-        )(req, res, next);
-    }
+    },
+    passport.authenticate('azuread-openidconnect',
+        {
+            response: res,
+            prompt: 'login',
+            failureRedirect: '/',
+            failureFlash: true,
+            successRedirect: '/'
+        }
+    )
 );
 
 function regenerateSessionAfterAuthentication(req, res, next) {
