@@ -37,7 +37,7 @@ function regenerateSessionAfterAuthentication(req, res, next) {
 }
 
 router.post('/callback',
-    passport.authenticate('azuread-openidconnect', { failureRedirect: '/' } ),
+    passport.authenticate('azuread-openidconnect', { failureRedirect: '/auth/openidfail' } ),
     async function (req, res, next) {
         console.log("/callback: logging in...");
         var result = await loginWithIdToken(req, res);
@@ -95,6 +95,13 @@ async function loginUser(req, res, loginUser, accessToken) {
         errors.handleUnauthorised(res);
     }
 }
+
+router.get('/openidfail',
+    function (req, res) {
+        console.log("openID fail");
+        res.redirect('/');
+    }
+);
 
 
 router.get('/signout',
