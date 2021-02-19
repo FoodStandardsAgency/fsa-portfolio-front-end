@@ -22,7 +22,7 @@ const app = express();
 const port = process.env.PORT || 3100;
 const dev	= true;
 
-console.log("Starting Portfolio V0.1.5a");
+console.log("Starting Portfolio V0.1.5b");
 if (process.env.NODE_ENV == 'development') {
 	console.log("NODE_ENV == 'development'");
 }

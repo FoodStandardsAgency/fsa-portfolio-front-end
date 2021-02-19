@@ -71,7 +71,11 @@ function configurePassport() {
             clientSecret: process.env.OAUTH_APP_PASSWORD,
             validateIssuer: false,
             passReqToCallback: false,
-            scope: process.env.OAUTH_SCOPES.split(' ')
+            scope: process.env.OAUTH_SCOPES.split(' '),
+            useCookieInsteadOfSession: true,
+            cookieEncryptionKeys: [
+                { 'key': process.env.OAUTH_COOKIE_KEY, 'iv': process.env.OAUTH_COOKIE_IV },
+            ]
         },
         signInComplete
     ));

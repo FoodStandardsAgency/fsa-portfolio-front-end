@@ -13,6 +13,7 @@ router.get('/signin',
         console.log("LOGIN: /signin...");
         passport.authenticate('azuread-openidconnect',
             {
+                session: false,
                 response: res,
                 //prompt: 'login',
                 failureRedirect: '/auth/signinfail',
@@ -24,7 +25,6 @@ router.get('/signin',
         console.log("LOGIN: /signin - response received from Azure"); // NEVER GETS HERE!!! BUT THIS IS IN THE EXAMPLE!?
         res.redirect('/');
     }
-
 );
 
 function regenerateSessionAfterAuthentication(req, res, next) {
@@ -39,6 +39,10 @@ function regenerateSessionAfterAuthentication(req, res, next) {
 }
 
 router.post('/callback',
+    function (req, res, next) {
+        console.log("LOGIN: /callback...");
+        next();
+    },
     function (req, res, next) {
         passport.authenticate('azuread-openidconnect', { response: res, failureRedirect: '/auth/openidfail' })(req, res, next);
     },
@@ -65,6 +69,7 @@ async function loginWithIdToken(req, res) {
     var accessToken = await tokens.getAccessToken(req);
     var user = await graph.getUserDetails(accessToken);
     if (user) {
+        console.log(`LOGIN: loginWithIdToken - user=${user.userPrincipalName}`);
         try {
             const groups = await graph.getUserGroups(accessToken);
             if (groups) {
