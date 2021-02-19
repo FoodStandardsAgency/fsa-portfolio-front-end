@@ -7,23 +7,21 @@ const tokens = require('../app/tokens');
 const errors = require('../app/error');
 const handleError = errors.handleError;
 
-
-
 /* GET auth callback. */
 router.get('/signin',
     function (req, res, next) {
-        console.log("/signin");
+        console.log("LOGIN: /signin...");
         passport.authenticate('azuread-openidconnect',
             {
                 response: res,
-                prompt: 'login',
-                failureRedirect: '/',
-                failureFlash: true
+                //prompt: 'login',
+                failureRedirect: '/auth/signinfail',
+                //failureFlash: true
             }
         )(req, res, next);
     },
-    function (req, res, next) {
-        console.log("/signin - response received from Azure");
+    function (req, res) {
+        console.log("LOGIN: /signin - response received from Azure"); // NEVER GETS HERE!!! BUT THIS IS IN THE EXAMPLE!?
         res.redirect('/');
     }
 
@@ -45,23 +43,25 @@ router.post('/callback',
         passport.authenticate('azuread-openidconnect', { response: res, failureRedirect: '/auth/openidfail' })(req, res, next);
     },
     async function (req, res, next) {
-        console.log("/callback: logging in...");
+        console.log("LOGIN: /callback: logging in...");
         var result = await loginWithIdToken(req, res);
         if (!result) {
-            console.log("loginWithIdToken failed");
+            console.log("LOGIN: loginWithIdToken failed");
             tokens.logout(req, res);
             res.redirect('/login');
         }
         else {
-            console.log("loginWithIdToken success");
+            console.log("LOGIN: loginWithIdToken success");
             res.redirect('/');
         }
     }
 );
 
+
+
 async function loginWithIdToken(req, res) {
     // Get the access token
-    console.log("loginWithIdToken()");
+    console.log("LOGIN: loginWithIdToken()");
     var accessToken = await tokens.getAccessToken(req);
     var user = await graph.getUserDetails(accessToken);
     if (user) {
@@ -104,7 +104,13 @@ async function loginUser(req, res, loginUser, accessToken) {
 
 router.get('/openidfail',
     function (req, res) {
-        console.log("openID fail");
+        console.log("LOGIN: openID fail");
+        res.redirect('/');
+    }
+);
+router.get('/signinfail',
+    function (req, res) {
+        console.log("LOGIN: signIn fail");
         res.redirect('/');
     }
 );
