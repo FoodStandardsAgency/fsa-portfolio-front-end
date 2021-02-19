@@ -22,7 +22,7 @@ const app = express();
 const port = process.env.PORT || 3100;
 const dev	= true;
 
-console.log("Starting Portolio V0.1.5");
+console.log("Starting Portolio V0.1.5a");
 if (process.env.NODE_ENV == 'development') {
 	console.log("NODE_ENV == 'development'");
 }
