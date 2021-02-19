@@ -2,8 +2,8 @@ require('dotenv').config();
 const path 		= require('path');
 const express 	= require('express');
 var cookieParser = require('cookie-parser')
-//const session = require('express-session');
-const session	= require('client-sessions');
+const session = require('express-session');
+//const session	= require('client-sessions');
 const flash = require('connect-flash');
 const nunjucks = require('nunjucks');
 const dateFilter = require('nunjucks-date-filter');
