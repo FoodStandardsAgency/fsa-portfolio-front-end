@@ -6,7 +6,7 @@ const graph = require('../app/graph');
 const tokens = require('../app/tokens');
 const errors = require('../app/error');
 const handleError = errors.handleError;
-const oauth_prompt = process.env.OAUTH_PROMPT || 'login';
+const oauth_prompt = process.env.OAUTH_PROMPT;
 
 
 /* GET auth callback. */
