@@ -6,6 +6,8 @@ const graph = require('../app/graph');
 const tokens = require('../app/tokens');
 const errors = require('../app/error');
 const handleError = errors.handleError;
+const oauth_prompt = process.env.OAUTH_PROMPT || 'login';
+
 
 /* GET auth callback. */
 router.get('/signin',
@@ -15,7 +17,7 @@ router.get('/signin',
             {
                 session: false,
                 response: res,
-                //prompt: 'login',
+                prompt: oauth_prompt,
                 failureRedirect: '/auth/signinfail',
                 //failureFlash: true
             }
