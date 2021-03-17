@@ -31,7 +31,7 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 
 /* Project page */
 .project-title			{font-family: 'Open Sans', sans-serif; font-weight:900; font-size:3em; margin-bottom:15px;} 
-.project-new			{background-color:#007FB2; color:white; font-size:0.5em; padding: 5px; border-radius:5px;}
+.project-new			{background-color:#00719E; color:white; font-size:0.5em; padding: 5px; border-radius:5px;}
 .section				{font-family: 'Open Sans', sans-serif; font-weight:800; font-size:1.5em; margin-bottom:15px;} 
 
 
@@ -47,19 +47,19 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 .heading-small			{font-size:1em; font-weight:900; margin:10px 0 0;}
 
 .small-flag				{font-weight:600; font-size:1em; display: inline-block; color:black; border: 1px solid #939e91;  text-transform: none; padding: 5px 20px; border-radius:5px; margin-bottom:15px;}
-.rag-red				{background-color:red; color: white;}
-.rag-redamb				{background-color:brown; color: white;}
-.rag-amb				{background-color:orange; color: white;}
-.rag-ambgre				{background-color:lime; color: white;}
-.rag-gre				{background-color:green; color: white;}
-.rag-nor				{background-color:grey; color: white;}
+.rag-red				{background-color:#D0012A; color: white;}
+.rag-redamb				{background-color:#fc6703; color: black;}
+.rag-amb				{background-color:#FDBE12; color: black;}
+.rag-ambgre				{background-color:#EBFE95; color: black;}
+.rag-gre				{background-color:#3C7E02; color: white;}
+.rag-nor				{background-color:#5E5E5E; color: white;}
 
-.phase 					{border-radius: 5px; min-height: 150px; max-height: 300px; border: 1px solid #939e91;}
+.phase 					{border-radius: 5px; min-height: 150px; max-height: 300px; border: 1px solid #5E5E5E;}
 .phase0  				{background-color:#2E358B}
 .phase1 				{background-color:#912B88;}
-.phase2	    			{background-color:#D53880;}
-.phase3      			{background-color:#F15D22;}
-.phase4      			{background-color:#85994B;}
+.phase2	    			{background-color:#C62A73;}
+.phase3      			{background-color:#C03F0C;}
+.phase4      			{background-color:#5D6D36;}
 .phase5      			{background-color:#454545;}
 .phase-label 			{position:absolute; top:50%; left:0; width:100%; margin-top:-25px; text-align:center; color:white; font-weight:800;  font-size:36px;}
 .beta-tag				{display: inline-block;  margin: 0 8px 0 0;  padding: 2px 5px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #fff; background-color: #005ea5;}
@@ -103,9 +103,9 @@ ul.updates {margin-left: 0; padding-left:0}
 }
 .tag.phase0 {background-color:#2E358B;}
 .tag.phase1	{background-color:#912B88;}
-.tag.phase2 {background-color:#D53880;}
-.tag.phase3 {background-color:#F15D22;}
-.tag.phase4 {background-color:#85994B;}
+.tag.phase2 {background-color:#C62A73;}
+.tag.phase3 {background-color:#C03F0C;}
+.tag.phase4 {background-color:#5D6D36;}
 
 .big_number {
   font-size:96px;
@@ -115,9 +115,9 @@ ul.updates {margin-left: 0; padding-left:0}
 
 .txt-phase0  {color:#2E358B;}
 .txt-phase1  {color:#912B88;}
-.txt-phase2  {color:#D53880;}
-.txt-phase3  {color:#F15D22;}
-.txt-phase4  {color:#85994B;}
+.txt-phase2  {color:#C62A73;}
+.txt-phase3  {color:#C03F0C;}
+.txt-phase4  {color:#5D6D36;}
 
 
 /* Lists of links */
@@ -132,13 +132,13 @@ ul.updates {margin-left: 0; padding-left:0}
 
 .border-phase0   	{border-color:#2E358B;}
 .border-phase1 		{border-color:#912B88;}
-.border-phase2     	{border-color:#D53880;}
-.border-phase3      {border-color:#F15D22;}
-.border-phase4      {border-color:#85994B;}
+.border-phase2     	{border-color:#C62A73;}
+.border-phase3      {border-color:#C03F0C;}
+.border-phase4      {border-color:#5D6D36;}
 
 .nodec {color:black; text-decoration:none;}
 
-.new_tag {background-color:#007FB2; color:white; font-size:10px; padding 3px; border-radius:3px;}
+.new_tag {background-color:#00719E; color:white; font-size:10px; padding 3px; border-radius:3px;}
 
 .service-area {
   border-bottom:1px solid $border-colour;

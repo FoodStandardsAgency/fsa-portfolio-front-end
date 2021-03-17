@@ -33,7 +33,7 @@
 					{% case 'auto' %}
 					{% case 'freetext' %}
 					<div class="{{input_col}}">
-						<input type="text" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {{ " readonly" if readonly }} {{" required" if label.required }}>
+						<input type="text" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {{ " readonly" if readonly }} {{" required" if label.required }}>
 						{% if label.required %}
 						<div class="invalid-feedback">Please enter a value for {{label.label}}</div>
 						{% endif %}
@@ -41,21 +41,21 @@
 
 					{% case 'smallfreetextarea' %}
 					<div class="{{input_col}}">
-						<textarea type="text" rows="2" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+						<textarea type="text" rows="2" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
 					</div>
 					{% case 'mediumfreetextarea' %}
 					<div class="{{input_col}}">
-						<textarea type="text" rows="4" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+						<textarea type="text" rows="4" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
 					</div>
 					{% case 'largefreetextarea' %}
 					<div class="{{input_col}}">
-						<textarea type="text" rows="6" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+						<textarea type="text" rows="6" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
 					</div>
 					{% case 'projectupdatetext' %}
 					<div class="{{input_col}}">
 						<p>Enter your new update below. You can only amend an update on the day it was posted.</p>
 						<div>
-							<textarea type="text" rows="6" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
+							<textarea type="text" rows="6" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" placeholder="Enter {{label.label}}" {% if readonly %}readonly{% endif %}>{{project[label.field]}}</textarea>
 						</div>
 						{% if project.lastupdate %}
 						<div class="last-update-text">
@@ -70,9 +70,9 @@
 					{% case 'phasechoice' %}
 					<div class="{{input_col}}">
 						{% if options[label.field] and options[label.field].length > 0 %}
-						<select class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}">
+						<select class="form-control form-input-box" id="id_{{label.field}}" aria-label="{{label.field}}[]" name="{{label.field}}" aria-label="{{label.field}}">
 							{% for option in options[label.field] %}
-							<option value="{{option.value}}" {{ "selected" if option.value == project[label.field] }}>{{option.display}}</option>
+							<option value="{{option.value}}" aria-label = "{{option.display}}" {{ "selected" if option.value == project[label.field] }} aria-label="{{option.display}}">{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -83,9 +83,9 @@
 					{% case 'projectmultiselect' %}
 					<div class="{{input_col}}">
 						{% if options[label.field] and options[label.field].items.length > 0 %}
-						<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="true" data-style="form-input-box" multiple>
+						<select class="selectpicker form-control" name="{{label.field}}[]" aria-label="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="true" data-style="form-input-box" multiple>
 							{% for option in options[label.field].items %}
-							<option value="{{option.value}}" data-tokens="{{option.tokens}}" {{ "selected" if project[label.field] and project[label.field].includes(option.value) }}>{{option.display}}</option>
+							<option value="{{option.value}}" aria-label = "{{option.display}}" data-tokens="{{option.tokens}}" {{ "selected" if project[label.field] and project[label.field].includes(option.value) }}>{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -96,9 +96,9 @@
 					{% case 'predefinedsearchablelist' %}
 					<div class="{{input_col}}">
 						{% if options[label.field] and options[label.field].items.length > 0 %}
-						<select class="selectpicker form-control form-input-box" name="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="true">
+						<select class="selectpicker form-control form-input-box" name="{{label.field}}" aria-label ="{{label.field}}" data-header="{{options[label.field].header}}" data-live-search="true">
 							{% for option in options[label.field].items %}
-							<option value="{{option.value}}" data-tokens="{{option.tokens}}" {{ "selected" if option.value == project[label.field] }}>{{option.display}}</option>
+							<option value="{{option.value}}" aria-label="{{option.display}}"  data-tokens="{{option.tokens}}" {{ "selected" if option.value == project[label.field] }}>{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -110,9 +110,9 @@
 					{% case 'predefinedmultilist' %}
 					<div class="{{input_col}}">
 						{% if options[label.field] and options[label.field].items.length > 0 %}
-						<select class="selectpicker form-control" name="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="false" data-style="form-input-box" multiple>
+						<select class="selectpicker form-control" name="{{label.field}}[]" aria-label ="{{label.field}}[]" data-header="{{options[label.field].header}}" data-live-search="false" data-style="form-input-box" multiple>
 							{% for option in options[label.field].items %}
-							<option value="{{option.value}}" {{ "selected" if project[label.field] and project[label.field].includes(option.value) }}>{{option.display}}</option>
+							<option value="{{option.value}}" aria-label = "{{option.display}}" {{ "selected" if project[label.field] and project[label.field].includes(option.value) }}>{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -124,33 +124,30 @@
 					<div class="{{input_col}}">
 						{% if options[label.field].nouseroption %}
 						{% set ajaxData = 'data-abs-ajax-data={"addnone":"true"}' %}
-						{% if project[label.field] %}
-						<small class="text-muted">To remove the entry, type and then select "None"</small>
-						{% endif %}
 						{% else %}
 						{% set ajaxData = '' %}
 						{% endif %}
-						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/search/users" {{ajaxData}} name="{{label.field}}[value]" data-live-search="true" data-style="form-input-box">
+						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/search/users" {{ajaxData}} aria-label="{{label.field}}[value]" name="{{label.field}}[value]" data-live-search="true" data-style="form-input-box">
 							{% if project[label.field] %}
-							<option value="{{project[label.field].value}}" selected>{{project[label.field].text}}</option>
+							<option value="{{project[label.field].value}}" aria-label = "{{item.value}}" selected>{{project[label.field].text}}</option>
 							{% endif %}
 						</select>
 					</div>
 
 					{% case 'adusermultisearch' %}
 					<div class="{{input_col}}">
-						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/search/users" name="{{label.field}}[]" data-live-search="true" data-style="form-input-box" multiple>
+						<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/search/users" aria-label="{{label.field}}[]" name="{{label.field}}[]" data-live-search="true" data-style="form-input-box" multiple>
 							{% for item in project[label.field] %}
-							<option value="{{item.value}}" selected>{{item.text}}</option>
+							<option value="{{item.value}}" aria-label = "{{item.value}}" selected>{{item.text}}</option>
 							{% endfor %}
 						</select>
 					</div>
 
 					{% case 'ajaxmultisearch' %}
 					<div class="{{input_col}}">
-						<select class="form-control ajaxmultisearch" data-abs-ajax-type="GET" data-abs-ajax-url="{{options[label.field].ajaxurl}}" name="{{label.field}}[]" data-live-search="true" data-style="form-input-box" multiple>
+						<select class="form-control ajaxmultisearch" data-abs-ajax-type="GET" data-abs-ajax-url="{{options[label.field].ajaxurl}}" aria-label="{{label.field}}[]" name="{{label.field}}[]" data-live-search="true" data-style="form-input-box" multiple>
 							{% for item in project[label.field] %}
-							<option value="{{item.value}}" selected>{{item.text}}</option>
+							<option value="{{item.value}}" aria-label = "{{item.value}}" selected>{{item.text}}</option>
 							{% endfor %}
 						</select>
 					</div>
@@ -161,8 +158,8 @@
 						<template id="doctemplate-{{label.field}}">
 							<div class="form-group">
 								<div class="row">
-									<div class="col-md-3"><input type="text" class="form-control name form-input-box" placeholder="{{label.label}} name"></div>
-									<div class="col-md-7"><input type="text" class="form-control link form-input-box" placeholder="{{label.label}} link"></div>
+									<div class="col-md-3"><input type="text" class="form-control name form-input-box" aria-label = {{label.label}} placeholder="{{label.label}} name"></div>
+									<div class="col-md-7"><input type="text" class="form-control link form-input-box" aria-label = {{label.label}} placeholder="{{label.label}} link"></div>
 									<div class="col-md-2"><p class="delete doc-buttons" style="margin:0; cursor:pointer;">Remove</p></div>
 								</div>
 							</div>
@@ -172,8 +169,8 @@
 								{% for doc in project[label.field] %}
 								<div class="form-group">
 									<div class="row">
-										<div class="col-md-3"><input type="text" class="form-control form-input-box" name="{{label.field}}[{{loop.index0}}][name]" placeholder="{{label.label}} name" value="{{doc.name}}"></div>
-										<div class="col-md-7"><input type="text" class="form-control form-input-box" name="{{label.field}}[{{loop.index0}}][link]" placeholder="{{label.label}} link" value="{{doc.link}}"></div>
+										<div class="col-md-3"><input type="text" class="form-control form-input-box" name="{{label.field}}[{{loop.index0}}][name]" aria-label = {{label.label}} placeholder="{{label.label}} name" value="{{doc.name}}"></div>
+										<div class="col-md-7"><input type="text" class="form-control form-input-box" name="{{label.field}}[{{loop.index0}}][link]" aria-label = {{label.label}} placeholder="{{label.label}} link" value="{{doc.link}}"></div>
 										<div class="col-md-2"><p class="delete doc-buttons" style="cursor:pointer;" onclick="this.closest('.form-group').remove();">Remove</p></div>
 									</div>
 								</div>
@@ -190,11 +187,11 @@
 							<div class="milestone-wrapper">
 								<div class="form-row">
 									<input type="hidden" class="id" value="">
-									<div class="form-group col-1"><input type="number" class="form-control order form-input-box" placeholder="Order"></div>
-									<div class="form-group col-5"><input type="text" class="form-control name form-input-box" placeholder="Milestone name"></div>
-									<div class="form-group col-1"><input type="number" class="form-control day form-input-box" placeholder="DD" min="1" max="31" /></div>
-									<div class="form-group col-1"><input type="number" class="form-control month form-input-box" placeholder="MM" min="1" max="12" /></div>
-									<div class="form-group col-2"><input type="number" class="form-control year form-input-box" placeholder="YYYY" min="{{project.project_year_min}}" max="{{project.project_year_max}}" /></div>
+									<div class="form-group col-1"><input type="number" class="form-control order form-input-box" aria-label = "Milestone number" placeholder="Order"></div>
+									<div class="form-group col-5"><input type="text" class="form-control name form-input-box" aria-label = "Milestone name" placeholder="Milestone name"></div>
+									<div class="form-group col-1"><input type="number" class="form-control day form-input-box" aria-label = "Deadline day" placeholder="DD" min="1" max="31" /></div>
+									<div class="form-group col-1"><input type="number" class="form-control month form-input-box" aria-label = "Deadline month" placeholder="MM" min="1" max="12" /></div>
+									<div class="form-group col-2"><input type="number" class="form-control year form-input-box" aria-label = "Deadline year" placeholder="YYYY" min="{{project.project_year_min}}" max="{{project.project_year_max}}" /></div>
 									<div class="form-group col-2"><p class="delete milestone-buttons" style="margin:0; cursor:pointer;">Remove</p></div>
 								</div>
 							</div>
@@ -205,11 +202,11 @@
 								<div class="milestone-wrapper">
 									<div class="form-row">
 										<input type="hidden" name="{{label.field}}[{{loop.index0}}][id]" value="{{milestone.id}}">
-										<div class="form-group col-md-1"><input type="number" class="form-control form-input-box" name="{{label.field}}[{{loop.index0}}][order]" placeholder="Order" value="{{milestone.order}}"></div>
-										<div class="form-group col-md-5"><input type="text" class="form-control form-input-box" name="{{label.field}}[{{loop.index0}}][name]" placeholder="Name" value="{{milestone.name}}"></div>
-										<div class="form-group col-1"><input type="number" name="{{label.field}}[{{loop.index0}}][deadline][day]" class="form-control form-input-box" placeholder="DD" min="1" max="31" value="{{milestone.deadline.day | safe}}" /></div>
-										<div class="form-group col-1"><input type="number" name="{{label.field}}[{{loop.index0}}][deadline][month]" class="form-control form-input-box" placeholder="MM" min="1" max="12" value="{{milestone.deadline.month | safe}}" /></div>
-										<div class="form-group col-2"><input type="number" name="{{label.field}}[{{loop.index0}}][deadline][year]" class="form-control form-input-box" placeholder="YYYY" min="{{project.project_year_min}}" max="{{project.project_year_max}}" value="{{milestone.deadline.year | safe}}" /></div>
+										<div class="form-group col-md-1"><input type="number" class="form-control form-input-box" name="{{label.field}}[{{loop.index0}}][order]" aria-label = "Milestone number" placeholder="Order" value="{{milestone.order}}"></div>
+										<div class="form-group col-md-5"><input type="text" class="form-control form-input-box" name="{{label.field}}[{{loop.index0}}][name]" aria-label = "Milestone name" placeholder="Name" value="{{milestone.name}}"></div>
+										<div class="form-group col-1"><input type="number" name="{{label.field}}[{{loop.index0}}][deadline][day]" class="form-control form-input-box" aria-label = "Deadline day" placeholder="DD" min="1" max="31" value="{{milestone.deadline.day | safe}}" /></div>
+										<div class="form-group col-1"><input type="number" name="{{label.field}}[{{loop.index0}}][deadline][month]" class="form-control form-input-box" aria-label = "Deadline month" placeholder="MM" min="1" max="12" value="{{milestone.deadline.month | safe}}" /></div>
+										<div class="form-group col-2"><input type="number" name="{{label.field}}[{{loop.index0}}][deadline][year]" class="form-control form-input-box" aria-label = "Deadline year" placeholder="YYYY" min="{{project.project_year_min}}" max="{{project.project_year_max}}" value="{{milestone.deadline.year | safe}}" /></div>
 										<div class="form-group col-md-2"><p class="delete milestone-buttons" style="margin: 0; cursor: pointer;" onclick="this.closest('.milestone-wrapper').remove();">Remove</p></div>
 									</div>
 								</div>
@@ -222,10 +219,10 @@
 
 					{% case 'namedlink' %}
 					<div class="{{link1_input_col}}">
-						<input type="text" class="form-control form-input-box" id="id_{{label.field}}_name" name="{{label.field}}[name]" placeholder="Enter {{label.label}} name" value="{{project[label.field].name}}" {% if readonly %}readonly{% endif %}>
+						<input type="text" class="form-control form-input-box" id="id_{{label.field}}_name" name="{{label.field}}[name]" aria-label = "{{label.label}}" placeholder="Enter {{label.label}} name" value="{{project[label.field].name}}" {% if readonly %}readonly{% endif %}>
 					</div>
 					<div class="{{link2_input_col}}">
-						<input type="text" class="form-control form-input-box" id="id_{{label.field}}_link" name="{{label.field}}[link]" placeholder="Enter {{label.label}} link" value="{{project[label.field].link}}" {% if readonly %}readonly{% endif %}>
+						<input type="text" class="form-control form-input-box" id="id_{{label.field}}_link" name="{{label.field}}[link]" aria-label = "{{label.label}}" placeholder="Enter {{label.label}} link" value="{{project[label.field].link}}" {% if readonly %}readonly{% endif %}>
 					</div>
 
 					{% case 'budget' %}
@@ -259,9 +256,9 @@
 					{% case 'projectdate' %}
 					<div class="{{date_input_col}}">
 						<div class="row">
-							<div class="col-3"><input type="number" id="ID_{{label.field}}_day" name="{{label.field}}[day]" class="form-control form-input-box" placeholder="DD" min="1" max="31" value="{{project[label.field].day | safe}}" /></div>
-							<div class="col-3"><input type="number" id="ID_{{label.field}}_month" name="{{label.field}}[month]" class="form-control form-input-box" placeholder="MM" min="1" max="12" value="{{project[label.field].month | safe}}" /></div>
-							<div class="col-6"><input type="number" id="ID_{{label.field}}_year" name="{{label.field}}[year]" class="form-control form-input-box" placeholder="YYYY" min="{{project.project_year_min}}" max="{{project.project_year_max}}" value="{{project[label.field].year | safe}}" /></div>
+							<div class="col-3"><input type="number" id="ID_{{label.field}}_day" name="{{label.field}}[day]" class="form-control form-input-box" aria-label = "Day" placeholder="DD" min="1" max="31" value="{{project[label.field].day | safe}}" /></div>
+							<div class="col-3"><input type="number" id="ID_{{label.field}}_month" name="{{label.field}}[month]" class="form-control form-input-box" aria-label = "Month" placeholder="MM" min="1" max="12" value="{{project[label.field].month | safe}}" /></div>
+							<div class="col-6"><input type="number" id="ID_{{label.field}}_year" name="{{label.field}}[year]" class="form-control form-input-box" aria-label = "Year" placeholder="YYYY" min="{{project.project_year_min}}" max="{{project.project_year_max}}" value="{{project[label.field].year | safe}}" /></div>
 						</div>
 					</div>
 
@@ -279,60 +276,38 @@
 				{% case 'projectmultiselect' %}
 				{% case 'multioptionlist' %}
 				{% case 'predefinedmultilist' %}
-				{% if project[label.field] and project[label.field].length > 0 %}
-				{% for item in project[label.field] %}
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}]" value="{{item}}">
-				{% endfor %}
-				{% endif %}
-
-				{% case 'ajaxmultisearch' %}
-				{% if project[label.field] and project[label.field].length > 0 %}
-				{% for item in project[label.field] %}
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}]" value="{{item.value}}">
-				{% endfor %}
-				{% endif %}
-
-
 				{% case 'adusermultisearch' %}
-				{% if project[label.field] and project[label.field].length > 0 %}
+				{% case 'ajaxmultisearch' %}
+				{% if project[label.field] and project[label.field].items.length > 0 %}
 				{% for item in project[label.field] %}
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}]" value="{{item.value}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}]" aria-label = "{{item}}" value="{{item}}">
 				{% endfor %}
 				{% endif %}
-
 
 				{% case 'linkeditemlist' %}
-				{% for doc in project[label.field] %}
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][name]" value="{{doc.name}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][link]" value="{{doc.link}}">
-				{% endfor %}
-
 				{% case 'namedlink' %}
-				<input type="hidden" name="{{label.field}}[name]" value="{{project[label.field].name}}">
-				<input type="hidden" name="{{label.field}}[link]" value="{{project[label.field].link}}">
-
+				{% for doc in project[label.field] %}
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][name]" aria-label = "{{doc.name}}" value="{{doc.name}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][link]" aria-label = "{{doc.link}}" value="{{doc.link}}">
+				{% endfor %}
 
 				{% case 'milestones' %}
 				{% for milestone in project[label.field] %}
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][id]" value="{{milestone.id}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][order]" value="{{milestone.order}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][name]" value="{{milestone.name}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][deadline][day]" value="{{milestone.deadline.day}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][deadline][month]" value="{{milestone.deadline.month}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][deadline][year]" value="{{milestone.deadline.year}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][id]" 		aria-label = "{{milestone.id}}" 	value="{{milestone.id}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][order]"     aria-label = "{{milestone.order}}" 	value="{{milestone.order}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][name]" 		aria-label = "{{milestone.name}}" 	value="{{milestone.name}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][day]" 		aria-label = "{{milestone.deadline.day}}" 	value="{{milestone.deadline.day}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][month]" 	aria-label = "{{milestone.deadline.month}}" value="{{milestone.deadline.month}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][year]" 		aria-label = "{{milestone.deadline.year}}" 	value="{{milestone.deadline.year}}">
 				{% endfor %}
 
 				{% case 'projectdate' %}
-				<input type="hidden" name="{{label.field}}[day]" value="{{project[label.field].day}}">
-				<input type="hidden" name="{{label.field}}[month]" value="{{project[label.field].month}}">
-				<input type="hidden" name="{{label.field}}[year]" value="{{project[label.field].year}}">
-
-				{% case 'adusersearch' %}
-				<input type="hidden" name="{{label.field}}[value]" value="{{project[label.field].value}}" id="ID_{{label.field}}">
-
+				<input type="hidden" name="{{label.field}}[day]" value="{{project[label.field][day]}}"  aria-label="{{project[label.field][day]}}">
+				<input type="hidden" name="{{label.field}}[month]" value="{{project[label.field][month]}}" aria-label="{{project[label.field][month]}}">
+				<input type="hidden" name="{{label.field}}[year]" value="{{project[label.field][year]}}" aria-label="{{project[label.field][year]}}">
 				{% case 'predefinedfield' %}
 				{% default %}
-				<input type="hidden" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}">
+				<input type="hidden" name="{{label.field}}" value="{{project[label.field]}}" aria-label="{{project[label.field]}}" id="ID_{{label.field}}">
 				{% endswitch %}
 
 				{% endif %}
