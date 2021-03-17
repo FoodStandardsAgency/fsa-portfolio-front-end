@@ -194,7 +194,7 @@
 									<div class="form-group col-5"><input type="text" class="form-control name form-input-box" placeholder="Milestone name"></div>
 									<div class="form-group col-1"><input type="number" class="form-control day form-input-box" placeholder="DD" min="1" max="31" /></div>
 									<div class="form-group col-1"><input type="number" class="form-control month form-input-box" placeholder="MM" min="1" max="12" /></div>
-									<div class="form-group col-2"><input type="number" class="form-control year form-input-box" placeholder="YYYY" min="2016" max="2025" /></div>
+									<div class="form-group col-2"><input type="number" class="form-control year form-input-box" placeholder="YYYY" min="{{project.project_year_min}}" max="{{project.project_year_max}}" /></div>
 									<div class="form-group col-2"><p class="delete milestone-buttons" style="margin:0; cursor:pointer;">Remove</p></div>
 								</div>
 							</div>
@@ -209,7 +209,7 @@
 										<div class="form-group col-md-5"><input type="text" class="form-control form-input-box" name="{{label.field}}[{{loop.index0}}][name]" placeholder="Name" value="{{milestone.name}}"></div>
 										<div class="form-group col-1"><input type="number" name="{{label.field}}[{{loop.index0}}][deadline][day]" class="form-control form-input-box" placeholder="DD" min="1" max="31" value="{{milestone.deadline.day | safe}}" /></div>
 										<div class="form-group col-1"><input type="number" name="{{label.field}}[{{loop.index0}}][deadline][month]" class="form-control form-input-box" placeholder="MM" min="1" max="12" value="{{milestone.deadline.month | safe}}" /></div>
-										<div class="form-group col-2"><input type="number" name="{{label.field}}[{{loop.index0}}][deadline][year]" class="form-control form-input-box" placeholder="YYYY" min="2016" max="2025" value="{{milestone.deadline.year | safe}}" /></div>
+										<div class="form-group col-2"><input type="number" name="{{label.field}}[{{loop.index0}}][deadline][year]" class="form-control form-input-box" placeholder="YYYY" min="{{project.project_year_min}}" max="{{project.project_year_max}}" value="{{milestone.deadline.year | safe}}" /></div>
 										<div class="form-group col-md-2"><p class="delete milestone-buttons" style="margin: 0; cursor: pointer;" onclick="this.closest('.milestone-wrapper').remove();">Remove</p></div>
 									</div>
 								</div>
@@ -261,7 +261,7 @@
 						<div class="row">
 							<div class="col-3"><input type="number" id="ID_{{label.field}}_day" name="{{label.field}}[day]" class="form-control form-input-box" placeholder="DD" min="1" max="31" value="{{project[label.field].day | safe}}" /></div>
 							<div class="col-3"><input type="number" id="ID_{{label.field}}_month" name="{{label.field}}[month]" class="form-control form-input-box" placeholder="MM" min="1" max="12" value="{{project[label.field].month | safe}}" /></div>
-							<div class="col-6"><input type="number" id="ID_{{label.field}}_year" name="{{label.field}}[year]" class="form-control form-input-box" placeholder="YYYY" min="2016" max="2025" value="{{project[label.field].year | safe}}" /></div>
+							<div class="col-6"><input type="number" id="ID_{{label.field}}_year" name="{{label.field}}[year]" class="form-control form-input-box" placeholder="YYYY" min="{{project.project_year_min}}" max="{{project.project_year_max}}" value="{{project[label.field].year | safe}}" /></div>
 						</div>
 					</div>
 
