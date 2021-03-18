@@ -1,4 +1,10 @@
-Version 0.1.4 - Released 18/02/2021
+Version 0.1.6 - Released 18/03/2021
+===================================
+Mix/max year for date validation from backend
+Anna's latest accessibility changes
+
+
+Version 0.1.5 - Released 18/02/2021
 ===================================
 DEV2012003 - AD login fails first try: trying latest fix
 
