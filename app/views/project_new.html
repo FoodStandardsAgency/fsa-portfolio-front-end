@@ -120,7 +120,7 @@ function arrow(id) {
 		<!-- Programme -->
 		{% if data.programme %}
 		<p class="programme">
-		<strong>Part of: {{ data.programme }}</strong><br />
+		<strong>{{ labels.programme | safe }}: {{ data.programme }}</strong><br />
 		{{ data.programme_description }}
 		</p>
 		{% endif %}
