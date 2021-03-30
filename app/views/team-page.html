@@ -22,7 +22,7 @@
 	<h2 class="heading-medium" style="margin-bottom:10px;">Data</h2><br />
 
 	<p><a href="/{{portfolio}}/download/csv">Extract as a CSV</a></p>
-	{% if hasSuperuserRole(portfolio) %}
+	{% if hasSuperuserRole(identity, portfolio) %}
 	<p><a href="/{{portfolio}}/upload/csv">Upload projects as a CSV</a></p>
 	{% endif %}
 	<br /><br />

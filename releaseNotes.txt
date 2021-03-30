@@ -1,3 +1,8 @@
+Version 0.1.8 - Released 01/04/2021
+===================================
+Fixed race condition in authorization filters
+
+
 Version 0.1.6 - Released 18/03/2021
 ===================================
 Mix/max year for date validation from backend

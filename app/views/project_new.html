@@ -70,8 +70,8 @@ function arrow(id) {
 	
 	<!-- Change for access groups -->
 	<div class="col-xl-3 col-md-3 col-sm-4 py-3 text-right">
-		{% if hasAdminRole(portfolio) %}<a href="/{{portfolio}}/delete/{{ data.project_id }}" class="special-link"><button class="delete-button">Delete</button></a>{% endif %}
-		{% if hasEditorRole(portfolio) %}<a href="/{{portfolio}}/edit/{{ data.project_id }}" class="special-link"><button class="update-button">Update</button></a>{% endif %}
+		{% if hasAdminRole(identity, portfolio) %}<a href="/{{portfolio}}/delete/{{ data.project_id }}" class="special-link"><button class="delete-button">Delete</button></a>{% endif %}
+		{% if hasEditorRole(identity, portfolio) %}<a href="/{{portfolio}}/edit/{{ data.project_id }}" class="special-link"><button class="update-button">Update</button></a>{% endif %}
 	</div>
 
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
@@ -406,7 +406,7 @@ function arrow(id) {
 
 
 	<!-- Budget --> 
-	{% if hasBudgetClaim() %}
+	{% if hasBudgetClaim(identity) %}
 	{% if (data.budgettype and data.budgettype != 'None') or data.cost_centre or (data.budget and data.budget != 0) or (data.spent and data.spent != 0) or (data.forecast_spend and data.forecast_spend != 0) or (data.budget_option1 and data.budget_option1 != 'None') or (data.budget_option2 and data.budget_option2 != 'None') or data.budget_field1 or data.budget_field2 %}
 	<br />
 	<hr />

@@ -54,6 +54,26 @@ var njenv = nunjucks.configure(__dirname + '/app/views', {
 });
 app.set('engine', njenv);
 
+// Set up custom authorization filters in view engine
+var isLoggedIn = (id) => id;
+var hasSuperuserRole = (id, portfolio) => id && id.roles.includes(`${portfolio}.superuser`);
+var hasAdminRole = (id, portfolio) => id && (id.roles.includes(`${portfolio}.admin`) || id.roles.includes(`${portfolio}.superuser`));
+var hasLeadRole = (id, portfolio) => id && id.roles.includes(`${portfolio}.lead`);
+var hasEditorRole = (id, portfolio) => id && (hasAdminRole(id, portfolio) || hasLeadRole(id, portfolio) || id.roles.includes(`${portfolio}.editor`));
+
+var hasSupplierClaim = (id) => id && id.accessGroup === 'supplier';
+var hasBudgetClaim = (id) => id && ['fsa', 'editor', 'admin', 'superuser'].includes(id.accessGroup);
+
+njenv.addGlobal('isLoggedIn', isLoggedIn);
+njenv.addGlobal('hasSuperuserRole', hasSuperuserRole);
+njenv.addGlobal('hasAdminRole', hasAdminRole);
+njenv.addGlobal('hasEditorRole', hasEditorRole);
+njenv.addGlobal('hasLeadRole', hasLeadRole);
+njenv.addGlobal('hasSupplierClaim', hasSupplierClaim);
+njenv.addGlobal('hasBudgetClaim', hasBudgetClaim);
+njenv.addGlobal('currency', x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "));
+
+
 // Set up local vars for template layout
 app.use(function (req, res, next) {
 	// Read any flashed errors and save
@@ -67,37 +87,11 @@ app.use(function (req, res, next) {
 		res.locals.error.push({ message: 'An error occurred', debug: errs[i] });
 	}
 
-	// Inject identity into view engine
-	var engine = res.app.get('engine');
-	var identity = req.cookies.identity;
-	engine.addGlobal('identity', identity);
-
-	var isLoggedIn = () => identity;
-
-	var hasSuperuserRole = (portfolio) => identity && identity.roles.includes(`${portfolio}.superuser`);
-	var hasAdminRole = (portfolio) => identity && (identity.roles.includes(`${portfolio}.admin`) || identity.roles.includes(`${portfolio}.superuser`));
-	var hasLeadRole = (portfolio) => identity && identity.roles.includes(`${portfolio}.lead`);
-	var hasEditorRole = (portfolio) => identity && (hasAdminRole(portfolio) || hasLeadRole(portfolio) || identity.roles.includes(`${portfolio}.editor`));
-
-	var hasSupplierClaim = () => identity && identity.accessGroup === 'supplier';
-	var hasBudgetClaim = () => identity && ['fsa', 'editor', 'admin', 'superuser'].includes(identity.accessGroup);
-
-	engine.addGlobal('isLoggedIn', isLoggedIn);
-
-	engine.addGlobal('hasSuperuserRole', hasSuperuserRole);
-	engine.addGlobal('hasAdminRole', hasAdminRole);
-	engine.addGlobal('hasEditorRole', hasEditorRole);
-	engine.addGlobal('hasLeadRole', hasLeadRole);
-
-	engine.addGlobal('hasSupplierClaim', hasSupplierClaim);
-	engine.addGlobal('hasBudgetClaim', hasBudgetClaim);
-
-	engine.addGlobal('currency', x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "));
+	// Inject identity into locals
+	res.locals.identity = req.cookies.identity;
 
 	next();
 });
-
-
 
 function getProjectDateFormat(flag) {
 	var format = "DD MMM YY";
