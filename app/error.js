@@ -9,6 +9,10 @@ function handleError(error, res) {
 			handleBadRequest(res, error.message);
 			return true;
 		}
+		else if (error.response.statusCode == 404) {
+			handleNotFound(res);
+			return true;
+		}
 		else {
 			var message = error.response.statusCode;
 			if (error.message) {
@@ -50,10 +54,15 @@ function handleError(error, res) {
 
 function handleUnauthorised(res, action) {
 	res.render('error_page', { message: `You are not authorised to view this page.` });
-	if(action)
+	if (action)
 		console.log(`${action} failed: user is not authorised.`)
 	else
 		console.log('User not authorised.')
+}
+
+function handleNotFound(res) {
+	res.render('error_page', { message: `Page not found.` });
+	console.log('Page not found.')
 }
 
 function handleBadRequest(res, message) {
