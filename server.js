@@ -55,6 +55,7 @@ var njenv = nunjucks.configure(__dirname + '/app/views', {
 app.set('engine', njenv);
 
 // Set up custom authorization filters in view engine
+console.log("Configuring engine permissions filters...");
 var isLoggedIn = (id) => id;
 var hasSuperuserRole = (id, portfolio) => id && id.roles.includes(`${portfolio}.superuser`);
 var hasAdminRole = (id, portfolio) => id && (id.roles.includes(`${portfolio}.admin`) || id.roles.includes(`${portfolio}.superuser`));
@@ -72,6 +73,8 @@ njenv.addGlobal('hasLeadRole', hasLeadRole);
 njenv.addGlobal('hasSupplierClaim', hasSupplierClaim);
 njenv.addGlobal('hasBudgetClaim', hasBudgetClaim);
 njenv.addGlobal('currency', x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "));
+
+console.log("Configured engine permissions filters.");
 
 
 // Set up local vars for template layout
