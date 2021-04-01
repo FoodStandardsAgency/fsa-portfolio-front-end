@@ -149,7 +149,7 @@ router.get('/:portfolio', login.requireLogin, async function (req, res) {
 		});
 	}
 	catch (error) {
-		if (!handleError(error)) res.end();
+		if (!handleError(error, res)) res.end();
     }
 });
 
