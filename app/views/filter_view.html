@@ -17,7 +17,7 @@
 			{% for fieldgroup in fieldgroups %}
 			<h2 class="section" style="margin-top:2.25em; margin-bottom:10px;">{{fieldgroup.fieldgroup}}</h2><br />
 			{% for label in fieldgroup.labels %}
-			{% set labelIncluded = (label.included and ((not label.admin) or (label.admin and (isAdmin or label.editorcanview)))) %}
+			{% set labelIncluded = label.included %}
 			{% if labelIncluded %}
 			<div class="form-group row ">
 				{% switch label.inputtype %}
