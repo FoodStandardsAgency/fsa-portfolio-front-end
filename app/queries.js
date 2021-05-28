@@ -7,7 +7,7 @@ const q = {
 
 	portfolio_project_query_url: (portfolio) => `Portfolios/${portfolio}/projects`,
 	portfolio_projects_url: (portfolio, filter) => `Projects?portfolio=${portfolio}&filter=${filter}`, // Not currently working
-	portfolio_config_url: (portfolio) => `PortfolioConfiguration/${portfolio}`,
+	portfolio_config_url: (portfolio) => `PortfolioConfiguration?portfolio=${portfolio}`,
 	newproject_config_url: (portfolio) => `Projects/${portfolio}/newproject`,
 	project_url: (projectId) => `Projects/${projectId}`,
 	project_edit_url: (projectId) => `Projects/${projectId}/edit`,
@@ -29,7 +29,7 @@ module.exports = {
 
 	user_identity: (req) => backend.api(`Users/identity`, { context: { token: req.cookies.access_token }}),
 	users_search: (portfolio, term, addnone, req) => backend.api("Users/search", { searchParams: { portfolio: portfolio, term: term, addnone: addnone }, context: { token: req.cookies.access_token } }),
-	search_projectid: (portfolio, term, addnone, req) => backend.api("Projects", { searchParams: { portfolio: portfolio, term: term, addnone: addnone }, context: { token: req.cookies.access_token } }),
+	search_projectid: (portfolio, term, addnone, req) => backend.api("Projects/search", { searchParams: { portfolio: portfolio, term: term, addnone: addnone }, context: { token: req.cookies.access_token } }),
 	users_list_suppliers: (req) => backend.api("Users/suppliers", { context: { token: req.cookies.access_token }}),
 	users_add_supplier: (portfolio, userName, passwordHash, req) => backend.api.post("Users/addsupplier", { json: { portfolio: portfolio, userName: userName, passwordHash: passwordHash }, context: { token: req.cookies.access_token }}),
 

@@ -13,8 +13,8 @@ async function renderEditForm(req, res) {
 		var config = result.body.config;
 		var options = result.body.options;
 
-		options.rels = { ajaxurl: `/${portfolio}/search/projectid` };
-		options.dependencies = { ajaxurl: `/${portfolio}/search/projectid` };
+		options.rels = { ajaxurl: `/${portfolio}/search/projects` };
+		options.dependencies = { ajaxurl: `/${portfolio}/search/projects` };
 
 		var fieldGroups = _.chain(config.labels)
 			.orderBy("grouporder", "fieldorder")
@@ -51,8 +51,8 @@ async function renderAddForm(req, res) {
 			var config1 = result.body.config;
 			var options = result.body.options;
 
-			options.rels = { ajaxurl: `/${portfolio}/search/projectid` };
-			options.dependencies = { ajaxurl: `/${portfolio}/search/projectid` };
+			options.rels = { ajaxurl: `/${portfolio}/search/projects` };
+			options.dependencies = { ajaxurl: `/${portfolio}/search/projects` };
 
 			var fieldGroups = _.chain(config1.labels)
 				.orderBy("grouporder", "fieldorder")
