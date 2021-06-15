@@ -13,6 +13,8 @@
 			{% set label_col = 'col-sm-2 col-md-2' %}
 			{% set input_col = 'col-sm-10 col-md-10 py-1' %}
 			{% set date_input_col = 'col-sm-6 col-md-5' %}
+			{% set budget_amount_col = 'col-sm-6 col-md-7' %}
+			{% set budget_operator_col = 'col-sm-4 col-md-3' %}
 
 			{% for fieldgroup in fieldgroups %}
 			<h2 class="section" style="margin-top:2.25em; margin-bottom:10px;">{{fieldgroup.fieldgroup}}</h2><br />
@@ -68,6 +70,18 @@
 						<option value="true" {{ "selected" if form_values[label.field] == "true" }}>Yes</option>
 						<option value="false" {{ "selected" if form_values[label.field] == "false" }}>No</option>
 					</select>
+				</div>
+
+				{% case 'budget' %}
+				<div class="col-sm-2"><label for="id_{{label.field}}_operator">{{label.label}}:</label></div>
+				<div class="{{budget_operator_col}}">
+					<select class="selectpicker form-control" data-style="form-input-box" id="id_{{label.field}}_operator" name="{{label.field}}[operator]">
+						<option value="<" {{ "selected" if form_values[label.field].operator == "<" }}><</option>
+						<option value=">" {{ "selected" if form_values[label.field].operator == ">" }}>></option>
+					</select>
+				</div>
+				<div class="{{budget_amount_col}}">
+					<input type="number" class="form-control form-input-box" id="id_{{label.field}}_amount" name="{{label.field}}[amount]" aria-label="{{label.label}}" value="{{form_values[label.field].amount}}">
 				</div>
 
 				{% endswitch %}
