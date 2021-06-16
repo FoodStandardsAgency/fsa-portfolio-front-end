@@ -4,6 +4,10 @@
 name: Build and deploy Node.js app to Azure Web App - APP-FSA-PortfolioDEV
 
 on:
+  push:
+    branches:
+      - dev
+      - feature/phased_return
   workflow_dispatch:
 
 jobs:

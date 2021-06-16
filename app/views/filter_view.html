@@ -1,5 +1,7 @@
 {% extends "theme/layout.html" %}
-
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ajax-bootstrap-select/1.4.5/css/ajax-bootstrap-select.min.css" integrity="sha512-k9D6Fzp2d9BxewMk+gYYmlGYxv7DLVC46DiCRv3DrAwBkbjSBZCnhBhWCugLuhkTS36QgQ3h7BwkkkfkJk7cXQ==" crossorigin="anonymous" />
+{% endblock %}
 {% block content %}
 {% set isAdmin = hasAdminRole(identity, portfolio) %}
 <div class="row">
@@ -12,11 +14,8 @@
 
 			{% set label_col = 'col-sm-2 col-md-2' %}
 			{% set input_col = 'col-sm-10 col-md-10 py-1' %}
-			{% set date_input_col = 'col-sm-6 col-md-5' %}
 			{% set budget_amount_col = 'col-sm-6 col-md-7' %}
 			{% set budget_operator_col = 'col-sm-4 col-md-3' %}
-			{% set date_value_col = 'col-sm-6 col-md-7' %}
-			{% set date_operator_col = 'col-sm-4 col-md-3' %}
 
 			{% for fieldgroup in fieldgroups %}
 			<h2 class="section" style="margin-top:2.25em; margin-bottom:10px;">{{fieldgroup.fieldgroup}}</h2><br />
@@ -31,11 +30,22 @@
 				{% case 'mediumfreetextarea' %}
 				{% case 'largefreetextarea' %}
 				{% case 'projectupdatetext' %}
-				{% case 'adusersearch' %}
 				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
 				<div class="{{input_col}}">
 					<input type="text" class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" placeholder="{{label.label}} includes" value="{{form_values[label.field]}}">
 				</div>
+
+				{% case 'adusersearch' %}
+				{% case 'adusermultisearch' %}
+				<div class="col-sm-2"><label for="id_{{label.field}}">{{label.label}}:</label></div>
+				<div class="{{input_col}}">
+					<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/search/users" aria-label="{{label.field}}[]" name="{{label.field}}[]" data-live-search="true" data-style="form-input-box" multiple>
+						{% for item in project[label.field] %}
+						<option value="{{item.value}}" aria-label="{{item.value}}" selected>{{item.text}}</option>
+						{% endfor %}
+					</select>
+				</div>
+
 
 				{% case 'optionlist' %}
 				{% case 'predefinedlist' %}
@@ -65,11 +75,8 @@
 				</div>
 
 				{% case 'projectdate' %}
-				<div class="col-sm-2"><label for="id_{{label.field}}_date">{{label.label}}:</label></div>
-				<div class="{{date_operator_col}}">
-					<span>Date is after</span>
-				</div>
-				<div class="{{date_value_col}}">
+				<div class="col-sm-2"><label for="id_{{label.field}}_date">{{label.label}} is after:</label></div>
+				<div class="{{input_col}}">
 					<input type="date" class="form-control form-input-box" id="id_{{label.field}}_date" name="{{label.field}}[date]" aria-label="{{label.label}}" value="{{form_values[label.field].date}}">
 				</div>
 
@@ -87,8 +94,8 @@
 				<div class="col-sm-2"><label for="id_{{label.field}}_operator">{{label.label}}:</label></div>
 				<div class="{{budget_operator_col}}">
 					<select class="selectpicker form-control" data-style="form-input-box" id="id_{{label.field}}_operator" name="{{label.field}}[operator]">
-						<option value="<" {{ "selected" if form_values[label.field].operator == "<" }}><</option>
-						<option value=">" {{ "selected" if form_values[label.field].operator == ">" }}>></option>
+						<option value="<" {{ "selected" if form_values[label.field].operator == "<" }}>Less than</option>
+						<option value=">" {{ "selected" if form_values[label.field].operator == ">" }}>Greater than</option>
 					</select>
 				</div>
 				<div class="{{budget_amount_col}}">
@@ -126,6 +133,7 @@
 </div>
 {% endblock %}
 {% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ajax-bootstrap-select/1.4.5/js/ajax-bootstrap-select.min.js" integrity="sha512-HExUHcDgB9r00YwaaDe5z9lTFmTChuW9lDkPEnz+6/I26/mGtwg58OHI324cfqcnejphCl48MHR3SFQzIGXmOA==" crossorigin="anonymous"></script>
 <script>
 	$(document).ready(function () {
 		var results = document.getElementById('results');
@@ -133,6 +141,16 @@
 			$('html, body').animate({ scrollTop: $(results).offset().top }, 1000);
 		}
 	});
+	$(document).ready(function () {
+		var $ums = $('.adusersearch').selectpicker({ liveSearch: true }).ajaxSelectPicker();
+		$ums.trigger('change').data('AjaxBootstrapSelect').list.cache = {};
+
+		var $ms = $('.ajaxmultisearch');
+		$ms.each(function () { $(this).selectpicker({ liveSearch: true }).ajaxSelectPicker({ preserveSelected: true }); });
+		$ms.each(function () { $(this).trigger('change').data('AjaxBootstrapSelect').list.cache = {}; });
+	});
+
 </script>
+
 
 {% endblock %}
