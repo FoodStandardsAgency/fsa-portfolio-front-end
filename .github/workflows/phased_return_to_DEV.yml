@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - APP-FSA-PortfolioDEV
 on:
   push:
     branches:
-      - dev
+      - feature/phased_return
   workflow_dispatch:
 
 jobs:
@@ -15,6 +15,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
+      with:
+        ref: feature/phased_return
 
     - name: Set up Node.js version
       uses: actions/setup-node@v1

@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\dev_APP-FSA-PortfolioDEV.yml = .github\workflows\dev_APP-FSA-PortfolioDEV.yml
 		.github\workflows\master_fsa-portfolio-platform.yml = .github\workflows\master_fsa-portfolio-platform.yml
+		.github\workflows\phased_return_to_DEV.yml = .github\workflows\phased_return_to_DEV.yml
 	EndProjectSection
 EndProject
 Global
