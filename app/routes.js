@@ -137,6 +137,13 @@ router.post('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 //-------------------------------------------------------------------
 // SUMMARY PAGES
 //-------------------------------------------------------------------
+function getSummaryLabels(summary) {
+	return summary.labels.reduce(function (map, obj) {
+		map[obj.field] = obj.label || obj.fieldtitle;
+		return map;
+	}, {});
+}
+
 
 router.get('/:portfolio', login.requireLogin, async function (req, res) {
 	var portfolio = req.params.portfolio;
@@ -145,7 +152,8 @@ router.get('/:portfolio', login.requireLogin, async function (req, res) {
 		var summary = response.body;
 		res.render('summary', {
 			"portfolio": portfolio,
-			"summary": summary
+			"summary": summary,
+			"labels": getSummaryLabels(summary)
 		});
 	}
 	catch (error) {
@@ -161,7 +169,8 @@ router.get('/:portfolio/priority/', login.requireLogin, async function (req, res
 		var summary = response.body;
 		res.render('summary', {
 			"portfolio": portfolio,
-			"summary": summary
+			"summary": summary,
+			"labels": getSummaryLabels(summary)
 		});
 	}
 	catch (error) {
@@ -177,7 +186,8 @@ router.get('/:portfolio/team/', login.requireLogin, async function (req, res) {
 		var summary = response.body;
 		res.render('summary', {
 			"portfolio": portfolio,
-			"summary": summary
+			"summary": summary,
+			"labels": getSummaryLabels(summary)
 		});
 	}
 	catch (error) {
@@ -192,7 +202,8 @@ router.get('/:portfolio/rag/', login.requireLogin, async function (req, res) {
 		var summary = response.body;
 		res.render('summary', {
 			"portfolio": portfolio,
-			"summary": summary
+			"summary": summary,
+			"labels": getSummaryLabels(summary)
 		});
 	}
 	catch (error) {
@@ -208,7 +219,8 @@ router.get('/:portfolio/status/', login.requireLogin, async function (req, res) 
 		var summary = response.body;
 		res.render('summary_list', {
 			"portfolio": portfolio,
-			"summary": summary
+			"summary": summary,
+			"labels": getSummaryLabels(summary)
 		});
 	}
 	catch (error) {
@@ -223,7 +235,8 @@ router.get('/:portfolio/lead/', login.requireLogin, async function (req, res) {
 		var summary = response.body;
 		res.render('summary', {
 			"portfolio": portfolio,
-			"summary": summary
+			"summary": summary,
+			"labels": getSummaryLabels(summary)
 		});
 	}
 	catch (error) {
