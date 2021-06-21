@@ -23,7 +23,8 @@ const handle_form 		= require('./handle_add_update');
 const handle_delete		= require('./handle_delete');
 const login 			= require('./login');
 const filter_view 		= require('./filter_view');
-const project_view 		= require('./project_view');
+const project_view		= require('./project_view');
+const txt				= require('./libs/textUtils');
 
 var router = express.Router();
 
@@ -139,7 +140,7 @@ router.post('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 //-------------------------------------------------------------------
 function getSummaryLabels(summary) {
 	return summary.labels.reduce(function (map, obj) {
-		map[obj.field] = obj.label || obj.fieldtitle;
+		map[obj.field] = txt.toLowercaseExceptTLAs(obj.label || obj.fieldtitle);
 		return map;
 	}, {});
 }

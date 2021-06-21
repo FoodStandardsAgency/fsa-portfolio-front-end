@@ -55,6 +55,9 @@
     <Content Include="app\graph.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\libs\textUtils.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\styles\app.bundle.js" />
     <Content Include="app\styles\app.scss" />
     <Content Include="app\styles\customstyles.css" />
@@ -80,6 +83,9 @@
     <Content Include="routes\auth.js" />
     <Content Include="routes\suppliers.js" />
     <Content Include="server.js" />
+    <Content Include="test\textUtils.test.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config" />
     <None Include="Web.Debug.config" />
     <Content Include="webpack.config.js" />
@@ -126,9 +132,11 @@
     <Folder Include="app\assets\sass\elements" />
     <Folder Include="app\assets\sass\elements\forms" />
     <Folder Include="app\assets\sass\patterns" />
+    <Folder Include="app\libs\" />
     <Folder Include="app\styles\" />
     <Folder Include="app\views" />
     <Folder Include="app\views\theme\" />
+    <Folder Include="test\" />
     <Folder Include="routes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />

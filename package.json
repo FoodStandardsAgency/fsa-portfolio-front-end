@@ -12,7 +12,8 @@
   },
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "mocha"
   },
   "devDependencies": {
     "autoprefixer": "^10.1.0",
