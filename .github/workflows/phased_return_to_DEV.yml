@@ -15,8 +15,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
-      with:
-        ref: feature/phased_return
 
     - name: Set up Node.js version
       uses: actions/setup-node@v1
