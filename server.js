@@ -172,6 +172,8 @@ odd_authenticate.configurePassport();
 var router = require('./app/routes.js');
 var authrouter = require('./routes/auth.js');
 var suppliersrouter = require('./routes/suppliers.js');
+var summaries = require('./routes/summary.js');
+var usersummaries = require('./routes/user-summary.js');
 const { handleError } = require('./app/error');
 
 
@@ -179,6 +181,8 @@ const { handleError } = require('./app/error');
 app.use("/", router);
 app.use("/auth", authrouter);
 app.use("/", suppliersrouter);
+app.use("/", summaries);
+app.use("/", usersummaries);
 
 //-------------------------------------------------------------------
 // Error handling

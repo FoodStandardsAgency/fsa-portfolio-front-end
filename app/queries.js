@@ -19,7 +19,8 @@ const q = {
 module.exports = {
 	// API calls requiring access token
 	portfolio_index: (req) => backend.api('Portfolios', { context: { token: req.cookies.access_token } }),
-	portfolio_summary: (portfolio, type, req) => backend.api(`Portfolios/${portfolio}/summary`, { searchParams: { type: type }, context: { token: req.cookies.access_token }}),
+	portfolio_summary: (portfolio, type, req) => backend.api(`Portfolios/${portfolio}/summary`, { searchParams: { type: type }, context: { token: req.cookies.access_token } }),
+	portfolio_user_summary: (portfolio, type, user, req) => backend.api(`Portfolios/${portfolio}/summary`, { searchParams: { type: type, user: user }, context: { token: req.cookies.access_token } }),
 	portfolio_export: (portfolio, req) => backend.api(`Portfolios/${portfolio}/export`, { context: { token: req.cookies.access_token }}),
 	portfolio_filter_options: (portfolio, req) => backend.api(`Portfolios/${portfolio}/filteroptions`, { context: { token: req.cookies.access_token } }),
 	portfolio_filtered_projects: (portfolio, req) => backend.api.post(q.portfolio_project_query_url(portfolio), { json: req.body, context: { token: req.cookies.access_token }}),
