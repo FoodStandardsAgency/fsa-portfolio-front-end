@@ -18,18 +18,19 @@ function getSummaryLabels(summary) {
 	}, {});
 }
 
-function getUser(req) {
+function getUser(req, res) {
 	if (req.body.userSearch) {
+		res.cookie('userSearch', req.body.userSearch, { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: 1000 * 60 * 60 * 24 });
 		return req.body.userSearch;
 	}
 	else {
-		return req.cookies.identity.userid;
+		return req.cookies.userSearch ?? req.cookies.identity.userid;
 	}
 }
 
 async function viewUserSummary(req, res, summaryType) {
 	var portfolio = req.params.portfolio;
-	var user = getUser(req);
+	var user = getUser(req, res);
 	try {
 		var response = await queries.portfolio_user_summary(portfolio, summaryType, user, req);
 		var summary = response.body;
