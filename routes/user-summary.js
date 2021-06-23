@@ -19,7 +19,10 @@ function getSummaryLabels(summary) {
 }
 
 function getUser(req, res) {
-	if (req.body.userSearch) {
+	if (req.query.reset) {
+		res.cookie('userSearch', '', { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: -1 });
+		return req.cookies.identity.userid;
+	} else if (req.body.userSearch) {
 		res.cookie('userSearch', req.body.userSearch, { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: 1000 * 60 * 60 * 24 });
 		return req.body.userSearch;
 	}
@@ -28,13 +31,13 @@ function getUser(req, res) {
 	}
 }
 
-async function viewUserSummary(req, res, summaryType) {
+async function viewUserSummaryView(req, res, summaryType, view) {
 	var portfolio = req.params.portfolio;
 	var user = getUser(req, res);
 	try {
 		var response = await queries.portfolio_user_summary(portfolio, summaryType, user, req);
 		var summary = response.body;
-		res.render('user_summary', {
+		res.render(view, {
 			"portfolio": portfolio,
 			"summary": summary,
 			"labels": getSummaryLabels(summary)
@@ -45,21 +48,12 @@ async function viewUserSummary(req, res, summaryType) {
 	}
 }
 
+async function viewUserSummary(req, res, summaryType) {
+	await viewUserSummaryView(req, res, summaryType, 'user_summary');
+}
+
 async function viewUserSummaryList(req, res, summaryType) {
-	var portfolio = req.params.portfolio;
-	var user = getUser(req);
-	try {
-		var response = await queries.portfolio_user_summary(portfolio, summaryType, user, req);
-		var summary = response.body;
-		res.render('user_summary_list', {
-			"portfolio": portfolio,
-			"summary": summary,
-			"labels": getSummaryLabels(summary)
-		});
-	}
-	catch (error) {
-		if (!handleError(error, res)) res.end();
-	}
+	await viewUserSummaryView(req, res, summaryType, 'user_summary_list');
 }
 
 

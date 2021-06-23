@@ -14,6 +14,7 @@
 		<form class="form-inline float-right" action="/{{portfolio}}/user" method="post" novalidate>
 			<div class="form-group mb-2">
 				<select class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/search/users" aria-label="User search" name="userSearch" data-live-search="true" data-style="form-input-box">
+					<option value="" selected disabled>Search for another user...</option>
 				</select>
 				<button class="general-button" type="submit">View</button>
 			</div>
@@ -29,8 +30,8 @@
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
 	<div class="col-xl-10 col-md-10 col-sm-10">
 		<p>
-			Order by: <a href="/{{portfolio}}/user">{{labels.category}}</a>, <a href="/{{portfolio}}/priority/user">{{labels.pgroup}}</a>, <a href="/{{portfolio}}/team/user">{{labels.g6team}}</a>, <a href="/{{portfolio}}/lead/user">{{labels.oddlead}}</a>, <a href="/{{portfolio}}/rag/user">{{labels.rag}}</a> or <a href="/{{portfolio}}/status/user">{{labels.phase}}</a>. You can also <a href="/{{portfolio}}/filter-view">filter projects</a>.
-		</p>
+			Order by: <a href="/{{portfolio}}/user">{{labels.category}}</a>, <a href="/{{portfolio}}/priority/user">{{labels.pgroup}}</a>, <a href="/{{portfolio}}/team/user">{{labels.g6team}}</a>, <a href="/{{portfolio}}/lead/user">{{labels.oddlead}}</a>, <a href="/{{portfolio}}/rag/user">{{labels.rag}}</a> or <a href="/{{portfolio}}/status/user">{{labels.phase}}</a>. You can also <a href="/{{portfolio}}/filter-view">filter</a> or <a href="/{{portfolio}}/user?reset=true">view your own</a> projects.
+</p>
 	</div>
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
 </div>
