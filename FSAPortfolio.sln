@@ -12,9 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{6E09771E-170E-4C4B-BFA7-1CB6A9946E88}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\dev_APP-FSA-PortfolioDEV.yml = .github\workflows\dev_APP-FSA-PortfolioDEV.yml
-		.github\workflows\master_fsa-portfolio-platform.yml = .github\workflows\master_fsa-portfolio-platform.yml
-		.github\workflows\workInProgress_to_DEV.yml = .github\workflows\workInProgress_to_DEV.yml
+		.github\workflows\dev_to_TEST.yml = .github\workflows\dev_to_TEST.yml
+		.github\workflows\master_to_LIVE.yml = .github\workflows\master_to_LIVE.yml
+		.github\workflows\workInProgress_to_TEST.yml = .github\workflows\workInProgress_to_TEST.yml
 	EndProjectSection
 EndProject
 Global
