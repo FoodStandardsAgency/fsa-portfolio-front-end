@@ -41,14 +41,14 @@ async function getResults(req, res) {
 		var options = optionsResult.body.options;
 		var fieldGroups = config.getFieldGroups(portfolioconfig);
 
-		var label_priority_main = portfolioconfig.labels.find(l => l.field == 'priority_main').label;
+		//var label_priority_main = portfolioconfig.labels.find(l => l.field == 'priority_main').label;
 
 		res.render('filter_view', {
 			"stage": 'results',
 			"portfolio": portfolio,
 			"options": options,
 			"fieldgroups": fieldGroups,
-			"label_priority_main": label_priority_main,
+			//"label_priority_main": label_priority_main,
 			"data": queryResult.body,
 			"form_values": req.body
 		});

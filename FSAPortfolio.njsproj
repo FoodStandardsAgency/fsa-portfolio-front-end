@@ -6,7 +6,7 @@
     <ProjectGuid>{1cee69d7-8fc5-47b7-9663-965399e4531f}</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <ProjectView>ShowAllFiles</ProjectView>
+    <ProjectView>ProjectFiles</ProjectView>
     <StartupFile>server.js</StartupFile>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
