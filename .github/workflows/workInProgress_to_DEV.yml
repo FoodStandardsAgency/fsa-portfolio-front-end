@@ -6,7 +6,7 @@ name: feature/phased_return to APP-FSA-PortfolioDEV
 on:
   push:
     branches:
-      - feature/phased_return
+      - feature/userView
   workflow_dispatch:
 
 jobs:
