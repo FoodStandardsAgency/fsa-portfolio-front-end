@@ -119,6 +119,16 @@ ul.updates {margin-left: 0; padding-left:0}
 .txt-phase3  {color:#C03F0C;}
 .txt-phase4  {color:#5D6D36;}
 
+.project-summary-data {
+	font-family: Fira Sans;
+	font-size: 0.7em;
+}
+.project-summary-data label {
+	font-weight: bold;
+	margin-bottom: 2px;
+}
+
+
 
 /* Lists of links */
 
@@ -129,6 +139,19 @@ ul.updates {margin-left: 0; padding-left:0}
   background-color:#f8f8f8;
   border-left:5px solid transparent;
 }
+
+	.link-list li {
+		margin-bottom: 1em;
+	}
+
+		.link-list li:after {
+			content: "";
+			display: block;
+			height: 1px;
+			margin-top: 1em;
+			margin-bottom: 1em;
+			background: rgba(0,0,0,.1);
+		}
 
 .border-phase0   	{border-color:#2E358B;}
 .border-phase1 		{border-color:#912B88;}
