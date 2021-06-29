@@ -18,119 +18,72 @@ function getSummaryLabels(summary) {
 	}, {});
 }
 
+function getProjectType(req, res) {
+	return req.cookies.projectType;
+}
 
-router.get('/:portfolio', login.requireLogin, async function (req, res) {
+
+async function renderSummaryView(req, res, summaryType, view) {
 	var portfolio = req.params.portfolio;
 	try {
-		var response = await queries.portfolio_summary(portfolio, "category", req);
+		var projectType = getProjectType(req, res);
+		console.log(projectType);
+		var response = await queries.portfolio_projectType_summary(portfolio, summaryType, projectType, req);
 		var summary = response.body;
-		res.render('summary', {
+		var labels = getSummaryLabels(summary);
+		res.render(view, {
 			"portfolio": portfolio,
+			"summaryType": summaryType,
 			"summary": summary,
-			"labels": getSummaryLabels(summary)
+			"labels": labels,
+			"project_type": projectType
 		});
 	}
 	catch (error) {
 		if (!handleError(error, res)) res.end();
 	}
+}
+
+router.post('/:portfolio/projectType', login.requireLogin, async function (req, res) {
+	if (req.body.project_type) {
+		res.cookie('projectType', req.body.project_type, { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: 1000 * 60 * 60 * 24 });
+		req.cookies.projectType = req.body.project_type;
+	}
+	else {
+		res.cookie('projectType', '', { httpOnly: true, secure: process.env.NODE_ENV != 'development', maxAge: -1 });
+		req.cookies.projectType = '';
+    }
+	var summaryType = req.query.summaryType || "category";
+	var view = summaryType == "phase" ? "summary_list" : "summary";
+	await renderSummaryView(req, res, summaryType, view);
 });
 
+router.get('/:portfolio', login.requireLogin, async function (req, res) {
+	await renderSummaryView(req, res, "category", "summary");
+});
 
 router.get('/:portfolio/priority/', login.requireLogin, async function (req, res) {
-	var portfolio = req.params.portfolio;
-	try {
-		var response = await queries.portfolio_summary(portfolio, "priority", req);
-		var summary = response.body;
-		res.render('summary', {
-			"portfolio": portfolio,
-			"summary": summary,
-			"labels": getSummaryLabels(summary)
-		});
-	}
-	catch (error) {
-		if (!handleError(error)) res.end();
-	}
-
+	await renderSummaryView(req, res, "priority", "summary");
 });
 
 router.get('/:portfolio/team/', login.requireLogin, async function (req, res) {
-	var portfolio = req.params.portfolio;
-	try {
-		var response = await queries.portfolio_summary(portfolio, "team", req);
-		var summary = response.body;
-		res.render('summary', {
-			"portfolio": portfolio,
-			"summary": summary,
-			"labels": getSummaryLabels(summary)
-		});
-	}
-	catch (error) {
-		if (!handleError(error)) res.end();
-	}
+	await renderSummaryView(req, res, "team", "summary");
 });
 
 router.get('/:portfolio/rag/', login.requireLogin, async function (req, res) {
-	var portfolio = req.params.portfolio;
-	try {
-		var response = await queries.portfolio_summary(portfolio, "rag", req);
-		var summary = response.body;
-		res.render('summary', {
-			"portfolio": portfolio,
-			"summary": summary,
-			"labels": getSummaryLabels(summary)
-		});
-	}
-	catch (error) {
-		if (!handleError(error)) res.end();
-	}
-
+	await renderSummaryView(req, res, "rag", "summary");
 });
 
 router.get('/:portfolio/status/', login.requireLogin, async function (req, res) {
-	var portfolio = req.params.portfolio;
-	try {
-		var response = await queries.portfolio_summary(portfolio, "phase", req);
-		var summary = response.body;
-		res.render('summary_list', {
-			"portfolio": portfolio,
-			"summary": summary,
-			"labels": getSummaryLabels(summary)
-		});
-	}
-	catch (error) {
-		if (!handleError(error)) res.end();
-	}
+	await renderSummaryView(req, res, "phase", "summary_list");
 });
 
 router.get('/:portfolio/lead/', login.requireLogin, async function (req, res) {
-	var portfolio = req.params.portfolio;
-	try {
-		var response = await queries.portfolio_summary(portfolio, "lead", req);
-		var summary = response.body;
-		res.render('summary', {
-			"portfolio": portfolio,
-			"summary": summary,
-			"labels": getSummaryLabels(summary)
-		});
-	}
-	catch (error) {
-		if (!handleError(error)) res.end();
-	}
+	await renderSummaryView(req, res, "lead", "summary");
 });
 
 router.get('/:portfolio/new_projects/', login.requireLogin, async function (req, res) {
-	var portfolio = req.params.portfolio;
-	try {
-		var response = await queries.portfolio_summary(portfolio, "newbyteam", req);
-		var summary = response.body;
-		res.render('summary', {
-			"portfolio": portfolio,
-			"summary": summary
-		});
-	}
-	catch (error) {
-		if (!handleError(error)) res.end();
-	}
+	await renderSummaryView(req, res, "newbyteam", "summary");
 });
 
 router.get('/:portfolio/completed', login.requireLogin, function (req, res) { res.redirect('/archived'); });

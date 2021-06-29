@@ -70,9 +70,9 @@
 					{% case 'phasechoice' %}
 					<div class="{{input_col}}">
 						{% if options[label.field] and options[label.field].length > 0 %}
-						<select class="form-control form-input-box" id="id_{{label.field}}" aria-label="{{label.field}}[]" name="{{label.field}}" aria-label="{{label.field}}">
+						<select class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.field}}">
 							{% for option in options[label.field] %}
-							<option value="{{option.value}}" aria-label="{{option.display}}" {{ "selected" if option.value == project[label.field] }} aria-label="{{option.display}}">{{option.display}}</option>
+							<option value="{{option.value}}" aria-label="{{option.display}}" {{ "selected" if option.value == project[label.field] }} >{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
