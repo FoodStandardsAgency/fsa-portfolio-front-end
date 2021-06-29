@@ -27,7 +27,6 @@ async function renderSummaryView(req, res, summaryType, view) {
 	var portfolio = req.params.portfolio;
 	try {
 		var projectType = getProjectType(req, res);
-		console.log(projectType);
 		var response = await queries.portfolio_projectType_summary(portfolio, summaryType, projectType, req);
 		var summary = response.body;
 		var labels = getSummaryLabels(summary);
