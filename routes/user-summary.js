@@ -58,10 +58,14 @@ async function viewUserSummaryList(req, res, summaryType) {
 
 
 router.post('/:portfolio/user', login.requireLogin, async function (req, res) {
-	await viewUserSummary(req, res, "category");
+	await viewUserSummary(req, res, "user");
 });
 
 router.get('/:portfolio/user', login.requireLogin, async function (req, res) {
+	await viewUserSummary(req, res, "user");
+});
+
+router.get('/:portfolio/category/user', login.requireLogin, async function (req, res) {
 	await viewUserSummary(req, res, "category");
 });
 

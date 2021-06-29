@@ -152,6 +152,14 @@ ul.updates {margin-left: 0; padding-left:0}
 			margin-bottom: 1em;
 			background: rgba(0,0,0,.1);
 		}
+		.link-list li:last-child:after {
+			content: "";
+			display: block;
+			height: 1px;
+			margin-top: 1em;
+			margin-bottom: 1em;
+			background: rgba(0,0,0,0);
+		}
 
 .border-phase0   	{border-color:#2E358B;}
 .border-phase1 		{border-color:#912B88;}
