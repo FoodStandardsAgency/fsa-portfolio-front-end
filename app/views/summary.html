@@ -14,7 +14,7 @@
 				<label for="id_project_type" style="margin-right:0.5em;">Select a {{labels.project_type}} to view:</label>
 				<select class="form-control form-input-box" id="id_project_type" aria-label="{{labels.project_type}}" name="project_type">
 					{% for option in summary.project_type %}
-					<option value="{{option.value}}" aria-label="{{option.display}}" {{ "selected" if option.value == project_type }} aria-label="{{option.display}}">{{option.display}}</option>
+					<option value="{{option.value}}" aria-label="{{option.display}}" {{ "selected" if option.value == project_type }}>{{option.display}}</option>
 					{% endfor %}
 				</select>
 				<button class="general-button" type="submit">View</button>
@@ -36,9 +36,8 @@
 			<a href="/{{portfolio}}/lead/">{{labels.oddlead}}</a>,
 			<a href="/{{portfolio}}/rag/">{{labels.rag}}</a> or
 			<a href="/{{portfolio}}/status/">{{labels.phase}}</a>.
-			You can also <a href="/{{portfolio}}/filter-view">filter projects</a>,
-			<a href="/{{portfolio}}/user?reset=true">view your projects</a>, or
-			<a href="/{{portfolio}}/user">view other user's projects</a>.
+			You can also <a href="/{{portfolio}}/filter-view">filter projects</a> or
+			<a href="/{{portfolio}}/user?reset=true">view your projects</a>.
 		</p>
 	</div>
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>

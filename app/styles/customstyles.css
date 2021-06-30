@@ -141,23 +141,18 @@ ul.updates {margin-left: 0; padding-left:0}
 }
 
 	.link-list li {
+		margin-top: 1em;
 		margin-bottom: 1em;
 	}
 
 		.link-list li:after {
+			margin-top: 1em;
 			content: "";
 			display: block;
 			height: 1px;
-			margin-top: 1em;
-			margin-bottom: 1em;
 			background: rgba(0,0,0,.1);
 		}
 		.link-list li:last-child:after {
-			content: "";
-			display: block;
-			height: 1px;
-			margin-top: 1em;
-			margin-bottom: 1em;
 			background: rgba(0,0,0,0);
 		}
 
