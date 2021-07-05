@@ -72,7 +72,7 @@
 						{% if options[label.field] and options[label.field].length > 0 %}
 						<select class="form-control form-input-box" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.field}}">
 							{% for option in options[label.field] %}
-							<option value="{{option.value}}" aria-label="{{option.display}}" {{ "selected" if option.value == project[label.field] }} >{{option.display}}</option>
+							<option value="{{option.value}}" aria-label="{{option.display}}" {{ "selected" if option.value == project[label.field] }}>{{option.display}}</option>
 							{% endfor %}
 						</select>
 						{% else %}
@@ -280,34 +280,34 @@
 				{% case 'ajaxmultisearch' %}
 				{% if project[label.field] and project[label.field].items.length > 0 %}
 				{% for item in project[label.field] %}
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}]" aria-label="{{item}}" value="{{item}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}]" value="{{item}}" id="ID_{{label.field}}_{{loop.index0}}">
 				{% endfor %}
 				{% endif %}
 
 				{% case 'linkeditemlist' %}
 				{% case 'namedlink' %}
 				{% for doc in project[label.field] %}
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][name]" aria-label="{{doc.name}}" value="{{doc.name}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][link]" aria-label="{{doc.link}}" value="{{doc.link}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][name]" value="{{doc.name}}" id="ID_{{label.field}}_name_{{loop.index0}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][link]" value="{{doc.link}}" id="ID_{{label.field}}_link_{{loop.index0}}">
 				{% endfor %}
 
 				{% case 'milestones' %}
 				{% for milestone in project[label.field] %}
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][id]" aria-label="{{milestone.id}}" value="{{milestone.id}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][order]" aria-label="{{milestone.order}}" value="{{milestone.order}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][name]" aria-label="{{milestone.name}}" value="{{milestone.name}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][day]" aria-label="{{milestone.deadline.day}}" value="{{milestone.deadline.day}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][month]" aria-label="{{milestone.deadline.month}}" value="{{milestone.deadline.month}}">
-				<input type="hidden" name="{{label.field}}[{{loop.index0}}][year]" aria-label="{{milestone.deadline.year}}" value="{{milestone.deadline.year}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][id]" value="{{milestone.id}}" id="ID_{{label.field}}_id_{{loop.index0}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][order]" value="{{milestone.order}}" id="ID_{{label.field}}_order_{{loop.index0}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][name]" value="{{milestone.name}}" id="ID_{{label.field}}_name_{{loop.index0}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][day]" value="{{milestone.deadline.day}}" id="ID_{{label.field}}_day_{{loop.index0}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][month]" value="{{milestone.deadline.month}}" id="ID_{{label.field}}_month_{{loop.index0}}">
+				<input type="hidden" name="{{label.field}}[{{loop.index0}}][year]" value="{{milestone.deadline.year}}" id="ID_{{label.field}}_year_{{loop.index0}}">
 				{% endfor %}
 
 				{% case 'projectdate' %}
-				<input type="hidden" name="{{label.field}}[day]" value="{{project[label.field][day]}}" aria-label="{{project[label.field][day]}}">
-				<input type="hidden" name="{{label.field}}[month]" value="{{project[label.field][month]}}" aria-label="{{project[label.field][month]}}">
-				<input type="hidden" name="{{label.field}}[year]" value="{{project[label.field][year]}}" aria-label="{{project[label.field][year]}}">
+				<input type="hidden" name="{{label.field}}[day]" value="{{project[label.field][day]}}" id="ID_{{label.field}}_day">
+				<input type="hidden" name="{{label.field}}[month]" value="{{project[label.field][month]}}" id="ID_{{label.field}}_month">
+				<input type="hidden" name="{{label.field}}[year]" value="{{project[label.field][year]}}" id="ID_{{label.field}}_year">
 				{% case 'predefinedfield' %}
 				{% default %}
-				<input type="hidden" name="{{label.field}}" value="{{project[label.field]}}" aria-label="{{project[label.field]}}" id="ID_{{label.field}}">
+				<input type="hidden" name="{{label.field}}" value="{{project[label.field]}}" id="ID_{{label.field}}">
 				{% endswitch %}
 
 				{% endif %}
@@ -328,6 +328,7 @@
 
 {% endblock %}
 
+
 {% block scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ajax-bootstrap-select/1.4.5/js/ajax-bootstrap-select.min.js" integrity="sha512-HExUHcDgB9r00YwaaDe5z9lTFmTChuW9lDkPEnz+6/I26/mGtwg58OHI324cfqcnejphCl48MHR3SFQzIGXmOA==" crossorigin="anonymous"></script>
 <script>
@@ -338,6 +339,75 @@
 		var $ms = $('.ajaxmultisearch');
 		$ms.each(function () { $(this).selectpicker({ liveSearch: true }).ajaxSelectPicker({ preserveSelected: true }); });
 		$ms.each(function () { $(this).trigger('change').data('AjaxBootstrapSelect').list.cache = {}; });
+
+        //Clone the hidden element and shows it
+        document.querySelector('.add-doc').addEventListener("click", function () {
+            var field = this.dataset.field;
+            var templateId = '#doctemplate-' + field;
+            var docListId = '#doclist-' + field;
+            var docList = document.querySelector(docListId)
+            var template = document.querySelector(templateId);
+            var count = docList.dataset.count;
+            var nameNameAttr = field + '[' + count + '][name]'
+            var linkNameAttr = field + '[' + count + '][link]'
+            docList.dataset.count++;
+
+            var clone = template.content.cloneNode(true);
+            var nameInput = clone.querySelector('input.name');
+            var linkInput = clone.querySelector('input.link');
+            nameInput.setAttribute("name", nameNameAttr);
+            linkInput.setAttribute("name", linkNameAttr);
+
+            var deleteButton = clone.querySelector('p.delete');
+            deleteButton.addEventListener("click", function () {
+                this.closest('.form-group').remove();
+            });
+
+            docList.appendChild(clone);
+        });
+
+        // Clone the hidden element and show it
+        document.querySelector('.add-milestone').addEventListener("click", function () {
+            var field = this.dataset.field;
+            var templateId = '#milestonetemplate-' + field;
+            var milestoneListId = '#milestonelist-' + field;
+            var milestoneList = document.querySelector(milestoneListId)
+            var template = document.querySelector(templateId);
+            var count = milestoneList.dataset.count;
+
+            var idNameAttr = field + '[' + count + '][id]'
+            var orderNameAttr = field + '[' + count + '][order]'
+            var nameNameAttr = field + '[' + count + '][name]'
+            var dayNameAttr = field + '[' + count + '][deadline][day]'
+            var monthNameAttr = field + '[' + count + '][deadline][month]'
+            var yearNameAttr = field + '[' + count + '][deadline][year]'
+
+            milestoneList.dataset.count++;
+            var clone = template.content.cloneNode(true);
+
+            var idInput = clone.querySelector('input.id');
+            var orderInput = clone.querySelector('input.order');
+            var nameInput = clone.querySelector('input.name');
+            var dayInput = clone.querySelector('input.day');
+            var monthInput = clone.querySelector('input.month');
+            var yearInput = clone.querySelector('input.year');
+
+            idInput.setAttribute("name", idNameAttr);
+            orderInput.setAttribute("name", orderNameAttr);
+            nameInput.setAttribute("name", nameNameAttr);
+            dayInput.setAttribute("name", dayNameAttr);
+            monthInput.setAttribute("name", monthNameAttr);
+            yearInput.setAttribute("name", yearNameAttr);
+
+            var deleteButton = clone.querySelector('p.delete');
+            deleteButton.addEventListener("click", function () {
+                this.closest('.milestone-wrapper').remove();
+            });
+
+            milestoneList.appendChild(clone);
+        });
+
+
 	});
 
 	(function () {

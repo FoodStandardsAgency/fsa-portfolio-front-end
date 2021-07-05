@@ -2,9 +2,6 @@ const backend = require('./backend');
 
 // Queries
 const q = {
-	max_id:				'SELECT max(project_id) from latest_projects',
-	odd_people: 'select * from odd_people order by g6team, surname',
-
 	portfolio_project_query_url: (portfolio) => `Portfolios/${portfolio}/projects`,
 	portfolio_projects_url: (portfolio, filter) => `Projects?portfolio=${portfolio}&filter=${filter}`, // Not currently working
 	portfolio_config_url: (portfolio) => `PortfolioConfiguration?portfolio=${portfolio}`,

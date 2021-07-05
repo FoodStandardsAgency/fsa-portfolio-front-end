@@ -11,7 +11,7 @@
 		<div class="d-flex align-items-stretch flex-wrap">
 		
 		{% for portfolio in data %}
-		<div class="landing_box"><a href="{{portfolio.viewkey}}" class="landing_link special-link">{{ portfolio.abbr }}</a></div>
+		<div class="landing_box"><a href="/{{portfolio.viewkey}}" data-cy="portfolio-link" class="landing_link special-link">{{ portfolio.abbr }}</a></div>
 		{% endfor %}
 		
 		</div>
