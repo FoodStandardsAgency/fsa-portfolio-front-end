@@ -20,29 +20,16 @@ import './commands'
 // require('./commands')
 var urls = require("./urls");
 var portfolios = require("./portfolios");
-const apiBaseUrl = `${Cypress.env("BACKEND_PROTOCOL")}://${Cypress.env("BACKEND_HOST")}/${Cypress.env("BACKEND_API_BASE")}`;
 
-before(() => {
+before(function() {
     // When running locally changing the test also restarts the instance of the web app!
     // This gives it time to start up again so don't get connection refused.
     cy.wait(2000);
-
-    // Get the test portfolio config
-    cy.request(
-        {
-            url: `${apiBaseUrl}/PortfolioConfiguration?portfolio=${portfolios.TEST_PORTFOLIO}`,
-            headers: { 'TestAPIKey': Cypress.env("TEST_API_KEY") }
-        })
-        .then((response) => {
-            return response.body;
-        })
-        .as('portfolio_config');
-    //cy.get('@portfolio_config').then((config) => cy.log(config));
 });
 
 
 beforeEach(() => {
-    cy.visit(urls.LOGOUT_PAGE);
+    
 });
 
 

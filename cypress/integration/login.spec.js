@@ -7,7 +7,7 @@ context(
     "I can log into the Portfolio Application.",
     () => {
         beforeEach(() => {
-            cy.visit(urls.LOGIN_PAGE);
+            cy.visit(urls.appRelative.LOGIN_PAGE);
         });
         describe("Log in page loads.", () => {
             it('Log in options are displayed.', () => {
@@ -26,9 +26,9 @@ context(
         describe("Log in with a user name and password.", () => {
             it("I can log in with credentials", () => {
                 cy.get("[data-cy=credentials-link]").click();
-                cy.get("input[data-cy=user]").should("have.length", 1).type(users.TEST_USER);
-                cy.get("input[data-cy=password]").should("have.length", 1).type(users.TEST_USER_PASSWORD);
-                cy.get("[data-cy=credentials-submit]").should("have.length", 1).click().url().should("equal", `${urls.BASE_URL}${urls.HOME_PAGE}`);
+                cy.get("input[data-cy=user]").should("have.length", 1).type(users.TEST_ADMIN_USER.username);
+                cy.get("input[data-cy=password]").should("have.length", 1).type(users.TEST_ADMIN_USER.password);
+                cy.get("[data-cy=credentials-submit]").should("have.length", 1).click().url().should("equal", urls.fullUrl.HOME_PAGE);
                 cy.get(".landing_link").should("have.length", portfolios.ALL.length);
             });
         });
