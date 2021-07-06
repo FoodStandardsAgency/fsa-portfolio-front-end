@@ -13,6 +13,21 @@ context(
         });
         describe("I can configure field labels.", function () {
 
+            it("Maximum label size of 50 characters is enforced.", function () {
+                // Configure labels
+                cy.visit(urls.appRelative.PortfolioConfigure(this.portfolio));
+                var label = this.portfolio_labels[0];
+                config.setLabelText(label.field, "01234567890123456789012345678901234567890123456789");
+                cy.get(`[data-cy=submit]`).click();
+                cy.get('h1.project-title').contains("Configuration");
+
+                // Put 51 characters in
+                config.setLabelText(label.field, "_01234567890123456789012345678901234567890123456789");
+                cy.get(`[data-cy=submit]`).click();
+                cy.get(`[data-cy=error]`).contains(`Problem with configuration for field ${label.fieldtitle}: The field Label must be a string with a maximum length of 50`);
+
+            });
+
             it("Field labels are displayed in the project edit page.", function () {
 
                 // Configure labels

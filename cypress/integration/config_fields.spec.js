@@ -31,7 +31,7 @@ context(
                 });
             });
 
-            it("Can exlude all fields, except include locked fields, from the project edit page.", function () {
+            it("Can exclude all fields, except include locked fields, from the project edit page.", function () {
                 cy.loginAdmin();
 
                 // Configure labels
@@ -81,7 +81,6 @@ context(
                         if (label.editorcanview || (label.adminonly_lock && ! label.admin)) {
                             cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
                             cy.get(`[data-cy=${label.field}]`).should('exist');
-
                         } else {
                             cy.get(`[data-cy=${label.field}_label_vw]`).should('not.exist');
                             cy.get(`[data-cy=${label.field}]`).should('not.exist');

@@ -11,8 +11,12 @@ context(
         });
         describe("I can browse portfolio summaries.", () => {
             it('The portfolio summary loads.', () => {
+
+                // Visit each portfolio
                 cy.get("[data-cy=portfolio-link]").each(($el, index, $list) => {
                     cy.visit(`${urls.BASE_URL}${$el.attr('href')}`);
+
+                    // Visit all summary links
                     cy.get('[data-cy=summary-nav-link]')
                         .each(($elSL, indexSL, $listSL) => {
                             cy.visit(`${urls.BASE_URL}${$elSL.attr('href')}`);

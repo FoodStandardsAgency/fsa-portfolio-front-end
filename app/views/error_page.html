@@ -10,7 +10,7 @@
 	{% else %}
 	<h1 class="heading-xlarge" style="margin-bottom:15px;">Oops...</h1><br />
 	{% endif %}
-	<p>{{ message }}</p>
+	<p data-cy="error">{{ message }}</p>
 	{% if link %}
 	<p><a href="{{link.url}}">{{link.text}}</a></p>
 	{% else %}
