@@ -87,9 +87,23 @@ router.get('/:portfolio/new_projects/', login.requireLogin, async function (req,
 
 router.get('/:portfolio/completed', login.requireLogin, function (req, res) { res.redirect('/archived'); });
 
-router.get('/:portfolio/portfolio-team', login.requireAdmin, (req, res) => {
+
+// Admin screen
+router.get('/:portfolio/portfolio-team', login.requireAdmin, async (req, res) => {
 	var portfolio = req.params.portfolio;
-	res.render('team-page', { "portfolio": portfolio });
+	try {
+		var response = await queries.portfolio_summary_labels(portfolio, req);
+		var summary = response.body;
+		var labels = getSummaryLabels(summary);
+		res.render('team-page', {
+			"portfolio": portfolio,
+			"labels": labels
+		});
+	}
+	catch (error) {
+		if (!handleError(error, res)) res.end();
+	}
+
 });
 
 module.exports = router;

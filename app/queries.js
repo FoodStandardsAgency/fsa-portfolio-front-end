@@ -18,6 +18,7 @@ module.exports = {
 	portfolio_index: (req) => backend.api('Portfolios', { context: { token: req.cookies.access_token } }),
 	portfolio_summary: (portfolio, type, req) => backend.api(`Portfolios/${portfolio}/summary`, { searchParams: { type: type }, context: { token: req.cookies.access_token } }),
 	portfolio_projectType_summary: (portfolio, type, projectType, req) => backend.api(`Portfolios/${portfolio}/summary`, { searchParams: { type: type, projectType: projectType }, context: { token: req.cookies.access_token } }),
+	portfolio_summary_labels: (portfolio, req) => backend.api(`Portfolios/${portfolio}/summaryLabels`, { context: { token: req.cookies.access_token } }),
 	portfolio_user_summary: (portfolio, type, user, req) => backend.api(`Portfolios/${portfolio}/summary`, { searchParams: { type: type, user: user, includeKeyData: true }, context: { token: req.cookies.access_token } }),
 	portfolio_export: (portfolio, req) => backend.api(`Portfolios/${portfolio}/export`, { context: { token: req.cookies.access_token }}),
 	portfolio_filter_options: (portfolio, req) => backend.api(`Portfolios/${portfolio}/filteroptions`, { context: { token: req.cookies.access_token } }),
