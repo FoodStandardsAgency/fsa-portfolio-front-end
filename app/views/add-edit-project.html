@@ -35,7 +35,7 @@
 					<div class="{{input_col}}">
 						<input type="text" class="form-control form-input-box" data-cy="{{label.field}}" id="id_{{label.field}}" name="{{label.field}}" aria-label="{{label.label}}" placeholder="Enter {{label.label}}" value="{{project[label.field]}}" {{ " readonly" if readonly }} {{" required" if label.required }}>
 						{% if label.required %}
-						<div class="invalid-feedback">Please enter a value for {{label.label}}</div>
+						<div data-cy="{{label.field}}_validation_error" class="invalid-feedback">Please enter a value for {{label.label}}</div>
 						{% endif %}
 					</div>
 
@@ -319,7 +319,7 @@
 			{% endfor %}
 
 			<div class="form-group row">
-				<div class="col-sm-12"><button class="general-button" type="submit">Submit</button></div>
+				<div class="col-sm-12"><button data-cy="submit" class="general-button" type="submit">Submit</button></div>
 			</div>
 
 		</form>

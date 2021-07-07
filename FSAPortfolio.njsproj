@@ -78,26 +78,27 @@
     <Content Include="app\views\theme\layout.html" />
     <Content Include="app\views\theme\scripts.html" />
     <Content Include="app\views\_globals.html" />
-    <Content Include="cypress.env.json">
+    <Content Include="test\cypress.env.json">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="cypress.json" />
-    <Content Include="cypress\fixtures\example.json" />
-    <Content Include="cypress\integration\config_fieldtype_optionlist.spec.js" />
-    <Content Include="cypress\integration\config_fields.spec.js" />
-    <Content Include="cypress\integration\config_labels.spec.js" />
-    <Content Include="cypress\integration\config_portfolios.spec.js" />
-    <Content Include="cypress\integration\browse_portfolios.spec.js" />
-    <Content Include="cypress\integration\login.spec.js" />
-    <Content Include="cypress\plugins\index.js" />
-    <Content Include="cypress\support\commands.js" />
-    <Content Include="cypress\support\config_helpers.js">
+    <Content Include="test\cypress.json" />
+    <Content Include="test\cypress\fixtures\example.json" />
+    <Content Include="test\cypress\integration\config_fieldtype_optionlist.spec.js" />
+    <Content Include="test\cypress\integration\config_fields.spec.js" />
+    <Content Include="test\cypress\integration\config_labels.spec.js" />
+    <Content Include="test\cypress\integration\config_portfolios.spec.js" />
+    <Content Include="test\cypress\integration\admin_addproject.spec.js" />
+    <Content Include="test\cypress\integration\portfolio_browse.spec.js" />
+    <Content Include="test\cypress\integration\login.spec.js" />
+    <Content Include="test\cypress\plugins\index.js" />
+    <Content Include="test\cypress\support\commands.js" />
+    <Content Include="test\cypress\support\config_helpers.js">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="cypress\support\index.js" />
-    <Content Include="cypress\support\portfolios.js" />
-    <Content Include="cypress\support\users.js" />
-    <Content Include="cypress\support\urls.js">
+    <Content Include="test\cypress\support\index.js" />
+    <Content Include="test\cypress\support\portfolios.js" />
+    <Content Include="test\cypress\support\users.js" />
+    <Content Include="test\cypress\support\urls.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="package-lock.json" />
@@ -164,11 +165,11 @@
     <Folder Include="app\styles\" />
     <Folder Include="app\views" />
     <Folder Include="app\views\theme\" />
-    <Folder Include="cypress\" />
-    <Folder Include="cypress\fixtures\" />
-    <Folder Include="cypress\integration\" />
-    <Folder Include="cypress\plugins\" />
-    <Folder Include="cypress\support\" />
+    <Folder Include="test\cypress\" />
+    <Folder Include="test\cypress\fixtures\" />
+    <Folder Include="test\cypress\integration\" />
+    <Folder Include="test\cypress\plugins\" />
+    <Folder Include="test\cypress\support\" />
     <Folder Include="test\" />
     <Folder Include="routes\" />
   </ItemGroup>

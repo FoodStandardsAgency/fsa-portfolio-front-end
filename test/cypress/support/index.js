@@ -25,6 +25,10 @@ before(function() {
     // When running locally changing the test also restarts the instance of the web app!
     // This gives it time to start up again so don't get connection refused.
     cy.wait(2000);
+
+    // Use the base Url in our env file
+    const baseUrl = Cypress.env('baseUrl');
+    Cypress.config("baseUrl", baseUrl);
 });
 
 

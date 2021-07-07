@@ -5,6 +5,7 @@ const appRelative = {
     LOGOUT_PAGE: "/log-out",
     HOME_PAGE: "/",
     PortfolioHome: (portfolio) => `/${portfolio}`,
+    PortfolioAdmin: (portfolio) => `/${portfolio}/portfolio-team`,
     PortfolioConfigure: (portfolio) => `/${portfolio}/configure`,
     ProjectEdit: (portfolio, projectId) => `/${portfolio}/edit/${projectId}`,
     ProjectView: (portfolio, projectId) => `/${portfolio}/projects/${projectId}`
@@ -16,6 +17,7 @@ const fullUrl = {
     LOGOUT_PAGE: `${base}${appRelative.LOGOUT_PAGE}`,
     HOME_PAGE: `${base}${appRelative.HOME_PAGE}`,
     PortfolioHome: (portfolio) => `${base}${appRelative.PortfolioHome(portfolio)}`,
+    PortfolioAdmin: (portfolio) => `${base}${appRelative.PortfolioAdmin(portfolio)}`,
     PortfolioConfigure: (portfolio) => `${base}${appRelative.PortfolioConfigure(portfolio)}`
 };
 

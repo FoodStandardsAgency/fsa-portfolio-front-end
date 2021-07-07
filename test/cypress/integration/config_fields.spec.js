@@ -7,7 +7,7 @@ var config = require("../support/config_helpers");
 context(
     "I can configure portfolios.",
     function () {
-        beforeEach(function () {
+        before(function () {
             cy.getPortfolioConfig(portfolios.TEST_PORTFOLIO);
         });
         describe("I can configure fields.", function () {

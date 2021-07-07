@@ -7,14 +7,15 @@ var config = require("../support/config_helpers");
 context(
     "I can configure portfolios.",
     function () {
-        beforeEach(function () {
+        before(function () {
             cy.getPortfolioConfig(portfolios.TEST_PORTFOLIO);
             cy.loginAdmin();
         });
         describe("I can configure field labels.", function () {
 
             it("Maximum label size of 50 characters is enforced.", function () {
-                // Configure labels
+
+                // Configure label
                 cy.visit(urls.appRelative.PortfolioConfigure(this.portfolio));
                 var label = this.portfolio_labels[0];
                 config.setLabelText(label.field, "01234567890123456789012345678901234567890123456789");
