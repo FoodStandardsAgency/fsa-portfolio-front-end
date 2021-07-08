@@ -6,8 +6,10 @@ var portfolios = require("../support/portfolios");
 context(
     "An admin can browse all portfolios.",
     () => {
-        before(() => {
+        before(function () {
             cy.getPortfolioConfig(portfolios.TEST_PORTFOLIO);
+        });
+        beforeEach(function () {
             cy.loginAdmin();
         });
         describe("I can view all portfolio links.", () => {
@@ -26,7 +28,7 @@ context(
                 });
             });
 
-            it.only('I can view portfolio navigation links.', function() {
+            it('I can view portfolio navigation links.', function() {
 
                 cy.visit(urls.appRelative.PortfolioHome(this.portfolio));
                 cy.get("[data-cy=index-nav-link]").click().url().should("equal", urls.fullUrl.HOME_PAGE);

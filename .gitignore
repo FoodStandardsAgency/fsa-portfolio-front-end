@@ -140,3 +140,4 @@ bld/
 /packages
 package-lock.json
 *.env.json
+/test/cypress/videos

@@ -8,8 +8,11 @@ context(
     function () {
         before(function () {
             cy.getPortfolioConfig(portfolios.TEST_PORTFOLIO);
+        });
+        beforeEach(() => {
             cy.loginAdmin();
         });
+
         describe("I can configure field options.", function () {
             it("Options for included optionlist fields appear in project edit drop down lists.", function () {
                 // Configure fields

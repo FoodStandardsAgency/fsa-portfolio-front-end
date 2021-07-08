@@ -2,19 +2,23 @@
 var urls = require("../support/urls");
 var users = require("../support/users");
 var portfolios = require("../support/portfolios");
+const _ = require("lodash");
 
 context(
     "Admin tasks on projects.",
     () => {
         before(function () {
-            cy.loginAdmin();
             cy.getPortfolioConfig(portfolios.TEST_PORTFOLIO);
         });
         beforeEach(() => {
+            cy.loginAdmin();
         });
         describe("I can add a new project.", () => {
 
             it('Add a new project with no fields set results in validation error.', function() {
+
+                var requiredFields = _.filter(this.portfolio_labels, l => l.required);
+                if (requiredFields.length == 0) throw new Error('This test requires at least one field to have "required=true": the current portfolio has none.');
 
                 // Open add project page
                 cy.visit(urls.appRelative.PortfolioAdmin(this.portfolio));
@@ -26,7 +30,7 @@ context(
                     .then((val) => cy.log(`New project Id "${val}"`));
 
                 // Each required field should have an invisible validation error
-                cy.wrap(this.portfolio_labels).each(function (label) {
+                cy.wrap(requiredFields).each(function (label) {
                     if (label.required) {
                         cy.get(`[data-cy=${label.field}_validation_error]`).should('not.be.visible');
                     }
@@ -36,7 +40,7 @@ context(
                 cy.get('[data-cy=submit').click();
 
                 // Each required field should have an invisible validation error
-                cy.wrap(this.portfolio_labels).each(function (label) {
+                cy.wrap(requiredFields).each(function (label) {
                     if (label.required) {
                         cy.get(`[data-cy=${label.field}_validation_error]`).should('be.visible');
                     }

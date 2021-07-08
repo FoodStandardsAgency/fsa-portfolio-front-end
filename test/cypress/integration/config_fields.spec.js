@@ -3,6 +3,7 @@ var urls = require("../support/urls");
 var users = require("../support/users");
 var portfolios = require("../support/portfolios");
 var config = require("../support/config_helpers");
+const _ = require("lodash");
 
 context(
     "I can configure portfolios.",
@@ -13,6 +14,8 @@ context(
         describe("I can configure fields.", function () {
 
             it("Can include all fields from the project edit page.", function () {
+                var fields = _.filter(this.portfolio_labels, f => !config.fieldsWithNoProjectEditLabel.includes(f.field));
+
                 cy.loginAdmin();
 
                 // Configure labels
@@ -24,14 +27,14 @@ context(
 
                 // Check labels in project edit view
                 cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
-                cy.wrap(this.portfolio_labels).each(function (label) {
-                    if (!config.fieldsWithNoProjectEditLabel.includes(label.field)) {
-                        cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
-                    }
+                cy.wrap(fields).each(function (label) {
+                    cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
                 });
             });
 
             it("Can exclude all fields, except include locked fields, from the project edit page.", function () {
+                var fields = _.filter(this.portfolio_labels, f => !config.fieldsWithNoProjectEditLabel.includes(f.field));
+
                 cy.loginAdmin();
 
                 // Configure labels
@@ -43,22 +46,23 @@ context(
 
                 // Check labels in project edit view
                 cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
-                cy.wrap(this.portfolio_labels).each(function (label) {
-                    if (!config.fieldsWithNoProjectEditLabel.includes(label.field)) {
-                        if (label.included && label.included_lock)
-                            cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
-                        else
-                            cy.get(`[data-cy=${label.field}_label_vw]`).should('not.exist');
-                    }
+                cy.wrap(fields).each(function (label) {
+                    if (label.included && label.included_lock)
+                        cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
+                    else
+                        cy.get(`[data-cy=${label.field}_label_vw]`).should('not.exist');
                 });
             });
 
             it("Admin only fields are visible to admins and hidden to editors in the the project edit page.", function () {
+
+                var fields = _.filter(this.portfolio_labels, f => !config.fieldsWithNoProjectEditLabel.includes(f.field));
+
                 cy.loginAdmin();
 
                 // Configure labels
                 cy.visit(urls.appRelative.PortfolioConfigure(this.portfolio));
-                cy.wrap(this.portfolio_labels).each(function (label) {
+                cy.wrap(fields).each(function (label) {
                     config.setFieldIncluded(label.field, true);
                     config.setFieldAdminOnly(label.field, true);
                 });
@@ -66,25 +70,21 @@ context(
 
                 // Check fields visible to admin in project edit view
                 cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
-                cy.wrap(this.portfolio_labels).each(function (label) {
-                    if (!config.fieldsWithNoProjectEditLabel.includes(label.field)) {
-                        cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
-                        cy.get(`[data-cy=${label.field}]`).should('exist');
-                    }
+                cy.wrap(fields).each(function (label) {
+                    cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
+                    cy.get(`[data-cy=${label.field}]`).should('exist');
                 });
 
                 // Check fields hidden to editor in project edit view
                 cy.loginEditor();
                 cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
-                cy.wrap(this.portfolio_labels).each(function (label) {
-                    if (!config.fieldsWithNoProjectEditLabel.includes(label.field)) {
-                        if (label.editorcanview || (label.adminonly_lock && ! label.admin)) {
-                            cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
-                            cy.get(`[data-cy=${label.field}]`).should('exist');
-                        } else {
-                            cy.get(`[data-cy=${label.field}_label_vw]`).should('not.exist');
-                            cy.get(`[data-cy=${label.field}]`).should('not.exist');
-                        }
+                cy.wrap(fields).each(function (label) {
+                    if (label.editorcanview || (label.adminonly_lock && !label.admin)) {
+                        cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
+                        cy.get(`[data-cy=${label.field}]`).should('exist');
+                    } else {
+                        cy.get(`[data-cy=${label.field}_label_vw]`).should('not.exist');
+                        cy.get(`[data-cy=${label.field}]`).should('not.exist');
                     }
                 });
 

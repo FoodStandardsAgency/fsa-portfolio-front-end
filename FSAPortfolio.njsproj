@@ -78,6 +78,9 @@
     <Content Include="app\views\theme\layout.html" />
     <Content Include="app\views\theme\scripts.html" />
     <Content Include="app\views\_globals.html" />
+    <Content Include="docs\FIELDS.md">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="test\cypress.env.json">
       <SubType>Code</SubType>
     </Content>
@@ -112,6 +115,7 @@
     </Content>
     <Content Include="routes\suppliers.js" />
     <Content Include="server.js" />
+    <Content Include="test\package.json" />
     <Content Include="test\textUtils.test.js">
       <SubType>Code</SubType>
     </Content>
@@ -165,6 +169,7 @@
     <Folder Include="app\styles\" />
     <Folder Include="app\views" />
     <Folder Include="app\views\theme\" />
+    <Folder Include="docs\" />
     <Folder Include="test\cypress\" />
     <Folder Include="test\cypress\fixtures\" />
     <Folder Include="test\cypress\integration\" />

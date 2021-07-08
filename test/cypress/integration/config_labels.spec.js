@@ -3,12 +3,15 @@ var urls = require("../support/urls");
 var users = require("../support/users");
 var portfolios = require("../support/portfolios");
 var config = require("../support/config_helpers");
+const _ = require("lodash");
 
 context(
     "I can configure portfolios.",
     function () {
         before(function () {
             cy.getPortfolioConfig(portfolios.TEST_PORTFOLIO);
+        });
+        beforeEach(function () {
             cy.loginAdmin();
         });
         describe("I can configure field labels.", function () {
@@ -31,9 +34,11 @@ context(
 
             it("Field labels are displayed in the project edit page.", function () {
 
+                var fields = _.filter(this.portfolio_labels, f => !config.fieldsWithNoProjectEditLabel.includes(f.field));
+
                 // Configure labels
                 cy.visit(urls.appRelative.PortfolioConfigure(this.portfolio));
-                cy.wrap(this.portfolio_labels).each(function (label) {
+                cy.wrap(fields).each(function (label) {
                     var newLabel = `${label.field} test label`;
                     config.setFieldIncluded(label.field);
                     config.setLabelText(label.field, newLabel);
@@ -42,11 +47,9 @@ context(
 
                 // Check labels in project edit view
                 cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
-                cy.wrap(this.portfolio_labels).each(function (label) {
-                    if (!config.fieldsWithNoProjectEditLabel.includes(label.field)) {
-                        var newLabel = `${label.field} test label`;
-                        cy.get(`[data-cy=${label.field}_label_vw]`).contains(newLabel);
-                    }
+                cy.wrap(fields).each(function (label) {
+                    var newLabel = `${label.field} test label`;
+                    cy.get(`[data-cy=${label.field}_label_vw]`).contains(newLabel);
                 });
             });
 

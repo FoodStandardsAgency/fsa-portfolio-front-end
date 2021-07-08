@@ -6,8 +6,10 @@ var portfolios = require("../support/portfolios");
 context(
     "I can configure portfolios.",
     function () {
-        beforeEach(function () {
+        before(function () {
             cy.getPortfolioConfig(portfolios.TEST_PORTFOLIO);
+        });
+        beforeEach(function () {
             cy.loginAdmin();
         });
         describe("I can configure and edit fields.", () => {
