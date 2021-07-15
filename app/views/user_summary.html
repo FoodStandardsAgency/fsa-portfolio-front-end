@@ -71,7 +71,7 @@
 	<div class="col-xl-2 col-md-2 col-sm-2 py-3">
 		{% if phase.projects.length > 0 %}
 
-		<ul class="link-list border-{{phase.viewkey}}">
+		<ul class="link-list person-view border-{{phase.viewkey}}">
 			{% for project in phase.projects %}
 			<li>
 				<a href="/{{portfolio}}/projects/{{ project.project_id }}" class="nodec">{{ project.name | safe}}</a>

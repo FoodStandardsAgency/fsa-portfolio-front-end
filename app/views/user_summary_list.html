@@ -60,7 +60,7 @@
 		<h2 class="heading-large service-area"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name | safe }}</a></h2>
 		{% for phase in summary.phases %}
 		{% if phase.projects.length > 0 %}
-		<ul class="link-list border-{{phase.viewkey}}">
+		<ul class="link-list person-view border-{{phase.viewkey}}">
 			{% for project in phase.projects %}
 			<li>
 				<a href="/{{portfolio}}/projects/{{ project.project_id }}" class="nodec">{{ project.name | safe}}</a>

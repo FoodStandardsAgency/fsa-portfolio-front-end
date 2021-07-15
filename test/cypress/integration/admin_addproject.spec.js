@@ -49,7 +49,7 @@ context(
 
             });
 
-            it.only('Add a new project with required fields set.', function () {
+            it('Add a new project with required fields set.', function () {
 
                 var requiredFields = _.filter(this.portfolio_labels, l => l.required);
                 if (requiredFields.length == 0) throw new Error('This test requires at least one field to have "required=true": the current portfolio has none.');
