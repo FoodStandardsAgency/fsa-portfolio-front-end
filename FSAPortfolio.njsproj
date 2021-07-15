@@ -117,7 +117,6 @@
     </Content>
     <Content Include="routes\suppliers.js" />
     <Content Include="server.js" />
-    <Content Include="test\package.json" />
     <Content Include="test\textUtils.test.js">
       <SubType>Code</SubType>
     </Content>
