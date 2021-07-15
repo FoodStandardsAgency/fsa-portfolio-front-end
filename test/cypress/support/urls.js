@@ -8,7 +8,7 @@ const appRelative = {
     PortfolioAdmin: (portfolio) => `/${portfolio}/portfolio-team`,
     PortfolioConfigure: (portfolio) => `/${portfolio}/configure`,
     ProjectEdit: (portfolio, projectId) => `/${portfolio}/edit/${projectId}`,
-    ProjectView: (portfolio, projectId) => `/${portfolio}/projects/${projectId}`
+    ProjectView: (portfolio, projectId) => `/${portfolio}/Projects/${projectId}`
 };
 
 const fullUrl = {
@@ -18,7 +18,9 @@ const fullUrl = {
     HOME_PAGE: `${base}${appRelative.HOME_PAGE}`,
     PortfolioHome: (portfolio) => `${base}${appRelative.PortfolioHome(portfolio)}`,
     PortfolioAdmin: (portfolio) => `${base}${appRelative.PortfolioAdmin(portfolio)}`,
-    PortfolioConfigure: (portfolio) => `${base}${appRelative.PortfolioConfigure(portfolio)}`
+    PortfolioConfigure: (portfolio) => `${base}${appRelative.PortfolioConfigure(portfolio)}`,
+    ProjectView: (portfolio, projectid) => `${base}${appRelative.ProjectView(portfolio, projectid)}`,
+    ProjectEdit: (portfolio, projectid) => `${base}${appRelative.ProjectEdit(portfolio, projectid)}`
 };
 
 

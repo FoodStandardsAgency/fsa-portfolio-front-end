@@ -121,7 +121,7 @@ ul.updates {margin-left: 0; padding-left:0}
 
 .project-summary-data {
 	font-family: Fira Sans;
-	font-size: 0.7em;
+	font-size: 0.8em;
 }
 .project-summary-data label {
 	font-weight: bold;
@@ -150,8 +150,8 @@ ul.updates {margin-left: 0; padding-left:0}
 			content: "";
 			display: block;
 			height: 1px;
-			background: rgba(0,0,0,.1);
-		}
+/*			background: rgba(0,0,0,.1);
+*/		}
 		.link-list li:last-child:after {
 			background: rgba(0,0,0,0);
 		}

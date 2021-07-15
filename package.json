@@ -19,7 +19,6 @@
     "autoprefixer": "^10.1.0",
     "chokidar": "latest",
     "css-loader": "^5.0.1",
-    "cypress": "^7.6.0",
     "exports-loader": "^1.1.1",
     "mocha": "^9.0.1",
     "node-sass": "^5.0.0",

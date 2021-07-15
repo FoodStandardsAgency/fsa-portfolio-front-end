@@ -218,13 +218,11 @@
 					</div>
 
 					{% case 'namedlink' %}
-					<div data-cy="{{label.field}}">
-						<div class="{{link1_input_col}}">
-							<input type="text" class="form-control form-input-box" id="id_{{label.field}}_name" name="{{label.field}}[name]" data-cy="{{label.field}}_name" aria-label="{{label.label}}" placeholder="Enter {{label.label}} name" value="{{project[label.field].name}}" {% if readonly %}readonly{% endif %}>
-						</div>
-						<div class="{{link2_input_col}}">
-							<input type="text" class="form-control form-input-box" id="id_{{label.field}}_link" name="{{label.field}}[link]" data-cy="{{label.field}}_link" aria-label="{{label.label}}" placeholder="Enter {{label.label}} link" value="{{project[label.field].link}}" {% if readonly %}readonly{% endif %}>
-						</div>
+					<div class="{{link1_input_col}}">
+						<input type="text" class="form-control form-input-box" id="id_{{label.field}}_name" name="{{label.field}}[name]" data-cy="{{label.field}}_name" aria-label="{{label.label}}" placeholder="Enter {{label.label}} name" value="{{project[label.field].name}}" {% if readonly %}readonly{% endif %}>
+					</div>
+					<div class="{{link2_input_col}}">
+						<input type="text" class="form-control form-input-box" id="id_{{label.field}}_link" name="{{label.field}}[link]" data-cy="{{label.field}}_link" aria-label="{{label.label}}" placeholder="Enter {{label.label}} link" value="{{project[label.field].link}}" {% if readonly %}readonly{% endif %}>
 					</div>
 
 					{% case 'budget' %}

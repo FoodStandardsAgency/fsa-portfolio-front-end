@@ -81,9 +81,11 @@
     <Content Include="docs\FIELDS.md">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="test\cypress.env.json">
+    <None Include="Properties\PublishProfiles\LocalWorkProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\LocalSITTestProfile.pubxml" />
+    <None Include="test\cypress.env.json">
       <SubType>Code</SubType>
-    </Content>
+    </None>
     <Content Include="test\cypress.json" />
     <Content Include="test\cypress\fixtures\example.json" />
     <Content Include="test\cypress\integration\config_fieldtype_optionlist.spec.js" />
@@ -170,6 +172,8 @@
     <Folder Include="app\views" />
     <Folder Include="app\views\theme\" />
     <Folder Include="docs\" />
+    <Folder Include="Properties\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="test\cypress\" />
     <Folder Include="test\cypress\fixtures\" />
     <Folder Include="test\cypress\integration\" />

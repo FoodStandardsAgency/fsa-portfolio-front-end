@@ -64,6 +64,18 @@
 			{% for project in phase.projects %}
 			<li>
 				<a href="/{{portfolio}}/projects/{{ project.project_id }}">{{ project.name | safe}}</a>
+				{% if project.date.value.date %}
+				<div class="project-summary-data">
+					<label>{{project.date.label}}:</label>
+					<span>{{ project.date.value.date | date(getProjectDateFormat(project.date.value.flag))}}</span>
+				</div>
+				{% endif %}
+				{% if project.priority.value %}
+				<div class="project-summary-data">
+					<label>{{project.priority.label}}:</label>
+					<span>{{project.priority.value}}</span>
+				</div>
+				{% endif %}
 				{% if project.new_flag == 'Y' %}
 				<span class="new_tag">NEW</span>
 				{% endif %}

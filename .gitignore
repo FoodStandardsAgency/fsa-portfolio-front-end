@@ -141,3 +141,4 @@ bld/
 package-lock.json
 *.env.json
 /test/cypress/videos
+/Properties/PublishProfiles/*
