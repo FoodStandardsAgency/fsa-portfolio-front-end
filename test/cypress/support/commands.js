@@ -58,7 +58,11 @@ Cypress.Commands.add('getPortfolioConfig', (portfolio) => {
             headers: { 'TestAPIKey': Cypress.env("TEST_API_KEY") }
         })
         .then((response) => response.body).as('portfolio_config')
-        .then((config) => config.labels).as('portfolio_labels');
+        .then((config) => config.labels).as('portfolio_labels')
+        .then((labels) => {
+            var requiredFields = _.filter(labels, l => l.required);
+            cy.wrap(requiredFields).as('required_fields');
+        });
     cy.wrap(portfolio).as('portfolio');
 });
 

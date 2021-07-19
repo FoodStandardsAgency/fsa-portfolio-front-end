@@ -18,8 +18,8 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
-var urls = require("./urls");
-var portfolios = require("./portfolios");
+const portfolios = require("./portfolios");
+const project = require("./project");
 
 before(function() {
     // When running locally changing the test also restarts the instance of the web app!
@@ -29,6 +29,10 @@ before(function() {
     // Use the base Url in our env file
     const baseUrl = Cypress.env('baseUrl');
     Cypress.config("baseUrl", baseUrl);
+
+    cy.loginAdmin();
+    project.deleteAllProjects(portfolios.TEST_PORTFOLIO);
+
 });
 
 

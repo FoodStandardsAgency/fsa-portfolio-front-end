@@ -70,8 +70,8 @@ function arrow(id) {
 	
 	<!-- Change for access groups -->
 	<div class="col-xl-3 col-md-3 col-sm-4 py-3 text-right">
-		{% if hasAdminRole(identity, portfolio) %}<a href="/{{portfolio}}/delete/{{ data.project_id }}" class="special-link"><button class="delete-button">Delete</button></a>{% endif %}
-		{% if hasEditorRole(identity, portfolio) %}<a href="/{{portfolio}}/edit/{{ data.project_id }}" class="special-link"><button class="update-button">Update</button></a>{% endif %}
+		{% if hasAdminRole(identity, portfolio) %}<a href="/{{portfolio}}/delete/{{ data.project_id }}" class="special-link"><button data-cy="delete-project-button" class="delete-button">Delete</button></a>{% endif %}
+		{% if hasEditorRole(identity, portfolio) %}<a href="/{{portfolio}}/edit/{{ data.project_id }}" class="special-link"><button data-cy="edit-project-button" class="update-button">Update</button></a>{% endif %}
 	</div>
 
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>

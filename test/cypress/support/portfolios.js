@@ -1,8 +1,8 @@
 
 const portfolios = {
-    TEST_PORTFOLIO: "sit",
-    ALL: ["sit"],
-    TEST_PROJECT: "DV2103009"
+    TEST_PORTFOLIO: Cypress.env('portfolio'),
+    ALL: Cypress.env('portfolios'),
+    TEST_PROJECT: Cypress.env('projectid')
 }
 
 module.exports = portfolios;

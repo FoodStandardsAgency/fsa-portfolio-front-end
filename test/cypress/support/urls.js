@@ -8,7 +8,9 @@ const appRelative = {
     PortfolioAdmin: (portfolio) => `/${portfolio}/portfolio-team`,
     PortfolioConfigure: (portfolio) => `/${portfolio}/configure`,
     ProjectEdit: (portfolio, projectId) => `/${portfolio}/edit/${projectId}`,
-    ProjectView: (portfolio, projectId) => `/${portfolio}/Projects/${projectId}`
+    ProjectView: (portfolio, projectId) => `/${portfolio}/Projects/${projectId}`,
+    ProjectDelete: (portfolio, projectId) => `/${portfolio}/delete/${projectId}`,
+    ProjectDeleteConfirmed: (portfolio) => `/${portfolio}/delete_project_process`
 };
 
 const fullUrl = {
@@ -20,7 +22,9 @@ const fullUrl = {
     PortfolioAdmin: (portfolio) => `${base}${appRelative.PortfolioAdmin(portfolio)}`,
     PortfolioConfigure: (portfolio) => `${base}${appRelative.PortfolioConfigure(portfolio)}`,
     ProjectView: (portfolio, projectid) => `${base}${appRelative.ProjectView(portfolio, projectid)}`,
-    ProjectEdit: (portfolio, projectid) => `${base}${appRelative.ProjectEdit(portfolio, projectid)}`
+    ProjectEdit: (portfolio, projectid) => `${base}${appRelative.ProjectEdit(portfolio, projectid)}`,
+    ProjectDelete: (portfolio, projectid) => `${base}${appRelative.ProjectDelete(portfolio, projectid)}`,
+    ProjectDeleteConfirmed: (portfolio) => `${base}${appRelative.ProjectDeleteConfirmed(portfolio)}`
 };
 
 

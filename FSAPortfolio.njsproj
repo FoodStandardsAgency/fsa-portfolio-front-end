@@ -88,6 +88,7 @@
     </None>
     <Content Include="test\cypress.json" />
     <Content Include="test\cypress\fixtures\example.json" />
+    <Content Include="test\cypress\integration\editor_deleteproject.spec.js" />
     <Content Include="test\cypress\integration\config_fieldtype_optionlist.spec.js" />
     <Content Include="test\cypress\integration\config_fields.spec.js" />
     <Content Include="test\cypress\integration\config_labels.spec.js" />
@@ -102,6 +103,9 @@
     </Content>
     <Content Include="test\cypress\support\index.js" />
     <Content Include="test\cypress\support\portfolios.js" />
+    <Content Include="test\cypress\support\project.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="test\cypress\support\users.js" />
     <Content Include="test\cypress\support\urls.js">
       <SubType>Code</SubType>
