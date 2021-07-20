@@ -1,7 +1,8 @@
 /// <reference types="cypress" />
-var urls = require("../support/urls");
-var portfolios = require("../support/portfolios");
-var config = require("../support/config_helpers");
+const urls = require("../support/urls");
+const portfolios = require("../support/portfolios");
+const config = require("../support/config_helpers");
+const project = require("../support/project");
 
 context(
     "I can configure portfolios.",
@@ -9,8 +10,9 @@ context(
         before(function () {
             cy.getPortfolioConfig(portfolios.TEST_PORTFOLIO);
         });
-        beforeEach(() => {
+        beforeEach(function(){
             cy.loginAdmin();
+            project.addProject(this.portfolio, this.required_fields, { tag: "config_fieldtype_optionlist::before()" });
         });
 
         describe("I can configure field options.", function () {
@@ -27,7 +29,7 @@ context(
                 cy.get(`[data-cy=submit]`).click();
 
                 // Check options in project edit view
-                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
+                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, this.project_id));
                 cy.wrap(this.portfolio_labels).each(function (label) {
                     if (label.inputtype == "optionlist") {
                         var expected = [`${label.field}1`, `${label.field}2`, `${label.field}3`];

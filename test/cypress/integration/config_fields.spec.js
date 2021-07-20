@@ -1,15 +1,20 @@
 /// <reference types="cypress" />
-var urls = require("../support/urls");
-var users = require("../support/users");
-var portfolios = require("../support/portfolios");
-var config = require("../support/config_helpers");
+const urls = require("../support/urls");
+const users = require("../support/users");
+const portfolios = require("../support/portfolios");
+const config = require("../support/config_helpers");
+const project = require("../support/project");
 const _ = require("lodash");
 
 context(
     "I can configure portfolios.",
     function () {
         before(function () {
-            cy.getPortfolioConfig(portfolios.TEST_PORTFOLIO);
+            cy.getPortfolioConfig(portfolios.TEST_PORTFOLIO).then(function () {
+                // Need a project to view
+                cy.loginAdmin();
+                project.addProject(this.portfolio, this.required_fields, { tag: "config_fields::before()" });
+            });
         });
         describe("I can configure fields.", function () {
 
@@ -26,7 +31,7 @@ context(
                 cy.get(`[data-cy=submit]`).click();
 
                 // Check labels in project edit view
-                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
+                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, this.project_id));
                 cy.wrap(fields).each(function (label) {
                     cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
                 });
@@ -45,7 +50,7 @@ context(
                 cy.get(`[data-cy=submit]`).click();
 
                 // Check labels in project edit view
-                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
+                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, this.project_id));
                 cy.wrap(fields).each(function (label) {
                     if (label.included && label.included_lock)
                         cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
@@ -69,22 +74,19 @@ context(
                 cy.get(`[data-cy=submit]`).click();
 
                 // Check fields visible to admin in project edit view
-                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
+                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, this.project_id));
                 cy.wrap(fields).each(function (label) {
-                    cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
-                    cy.get(`[data-cy=${label.field}]`).should('exist');
+                    config.checkProjectEditLabel(label, 'exist');
                 });
 
                 // Check fields hidden to editor in project edit view
                 cy.loginEditor();
-                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
+                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, this.project_id));
                 cy.wrap(fields).each(function (label) {
                     if (label.editorcanview || (label.adminonly_lock && !label.admin)) {
-                        cy.get(`[data-cy=${label.field}_label_vw]`).should('exist');
-                        cy.get(`[data-cy=${label.field}]`).should('exist');
+                        config.checkProjectEditLabel(label, 'exist');
                     } else {
-                        cy.get(`[data-cy=${label.field}_label_vw]`).should('not.exist');
-                        cy.get(`[data-cy=${label.field}]`).should('not.exist');
+                        config.checkProjectEditLabel(label, 'not.exist');
                     }
                 });
 

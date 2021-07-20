@@ -40,6 +40,20 @@ module.exports = {
             cy.get(`[data-cy=${field}_inputvalue]`).clear().type(value);
         else
             cy.get(`[data-cy=${field}_inputvalue]`).clear();
+    },
+
+    checkProjectEditLabel: (label, condition) => {
+        cy.get(`[data-cy=${label.field}_label_vw]`).should(condition);
+        switch (label.inputtype) {
+            case "namedlink":
+                cy.get(`[data-cy=${label.field}_name]`).should(condition);
+                cy.get(`[data-cy=${label.field}_link]`).should(condition);
+                break;
+            default:
+                cy.get(`[data-cy=${label.field}]`).should(condition);
+                break;
+        }
+
     }
 
 };

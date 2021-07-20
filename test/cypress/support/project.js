@@ -27,7 +27,7 @@ function addProject(portfolio, requiredFields, opts) {
 
     // Enter data
     cy.wrap(requiredFields).each(function (label) {
-        enterFieldValue(label);
+        enterFieldValue(label, null, opts?.tag);
     });
 
     // Process options
@@ -55,8 +55,9 @@ function addProject(portfolio, requiredFields, opts) {
     });
 };
 
-function enterFieldValue(label, prefix) {
+function enterFieldValue(label, prefix, tag) {
     prefix = prefix ?? "SIT PREFIX: ";
+    var text = tag ? `${prefix}${label.fieldtitle} [${tag}]` : `${prefix}${label.fieldtitle}`;
     switch (label.inputtype) {
         case "auto":
             break;
@@ -98,7 +99,7 @@ function enterFieldValue(label, prefix) {
         case "mediumfreetextarea":
         case "largefreetextarea":
         case "freetext":
-            cy.get(`[data-cy=${label.field}]`).type(`${prefix}${label.fieldtitle}`);
+            cy.get(`[data-cy=${label.field}]`).type(text);
             break;
         default:
             cy.get(`input[data-cy=${fieldName}]`);

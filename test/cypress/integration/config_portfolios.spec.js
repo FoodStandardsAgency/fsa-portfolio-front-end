@@ -1,7 +1,8 @@
 /// <reference types="cypress" />
-var urls = require("../support/urls");
-var users = require("../support/users");
-var portfolios = require("../support/portfolios");
+const urls = require("../support/urls");
+const portfolios = require("../support/portfolios");
+const project = require("../support/project");
+
 
 context(
     "I can configure portfolios.",
@@ -11,12 +12,13 @@ context(
         });
         beforeEach(function () {
             cy.loginAdmin();
+            project.addProject(this.portfolio, this.required_fields, { tag: "config_portfolios::before()" });
         });
         describe("I can configure and edit fields.", () => {
             it('I can set a field to included and edit its value.', function () {
                 cy.wrap(this.portfolio_labels).each(function (label) {
                     cy.getLabelConfig(label.field).then(function () {
-                        cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT)).then(function () {
+                        cy.visit(urls.appRelative.ProjectEdit(this.portfolio, this.project_id)).then(function () {
                             var fieldName = this.fielddata.field;
                             var fieldDisplayLabel = this.fielddata.displaylabel;
                             var fieldIncluded = this.fielddata.included;

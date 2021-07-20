@@ -1,9 +1,11 @@
 /// <reference types="cypress" />
-var urls = require("../support/urls");
-var users = require("../support/users");
-var portfolios = require("../support/portfolios");
-var config = require("../support/config_helpers");
+const urls = require("../support/urls");
+const users = require("../support/users");
+const portfolios = require("../support/portfolios");
+const config = require("../support/config_helpers");
+const project = require("../support/project");
 const _ = require("lodash");
+
 
 context(
     "I can configure portfolios.",
@@ -13,6 +15,7 @@ context(
         });
         beforeEach(function () {
             cy.loginAdmin();
+            project.addProject(this.portfolio, this.required_fields, { tag: "config_labels::before()" });
         });
         describe("I can configure field labels.", function () {
 
@@ -46,7 +49,7 @@ context(
                 cy.get(`[data-cy=submit]`).click();
 
                 // Check labels in project edit view
-                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
+                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, this.project_id));
                 cy.wrap(fields).each(function (label) {
                     var newLabel = `${label.field} test label`;
                     cy.get(`[data-cy=${label.field}_label_vw]`).contains(newLabel);
@@ -64,7 +67,7 @@ context(
                 cy.get(`[data-cy=submit]`).click();
 
                 // Check labels in project edit view
-                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, portfolios.TEST_PROJECT));
+                cy.visit(urls.appRelative.ProjectEdit(this.portfolio, this.project_id));
                 cy.wrap(this.portfolio_labels).each(function (label) {
                     if (!config.fieldsWithNoProjectEditLabel.includes(label.field)) {
                         cy.get(`[data-cy=${label.field}_label_vw]`).contains(label.fieldtitle);

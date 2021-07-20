@@ -20,6 +20,7 @@ import './commands'
 // require('./commands')
 const portfolios = require("./portfolios");
 const project = require("./project");
+const apiBaseUrl = `${Cypress.env("BACKEND_PROTOCOL")}://${Cypress.env("BACKEND_HOST")}/${Cypress.env("BACKEND_API_BASE")}`;
 
 before(function() {
     // When running locally changing the test also restarts the instance of the web app!
@@ -32,6 +33,14 @@ before(function() {
 
     cy.loginAdmin();
     project.deleteAllProjects(portfolios.TEST_PORTFOLIO);
+
+    cy.request(
+        {
+            url: `${apiBaseUrl}/Portfolios/${portfolios.TEST_PORTFOLIO}/cleanreservations`,
+            headers: { 'TestAPIKey': Cypress.env("TEST_API_KEY") }
+        });
+
+
 
 });
 
