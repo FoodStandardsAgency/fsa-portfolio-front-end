@@ -10,7 +10,7 @@ module.exports = {
 
 }
 
-function addProject(portfolio, requiredFields) {
+function addProject(portfolio, requiredFields, opts) {
     // Open add project page
     cy.visit(urls.appRelative.PortfolioAdmin(portfolio));
     cy.get('[data-cy=add-project-link]').click();
@@ -30,8 +30,22 @@ function addProject(portfolio, requiredFields) {
         enterFieldValue(label);
     });
 
+    // Process options
+    if (opts?.dependencies) {
+        cy.wrap(opts.dependencies).each(function (dep) {
+            cy.get('[data-cy=dependencies]').next().click().type(dep);
+            cy.get('[data-cy=dependencies]').next().next().contains(dep).click();
+        });
+    }
+    if (opts?.related) {
+        cy.wrap(opts.related).each(function (rel) {
+            cy.get('[data-cy=rels]').next().click().type(rel);
+            cy.get('[data-cy=rels]').next().next().contains(rel).click();
+        });
+    }
+
     // Try submit
-    cy.get('[data-cy=submit').click().then(function () {
+    return cy.get('[data-cy=submit').click().then(function () {
         var url = urls.fullUrl.ProjectView(this.portfolio, this.project_id);
         cy.log(url);
         cy.url().should('equal', url);
@@ -95,7 +109,7 @@ function enterFieldValue(label, prefix) {
 function deleteProject(portfolio, projectId) {
     cy.visit(urls.appRelative.ProjectView(portfolio, projectId));
     cy.get('[data-cy=delete-project-button]').click().url().should("equal", urls.fullUrl.ProjectDelete(portfolio, projectId));
-    cy.get('[data-cy=submit]').click().url().should("equal", urls.fullUrl.ProjectDeleteConfirmed(portfolio));
+    return cy.get('[data-cy=submit]').click().url().should("equal", urls.fullUrl.ProjectDeleteConfirmed(portfolio));
 }
 
 function deleteAllProjects(portfolio) {

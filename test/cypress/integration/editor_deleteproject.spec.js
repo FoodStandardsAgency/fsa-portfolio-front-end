@@ -17,16 +17,49 @@ context(
         });
         describe("I can delete a project.", () => {
 
-            it('Delete a project with dependencies on another project.', function() {
-
-                if (this.required_fields.length == 0) throw new Error('This test requires at least one field to have "required=true": the current portfolio has none.');
-
-                project.addProject(this.portfolio, this.required_fields);
-                cy.get('@project_id').then((projectId) => {
-                    project.deleteProject(this.portfolio, projectId);
+            it('Delete a project with a dependency and a related project.', function() {
+                project.addProject(this.portfolio, this.required_fields).then(function () { 
+                    cy.get('@project_id').then(function(project1Id) {
+                        project.addProject(this.portfolio, this.required_fields).then(function () {
+                            cy.get('@project_id').then(function (project2Id) {
+                                project.addProject(this.portfolio, this.required_fields, { dependencies: [project1Id], related: [project2Id] }).then(function () {
+                                    cy.get('@project_id').then(function (project3Id) {
+                                        // Project 3 has 1 as a dependency and 2 as related
+                                        project.deleteProject(this.portfolio, project3Id);
+                                    });
+                                });
+                            });
+                        });
+                    });
                 });
-
             });
+
+            it('Delete a project dependency.', function () {
+                project.addProject(this.portfolio, this.required_fields).then(function () {
+                    cy.get('@project_id').then(function (project1Id) {
+                        project.addProject(this.portfolio, this.required_fields, { dependencies: [project1Id] }).then(function () {
+                            cy.get('@project_id').then(function (project2Id) {
+                                // Project 2 has 1 as a dependency
+                                project.deleteProject(this.portfolio, project1Id);
+                            });
+                        });
+                    });
+                });
+            });
+
+            it('Delete a project relation.', function () {
+                project.addProject(this.portfolio, this.required_fields).then(function () {
+                    cy.get('@project_id').then(function (project1Id) {
+                        project.addProject(this.portfolio, this.required_fields, { related: [project1Id] }).then(function () {
+                            cy.get('@project_id').then(function (project2Id) {
+                                // Project 2 has 1 as a relation
+                                project.deleteProject(this.portfolio, project1Id);
+                            });
+                        });
+                    });
+                });
+            });
+
 
         });
     });
