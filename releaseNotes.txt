@@ -5,6 +5,10 @@ DEV2105001 Show admin fields in filter view to all users
 - User summary view
 - ProjectType filter in summary view
 
+Config Changes
+- Set to Node Version 14 in general config
+
+
 Version 0.1.9 - Released 24/06/2021
 ===================================
 - PowerBI Data API
