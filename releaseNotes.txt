@@ -1,4 +1,4 @@
-Version 0.1.10 - Released 27/03/2021
+Version 0.1.10 - Released 22/07/2021
 ====================================
 DEV2105001 Show admin fields in filter view to all users
 - Budget filter options
