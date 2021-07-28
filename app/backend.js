@@ -1,6 +1,8 @@
 const got = require('got');
 const backEndApiBase = `${process.env.BACKEND_PROTOCOL}://${process.env.BACKEND_HOST}/${process.env.BACKEND_API_BASE}`;
-const backEndTimeout = process.env.BACKEND_TIMEOUT ?? 90000
+const backEndTimeout = process.env.BACKEND_TIMEOUT ?? 90000;
+const backEndTimeThreshold = process.env.BACKEND_TIME_THRESHOLD ?? 10000;
+
 const api = got.extend({
 	prefixUrl: backEndApiBase,
 	headers: { 'APIKey': process.env.BACKEND_API_KEY },
@@ -18,6 +20,17 @@ const api = got.extend({
 					}
 				}
             }
+		],
+		afterResponse: [
+			(response, retryWithMergedOptions) => {
+
+				if (response.timings.phases.total > backEndTimeThreshold) {
+					console.log(`Request over time threshold for ${response.requestUrl}`);
+					console.log(response.timings);
+                }
+				// No changes otherwise
+				return response;
+			}
 		],
 		beforeError: [
 			error => {
