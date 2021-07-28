@@ -4,6 +4,7 @@ const api = got.extend({
 	prefixUrl: backEndApiBase,
 	headers: { 'APIKey': process.env.BACKEND_API_KEY },
 	responseType: 'json',
+	timeout: { request: 90000 },
 	hooks: {
 		beforeRequest: [
 			options => {
@@ -16,6 +17,19 @@ const api = got.extend({
 					}
 				}
             }
+		],
+		beforeError: [
+			error => {
+				if (error.code == 'ETIMEDOUT') {
+					const { response } = error;
+					console.log(error);
+					if (response && response.body) {
+						console.log("--------------------- RESPONSE --------------------------")
+						console.log(response);
+					}
+				}
+				return error;
+			}
 		]
 	}
 });
