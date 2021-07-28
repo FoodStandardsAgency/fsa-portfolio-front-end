@@ -28,8 +28,10 @@ function handleError(error, res) {
 	else {
 
 		console.log('***************************');
+		var message = 'Unknown error';
 		if (error.message) {
 			console.log(error.message);
+			message = error.message;
 		}
 		if (error.stack) {
 			console.log(error.stack);
@@ -42,7 +44,7 @@ function handleError(error, res) {
 		}
 		console.log('***************************');
 		if (res) {
-			res.render('error_page', { message: `System error. Please contact support${statusCode}.` });
+			res.render('error_page', { message: `System error. Please contact support (${message}).` });
 			return true;
 		}
 		else {

@@ -1,10 +1,11 @@
 const got = require('got');
 const backEndApiBase = `${process.env.BACKEND_PROTOCOL}://${process.env.BACKEND_HOST}/${process.env.BACKEND_API_BASE}`;
+const backEndTimeout = process.env.BACKEND_TIMEOUT ?? 90000
 const api = got.extend({
 	prefixUrl: backEndApiBase,
 	headers: { 'APIKey': process.env.BACKEND_API_KEY },
 	responseType: 'json',
-	timeout: { request: 90000 },
+	timeout: { request: backEndTimeout },
 	hooks: {
 		beforeRequest: [
 			options => {
@@ -22,7 +23,10 @@ const api = got.extend({
 			error => {
 				if (error.code == 'ETIMEDOUT') {
 					const { response } = error;
-					console.log(error);
+					if (error.request?.requestUrl) {
+						console.log(`Request timed out for ${error.request.requestUrl}`);
+					}
+					console.log(error.timings);
 					if (response && response.body) {
 						console.log("--------------------- RESPONSE --------------------------")
 						console.log(response);
