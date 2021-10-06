@@ -36,7 +36,7 @@ before(function() {
 
     cy.request(
         {
-            url: `${apiBaseUrl}/Portfolios/${portfolios.TEST_PORTFOLIO}/cleanreservations`,
+            url: `${apiBaseUrl}/Portfolios/cleanreservations`,
             headers: { 'TestAPIKey': Cypress.env("TEST_API_KEY") }
         });
 

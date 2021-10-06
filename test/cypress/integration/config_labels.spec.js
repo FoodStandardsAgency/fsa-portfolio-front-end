@@ -15,7 +15,7 @@ context(
         });
         beforeEach(function () {
             cy.loginAdmin();
-            project.addProject(this.portfolio, this.required_fields, { tag: "config_labels::before()" });
+            project.addProject(this.portfolio, this.required_fields, { tag: "project to test field labels" });
         });
         describe("I can configure field labels.", function () {
 

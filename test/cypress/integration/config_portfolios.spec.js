@@ -12,7 +12,7 @@ context(
         });
         beforeEach(function () {
             cy.loginAdmin();
-            project.addProject(this.portfolio, this.required_fields, { tag: "config_portfolios::before()" });
+            project.addProject(this.portfolio, this.required_fields, { tag: "project to test field editing" });
         });
         describe("I can configure and edit fields.", () => {
             it('I can set a field to included and edit its value.', function () {

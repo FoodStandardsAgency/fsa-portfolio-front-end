@@ -13,12 +13,12 @@ context(
             cy.getPortfolioConfig(portfolios.TEST_PORTFOLIO).then(function () {
                 // Need a project to view
                 cy.loginAdmin();
-                project.addProject(this.portfolio, this.required_fields, { tag: "config_fields::before()" });
+                project.addProject(this.portfolio, this.required_fields, { tag: "project used to test field configuration" });
             });
         });
         describe("I can configure fields.", function () {
 
-            it("Can include all fields from the project edit page.", function () {
+            it("Can include all fields in the project edit page.", function () {
                 var fields = _.filter(this.portfolio_labels, f => !config.fieldsWithNoProjectEditLabel.includes(f.field));
 
                 cy.loginAdmin();

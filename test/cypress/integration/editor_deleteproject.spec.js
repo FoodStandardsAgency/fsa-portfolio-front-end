@@ -18,11 +18,11 @@ context(
         describe("I can delete a project.", () => {
 
             it('Delete a project with a dependency and a related project.', function() {
-                project.addProject(this.portfolio, this.required_fields, { tag: "editor_deleteproject::it()" }).then(function () { 
+                project.addProject(this.portfolio, this.required_fields, { tag: "project dependecy to test deleting" }).then(function () { 
                     cy.get('@project_id').then(function(project1Id) {
-                        project.addProject(this.portfolio, this.required_fields, { tag: "editor_deleteproject::it()" }).then(function () {
+                        project.addProject(this.portfolio, this.required_fields, { tag: "project relation to test deleting" }).then(function () {
                             cy.get('@project_id').then(function (project2Id) {
-                                project.addProject(this.portfolio, this.required_fields, { dependencies: [project1Id], related: [project2Id], tag: "editor_deleteproject::it()" }).then(function () {
+                                project.addProject(this.portfolio, this.required_fields, { dependencies: [project1Id], related: [project2Id], tag: "project to test deleting projects with dependencies and relations" }).then(function () {
                                     cy.get('@project_id').then(function (project3Id) {
                                         // Project 3 has 1 as a dependency and 2 as related
                                         project.deleteProject(this.portfolio, project3Id);
@@ -35,9 +35,9 @@ context(
             });
 
             it('Delete a project dependency.', function () {
-                project.addProject(this.portfolio, this.required_fields, { tag: "editor_deleteproject::it()" }).then(function () {
+                project.addProject(this.portfolio, this.required_fields, { tag: "project dependency to test by deleting" }).then(function () {
                     cy.get('@project_id').then(function (project1Id) {
-                        project.addProject(this.portfolio, this.required_fields, { dependencies: [project1Id], tag: "editor_deleteproject::it()"  }).then(function () {
+                        project.addProject(this.portfolio, this.required_fields, { dependencies: [project1Id], tag: "project to test deleting dependencies"  }).then(function () {
                             cy.get('@project_id').then(function (project2Id) {
                                 // Project 2 has 1 as a dependency
                                 project.deleteProject(this.portfolio, project1Id);
@@ -48,9 +48,9 @@ context(
             });
 
             it('Delete a project relation.', function () {
-                project.addProject(this.portfolio, this.required_fields, { tag: "editor_deleteproject::it()" }).then(function () {
+                project.addProject(this.portfolio, this.required_fields, { tag: "project relation to test by deleting" }).then(function () {
                     cy.get('@project_id').then(function (project1Id) {
-                        project.addProject(this.portfolio, this.required_fields, { related: [project1Id], tag: "editor_deleteproject::it()" }).then(function () {
+                        project.addProject(this.portfolio, this.required_fields, { related: [project1Id], tag: "project to test deleting relations" }).then(function () {
                             cy.get('@project_id').then(function (project2Id) {
                                 // Project 2 has 1 as a relation
                                 project.deleteProject(this.portfolio, project1Id);

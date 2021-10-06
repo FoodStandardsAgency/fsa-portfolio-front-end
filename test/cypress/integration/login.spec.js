@@ -9,7 +9,7 @@ context(
         beforeEach(() => {
             cy.visit(urls.appRelative.LOGIN_PAGE);
         });
-        describe("Log in page loads.", () => {
+        describe("The log in page loads.", () => {
             it('Log in options are displayed.', () => {
                 cy.get("[data-cy=ad-auth-link]")
                     .should("have.text", "FSA employees - login with your Microsoft account");

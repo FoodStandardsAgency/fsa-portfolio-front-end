@@ -12,7 +12,7 @@ context(
         });
         beforeEach(function(){
             cy.loginAdmin();
-            project.addProject(this.portfolio, this.required_fields, { tag: "config_fieldtype_optionlist::before()" });
+            project.addProject(this.portfolio, this.required_fields, { tag: "project to test option lists" });
         });
 
         describe("I can configure field options.", function () {

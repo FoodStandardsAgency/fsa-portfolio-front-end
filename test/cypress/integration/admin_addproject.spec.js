@@ -53,7 +53,7 @@ context(
 
                 if (this.required_fields.length == 0) throw new Error('This test requires at least one field to have "required=true": the current portfolio has none.');
 
-                project.addProject(this.portfolio, this.required_fields, { tag: "admin_addproject::before()" });
+                project.addProject(this.portfolio, this.required_fields, { tag: "a new project with required fields set" });
 
             });
 
