@@ -3,12 +3,6 @@
 h1, h2, h3, h4			{font-family: 'Fira Sans', sans-serif;}
 p						{font-family: 'Open Sans', sans-serif; font-size:1.08em;}
 
-ul {
-    list-style-type: none;
-	padding-inline-start: 15px;
-	padding-top: 5px;
-	padding-right:5px;
-}
 
 a 		{color:#2d4c7d; text-decoration:underline; font-size:1.08em;}
 a:hover {background-color:#ebedad; border-bottom:2px solid black; color:black; text-decoration:none;}
@@ -119,17 +113,52 @@ ul.updates {margin-left: 0; padding-left:0}
 .txt-phase3  {color:#C03F0C;}
 .txt-phase4  {color:#5D6D36;}
 
+
+/* Lists of links */
+ul {
+	list-style-type: none;
+	padding: 0px;
+}
+
+	.project-summary-wrapper {
+		padding-top: 10px;
+		padding-left: 10px;
+		padding-right: 5px;
+		padding-bottom: 10px;
+
+		/* FAILS */
+		/*position: relative;*/
+		/*flex: 1;*/
+	}
+
+	.project-actions {
+		padding: 0px;
+	}
+
+		.project-actions .project-wrapper {
+			/*position: relative;*/
+			border: 3px solid #DE1219;
+
+			/*display:flex;*/
+		}
+
 .project-summary-data {
 	font-size: 1em;
 }
-.project-summary-data label {
-	font-weight: bold;
-	margin-bottom: 2px;
+
+	.project-summary-data label {
+		font-weight: bold;
+		margin-bottom: 2px;
+	}
+
+
+.project-actions-data {
+	background-color: #DE1219;
+	color: #fff;
+
+	/*flex: 1;*/
 }
 
-
-
-/* Lists of links */
 
 .link-list {
   font-size:16px;
@@ -139,21 +168,15 @@ ul.updates {margin-left: 0; padding-left:0}
   border-left:5px solid transparent;
 }
 
-	.link-list li {
+	.link-list .list-item {
 		margin-top: 1em;
 		margin-bottom: 1em;
 	}
 
-		.link-list li:after {
-			margin-top: 1em;
-			content: "";
-			display: block;
-			height: 1px;
-		}
-		.link-list.person-view li:after {
+		.link-list.person-view .list-item:after {
 			background: rgba(0,0,0,.1);
 		}
-	.link-list li:last-child:after {
+	.link-list .list-item:last-child:after {
 		background: rgba(0,0,0,0);
 	}
 
