@@ -72,7 +72,7 @@
 
 		<div class="link-list border-{{phase.viewkey}}">
 			{% for project in phase.projects %}
-			<div {% if project.actions %}class="list-item project-actions"{%else%}class="list-item"{% endif %}>
+			<div {% if actions and project.actions %}class="list-item project-actions"{%else%}class="list-item"{% endif %}>
 				<div class="project-wrapper">
 					<div class="project-summary-wrapper">
 						<a href="/{{portfolio}}/projects/{{ project.project_id }}" class="nodec">{{ project.name | safe}}</a>
@@ -92,7 +92,7 @@
 						<span class="new_tag">NEW</span>
 						{% endif %}
 					</div>
-					{% if project.actions %}
+					{% if actions and project.actions %}
 					<div class="project-summary-wrapper project-summary-data project-actions-data">
 						<label>Action needed:</label>
 						<span>{{project.actions.summary}}</span>
