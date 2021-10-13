@@ -36,7 +36,7 @@ async function renderSummaryView(req, res, summaryType, view) {
 			"summary": summary,
 			"labels": labels,
 			"project_type": projectType,
-			"actions": projectType == "lead"
+			"actions": summaryType == "lead"
 		});
 	}
 	catch (error) {
