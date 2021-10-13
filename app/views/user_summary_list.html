@@ -60,9 +60,9 @@
 		<h2 class="heading-large service-area"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name | safe }}</a></h2>
 		{% for phase in summary.phases %}
 		{% if phase.projects.length > 0 %}
-		<ul class="link-list person-view border-{{phase.viewkey}}">
+		<div class="link-list person-view border-{{phase.viewkey}}">
 			{% for project in phase.projects %}
-			<li>
+			<div class="list-item">
 				<a href="/{{portfolio}}/projects/{{ project.project_id }}" class="nodec">{{ project.name | safe}}</a>
 				{% if project.date.value.date %}
 				<div class="project-summary-data">
@@ -79,9 +79,9 @@
 				{% if project.new_flag == 'Y' %}
 				<span class="new_tag">NEW</span>
 				{% endif %}
-			</li>
+			</div>
 			{% endfor %}
-		</ul>
+		</div>
 		{% else %}
 		{% endif %}
 		{% endfor %}
