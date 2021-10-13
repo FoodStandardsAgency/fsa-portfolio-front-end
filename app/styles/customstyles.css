@@ -120,26 +120,25 @@ ul {
 	padding: 0px;
 }
 
-	.project-summary-wrapper {
-		padding-top: 10px;
-		padding-left: 10px;
-		padding-right: 5px;
-		padding-bottom: 10px;
-
-		/* FAILS */
-		/*position: relative;*/
-		/*flex: 1;*/
-	}
+.project-summary-wrapper {
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 5px;
+	padding-bottom: 10px;
+	/* Hack to remove single white line that intermittently shows due to fractions of pixel in width */
+	width: 100.1%;
+	top: 1px;
+	position: relative;
+}
 
 	.project-actions {
+		position: relative;
+		left: -1px;
 		padding: 0px;
 	}
 
 		.project-actions .project-wrapper {
-			/*position: relative;*/
 			border: 3px solid #DE1219;
-
-			/*display:flex;*/
 		}
 
 .project-summary-data {
