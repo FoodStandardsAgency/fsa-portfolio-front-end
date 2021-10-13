@@ -126,8 +126,9 @@ ul {
 	padding-right: 5px;
 	padding-bottom: 10px;
 	/* Hack to remove single white line that intermittently shows due to fractions of pixel in width */
-	width: 100.1%;
+	width: 100.5%;
 	top: 1px;
+	left: -1px;
 	position: relative;
 }
 
