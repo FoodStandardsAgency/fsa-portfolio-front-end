@@ -1,3 +1,7 @@
+Version 0.1.11 - Pending
+========================
+- View for status flags
+
 Version 0.1.10 - Released 22/07/2021
 ====================================
 DEV2105001 Show admin fields in filter view to all users
