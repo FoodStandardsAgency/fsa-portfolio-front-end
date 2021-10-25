@@ -1,6 +1,8 @@
 var urls = require("./urls");
 var portfolios = require("./portfolios");
 var users = require("./users");
+const _ = require("lodash");
+const crypto = require('crypto');
 
 
 // ***********************************************
@@ -93,6 +95,22 @@ Cypress.Commands.add('getLabelConfig', function (field) {
     });
 });
 
+Cypress.Commands.add("getAccessToken", function () {
+    var passwordHash = crypto.createHash('sha256').update(Cypress.env("testAdminUserPassword")).digest('hex').toUpperCase();
 
+    cy.request(
+        {
+            method: "POST",
+            form: true,
+            url: `${apiBaseUrl}/Token`,
+            body: {
+                username: Cypress.env("testAdminUser"),
+                password: passwordHash,
+                grant_type: "password"
+            }
+        }).then((response) => {
+            var token = response.body.access_token;
+            cy.wrap(token).as("access_token");
+        });
 
-
+});

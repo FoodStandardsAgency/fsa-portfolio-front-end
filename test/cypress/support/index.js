@@ -34,14 +34,18 @@ before(function() {
     cy.loginAdmin();
     project.deleteAllProjects(portfolios.TEST_PORTFOLIO);
 
-    cy.request(
-        {
-            url: `${apiBaseUrl}/Portfolios/cleanreservations`,
-            headers: { 'TestAPIKey': Cypress.env("TEST_API_KEY") }
-        });
-
-
-
+    cy.getAccessToken().then(function () {
+        var token = this.access_token;
+        cy.log(token);
+        cy.request(
+            {
+                url: `${apiBaseUrl}/Portfolios/cleanreservations`,
+                auth: { bearer: token },
+                headers: {
+                    'TestAPIKey': Cypress.env("TEST_API_KEY")
+                }
+            });
+    });
 });
 
 
