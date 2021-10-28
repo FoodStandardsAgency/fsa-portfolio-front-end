@@ -1,5 +1,5 @@
-Version 0.1.11 - Pending
-========================
+Version 0.1.11 - Released 28/10/2021
+====================================
 - View for status flags
 
 Version 0.1.10 - Released 22/07/2021
