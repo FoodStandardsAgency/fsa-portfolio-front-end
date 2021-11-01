@@ -173,6 +173,10 @@ ul {
 		margin-bottom: 1em;
 	}
 
+	.link-list .list-item.project-actions {
+		margin-left: 0.5em;
+	}
+
 		.link-list.person-view .list-item:after {
 			background: rgba(0,0,0,.1);
 		}
