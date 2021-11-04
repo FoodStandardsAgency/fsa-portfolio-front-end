@@ -1,3 +1,7 @@
+Version 0.1.12 - Released 04/11/2021
+====================================
+- Redid styling of flagged projects
+
 Version 0.1.11 - Released 28/10/2021
 ====================================
 - View for status flags
