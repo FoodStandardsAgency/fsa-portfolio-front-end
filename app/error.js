@@ -68,8 +68,9 @@ function handleNotFound(res) {
 }
 
 function handleBadRequest(res, message) {
-	message = message.replace("Response code 400", "");
-	res.render('error_page', { message: `There was a problem in the data ${message}` });
+	message = message.replace("Response code 400", "").trim();
+	message = message.substring(1, message.length - 1);
+	res.render('error_page', { message: "There was a problem with the request...", detail: message });
 }
 
 
