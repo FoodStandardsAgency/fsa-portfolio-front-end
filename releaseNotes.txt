@@ -1,3 +1,7 @@
+Version 1.0.0 - Released 31/01/2021
+====================================
+- Fixed label unit test
+
 Version 0.1.12 - Released 04/11/2021
 ====================================
 - Redid styling of flagged projects
