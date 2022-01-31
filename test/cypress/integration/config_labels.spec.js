@@ -31,7 +31,7 @@ context(
                 // Put 51 characters in
                 config.setLabelText(label.field, "_01234567890123456789012345678901234567890123456789");
                 cy.get(`[data-cy=submit]`).click();
-                cy.get(`[data-cy=error]`).contains(`Problem with configuration for field ${label.fieldtitle}: The field Label must be a string with a maximum length of 50`);
+                cy.get(`[data-cy=error-detail]`).contains(`Problem with configuration for field ${label.fieldtitle}: The field Label must be a string with a maximum length of 50`);
 
             });
 
