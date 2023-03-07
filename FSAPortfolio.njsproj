@@ -61,6 +61,7 @@
     <Content Include="app\styles\app.bundle.js" />
     <Content Include="app\styles\app.scss" />
     <Content Include="app\styles\customstyles.css" />
+    <Content Include="app\styles\govuk-frontend-4.4.0.min.css" />
     <Content Include="app\styles\style.js" />
     <Content Include="app\tokens.js" />
     <Content Include="app\views\add-edit-project.html" />
@@ -159,6 +160,7 @@
     <Content Include="app\assets\javascripts\jquery-1.11.3.js" />
     <Content Include="app\assets\javascripts\jquery-1.9.1.min.js" />
     <Content Include="app\assets\javascripts\govuk\selection-buttons.js" />
+    <Content Include="app\assets\javascripts\govuk\govuk-frontend-4.4.0.min.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app" />

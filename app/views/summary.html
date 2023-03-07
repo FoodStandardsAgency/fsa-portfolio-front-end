@@ -56,13 +56,16 @@
 
 <br />
 <br />
+<div class="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
 {% for summary in summary.summaries %}
-<div class="row">
+<div class="row govuk-accordion__section">
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-	<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="service-area"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name }}</a></h2><hr /></div>
+	<div class="col-xl-10 col-md-10 col-sm-10 govuk-accordion__section-header">
+		<h2 class="service-area govuk-accordion__section-heading">
+			<span class="govuk-accordion__section-button" id="accordion-default-heading-1"></span><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name }}</a></h2><hr /></div>
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-</div>
 
+<div id="accordion-default-content-1" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-1">
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	{% for phase in summary.phases %}
@@ -112,8 +115,10 @@
 
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 </div>
+</div>
 <br />
 <br />
+</div>
 {% endfor %}
-
+</div>
 {% endblock %}

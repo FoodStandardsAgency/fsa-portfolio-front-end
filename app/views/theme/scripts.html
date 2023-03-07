@@ -3,3 +3,10 @@
 <script src="/public/javascripts/govuk/selection-buttons.js"></script>
 <script src="/public/javascripts/application.js"></script>
 <script src="/public/javascripts/jquery-1.11.3.js"></script>
+<script>
+    document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
+</script>
+<script src="/public/javascripts/govuk/govuk-frontend-4.4.0.min.js"></script>
+<script>
+    window.GOVUKFrontend.initAll()
+</script>
