@@ -1,5 +1,62 @@
 {% extends "theme/layout.html" %}
 
+{% block head %}
+<!-- Script for showing/hiding sections & flipping the arrow -->
+<script>
+function showhide(id) {
+  var s1 = document.getElementById(id);
+  var flex_sections = [];
+  {% for summary in summary.summaries %}
+	  flex_sections.push('{{ summary.viewkey }}')
+  {% endfor %}
+
+  if (flex_sections.indexOf(id) >= 0 && s1.style.display === "none") {s1.style.display = "flex";}
+  else {s1.style.display = "none";}
+
+}
+
+function showhideall(id) {
+  var bi = document.getElementById(id);
+  var state = "none";
+  var flex_sections = [];
+  var arrows = [];
+
+  if(bi.classList.contains("open")) {bi.classList.remove("open"); bi.classList.add("closed"); state = "none"; astate = "down";}
+  else if (bi.classList.contains("closed")) {bi.classList.remove("closed"); bi.classList.add("open"); state = "flex"; astate = "up";}
+
+  {% for summary in summary.summaries %}
+	  flex_sections.push('#{{ summary.viewkey }}')
+  {% endfor %}
+  flex_sections = flex_sections.toString();
+  var dom_sections = document.querySelectorAll(flex_sections);
+  dom_sections.forEach(function(element) {
+ 	element.style.display = state;
+  })
+
+  arrows = document.querySelectorAll('.arrow');
+  arrows.forEach(function(element) {
+    element.classList.remove("down", "up");
+	element.classList.add(astate);
+  })
+
+  toggleallarrow = document.querySelector('#ashowhideall');
+	if (astate == "up") {
+		toggleallarrow.style.verticalAlign = "middle";
+	} else {
+        toggleallarrow.style.verticalAlign = null;
+	}
+}
+
+function arrow(id) {
+	var ai = document.getElementById(id);
+
+  if (ai.classList.contains("down")) {ai.classList.remove("down"); ai.classList.add("up");}
+  else if (ai.classList.contains("up")) {ai.classList.remove("up"); ai.classList.add("down");}
+
+}
+</script>
+{% endblock %}
+
 {% block content %}
 
 <!-- Project Type -->
@@ -56,14 +113,24 @@
 
 <br />
 <br />
-{% for summary in summary.summaries %}
+
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-	<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="service-area"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name }}</a></h2><hr /></div>
+	<div class="col-xl-10 col-md-10 col-sm-10"><button class="accordion service-area open general-button" id="toggleallbutton" onclick="showhideall('toggleallbutton')">Show/Hide All &nbsp; <i id="ashowhideall" class="arrow up" style="vertical-align: middle;"></i></button></div>
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
 </div>
 
+<br />
+<br />
+
+{% for summary in summary.summaries %}
 <div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+	<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="accordion service-area" onclick="showhide('{{ summary.viewkey }}'); arrow('a{{ summary.viewkey }}')"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name }} <i id="a{{ summary.viewkey }}" class="arrow up"></i></a></h2><hr /></div>
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+</div>
+
+<div class="row" id="{{ summary.viewkey }}">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	{% for phase in summary.phases %}
 
@@ -72,7 +139,7 @@
 
 		<div class="link-list border-{{phase.viewkey}}">
 			{% for project in phase.projects %}
-			<div {% if summary.actions and project.actions %}class="list-item project-actions"{%else%}class="list-item"{% endif %}>
+			<div {% if summary.actions and project.actions %}class="list-item project-actions" {%else%}class="list-item" {% endif %}>
 				<div class="project-wrapper">
 					<div class="project-summary-wrapper">
 						<a href="/{{portfolio}}/projects/{{ project.project_id }}" class="nodec">{{ project.name | safe}}</a>
