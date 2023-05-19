@@ -1,5 +1,10 @@
 {% extends "theme/layout.html" %}
 
+{% block head %}
+{% include "theme/accordion.html" %}
+{% endblock %}
+
+
 {% block content %}
 
 <!-- Project Type -->
@@ -53,14 +58,33 @@
 
 <br />
 <br />
+
+<div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+	<div class="col-xl-10 col-md-10 col-sm-10"><button class="accordion service-area open general-button" id="toggleallbutton" onclick="showhideall('toggleallbutton')">Show/Hide All &nbsp; <i id="ashowhideall" class="arrow up" style="vertical-align: middle;"></i></button></div>
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+</div>
+
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-sm-10">
-		{% for summary in summary.summaries %}
-		<h2 class="heading-large service-area"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name | safe }}</a></h2>
+	{% for summary in summary.summaries %}
+		{% set hasResults = false %}
+		{% if summary.phases %}
+			{% for phase in summary.phases %}
+				{% if phase.projects.length > 0 %}
+					{% set hasResults = true %}
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+		{% if hasResults %}
+		<h2 class="heading-large service-area accordion" onclick="showhide('{{ summary.viewkey }}'); arrow('a{{ summary.viewkey }}')"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name | safe }} <i id="a{{ summary.viewkey }}" class="arrow up"></i></a></h2>
+		{% else %}
+			<h2 class="heading-large service-area accordion"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name | safe }}</a></h2>
+		{% endif %}
 		{% for phase in summary.phases %}
 		{% if phase.projects.length > 0 %}
-		<div class="link-list border-{{phase.viewkey}}">
+		<div class="link-list border-{{phase.viewkey}}" id="{{ summary.viewkey }}">
 			{% for project in phase.projects %}
 			<div class="list-item">
 				<div class="project-summary-wrapper">
