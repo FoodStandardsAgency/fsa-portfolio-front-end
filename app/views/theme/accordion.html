@@ -1,0 +1,54 @@
+<!-- Script for showing/hiding sections & flipping the arrow -->
+<script>
+function showhide(id) {
+  var s1 = document.getElementById(id);
+  var flex_sections = [];
+  {% for summary in summary.summaries %}
+	  flex_sections.push('{{ summary.viewkey }}')
+  {% endfor %}
+
+  if (flex_sections.indexOf(id) >= 0 && s1.style.display === "none") {s1.style.display = "flex";}
+  else {s1.style.display = "none";}
+
+}
+
+function showhideall(id) {
+  var bi = document.getElementById(id);
+  var state = "none";
+  var flex_sections = [];
+  var arrows = [];
+
+  if(bi.classList.contains("open")) {bi.classList.remove("open"); bi.classList.add("closed"); state = "none"; astate = "down";}
+  else if (bi.classList.contains("closed")) {bi.classList.remove("closed"); bi.classList.add("open"); state = "flex"; astate = "up";}
+
+  {% for summary in summary.summaries %}
+	  flex_sections.push('#{{ summary.viewkey }}')
+  {% endfor %}
+  flex_sections = flex_sections.toString();
+  var dom_sections = document.querySelectorAll(flex_sections);
+  dom_sections.forEach(function(element) {
+ 	element.style.display = state;
+  })
+
+  arrows = document.querySelectorAll('.arrow');
+  arrows.forEach(function(element) {
+    element.classList.remove("down", "up");
+	element.classList.add(astate);
+  })
+
+  toggleallarrow = document.querySelector('#ashowhideall');
+	if (astate == "up") {
+		toggleallarrow.style.verticalAlign = "middle";
+	} else {
+        toggleallarrow.style.verticalAlign = null;
+	}
+}
+
+function arrow(id) {
+	var ai = document.getElementById(id);
+
+  if (ai.classList.contains("down")) {ai.classList.remove("down"); ai.classList.add("up");}
+  else if (ai.classList.contains("up")) {ai.classList.remove("up"); ai.classList.add("down");}
+
+}
+</script>
