@@ -69,6 +69,7 @@
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	<div class="col-sm-10">
 	{% for summary in summary.summaries %}
+		{% set safeViewKey = summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '')%}
 		{% set hasResults = false %}
 		{% if summary.phases %}
 			{% for phase in summary.phases %}
@@ -78,13 +79,13 @@
 			{% endfor %}
 		{% endif %}
 		{% if hasResults %}
-		<h2 class="heading-large service-area accordion" onclick="showhide('{{ summary.viewkey }}'); arrow('a{{ summary.viewkey }}')"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name | safe }} <i id="a{{ summary.viewkey }}" class="arrow up"></i></a></h2>
+		<h2 class="heading-large service-area accordion" onclick="showhide('{{ safeViewKey }}'); arrow('a{{ safeViewKey }}')"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name | safe }} <i id="a{{ safeViewKey }}" class="arrow up"></i></a></h2>
 		{% else %}
 			<h2 class="heading-large service-area accordion"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name | safe }}</a></h2>
 		{% endif %}
 		{% for phase in summary.phases %}
 		{% if phase.projects.length > 0 %}
-		<div class="link-list border-{{phase.viewkey}}" id="{{ summary.viewkey }}">
+		<div class="link-list border-{{phase.viewkey}}" id="{{ safeViewKey }}">
 			{% for project in phase.projects %}
 			<div class="list-item">
 				<div class="project-summary-wrapper">
