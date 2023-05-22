@@ -71,13 +71,16 @@
 <br />
 
 {% for summary in summary.summaries %}
+
+{% set safeViewKey = summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '')%}
+
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-	<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="accordion service-area" onclick="showhide('{{ summary.viewkey }}'); arrow('a{{ summary.viewkey }}')"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name }} <i id="a{{ summary.viewkey }}" class="arrow up"></i></a></h2><hr /></div>
+	<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="accordion service-area" onclick="showhide('{{ safeViewKey }}'); arrow('a{{ safeViewKey }}')"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name }} <i id="a{{ safeViewKey }}" class="arrow up"></i></a></h2><hr /></div>
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
 </div>
 
-<div class="row" id="{{ summary.viewkey }}">
+<div class="row" id="{{ safeViewKey }}">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	{% for phase in summary.phases %}
 

@@ -1,10 +1,23 @@
 <!-- Script for showing/hiding sections & flipping the arrow -->
 <script>
+const { isNull } = require("lodash");
+
+
+	function sanitiseViewkey(viewkey) {
+
+        const regex = /[^A-Za-z0-9]+/g;
+
+		if (!isNull(viewkey)) {
+			viewkey = toString(viewkey);
+            return viewkey.replace(regex, '');
+		}
+	}
+
 function showhide(id) {
   var s1 = document.getElementById(id);
   var flex_sections = [];
   {% for summary in summary.summaries %}
-	  flex_sections.push('{{ summary.viewkey }}')
+    flex_sections.push('{{ summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '')}}')
   {% endfor %}
 
   if (flex_sections.indexOf(id) >= 0 && s1.style.display === "none") {s1.style.display = "flex";}
@@ -22,7 +35,7 @@ function showhideall(id) {
   else if (bi.classList.contains("closed")) {bi.classList.remove("closed"); bi.classList.add("open"); state = "flex"; astate = "up";}
 
   {% for summary in summary.summaries %}
-	  flex_sections.push('#{{ summary.viewkey }}')
+    flex_sections.push('#{{ summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '') }}')
   {% endfor %}
   flex_sections = flex_sections.toString();
   var dom_sections = document.querySelectorAll(flex_sections);
