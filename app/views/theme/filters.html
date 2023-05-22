@@ -1,0 +1,25 @@
+<!-- Top navigation bar -->
+<div class="row">
+    <div class="col-xl-1 col-md-1 col-sm-1"></div>
+    <div class="col-xl-10 col-md-10 col-sm-10">
+        <div class="navbar navbar-expand-lg" role="navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarSupportedContent" aria-controls="navBarSupportedContent" aria-expanded="false" aria-label="Toggle Navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">Order by:</li>
+                    <li class="nav-item"><a class="nav-link" href="/{{portfolio}}" data-cy="summary-nav-link">{{labels.category}}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/{{portfolio}}/priority/" data-cy="summary-nav-link">{{labels.pgroup}}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/{{portfolio}}/team/" data-cy="summary-nav-link">{{labels.g6team}}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/{{portfolio}}/lead/" data-cy="summary-nav-link">{{labels.oddlead}}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/{{portfolio}}/rag/" data-cy="summary-nav-link">{{labels.rag}}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/{{portfolio}}/status/" data-cy="summary-nav-link">{{labels.phase}}</a></li>
+                </ul>
+            </div>
+        </div>
+        You can also <a href="/{{portfolio}}/filter-view" data-cy="summary-nav-link">filter projects</a> or
+        <a href="/{{portfolio}}/user?reset=true" data-cy="summary-nav-link">view your projects</a>.
+    </div>
+    <div class="col-xl-1 col-md-1 col-sm-1"></div>
+</div>
