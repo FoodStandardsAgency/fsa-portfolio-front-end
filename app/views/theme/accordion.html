@@ -7,18 +7,22 @@ const { isNull } = require("lodash");
 
         const regex = /[^A-Za-z0-9]+/g;
 
-		if (!isNull(viewkey)) {
+		if (!isNull(viewkey) && viewkey) {
 			viewkey = toString(viewkey);
-            return viewkey.replace(regex, '');
+			return viewkey.replace(regex, '');
+		} else {
+			return viewkey
 		}
 	}
 
 function showhide(id) {
   var s1 = document.getElementById(id);
-  var flex_sections = [];
-  {% for summary in summary.summaries %}
-    flex_sections.push('{{ summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '')}}')
-  {% endfor %}
+	var flex_sections = [];
+	  {% for summary in summary.summaries %}
+        {% if summary.viewkey %}
+          flex_sections.push('#{{ summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '') }}')
+        {% endif %}
+	  {% endfor %}
 
   if (flex_sections.indexOf(id) >= 0 && s1.style.display === "none") {s1.style.display = "flex";}
   else {s1.style.display = "none";}
@@ -33,10 +37,11 @@ function showhideall(id) {
 
   if(bi.classList.contains("open")) {bi.classList.remove("open"); bi.classList.add("closed"); state = "none"; astate = "down";}
   else if (bi.classList.contains("closed")) {bi.classList.remove("closed"); bi.classList.add("open"); state = "flex"; astate = "up";}
-
-  {% for summary in summary.summaries %}
-    flex_sections.push('#{{ summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '') }}')
-  {% endfor %}
+	{% for summary in summary.summaries %}
+	  {% if summary.viewkey %}
+	    flex_sections.push('#{{ summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '') }}')
+      {% endif %}
+	{% endfor %}
   flex_sections = flex_sections.toString();
   var dom_sections = document.querySelectorAll(flex_sections);
   dom_sections.forEach(function(element) {

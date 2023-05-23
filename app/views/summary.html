@@ -72,7 +72,11 @@
 
 {% for summary in summary.summaries %}
 
-{% set safeViewKey = summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '')%}
+{% if summary.viewkey %}
+	{% set safeViewKey = summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '') %}
+{% else %}
+	{% set safeViewKey = '' %}
+{% endif %}
 
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
