@@ -17,7 +17,12 @@ strong					{font-weight: 900;}
 
 /* Headbar custom styles*/
 .headbar 				{background-color:#006F51; border-bottom: 10px solid #A9C47F;}
-.headbar-margin			{background-color:#006F51; border-bottom: 10px solid #A9C47F;}
+.headbar-margin			{background-color:#006F51;}
+@media (min-width: 576px) {
+	.headbar-margin {
+		border-bottom: 10px solid #A9C47F;
+	}
+}
 .headbar-title 			{color:#ffffff; font-size:2em; font-weight:900; font-family: 'Fira Sans', sans-serif;}
 .headbar-text,	
 a.headbar-text:hover, 
@@ -26,11 +31,14 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 /* Navbar custom styles */
 .navbar					{background-color:#006F51;}
 .navbar-padding			{background-color:#006F51;}
-.navbar .nav-link		{color: white; text-decoration: none; text-transform:uppercase;border-bottom:none;}
+.navbar .navbar-nav .nav-link {color: white; }
+.navbar .navbar-nav .nav-link,
+.navbar .navbar-nav .dropdown-item  {text-decoration: none; border-bottom:none; text-transform:capitalize}
 .navbar .nav-link:hover {background-color: #005a30; text-decoration: underline;}
 .navbar label			{color:white;}
 .navbar-button			{border: 1px solid white; color:white; padding:5px 10px; margin:10px; background-color:#006F51; border-radius:5px;}
 .navbar-button:hover	{border: 1px solid #006F51; color:black; background-color:white;}
+.navbar .navbar-dark .navbar-toggler-icon {	background-image: escape-svg($navbar-light-toggler-icon-bg);}
 
 /* Project page */
 .project-title			{font-family: 'Open Sans', sans-serif; font-weight:900; font-size:3em; margin-bottom:15px;} 
