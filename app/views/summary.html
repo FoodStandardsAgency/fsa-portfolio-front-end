@@ -28,12 +28,14 @@
 <br />
 <br />
 
+{% set defaultViewKeyCounter = 0 %}
 {% for summary in summary.summaries %}
 
 {% if summary.viewkey %}
 	{% set safeViewKey = summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '') %}
 {% else %}
-	{% set safeViewKey = '' %}
+	{% set defaultViewKeyCounter = defaultViewKeyCounter + 1 %}
+	{% set safeViewKey = ['defaultViewkey', defaultViewKeyCounter] | join %}
 {% endif %}
 
 <div class="row">
