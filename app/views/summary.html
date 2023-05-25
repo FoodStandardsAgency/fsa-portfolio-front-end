@@ -6,48 +6,6 @@
 
 {% block content %}
 
-<!-- Project Type -->
-<div class="row">
-	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-	<div class="col-xl-4 col-md-4 col-sm-10">
-		<h1>{{project_type}}</h1>
-	</div>
-	<div class="col-xl-6 col-md-6 col-sm-10">
-		<form class="form-inline float-right" action="/{{portfolio}}/projectType?summaryType={{summaryType}}" method="post" novalidate>
-			<div class="form-group mb-2">
-				<label for="id_project_type" style="margin-right:0.5em;">Select a {{labels.project_type}} to view:</label>
-				<select class="form-control form-input-box" id="id_project_type" aria-label="{{labels.project_type}}" name="project_type">
-					{% for option in summary.project_type %}
-					<option value="{{option.value}}" aria-label="{{option.display}}" {{ "selected" if option.value == project_type }}>{{option.display}}</option>
-					{% endfor %}
-				</select>
-				<button class="general-button" type="submit">View</button>
-			</div>
-		</form>
-	</div>
-	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-</div>
-
-
-<!-- Top navigation links -->
-<div class="row">
-	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-	<div class="col-xl-10 col-md-10 col-sm-10">
-		<p>
-			Order by: <a href="/{{portfolio}}" data-cy="summary-nav-link">{{labels.category}}</a>,
-			<a href="/{{portfolio}}/priority/" data-cy="summary-nav-link">{{labels.pgroup}}</a>,
-			<a href="/{{portfolio}}/team/" data-cy="summary-nav-link">{{labels.g6team}}</a>,
-			<a href="/{{portfolio}}/lead/" data-cy="summary-nav-link">{{labels.oddlead}}</a>,
-			<a href="/{{portfolio}}/rag/" data-cy="summary-nav-link">{{labels.rag}}</a> or
-			<a href="/{{portfolio}}/status/" data-cy="summary-nav-link">{{labels.phase}}</a>.
-			You can also <a href="/{{portfolio}}/filter-view" data-cy="summary-nav-link">filter projects</a> or
-			<a href="/{{portfolio}}/user?reset=true" data-cy="summary-nav-link">view your projects</a>.
-		</p>
-	</div>
-	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-</div>
-
-
 
 <!-- Numbers in each stage -->
 <div class="row">
