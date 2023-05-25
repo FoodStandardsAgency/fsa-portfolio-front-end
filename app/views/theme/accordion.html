@@ -3,70 +3,88 @@
 const { isNull } = require("lodash");
 
 
-	function sanitiseViewkey(viewkey) {
+    function sanitiseViewkey(viewkey) {
 
         const regex = /[^A-Za-z0-9]+/g;
 
-		if (!isNull(viewkey) && viewkey) {
-			viewkey = toString(viewkey);
-			return viewkey.replace(regex, '');
-		} else {
-			return viewkey
-		}
-	}
+        if (!isNull(viewkey) && viewkey) {
+            viewkey = toString(viewkey);
+            return viewkey.replace(regex, '');
+        } else {
+            return viewkey
+        }
+    }
 
 function showhide(id) {
-  var s1 = document.getElementById(id);
-	var flex_sections = [];
-	  {% for summary in summary.summaries %}
-        {% if summary.viewkey %}
-          flex_sections.push('#{{ summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '') }}')
-        {% endif %}
-	  {% endfor %}
+    // Checks whether the targeted block exists on the page, and if so, toggles visibility.
+    // Note that we push the text of the ID to the array, and not the # i.e. not the DOM selector.
 
-  if (flex_sections.indexOf(id) >= 0 && s1.style.display === "none") {s1.style.display = "flex";}
-  else {s1.style.display = "none";}
+    var s1 = document.getElementById(id);
+    var flex_sections = [];
+    {% set defaultViewKeyCounter = 0 %}
+    {% for summary in summary.summaries %}
+        {% if summary.viewkey %}
+            flex_sections.push('{{ summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '') }}')
+        {% else %}
+        {%  set defaultViewKeyCounter = defaultViewKeyCounter + 1  %}
+            flex_sections.push('{{ ['defaultViewkey', defaultViewKeyCounter] | join }}')
+        {% endif %}
+        
+    {% endfor %}
+
+    if (flex_sections.indexOf(id) >= 0 && s1.style.display === "none") {s1.style.display = "flex";}
+    else {s1.style.display = "none";}
 
 }
 
 function showhideall(id) {
-  var bi = document.getElementById(id);
-  var state = "none";
-  var flex_sections = [];
-  var arrows = [];
+    // Checks whether the targeted block exists on the page, and if so, toggles visibility.
+    // Note that we *do* push the DOM Selector (with leading #) in this function, unlike the singular toggle.
+    var bi = document.getElementById(id);
+    var state = "none";
+    var flex_sections = [];
+    var arrows = [];
 
-  if(bi.classList.contains("open")) {bi.classList.remove("open"); bi.classList.add("closed"); state = "none"; astate = "down";}
-  else if (bi.classList.contains("closed")) {bi.classList.remove("closed"); bi.classList.add("open"); state = "flex"; astate = "up";}
-	{% for summary in summary.summaries %}
-	  {% if summary.viewkey %}
-	    flex_sections.push('#{{ summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '') }}')
-      {% endif %}
-	{% endfor %}
-  flex_sections = flex_sections.toString();
-  var dom_sections = document.querySelectorAll(flex_sections);
-  dom_sections.forEach(function(element) {
- 	element.style.display = state;
-  })
+    if(bi.classList.contains("open")) {bi.classList.remove("open"); bi.classList.add("closed"); state = "none"; astate = "down";}
+    else if (bi.classList.contains("closed")) {bi.classList.remove("closed"); bi.classList.add("open"); state = "flex"; astate = "up";}
+    {% set defaultViewKeyCounter = 0 %}
+    {% for summary in summary.summaries %}
+        {% if summary.viewkey %}
+            flex_sections.push('#{{ summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '') }}')
+        {% else %}
+            {% set defaultViewKeyCounter = defaultViewKeyCounter + 1 %}
+            flex_sections.push('#{{ ['defaultViewkey', defaultViewKeyCounter] | join }}')
+        {% endif %}
+    {% endfor %}
 
-  arrows = document.querySelectorAll('.arrow');
-  arrows.forEach(function(element) {
-    element.classList.remove("down", "up");
-	element.classList.add(astate);
-  })
+    flex_sections = flex_sections.toString();
+    var dom_sections = document.querySelectorAll(flex_sections);
 
-  toggleallarrow = document.querySelector('#ashowhideall');
-	if (astate == "up") {
-		toggleallarrow.style.verticalAlign = "middle";
-	} else {
+    dom_sections.forEach(function (element) {
+        element.style.display = state;
+    })
+
+    arrows = document.querySelectorAll('.arrow');
+    arrows.forEach(function(element) {
+        element.classList.remove("down", "up");
+        element.classList.add(astate);
+    })
+
+    toggleallarrow = document.querySelector('#ashowhideall');
+    if (astate == "up") {
+        toggleallarrow.style.verticalAlign = "middle";
+    } else {
         toggleallarrow.style.verticalAlign = null;
-	}
+    }
 }
 
 function arrow(id) {
-	var ai = document.getElementById(id);
+    // Toggle the arrow from up to down when the corresponding block is hidden or shown.
 
-  if (ai.classList.contains("down")) {ai.classList.remove("down"); ai.classList.add("up");}
-  else if (ai.classList.contains("up")) {ai.classList.remove("up"); ai.classList.add("down");}
+    var ai = document.getElementById(id);
+
+    if (ai.classList.contains("down")) {ai.classList.remove("down"); ai.classList.add("up");}
+    else if (ai.classList.contains("up")) {ai.classList.remove("up"); ai.classList.add("down");}
 
 }
 </script>
