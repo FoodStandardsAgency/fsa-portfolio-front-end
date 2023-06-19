@@ -1,5 +1,9 @@
 {% extends "theme/layout.html" %}
 
+{% block head %}
+{% include "theme/accordion.html" %}
+{% endblock %}
+
 {% block content %}
 
 
@@ -14,14 +18,33 @@
 
 <br />
 <br />
-{% for summary in summary.summaries %}
+
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-	<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="service-area"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name }}</a></h2><hr /></div>
+	<div class="col-xl-10 col-md-10 col-sm-10"><button class="accordion service-area open general-button" id="toggleallbutton" onclick="showhideall('toggleallbutton')">Show/Hide All &nbsp; <i id="ashowhideall" class="arrow up" style="vertical-align: middle;"></i></button></div>
 	<div class="col-xl-1 col-md-1 col-sm-1"></div>
 </div>
 
+<br />
+<br />
+
+{% set defaultViewKeyCounter = 0 %}
+{% for summary in summary.summaries %}
+
+{% if summary.viewkey %}
+	{% set safeViewKey = summary.viewkey | replace(r/[^A-Za-z0-9]+/g, '') %}
+{% else %}
+	{% set defaultViewKeyCounter = defaultViewKeyCounter + 1 %}
+	{% set safeViewKey = ['defaultViewkey', defaultViewKeyCounter] | join %}
+{% endif %}
+
 <div class="row">
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+	<div class="col-xl-10 col-md-10 col-sm-10"><h2 class="accordion service-area" onclick="showhide('{{ safeViewKey }}'); arrow('a{{ safeViewKey }}')"><a name="{{ summary.viewkey }}" class="anchors special-link">{{ summary.name }} <i id="a{{ safeViewKey }}" class="arrow up"></i></a></h2><hr /></div>
+	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+</div>
+
+<div class="row" id="{{ safeViewKey }}">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 	{% for phase in summary.phases %}
 
@@ -30,7 +53,7 @@
 
 		<div class="link-list border-{{phase.viewkey}}">
 			{% for project in phase.projects %}
-			<div {% if summary.actions and project.actions %}class="list-item project-actions"{%else%}class="list-item"{% endif %}>
+			<div {% if summary.actions and project.actions %}class="list-item project-actions" {%else%}class="list-item" {% endif %}>
 				<div class="project-wrapper">
 					<div class="project-summary-wrapper">
 						<a href="/{{portfolio}}/projects/{{ project.project_id }}" class="nodec">{{ project.name | safe}}</a>
