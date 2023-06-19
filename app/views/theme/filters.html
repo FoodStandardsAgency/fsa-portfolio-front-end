@@ -1,0 +1,54 @@
+<!-- Top navigation bar -->
+<div class="row">
+    <div class="col-xl-1 col-md-1 col-sm-1 navbar-padding"></div>
+    <nav class="navbar navbar-expand-lg navbar-dark col-xl-10 col-md-10 col-sm-10" role="navigation">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+
+        <div class="collapse navbar-collapse justify-content-lg-between" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+                {% if labels | length >= 1 %}
+                <li class="nav-item dropdown mr-lg-2 mr-xl-3">
+                    <a class="nav-link dropdown-toggle pl-1 pl-xl-2 ml-n1 ml-xl-n2" href="#" role="button" data-toggle="dropdown">Summary By</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/{{portfolio}}" data-cy="summary-nav-link">{{labels.category}}</a>
+                        <a class="dropdown-item" href="/{{portfolio}}/priority/" data-cy="summary-nav-link">{{labels.pgroup}}</a>
+                        <a class="dropdown-item" href="/{{portfolio}}/team/" data-cy="summary-nav-link">{{labels.g6team}}</a>
+                        <a class="dropdown-item" href="/{{portfolio}}/lead/" data-cy="summary-nav-link">{{labels.oddlead}}</a>
+                        <a class="dropdown-item" href="/{{portfolio}}/rag/" data-cy="summary-nav-link">{{labels.rag}}</a>
+                        <a class="dropdown-item" href="/{{portfolio}}/status/" data-cy="summary-nav-link">{{labels.phase}}</a>
+                    </div>
+                </li>
+                {% else %}
+                    <li class="nav-item mr-lg-2 mr-xl-3"><a class="nav-link pl-1 pl-xl-2 ml-n1 ml-xl-n2" href="/{{portfolio}}" data-cy="summary-nav-link">Dashboard</a></li>
+                {% endif %}
+                <li class="nav-item mr-lg-2 mr-xl-3"><a class="nav-link pl-1 pl-xl-2 ml-n1 ml-xl-n2" href="/{{portfolio}}/filter-view" data-cy="summary-nav-link">Filter</a></li>
+                <li class="nav-item"><a class="nav-link pl-1 pl-xl-2 ml-n1 ml-xl-n2" href="/{{portfolio}}/user?reset=true" data-cy="summary-nav-link">Your projects</a></li>
+            </ul>
+            {% if summaryType %}
+            <form class="form-inline d-flex" action="/{{portfolio}}/projectType?summaryType={{summaryType}}" method="post" novalidate>
+                <div class="form-group mb-2 mb-lg-0">
+                    <label for="id_project_type" style="margin-right:0.5em;">View {{labels.project_type}}:</label>
+                    <select class="form-control form-input-box" id="id_project_type" aria-label="{{labels.project_type}}" name="project_type">
+                        {% for option in summary.project_type %}
+                        <option value="{{option.value}}" aria-label="{{option.display}}" {{ "selected" if option.value == project_type }}>{{option.display}}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="navbar-button mr-lg-0 my-lg-0 ml-0 ml-lg-2" type="submit">View</button>
+                </div>
+            </form>
+            {% endif %}
+            {% if summary and userSummary %}
+            <form name="personviewform" class="form-inline d-flex" action="/{{portfolio}}/user" method="post" novalidate>
+                <div class="form-group mb-2 mb-lg-0">
+                    <select id="selectperson" class="form-control adusersearch" data-abs-ajax-type="GET" data-abs-ajax-url="/{{portfolio}}/search/users" aria-label="User search" name="userSearch" data-live-search="true" data-style="form-input-box">
+                        <option value="" selected disabled>Search for another user...</option>
+                    </select>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="col-xl-1 col-md-1 col-sm-1 navbar-padding"></div>
+</div>

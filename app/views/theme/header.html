@@ -1,31 +1,38 @@
+{%if not isLoggedIn(identity) %}
+<br />
+<br />
+{% else %}
+<div class="row">
+	<div class="col-1" style="background-color:#f8f8f8;"></div>
+	<div class="col-10 pt-3 mb-0" style="background-color:#f8f8f8; border-bottom:1px solid lightgrey;">
+		<p>
+			<strong class="beta-tag">BETA</strong>
+			<span>This is a new service – your <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=-VAcircBikym-pDrkG8Y6dEMeKXPakZImmNP3H9NsDNUNkE2R0ZLM0NaWk85OVY1MjE0WkExWlVPVi4u">feedback</a> will help us to improve it.</span>
+		</p>
+	</div>
+	<div class="col-1" style="background-color:#f8f8f8;"></div>
+</div>
+{% endif %}
+
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3 headbar-margin"></div>
 	<div class="col-xl-5 col-md-6 col-sm-8 py-3 headbar"><span><a href="/{{portfolio}}" class="headbar-title special-link">{{ portfolio | upper }} Online Portfolio</a></span></div>
-	<div class="col-xl-5 col-md-4 col-sm-2 py-3 text-right headbar">
+	<div class="col-xl-5 col-md-4 col-sm-2 py-3 text-lg-right text-end headbar align-items-center">
 		{%if portfolio %}
-			<a href="/" data-cy="index-nav-link" class="headbar-text special-link">Portfolio Index</a> 
-			<span class="headbar-text">|</span> 
+		<a href="/" data-cy="index-nav-link" class="headbar-text special-link">Portfolio Index</a>
+		<span class="headbar-text">|</span>
 		{% endif %}
 		{%if hasAdminRole(identity, portfolio) %}
-			<a href="/{{portfolio}}/portfolio-team" data-cy="admin-nav-link" class="headbar-text special-link"> Admin area</a> 
-			<span class="headbar-text">|</span> 
+		<a href="/{{portfolio}}/portfolio-team" data-cy="admin-nav-link" class="headbar-text special-link"> Admin area</a>
+		<span class="headbar-text">|</span>
 		{% endif %}
 		<a href="/log-out" data-cy="logout-nav-link" class="headbar-text special-link">Log out</a>
 	</div>
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3 headbar-margin"></div>
 </div>
 
-{%if not isLoggedIn(identity) %}
-<br /><br />
-{% else %}
-<div class="row">
-	<div class="col-1 my-3"></div>
-	<div class="col-10 pt-3 mb-3" style="background-color:#f8f8f8; border-bottom:1px solid lightgrey;" >
-		<p>
-		<strong class="beta-tag">BETA</strong>
-		<span>This is a new service – your <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=-VAcircBikym-pDrkG8Y6dEMeKXPakZImmNP3H9NsDNUNkE2R0ZLM0NaWk85OVY1MjE0WkExWlVPVi4u">feedback</a> will help us to improve it.</span>
-		</p>
-	</div>
-	<div class="col-1 my-3"></div>
-</div>
+{%if portfolio %}
+	
+	{% include "theme/filters.html" %}
+
 {% endif %}
