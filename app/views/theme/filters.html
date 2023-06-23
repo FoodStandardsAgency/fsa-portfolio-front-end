@@ -29,13 +29,13 @@
             {% if summaryType %}
             <form class="form-inline d-flex" action="/{{portfolio}}/projectType?summaryType={{summaryType}}" method="post" novalidate>
                 <div class="form-group mb-2 mb-lg-0">
-                    <label for="id_project_type" style="margin-right:0.5em;">View {{labels.project_type}}:</label>
+                    <label for="id_project_type" style="margin-right:0.5em;">Viewing {{labels.project_type}}:</label>
                     <select class="form-control form-input-box" id="id_project_type" aria-label="{{labels.project_type}}" name="project_type">
                         {% for option in summary.project_type %}
                         <option value="{{option.value}}" aria-label="{{option.display}}" {{ "selected" if option.value == project_type }}>{{option.display}}</option>
                         {% endfor %}
                     </select>
-                    <button class="navbar-button mr-lg-0 my-lg-0 ml-0 ml-lg-2" type="submit">View</button>
+                    <noscript><button class="navbar-button mr-lg-0 my-lg-0 ml-0 ml-lg-2" type="submit">View</button></noscript>
                 </div>
             </form>
             {% endif %}
