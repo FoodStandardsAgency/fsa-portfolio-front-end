@@ -6,7 +6,6 @@
 
 
 {% block content %}
-
 <!-- Numbers in each stage -->
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
@@ -18,12 +17,6 @@
 
 <br />
 <br />
-
-<div class="row">
-	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-	<div class="col-xl-10 col-md-10 col-sm-10"><button class="accordion service-area open general-button" id="toggleallbutton" onclick="showhideall('toggleallbutton')">Show/Hide All &nbsp; <i id="ashowhideall" class="arrow up" style="vertical-align: middle;"></i></button></div>
-	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-</div>
 
 <div class="row">
 	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
@@ -45,7 +38,7 @@
 		{% endif %}
 		{% for phase in summary.phases %}
 		{% if phase.projects.length > 0 %}
-		<div class="link-list border-{{phase.viewkey}}" id="{{ safeViewKey }}">
+		<div class="link-list flex-list flex-wrap border-{{phase.viewkey}}" id="{{ safeViewKey }}">
 			{% for project in phase.projects %}
 			<div class="list-item">
 				<div class="project-summary-wrapper">
