@@ -28,7 +28,7 @@
               </ul>
               {% if summaryType %}
               <div class="d-flex justify-content-lg-between">
-                <button class="accordion service-area open general-button align-self-end ml-0" type="button" id="toggleallbutton" onclick="showhideall('toggleallbutton')">Show/Hide All &nbsp; <i id="ashowhideall" class="arrow up" style="vertical-align: middle;"></i></button>
+                <button class="accordion service-area open general-button align-self-end ml-0" type="button" id="toggleallbutton" onclick="showhideall('toggleallbutton')">Expand/Collapse All &nbsp; <i id="ashowhideall" class="arrow up" style="vertical-align: middle;"></i></button>
                 <form class="form-inline d-flex" action="/{{portfolio}}/projectType?summaryType={{summaryType}}" method="post" novalidate>
                     <div class="form-group mb-2 mb-lg-0">
                         <label for="id_project_type" style="margin-right:0.5em;">Viewing {{labels.project_type}}:</label>
