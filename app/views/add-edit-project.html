@@ -15,6 +15,9 @@
 		<form action="/{{portfolio}}/update" class="needs-validation" method="post" novalidate>
 
 			{% for fieldgroup in fieldgroups %}
+
+			{{ fieldgroup | dump }}
+
 			{% if fieldgroup.display %}
 			<div class="project-field-group">
 				<h2 class="section">{{fieldgroup.fieldgroup}}</h2>

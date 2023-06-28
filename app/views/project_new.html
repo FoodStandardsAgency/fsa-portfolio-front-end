@@ -346,119 +346,133 @@ function arrow(id) {
 	
 	
 <!-- -------------------------- SIDE BAR -------------------------- -->
-	<div class="col-sm-2 py-3">
-	<!-- Project plan -->
-	{% if data.start_date.date or data.actstart.date or data.expendp.date or data.expend.date or data.hardend.date or data.actual_end_date.date or data.p_comp or data.project_plan_option1 or data.project_plan_option2 or data.project_plan_setting1 or data.project_plan_setting2 %}
-	<hr />
-	<h2 class="accordion section" onclick="showhide('s9'); arrow('a9')">Project plan&nbsp;&nbsp; <i id="a9" class="arrow up"></i></h2>
-	
-	<div id="s9">
-	  
-		{% if data.start_date.date %}<p><strong>{{labels.start_date}}</strong><br /> {{ data.start_date.date | date(getProjectDateFormat(data.start_date.flag)) }}</p>{% endif %}
-		{% if data.actstart.date %}<p><strong>{{labels.actstart}}</strong><br /> {{ data.actstart.date | date(getProjectDateFormat(data.actstart.flag)) }}</p>{% endif %}
-		{% if data.expendp.date %}<p><strong>{{labels.expendp}}</strong><br /> {{ data.expendp.date | date(getProjectDateFormat(data.expendp.flag)) }}</p>{% endif %}
-		{% if data.expend.date %}<p><strong>{{labels.expend}}</strong><br /> {{ data.expend.date | date(getProjectDateFormat(data.expend.flag)) }}</p>{% endif %}
-		{% if data.actual_end_date.date %}<p><strong>{{labels.actual_end_date}}</strong><br /> {{ data.actual_end_date.date | date(getProjectDateFormat(data.actual_end_date.flag)) }}</p>{% endif %}
-		{% if data.hardend.date %}<p><strong>{{labels.hardend}}</strong><br /> {{ data.hardend.date | date(getProjectDateFormat(data.hardend.flag)) }}</p>{% endif %}		
-		
-		{% if data.p_comp > 0 %}<br /><p><strong>{{labels.p_comp}}</strong><br /> {{ data.p_comp }}%</p>{% endif %}
+		<div class="col-sm-2 py-3">
+			<!-- Project plan -->
+			{% if data.start_date.date or data.actstart.date or data.expendp.date or data.expend.date or data.hardend.date or data.actual_end_date.date or data.p_comp or data.project_plan_option1 or data.project_plan_option2 or data.project_plan_setting1 or data.project_plan_setting2 %}
+			<hr />
+			<h2 class="accordion section" onclick="showhide('s9'); arrow('a9')">Project plan&nbsp;&nbsp; <i id="a9" class="arrow up"></i></h2>
 
-		{% if data.project_plan_setting1 or data.project_plan_setting2 %}
-			<br />
-			<p>
-			{% if data.project_plan_setting1 %}<strong>{{ labels.project_plan_setting1 }}</strong> {{ data.project_plan_setting1 }}<br />{% endif %}
-			{% if data.project_plan_setting2 %}<strong>{{ labels.project_plan_setting2 }}</strong> {{ data.project_plan_setting2 }}{% endif %}
-			</p>
-		{% endif %}
-		
-		{% if data.project_plan_option1 and data.project_plan_option1 != 'None' %}<br /><div class="small-flag">{{ labels.project_plan_option1 }}: {{ data.project_plan_option1 }}</div>{% endif %}
-		{% if data.project_plan_option2 and data.project_plan_option2 != 'None'  %}<div class="small-flag">{{ labels.project_plan_option2 }}: {{ data.project_plan_option2 }}</div>{% endif %}
-	</div>
-	<br />
-	{% endif %}
-	
-	
-	<!-- About the project -->
-	{% if (data.direct and data.direct != 'None') or (data.theme and data.theme != 'None') or (data.project_type and data.project_type != 'None') or (data.project_size and data.project_size != 'None') or (data.link.link and data.link.link != 'None') or (data.strategic_objectives and data.strategic_objectives != 'None') or (data.category and data.category != 'None') %}
-	<hr />
-	<h2 class="accordion section" onclick="showhide('s10'); arrow('a10')">About the project&nbsp;&nbsp; <i id="a10" class="arrow down"></i></h2>
-	
-	<div id="s10" style="display:none;">
-		{% if data.direct and data.direct != 'None' %}		<p><strong>{{ labels.direct }}</strong><br />{{ data.direct }}</p>{% endif %}
-		{% if data.theme and data.theme != 'None' %}			<p><strong>{{ labels.theme }}</strong><br />{{ data.theme }}</p>{% endif %}
-		{% if data.project_type and data.project_type != 'None' %}	<p><strong>{{ labels.project_type }}</strong><br />	{{ data.project_type }}</p>{% endif %}
-		{% if data.project_size and data.project_size != 'None' %}	<p><strong>{{ labels.project_size }}</strong><br />{{ data.project_size }}</p>{% endif %}
-		{% if data.link.link and data.link.link != 'None' %}		<p><strong>{{ labels.link }}</strong><br />	<a href="{{ data.link.link }}">{{ data.link.name }}</a>{% endif %}
-		{% if data.strategic_objectives and data.strategic_objectives != 'None' %}<p><strong>{{ labels.strategic_objectives }}</strong><br />{{ data.strategic_objectives }}<br />{% endif %}
-		{% if (data.category or data.subcat) and (data.category != 'None' or data.subcat != 'None') %}		
-			<p><strong>{{ labels.category }}</strong><br />{{ data.category }} 
-				{% if data.subcat %}
+			<div id="s9">
+
+				{% if data.start_date.date %}<p><strong>{{labels.start_date}}</strong><br /> {{ data.start_date.date | date(getProjectDateFormat(data.start_date.flag)) }}</p>{% endif %}
+				{% if data.actstart.date %}<p><strong>{{labels.actstart}}</strong><br /> {{ data.actstart.date | date(getProjectDateFormat(data.actstart.flag)) }}</p>{% endif %}
+				{% if data.expendp.date %}<p><strong>{{labels.expendp}}</strong><br /> {{ data.expendp.date | date(getProjectDateFormat(data.expendp.flag)) }}</p>{% endif %}
+				{% if data.expend.date %}<p><strong>{{labels.expend}}</strong><br /> {{ data.expend.date | date(getProjectDateFormat(data.expend.flag)) }}</p>{% endif %}
+				{% if data.actual_end_date.date %}<p><strong>{{labels.actual_end_date}}</strong><br /> {{ data.actual_end_date.date | date(getProjectDateFormat(data.actual_end_date.flag)) }}</p>{% endif %}
+				{% if data.hardend.date %}<p><strong>{{labels.hardend}}</strong><br /> {{ data.hardend.date | date(getProjectDateFormat(data.hardend.flag)) }}</p>{% endif %}
+
+				{% if data.p_comp > 0 %}<br /><p><strong>{{labels.p_comp}}</strong><br /> {{ data.p_comp }}%</p>{% endif %}
+
+				{% if data.project_plan_setting1 or data.project_plan_setting2 %}
 				<br />
-				{% for subcat in data.subcat %}
-				{{ subcat }}<br />
-				{% endfor %}
-				{% else %}
-				<br />
+				<p>
+					{% if data.project_plan_setting1 %}<strong>{{ labels.project_plan_setting1 }}</strong> {{ data.project_plan_setting1 }}<br />{% endif %}
+					{% if data.project_plan_setting2 %}<strong>{{ labels.project_plan_setting2 }}</strong> {{ data.project_plan_setting2 }}{% endif %}
+				</p>
 				{% endif %}
-		{% endif %}
-	</div>
-	{% endif %}
+
+				{% if data.project_plan_option1 and data.project_plan_option1 != 'None' %}<br /><div class="small-flag">{{ labels.project_plan_option1 }}: {{ data.project_plan_option1 }}</div>{% endif %}
+				{% if data.project_plan_option2 and data.project_plan_option2 != 'None'  %}<div class="small-flag">{{ labels.project_plan_option2 }}: {{ data.project_plan_option2 }}</div>{% endif %}
+			</div>
+			<br />
+			{% endif %}
 
 
-	<!-- Budget --> 
-	{% if hasBudgetClaim(identity) %}
-	{% if (data.budgettype and data.budgettype != 'None') or data.cost_centre or (data.budget and data.budget != 0) or (data.spent and data.spent != 0) or (data.forecast_spend and data.forecast_spend != 0) or (data.budget_option1 and data.budget_option1 != 'None') or (data.budget_option2 and data.budget_option2 != 'None') or data.budget_field1 or data.budget_field2 %}
-	<br />
-	<hr />
-	<h2 class="accordion section" onclick="showhide('s11'); arrow('a11')">Budget&nbsp;&nbsp; <i id="a11" class="arrow up"></i></h2>
-	
-	<div id="s11">
-		{% if data.budgettype and data.budgettype != 'None' %}	<p><strong>{{ labels.budgettype }}</strong><br />{{ data.budgettype }}</p>{% endif %}
-		{% if data.cost_centre %}	<p><strong>{{ labels.cost_centre }}</strong><br />{{ data.cost_centre }}</p>{% endif %}
-		{% if data.budget and data.budget != 0 %}		<p><strong>{{ labels.budget }}</strong><br />£{{ currency(data.budget) }}</p>{% endif %}
-		{% if data.spent  and data.spent != 0 %}			<p><strong>{{ labels.spent }}</strong><br />£{{ currency(data.spent) }}</p>{% endif %}
-		{% if data.forecast_spend %}<p><strong>{{ labels.forecast_spend }}</strong><br />£{{ currency(data.forecast_spend) }}</p>{% endif %}
-				
-		{% if data.budget_field1 or data.budget_field2 %}
-			<p>
-			{% if data.budget_field1 %}<strong>{{ labels.budget_field1 }}:</strong> {{ data.budget_field1 }}{% endif %}
-			{% if data.budget_field2 %}<br /><strong>{{ labels.budget_field2 }}:</strong> {{ data.budget_field2 }}{% endif %}
-			</p>
-		{% endif %}
-		
-		{% if data.budget_option1 and data.budget_option1 != 'None' %}<div class="small-flag">{{ labels.budget_option1 }}: {{ data.budget_option1 }}</div>{% endif %}
-		{% if data.budget_option2 and data.budget_option2 != 'None'  %}<div class="small-flag">{{ labels.budget_option2 }}: {{ data.budget_option2 }}</div>{% endif %}
-	</div>
-	{% endif %}
-	{% endif %}
+			<!-- About the project -->
+			{% if (data.direct and data.direct != 'None') or (data.theme and data.theme != 'None') or (data.project_type and data.project_type != 'None') or (data.project_size and data.project_size != 'None') or (data.link.link and data.link.link != 'None') or (data.strategic_objectives and data.strategic_objectives != 'None') or (data.category and data.category != 'None') %}
+			<hr />
+			<h2 class="accordion section" onclick="showhide('s10'); arrow('a10')">About the project&nbsp;&nbsp; <i id="a10" class="arrow down"></i></h2>
+
+			<div id="s10" style="display:none;">
+				{% if data.direct and data.direct != 'None' %}		<p><strong>{{ labels.direct }}</strong><br />{{ data.direct }}</p>{% endif %}
+				{% if data.theme and data.theme != 'None' %}			<p><strong>{{ labels.theme }}</strong><br />{{ data.theme }}</p>{% endif %}
+				{% if data.project_type and data.project_type != 'None' %}	<p><strong>{{ labels.project_type }}</strong><br />	{{ data.project_type }}</p>{% endif %}
+				{% if data.project_size and data.project_size != 'None' %}	<p><strong>{{ labels.project_size }}</strong><br />{{ data.project_size }}</p>{% endif %}
+				{% if data.link.link and data.link.link != 'None' %}		<p>
+					<strong>{{ labels.link }}</strong><br />	<a href="{{ data.link.link }}">{{ data.link.name }}</a>{% endif %}
+					{% if data.strategic_objectives and data.strategic_objectives != 'None' %}
+				<p>
+					<strong>{{ labels.strategic_objectives }}</strong><br />{{ data.strategic_objectives }}<br />{% endif %}
+					{% if (data.category or data.subcat) and (data.category != 'None' or data.subcat != 'None') %}
+				<p>
+					<strong>{{ labels.category }}</strong><br />{{ data.category }}
+					{% if data.subcat %}
+					<br />
+					{% for subcat in data.subcat %}
+					{{ subcat }}<br />
+					{% endfor %}
+					{% else %}
+					<br />
+					{% endif %}
+					{% endif %}
+			</div>
+			{% endif %}
 
 
-	
-	<!-- FSA processes -->
-	{% if data.fsaproc_assurance_gatenumber or (data.fsaproc_assurance_gatecompleted and data.fsaproc_assurance_gatecompleted.date != null) or data.fsaproc_assurance_nextgate or (data.processes_option1 and data.processes_option1 != 'None') or (data.processes_option2 and data.processes_option1 != 'None') or data.processes_setting1 or data.processes_setting2  %}
-	<br />
-	<hr />
-	<h2 class="accordion section" onclick="showhide('s12'); arrow('a12')">FSA processes &nbsp;&nbsp; <i id="a12" class="arrow down"></i></h2>
-	
-	<div id="s12" style="display:none;">
-		{% if data.fsaproc_assurance_gatenumber %}		<p><strong>{{ labels.fsaproc_assurance_gatenumber }}</strong><br />		{{ data.fsaproc_assurance_gatenumber }}		</p>{% endif %}
-		{% if data.fsaproc_assurance_gatecompleted and data.fsaproc_assurance_gatecompleted.date != null %}	<p><strong>{{ labels.fsaproc_assurance_gatecompleted }}</strong><br />	{{ data.fsaproc_assurance_gatecompleted.date | date(getProjectDateFormat(data.fsaproc_assurance_gatecompleted.flag)) }}	</p>{% endif %}
-		{% if data.fsaproc_assurance_nextgate %}				<p><strong>{{ labels.fsaproc_assurance_nextgate }}</strong><br />		{{ data.fsaproc_assurance_nextgate }}		</p>{% endif %}
-		
-		{% if data.processes_option1 and data.processes_option1 != 'None' %}<div class="small-flag">{{ labels.processes_option1 }}: {{ data.processes_option1 }}</div>{% endif %}
-		{% if data.processes_option2 and data.processes_option2 != 'None' %}<div class="small-flag">{{ labels.processes_option2 }}: {{ data.processes_option2 }}</div>{% endif %}
-		
-		{% if data.processes_setting1 or data.processes_setting2 %}
-		<p>
-			{% if data.processes_setting1 %}<strong>{{ labels.processes_setting1 }}</strong>{{ data.processes_setting1 }}{% endif %}
-			{% if data.processes_setting2 %}<br /><strong>{{ labels.processes_setting2 }}</strong> {{ data.processes_setting2 }}{% endif %}
-		</p>
-		{% endif %}
-	</div>
-	{% endif %}
+			<!-- Budget -->
+			{% if hasBudgetClaim(identity) %}
+			{% if (data.budgettype and data.budgettype != 'None') or data.cost_centre or (data.budget and data.budget != 0) or (data.spent and data.spent != 0) or (data.forecast_spend and data.forecast_spend != 0) or (data.budget_option1 and data.budget_option1 != 'None') or (data.budget_option2 and data.budget_option2 != 'None') or data.budget_field1 or data.budget_field2 %}
+			<br />
+			<hr />
+			<h2 class="accordion section" onclick="showhide('s11'); arrow('a11')">Budget&nbsp;&nbsp; <i id="a11" class="arrow up"></i></h2>
+
+			<div id="s11">
+				{% if data.budgettype and data.budgettype != 'None' %}	<p><strong>{{ labels.budgettype }}</strong><br />{{ data.budgettype }}</p>{% endif %}
+				{% if data.cost_centre %}	<p><strong>{{ labels.cost_centre }}</strong><br />{{ data.cost_centre }}</p>{% endif %}
+				{% if data.budget and data.budget != 0 %}		<p><strong>{{ labels.budget }}</strong><br />£{{ currency(data.budget) }}</p>{% endif %}
+				{% if data.spent  and data.spent != 0 %}			<p><strong>{{ labels.spent }}</strong><br />£{{ currency(data.spent) }}</p>{% endif %}
+				{% if data.forecast_spend %}<p><strong>{{ labels.forecast_spend }}</strong><br />£{{ currency(data.forecast_spend) }}</p>{% endif %}
+
+				{% if data.budget_field1 or data.budget_field2 %}
+				<p>
+					{% if data.budget_field1 %}<strong>{{ labels.budget_field1 }}:</strong> {{ data.budget_field1 }}{% endif %}
+					{% if data.budget_field2 %}<br /><strong>{{ labels.budget_field2 }}:</strong> {{ data.budget_field2 }}{% endif %}
+				</p>
+				{% endif %}
+
+				{% if data.budget_option1 and data.budget_option1 != 'None' %}<div class="small-flag">{{ labels.budget_option1 }}: {{ data.budget_option1 }}</div>{% endif %}
+				{% if data.budget_option2 and data.budget_option2 != 'None'  %}<div class="small-flag">{{ labels.budget_option2 }}: {{ data.budget_option2 }}</div>{% endif %}
 
 
-	</div>
+				<!-- Future Forecast -->
+				{% if data.forecasts and data.forecasts.length > 0 %}
+					{% for forecast in data.forecasts %}
+					<p>
+						<strong>{{ forecast.name | safe }}:</strong> <br /> 
+						{{ forecast.amount | safe}}
+					</p>
+					{% endfor %}
+				{% endif %}
+			</div>
+			{% endif %}
+			{% endif %}
+
+
+			<!-- FSA processes -->
+			{% if data.fsaproc_assurance_gatenumber or (data.fsaproc_assurance_gatecompleted and data.fsaproc_assurance_gatecompleted.date != null) or data.fsaproc_assurance_nextgate or (data.processes_option1 and data.processes_option1 != 'None') or (data.processes_option2 and data.processes_option1 != 'None') or data.processes_setting1 or data.processes_setting2  %}
+			<br />
+			<hr />
+			<h2 class="accordion section" onclick="showhide('s12'); arrow('a12')">FSA processes &nbsp;&nbsp; <i id="a12" class="arrow down"></i></h2>
+
+			<div id="s12" style="display:none;">
+				{% if data.fsaproc_assurance_gatenumber %}		<p><strong>{{ labels.fsaproc_assurance_gatenumber }}</strong><br />		{{ data.fsaproc_assurance_gatenumber }}		</p>{% endif %}
+				{% if data.fsaproc_assurance_gatecompleted and data.fsaproc_assurance_gatecompleted.date != null %}	<p><strong>{{ labels.fsaproc_assurance_gatecompleted }}</strong><br />	{{ data.fsaproc_assurance_gatecompleted.date | date(getProjectDateFormat(data.fsaproc_assurance_gatecompleted.flag)) }}	</p>{% endif %}
+				{% if data.fsaproc_assurance_nextgate %}				<p><strong>{{ labels.fsaproc_assurance_nextgate }}</strong><br />		{{ data.fsaproc_assurance_nextgate }}		</p>{% endif %}
+
+				{% if data.processes_option1 and data.processes_option1 != 'None' %}<div class="small-flag">{{ labels.processes_option1 }}: {{ data.processes_option1 }}</div>{% endif %}
+				{% if data.processes_option2 and data.processes_option2 != 'None' %}<div class="small-flag">{{ labels.processes_option2 }}: {{ data.processes_option2 }}</div>{% endif %}
+
+				{% if data.processes_setting1 or data.processes_setting2 %}
+				<p>
+					{% if data.processes_setting1 %}<strong>{{ labels.processes_setting1 }}</strong>{{ data.processes_setting1 }}{% endif %}
+					{% if data.processes_setting2 %}<br /><strong>{{ labels.processes_setting2 }}</strong> {{ data.processes_setting2 }}{% endif %}
+				</p>
+				{% endif %}
+			</div>
+			{% endif %}
+
+
+		</div>
 
 </div>
 <div class="col-sm-1 py-3">
