@@ -178,6 +178,9 @@ ul {
   background-color:#f8f8f8;
   border-left:5px solid transparent;
 }
+	.link-list.flex-list {
+		display: flex;
+	}
 
 	.link-list .list-item {
 		margin-top: 1em;

@@ -16,8 +16,6 @@
 
 			{% for fieldgroup in fieldgroups %}
 
-			{{ fieldgroup | dump }}
-
 			{% if fieldgroup.display %}
 			<div class="project-field-group">
 				<h2 class="section">{{fieldgroup.fieldgroup}}</h2>
@@ -162,7 +160,11 @@
 							<div class="form-group">
 								<div class="row">
 									<div class="col-md-3"><input type="text" class="form-control name form-input-box" data-cy="{{label.field}}_name" aria-label="{{label.label}}" placeholder="{{label.label}} name"></div>
-									<div class="col-md-7"><input type="text" class="form-control link form-input-box" data-cy="{{label.field}}_link" aria-label="{{label.label}}" placeholder="{{label.label}} link"></div>
+									{% if label.field == 'forecasts' %}
+										<div class="col-md-7"><input type="text" class="form-control amount form-input-box" data-cy="{{label.field}}_amount" aria-label="{{label.label}}" placeholder="{{label.label}} amount"></div>
+									{% else %}
+										<div class="col-md-7"><input type="text" class="form-control link form-input-box" data-cy="{{label.field}}_link" aria-label="{{label.label}}" placeholder="{{label.label}} link"></div>
+									{% endif %}
 									<div class="col-md-2"><p class="delete doc-buttons" style="margin:0; cursor:pointer;">Remove</p></div>
 								</div>
 							</div>
@@ -173,14 +175,22 @@
 								<div class="form-group">
 									<div class="row">
 										<div class="col-md-3"><input type="text" class="form-control form-input-box" data-cy="{{label.field}}_name" name="{{label.field}}[{{loop.index0}}][name]" aria-label={{label.label}} placeholder="{{label.label}} name" value="{{doc.name}}"></div>
+										{% if label.field == 'forecasts' %}
+										<div class="col-md-7"><input type="text" class="form-control form-input-box" data-cy="{{label.field}}_amount" name="{{label.field}}[{{loop.index0}}][amount]" aria-label={{label.label}} placeholder="{{label.label}} amount" value="{{doc.amount}}"></div>
+										{% else %}
 										<div class="col-md-7"><input type="text" class="form-control form-input-box" data-cy="{{label.field}}_link" name="{{label.field}}[{{loop.index0}}][link]" aria-label={{label.label}} placeholder="{{label.label}} link" value="{{doc.link}}"></div>
+										{% endif %}
 										<div class="col-md-2"><p class="delete doc-buttons" style="cursor:pointer;" onclick="this.closest('.form-group').remove();">Remove</p></div>
 									</div>
 								</div>
 								{% endfor %}
 							</div>
 
+							{% if label.field == 'forecasts' %}
+							<span class="doc-buttons add-forecast" data-field="{{label.field}}" style="margin:0; cursor:pointer;">Add forecast</span>
+							{% else %}
 							<span class="doc-buttons add-doc" data-field="{{label.field}}" style="margin:0; cursor:pointer;">Add document</span>
+							{% endif %}
 						</fieldset>
 					</div>
 
@@ -364,6 +374,33 @@
             var linkInput = clone.querySelector('input.link');
             nameInput.setAttribute("name", nameNameAttr);
             linkInput.setAttribute("name", linkNameAttr);
+
+            var deleteButton = clone.querySelector('p.delete');
+            deleteButton.addEventListener("click", function () {
+                this.closest('.form-group').remove();
+            });
+
+            docList.appendChild(clone);
+		});
+
+
+        //Clone the hidden element and shows it
+        document.querySelector('.add-forecast')?.addEventListener("click", function () {
+            var field = this.dataset.field;
+            var templateId = '#doctemplate-' + field;
+            var docListId = '#doclist-' + field;
+            var docList = document.querySelector(docListId)
+            var template = document.querySelector(templateId);
+            var count = docList.dataset.count;
+            var nameNameAttr = field + '[' + count + '][name]'
+            var amountNameAttr = field + '[' + count + '][amount]'
+            docList.dataset.count++;
+
+            var clone = template.content.cloneNode(true);
+            var nameInput = clone.querySelector('input.name');
+            var amountInput = clone.querySelector('input.amount');
+            nameInput.setAttribute("name", nameNameAttr);
+            amountInput.setAttribute("name", amountNameAttr);
 
             var deleteButton = clone.querySelector('p.delete');
             deleteButton.addEventListener("click", function () {
