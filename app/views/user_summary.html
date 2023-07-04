@@ -7,22 +7,22 @@
 {% block content %}
 
 <div class="row">
-	<div class="col-xl-1 col-md-1 col-sm-1"></div>
-	<div class="col-xl-6 col-md-5 col-sm-10">
-		<h1 class="pt-3">{{summary.person}}</h1>
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-6 col-md-5 col-sm-10 py-3">
+		<h1>{{summary.person}}</h1>
 	</div>
-	<div class="col-xl-4 col-md-5 col-sm-10">
+	<div class="col-xl-4 col-md-5 col-sm-10 py-3">
 	</div>
-	<div class="col-xl-1 col-md-1 col-sm-1"></div>
+	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
 </div>
 
 <!-- Numbers in each stage -->
 <div class="row">
-	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-1 col-md-1 col-sm-1 pb-3"></div>
 	{% for phase in summary.phases %}
-	<div class="col-xl-2 col-md-2 col-sm-2 py-3"><a href="/{{portfolio}}/status#{{phase.viewkey}}" class="summ_links"><div class="tag {{phase.viewkey}}">	{{phase.name}}		</div><div class="big_number txt-{{phase.viewkey}}">	{{ phase.count }}	</div></a></div>
+	<div class="col-xl-2 col-md-2 col-sm-2 pb-3"><a href="/{{portfolio}}/status#{{phase.viewkey}}" class="summ_links"><div class="tag {{phase.viewkey}}">	{{phase.name}}		</div><div class="big_number txt-{{phase.viewkey}}">	{{ phase.count }}	</div></a></div>
 	{% endfor %}
-	<div class="col-xl-1 col-md-1 col-sm-1 py-3"></div>
+	<div class="col-xl-1 col-md-1 col-sm-1 pb-3"></div>
 </div>
 
 <br />
