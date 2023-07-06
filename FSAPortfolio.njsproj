@@ -69,6 +69,7 @@
     <Content Include="app\views\landing.html" />
     <Content Include="app\views\project_new.html" />
     <Content Include="app\views\project_static.html" />
+    <Content Include="app\views\theme\accordion.html" />
     <Content Include="app\views\theme\filters.html" />
     <Content Include="app\views\user_summary_list.html" />
     <Content Include="app\views\user_summary.html" />

@@ -334,6 +334,9 @@ The selected *Budget option 1*, from a list of options configured independently 
 ### `Budget option 2`
 The selected *Budget option 2*, from a list of options configured independently for each portfolio.
 
+### `Future Forecast`
+Repeating field to provide a list of budget forecasts for future years.
+
 > **Notes:**
 > - is only visible to FSA employees
 

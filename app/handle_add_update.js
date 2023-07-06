@@ -69,6 +69,29 @@ async function handle_add_update(req, res) {
 	}
 	else { var documents = ''; }
 
+	const forecasts_name1 = xss(req.body.forecasts_name1)
+	const forecasts_name2 = xss(req.body.forecasts_name2)
+	const forecasts_name3 = xss(req.body.forecasts_name3)
+	const forecasts_name4 = xss(req.body.forecasts_name4)
+
+	const forecasts_amount1 = xss(req.body.forecasts_amount1)
+	const forecasts_amount2 = xss(req.body.forecasts_amount2)
+	const forecasts_amount3 = xss(req.body.forecasts_amount3)
+	const forecasts_amount4 = xss(req.body.forecasts_amount4)
+
+	// Combine amounts and forecast names
+	if (forecasts_name1 != '' || forecasts_name2 != '' || forecasts_name3 != '' || forecasts_name4 != '') {
+		var str = forecasts_name1.concat(',', forecasts_amount1, ',', forecasts_name2, ',', forecasts_amount2, ',', forecasts_name3, ',', forecasts_amount3, ',', forecasts_name4, ',', forecasts_amount4);
+		var forecasts = str.split(',');
+
+		// Remove empty elements from the array
+		var forecasts = forecasts.filter(elem => elem.length > 0);
+
+		// Convert back to string
+		var forecasts = forecasts.toString();
+	}
+	else { var forecasts = ''; }
+
 	// Combine link to project channel (name & link)
 	if (link_address != '') {
 		if (link_name == '') { link_name = 'Link' }
@@ -212,6 +235,7 @@ async function handle_add_update(req, res) {
 		direct: xss(req.body.direct),
 
 		documents: documents,
+		forecasts: forecasts,
 		link: link,
 		pgroup: pgroup,
 		p_comp: p_comp,

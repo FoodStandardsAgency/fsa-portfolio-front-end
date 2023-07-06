@@ -5,7 +5,7 @@ function update_odd(req, res) {
 	const project_id = req.params.project_id;
 	
 	//Pull data from the DB to pre-populate the form
-	var text = 'SELECT project_id, project_name, start_date, short_desc, phase, category, subcat, rag, update, oddlead, oddlead_email, servicelead, servicelead_email, priority_main, funded, confidence, priorities, benefits, criticality, budget, spent, documents, link, rels, team, onhold, expend, hardend, actstart, dependencies, timestamp, project_size, oddlead_role, budgettype, direct, expendp, p_comp from latest_projects where project_id = $1';
+	var text = 'SELECT project_id, project_name, start_date, short_desc, phase, category, subcat, rag, update, oddlead, oddlead_email, servicelead, servicelead_email, priority_main, funded, confidence, priorities, benefits, criticality, budget, spent, documents, link, forecasts, amount, rels, team, onhold, expend, hardend, actstart, dependencies, timestamp, project_size, oddlead_role, budgettype, direct, expendp, p_comp from latest_projects where project_id = $1';
 	var	values = [project_id];
 
 	//Run the query to prepopulate form (asynch)
@@ -40,7 +40,13 @@ function update_odd(req, res) {
 		
 		// handle link
 		if(result.rows[0].link != null && result.rows[0].link != ''){var links = result.rows[0].link.split(",");} else {var links = '';}
-		
+
+		// Unpick forecasts and values
+		if (result.rows[0].forecasts != null && result.rows[0].forecasts != '') { var forecasts = result.rows[0].forecasts.split(","); } else { var forecasts = ''; }
+
+		// handle forecast value
+		if (result.rows[0].amount != null && result.rows[0].amount != '') { var amounts = result.rows[0].amount.split(","); } else { var amounts = ''; }
+
 		// dates - to see if there already was an update today
 		var today = new Date().toString();
 		var udate = result.rows[0].timestamp.toString();

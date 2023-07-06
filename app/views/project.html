@@ -212,14 +212,14 @@
 
 		{% if data.start_date or data.actstart or data.expendp or data.expend or data.hardend or data.first_completed %}
 		<br /><h3 class="heading-small">Key dates</h3>
-			  <p>
-			  	{% if data.start_date.date %}{{labels.start_date}}:<br /> {{ data.start_date.date | date(getProjectDateFormat(data.start_date.flag)) }} <br /><br />{% endif %}
-			  	{% if data.actstart.date %}{{labels.actstart}}:<br /> {{ data.actstart.date | date(getProjectDateFormat(data.actstart.flag)) }}<br /><br />{% endif %}
-			  	{% if data.expendp.date %}{{labels.expendp}}:<br /> {{ data.expendp.date | date(getProjectDateFormat(data.expendp.flag)) }} <br /><br />{% endif %}
-			  	{% if data.expend.date %}{{labels.expend}}:<br /> {{ data.expend.date | date(getProjectDateFormat(data.expend.flag)) }} <br /><br />{% endif %}
-			  	{% if data.hardend.date %}{{labels.hardend}}:<br /> {{ data.hardend.date | date(getProjectDateFormat(data.hardend.flag)) }}<br /><br />{% endif %}
-			  	{% if data.actual_end_date.date %}{{labels.actual_end_date}}:<br /> {{ data.actual_end_date.date | date(getProjectDateFormat(data.actual_end_date.flag)) }}<br /><br />{% endif %}
-			  </p>
+		<p>
+			{% if data.start_date.date %}{{labels.start_date}}:<br /> {{ data.start_date.date | date(getProjectDateFormat(data.start_date.flag)) }} <br /><br />{% endif %}
+			{% if data.actstart.date %}{{labels.actstart}}:<br /> {{ data.actstart.date | date(getProjectDateFormat(data.actstart.flag)) }}<br /><br />{% endif %}
+			{% if data.expendp.date %}{{labels.expendp}}:<br /> {{ data.expendp.date | date(getProjectDateFormat(data.expendp.flag)) }} <br /><br />{% endif %}
+			{% if data.expend.date %}{{labels.expend}}:<br /> {{ data.expend.date | date(getProjectDateFormat(data.expend.flag)) }} <br /><br />{% endif %}
+			{% if data.hardend.date %}{{labels.hardend}}:<br /> {{ data.hardend.date | date(getProjectDateFormat(data.hardend.flag)) }}<br /><br />{% endif %}
+			{% if data.actual_end_date.date %}{{labels.actual_end_date}}:<br /> {{ data.actual_end_date.date | date(getProjectDateFormat(data.actual_end_date.flag)) }}<br /><br />{% endif %}
+		</p>
 
 		{% endif %}
 
@@ -249,12 +249,23 @@
 		{% if (data.budget) and (group != 'supplier') %}
 
 		<br /><h3 class="heading-small">Budget</h3>
-		{% if data.budget == 0 %}	Not applicable
+		{% if data.budget == 0 and data.forecasts %}	Not applicable
 
 		{% else %}
 		<strong>{{labels.budgettype}}:</strong> {{ data.budgettype }} <br />
 		<strong>{{labels.budget}}:</strong> {{ budget }} <br />
 		{% if data.spent %}	<strong>{{labels.spent}}:</strong> {{ spent }} {% endif %}
+
+		<!-- Future Forecast -->
+		{% if data.forecasts and data.forecasts.length > 0 %}
+		{% for forecast in data.forecasts %}
+		<p>
+			<strong>{{ forecast.name | safe }}</strong> <br />
+			{{ forecast.amount | safe}}
+		</p>
+		{% endfor %}
+		{% endif %}
+
 		{% endif %}
 
 

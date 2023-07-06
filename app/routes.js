@@ -91,7 +91,7 @@ router.get('/:portfolio/configure', login.requireAdmin, async (req, res) => {
 
 		var fieldGroups = config.getFieldGroups(portfolioconfig);
 
-		//console.log(fieldGroups);
+		console.log(fieldGroups);
 
 		res.render('configure', {
 			"data": "",
