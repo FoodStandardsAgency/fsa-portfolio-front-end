@@ -53,6 +53,11 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 	padding: 2.5px;
 }
 
+.project-type-selector.filter-active {
+	font-weight: bold;
+	border-color: orange;
+	background-color: white;
+}
 
 /* Project page */
 .project-title {
@@ -199,6 +204,12 @@ ul {
 }
 	.link-list.flex-list {
 		display: flex;
+		flex-direction: column;
+	}
+
+	.link-list.flex-list .list-item {
+		margin-top: 0em;
+		margin-bottom: 0em;
 	}
 
 	.link-list .list-item {
