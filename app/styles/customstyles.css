@@ -39,9 +39,28 @@ a.headbar-title:hover	{color:white; text-decoration:none; font-family: 'Fira San
 .navbar-button			{border: 1px solid white; color:white; padding:5px 10px; margin:10px; background-color:#006F51; border-radius:5px;}
 .navbar-button:hover	{border: 1px solid #006F51; color:black; background-color:white;}
 .navbar .navbar-dark .navbar-toggler-icon {	background-image: escape-svg($navbar-light-toggler-icon-bg);}
+.navbar #toggleallbutton { color: black; border: 1px solid white; }
+.navbar #toggleallbutton:hover { color: black; border: 1px solid black; background: white;}
+.navbar #toggleallbutton:focus {
+	color: #495057;
+	background-color: #fff;
+	outline: 0;
+	box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+.navbar #toggleallbutton .arrow {
+	border-color: black;
+	border-width: 0px 2.5px 2.5px 0px;
+	padding: 2.5px;
+}
+
 
 /* Project page */
-.project-title			{font-family: 'Open Sans', sans-serif; font-weight:900; font-size:3em; margin-bottom:15px;} 
+.project-title {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 900;
+	font-size: 3em;
+	margin-bottom: 15px;
+} 
 .project-new			{background-color:#00719E; color:white; font-size:0.5em; padding: 5px; border-radius:5px;}
 .section				{font-family: 'Open Sans', sans-serif; font-weight:800; font-size:1.5em; margin-bottom:15px;} 
 
