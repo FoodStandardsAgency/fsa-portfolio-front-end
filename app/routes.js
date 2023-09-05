@@ -24,6 +24,7 @@ const handle_delete		= require('./handle_delete');
 const login 			= require('./login');
 const filter_view 		= require('./filter_view');
 const project_view		= require('./project_view');
+const { concat, forEach } = require('lodash');
 
 var router = express.Router();
 
@@ -202,7 +203,21 @@ router.get('/:portfolio/download/csv', login.requireAdmin, async function (req, 
 		var config = result.body.config;
 		var projects = result.body.projects
 
-		var columns = _.chain(config.labels)
+		// Set up individual key:value columns for Forecasts
+		var values;
+		var tempCols = [];
+		var forecastColumns = [];
+		for (var i = 1; i <= 6; i++) {
+			forecastColumns.push({ label: 'Forecast Label '.concat(i), field: 'forecastlabel'.concat(i), fieldgroup: 'budget', fsaonly: 'true' });
+			forecastColumns.push({ label: 'Forecast Value '.concat(i), field: 'forecastvalue'.concat(i), fieldgroup: 'budget', fsaonly: 'true' });
+		}
+		// Remove the existing flat forecast column from the collecton of columns.
+		var columnsPartition = _.partition(config.labels, ['field', 'forecasts']);
+
+		// Add the Forecast columns to the collection of columns.
+		var columns = _.concat(columnsPartition[1], forecastColumns);
+
+		columns = _.chain(columns)
 			.orderBy("grouporder", "fieldorder")
 			.map((value) => ({
 				key: value.field,
@@ -210,7 +225,22 @@ router.get('/:portfolio/download/csv', login.requireAdmin, async function (req, 
 			}))
 			.value();
 
-		stringify(projects, { header: true, columns: columns })
+		// TODO: Tidy up this logic and abstract into a utility function to unroll arbitrary list fields.
+		// Unspool the forecasts for a project and break them out into individual keyed fields.
+		_.forEach(projects, function (key, value, projects) {
+			values = _.split(projects[value]['forecasts'], '|');
+			if (values.length > 1) {
+				for (var i = 0; i < values.length; i++) {
+					tempCols = _.toPath(values[i]);
+					label = "forecastlabel".concat(i+1);
+					field = "forecastvalue".concat(i+1);
+					projects[value][label] = tempCols[0];
+					projects[value][field] = tempCols[1];
+				}
+			}
+		});
+
+		stringify(projects, { header: true, columns: columns, bom: true })
 			.pipe(res);
 
 	}
