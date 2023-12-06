@@ -388,23 +388,28 @@ function arrow(id) {
 				{% if data.theme and data.theme != 'None' %}			<p><strong>{{ labels.theme }}</strong><br />{{ data.theme }}</p>{% endif %}
 				{% if data.project_type and data.project_type != 'None' %}	<p><strong>{{ labels.project_type }}</strong><br />	{{ data.project_type }}</p>{% endif %}
 				{% if data.project_size and data.project_size != 'None' %}	<p><strong>{{ labels.project_size }}</strong><br />{{ data.project_size }}</p>{% endif %}
-				{% if data.link.link and data.link.link != 'None' %}		<p>
-					<strong>{{ labels.link }}</strong><br />	<a href="{{ data.link.link }}">{{ data.link.name }}</a>{% endif %}
-					{% if data.strategic_objectives and data.strategic_objectives != 'None' %}
-				<p>
-					<strong>{{ labels.strategic_objectives }}</strong><br />{{ data.strategic_objectives }}<br />{% endif %}
-					{% if (data.category or data.subcat) and (data.category != 'None' or data.subcat != 'None') %}
-				<p>
-					<strong>{{ labels.category }}</strong><br />{{ data.category }}
-					{% if data.subcat %}
-					<br />
-					{% for subcat in data.subcat %}
-					{{ subcat }}<br />
-					{% endfor %}
-					{% else %}
-					<br />
-					{% endif %}
-					{% endif %}
+				{% if data.link.link and data.link.link != 'None' %}		
+					<p>
+						<strong>{{ labels.link }}</strong><br />	<a href="{{ data.link.link }}">{{ data.link.name }}</a>{% endif %}
+					</p>
+				{% if data.strategic_objectives and data.strategic_objectives != 'None' and data.strategic_objectives != 'Error' %}
+					<p>
+						<strong>{{ labels.strategic_objectives }}</strong><br />{{ data.strategic_objectives }}<br />
+					</p>
+				{% endif %}
+				{% if (data.category or data.subcat) and (data.category != 'None' or data.subcat != 'None') %}
+					<p>
+						<strong>{{ labels.category }}</strong><br />{{ data.category }}
+						{% if data.subcat %}
+						<br />
+						{% for subcat in data.subcat %}
+						{{ subcat }}<br />
+						{% endfor %}
+						{% else %}
+						<br />
+						{% endif %}
+					</p>
+				{% endif %}
 			</div>
 			{% endif %}
 
