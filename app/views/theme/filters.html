@@ -31,8 +31,8 @@
                 <button class="accordion service-area open general-button align-self-end ml-0" type="button" id="toggleallbutton" onclick="showhideall('toggleallbutton')">Expand/Collapse All &nbsp; <i id="ashowhideall" class="arrow up" style="vertical-align: middle;"></i></button>
                 <form class="form-inline d-flex" action="/{{portfolio}}/projectType?summaryType={{summaryType}}" method="post" novalidate>
                     <div class="form-group mb-2 mb-lg-0">
-                        <label for="id_project_type" style="margin-right:0.5em;">Viewing {{labels.project_type}}:</label>
-                        <select class="project-type-selector form-control form-input-box {{ "filter-active" if project_type }}" id="id_project_type" aria-label="{{labels.project_type}}" name="project_type">
+                        <label for="id_project_type_header" style="margin-right:0.5em;">Viewing {{labels.project_type}}:</label>
+                        <select class="project-type-selector form-control form-input-box {{ "filter-active" if project_type }}" id="id_project_type_header" aria-label="{{labels.project_type}}" name="project_type">
                             {% for option in summary.project_type %}
                             <option value="{{option.value}}" aria-label="{{option.display}}" {{ "selected" if option.value == project_type }}>{{option.display}}</option>
                             {% endfor %}
