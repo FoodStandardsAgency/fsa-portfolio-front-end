@@ -30,12 +30,14 @@ async function renderSummaryView(req, res, summaryType, view) {
 		var response = await queries.portfolio_projectType_summary(portfolio, summaryType, projectType, req);
 		var summary = response.body;
 		var labels = getSummaryLabels(summary);
+		var filters = [{ label: "pgroup", link: "priority" }, {label: "g6team", link: "team"}, {label: "oddlead", link: "lead"}, {label: "rag", link: "rag"}, {label: "phase", link: "status"}];
 		res.render(view, {
 			"portfolio": portfolio,
 			"summaryType": summaryType,
 			"summary": summary,
 			"labels": labels,
-			"project_type": projectType
+			"project_type": projectType,
+			"summaryfilters": filters
 		});
 	}
 	catch (error) {
