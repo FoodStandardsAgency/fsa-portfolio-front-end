@@ -200,7 +200,7 @@
 							{{ data.oddlead }} <br />
 							<a href="mailto:{{ data.oddlead_email }}">{{ data.oddlead_email }}</a><br />
 							{% if data.oddlead_role and data.oddlead_role != 'Role' %}<strong>{{ labels.oddlead_role}}: </strong>{{ data.oddlead_role }}<br />{% endif %}
-							{% if data.g6team and 'g6team' in excludelist %}<strong>{{ labels.g6team}}: </strong>{{ data.g6team }}
+							{% if data.g6team and not ('g6team' in excludelist) %}<strong>{{ labels.g6team }}: </strong>{{ data.g6team }}
 						</p>{% endif %}
 					</div>
 					{% endif %}
