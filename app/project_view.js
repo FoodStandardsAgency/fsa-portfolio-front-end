@@ -1,6 +1,7 @@
 const queries 	= require('./queries');
 const config = require('./config');
 const errors = require('./error');
+const { forEach } = require('lodash');
 const handleError = errors.handleError;
 
 function currencyFormat(num) { return '£' + num.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
@@ -12,6 +13,15 @@ async function project_view(req, res) {
 	try {
 		var projectDTO = await queries.load_project(project_id, { includeConfig: true, includeHistory: true }, req);
 		var project = projectDTO.body.project;
+		var portfolioconfig = projectDTO.body.config.labels;
+		var excludedFields = [];
+
+		portfolioconfig.forEach(function (PortfolioField) {
+			if (PortfolioField.included != true) {
+				excludedFields.push(PortfolioField.field)
+			}
+		});
+
 		if (project) {
 
 			/*Budget type*/
@@ -32,7 +42,8 @@ async function project_view(req, res) {
 				"phases": config.phases,
 				"budgettype": budgettype,
 				"budget": currencyFormat(project.budget),
-				"spent": currencyFormat(project.spent)
+				"spent": currencyFormat(project.spent),
+				"excludelist": excludedFields,
 			});
 		} 
 

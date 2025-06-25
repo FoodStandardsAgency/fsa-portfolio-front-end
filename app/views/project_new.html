@@ -5,13 +5,13 @@
 <script>
 	$(document).ready(function () {
 		size_li = $("#myList li").length;
-		
+
 		x = 2;
-		
+
 		$('#oneupdate').hide();
-		if (size_li == 1) {$('#loadMore').hide(); $('#showLess').hide(); $('#oneupdate').show();}
-		if (size_li == x) {$('#loadMore').hide(); $('#pipe').hide();}
-		
+		if (size_li == 1) { $('#loadMore').hide(); $('#showLess').hide(); $('#oneupdate').show(); }
+		if (size_li == x) { $('#loadMore').hide(); $('#pipe').hide(); }
+
 		$('#myList li:lt(' + x + ')').show();
 		$('#loadMore').click(function () {
 			x = (x + 1 <= size_li) ? x + 2 : size_li;
@@ -36,25 +36,25 @@
 </script>
 <!-- Script for showing/hiding sections & flipping the arrow -->
 <script>
-function showhide(id) {
-  var s1 = document.getElementById(id);
-   
-  var flex_sections = ["s1", "s2", "s5", "s6", "s7", "s8"];
-  var initial_sections = ["s3", "s4", "s9", "s10", "s11", "s12"];
-      
-  if (flex_sections.indexOf(id) >= 0 && s1.style.display === "none") {s1.style.display = "flex";} 
-  else if (initial_sections.indexOf(id) >= 0 && s1.style.display === "none") {s1.style.display = "initial";} 
-  else {s1.style.display = "none";}
-  
-} 
+	function showhide(id) {
+		var s1 = document.getElementById(id);
 
-function arrow(id) {
-	var ai = document.getElementById(id);
-        
-  if (ai.classList.contains("down")) {ai.classList.remove("down"); ai.classList.add("up");} 
-  else if (ai.classList.contains("up")) {ai.classList.remove("up"); ai.classList.add("down");} 
-  
-} 
+		var flex_sections = ["s1", "s2", "s5", "s6", "s7", "s8"];
+		var initial_sections = ["s3", "s4", "s9", "s10", "s11", "s12"];
+
+		if (flex_sections.indexOf(id) >= 0 && s1.style.display === "none") { s1.style.display = "flex"; }
+		else if (initial_sections.indexOf(id) >= 0 && s1.style.display === "none") { s1.style.display = "initial"; }
+		else { s1.style.display = "none"; }
+
+	}
+
+	function arrow(id) {
+		var ai = document.getElementById(id);
+
+		if (ai.classList.contains("down")) { ai.classList.remove("down"); ai.classList.add("up"); }
+		else if (ai.classList.contains("up")) { ai.classList.remove("up"); ai.classList.add("down"); }
+
+	}
 </script>
 
 {% endblock %}
@@ -67,7 +67,7 @@ function arrow(id) {
 	<div class="col-xl-7 col-md-7 col-sm-6 py-3">
 		<p data-cy="project_id"><strong>Project ID: </strong>{{ data.project_id }} {% if data.business_case_number %} / {{ data.business_case_number }} {% endif %} {% if data.fs_number %} / {{ data.fs_number }} {% endif %}</p>
 	</div>
-	
+
 	<!-- Change for access groups -->
 	<div class="col-xl-3 col-md-3 col-sm-4 py-3 text-right text-end">
 		{% if hasAdminRole(identity, portfolio) %}<a href="/{{portfolio}}/delete/{{ data.project_id }}" class="special-link"><button data-cy="delete-project-button" class="delete-button">Delete</button></a>{% endif %}
@@ -97,31 +97,32 @@ function arrow(id) {
 <div class="row">
 	<div class="col-sm-1 pb-3"></div>
 	<div class="col-sm-10 pb-3 pr-5">
-	
-	<hr />
-	<h2 class=" accordion section" onclick="showhide('s1'); arrow('a1')">Project description &nbsp;&nbsp; <i id="a1" class="arrow up"></i> </h2></div>
+
+		<hr />
+		<h2 class=" accordion section" onclick="showhide('s1'); arrow('a1')">Project description &nbsp;&nbsp; <i id="a1" class="arrow up"></i> </h2>
+	</div>
 	<div class="col-sm-1 pb-3"></div>
-	
+
 </div>
 
 <div class="row" id="s1">
 	<div class="col-sm-1 pb-3"></div>
 
-	<div class="col-sm-8 pb-3 pr-5" >
+	<div class="col-sm-8 pb-3 pr-5">
 
 		<!-- Short description -->
 		{% if data.short_desc %}
 		<p class="desc-para">
-		<strong>{{ labels.short_desc | safe }}</strong><br />
-		{{ data.short_desc | safe }}
+			<strong>{{ labels.short_desc | safe }}</strong><br />
+			{{ data.short_desc | safe }}
 		</p>
 		{% endif %}
-		
+
 		<!-- Programme -->
 		{% if data.programme %}
 		<p class="programme">
-		<strong>{{ labels.programme | safe }}: {{ data.programme }}</strong><br />
-		{{ data.programme_description }}
+			<strong>{{ labels.programme | safe }}: {{ data.programme }}</strong><br />
+			{{ data.programme_description }}
 		</p>
 		{% endif %}
 	</div>
@@ -141,211 +142,223 @@ function arrow(id) {
 <div class="row">
 	<div class="col-sm-1 py-3"></div>
 	<div class="col-sm-8 py-3 pr-5">
-	
-		
+
+
 		<hr />
 		<h2 class="accordion section mb-3" onclick="showhide('s2'); arrow('a2')">Progress indicators &nbsp;&nbsp; <i id="a2" class="arrow up"></i></h2>
-		
+
 		<div class="row" id="s2">
-			{% if data.how_get_green %}<div class="col-sm-6">{% else %}<div class="col-sm-12">{% endif %}
-			
-			<!-- Flags & extra text fields-->
-			{% set rags = { 'red': 'Red', 'redamb': 'Red-Amber', 'amb': 'Amber', 'ambgre': 'Amber-Green', 'gre': 'Green', 'nor': 'No RAG']%}
-			{% if rags[data.rag] %}<div class="small-flag rag-{{data.rag}}">{{labels.rag}}: {{ rags[data.rag] }}</div>&nbsp;{% endif%}
-			{% if data.priority_main %}<div class="small-flag">{{labels.priority_main}}: {{data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;{% endif %}
-			{% if data.risk_rating and data.risk_rating != 'None' %}<div class="small-flag">{{labels.risk_rating}}: {{ data.risk_rating }}</div>&nbsp;{% endif %}
-			{% if data.onhold and data.onhold != 'None' %}<div class="small-flag">{{labels.onhold}}: {{ data.onhold }}</div>&nbsp;{% endif %}
-			{% if data.progress_option1 and data.progress_option1 != 'None'%}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option1 }}</div>&nbsp;{% endif %}
-			{% if data.progress_option2 and data.progress_option2 != 'None'%}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option2 }}</div>{% endif %}
-			
-			<p>
-			{% if data.progress_setting1 %}<strong>{{ labels.progress_setting1 }}:</strong> {{ data.progress_setting1 }} {% endif %}
-			{% if data.progress_setting2 %}<br /><strong>{{ labels.progress_setting2 }}:</strong> {{ data.progress_setting2 }}{% endif %}
-			</p>
-		</div>
-			
-			{% if data.how_get_green %}
-			<!-- How to get to green -->
-			<div class="col-sm-6">
-				<p class="infobox"><strong>{{ labels.how_get_green }}</strong><br />
-				{{ data.how_get_green }}
-				</p>
+			{% if data.how_get_green %}<div class="col-sm-6">
+				{% else %}<div class="col-sm-12">
+					{% endif %}
+
+					<!-- Flags & extra text fields-->
+					{% set rags = { 'red': 'Red', 'redamb': 'Red-Amber', 'amb': 'Amber', 'ambgre': 'Amber-Green', 'gre': 'Green', 'nor': 'No RAG']%}
+					{% if rags[data.rag] %}<div class="small-flag rag-{{data.rag}}">{{labels.rag}}: {{ rags[data.rag] }}</div>&nbsp;{% endif%}
+					{% if data.priority_main %}<div class="small-flag">{{labels.priority_main}}: {{data.pgroup | capitalize }} ({{ data.priority_main }})</div>&nbsp;{% endif %}
+					{% if data.risk_rating and data.risk_rating != 'None' %}<div class="small-flag">{{labels.risk_rating}}: {{ data.risk_rating }}</div>&nbsp;{% endif %}
+					{% if data.onhold and data.onhold != 'None' %}<div class="small-flag">{{labels.onhold}}: {{ data.onhold }}</div>&nbsp;{% endif %}
+					{% if data.progress_option1 and data.progress_option1 != 'None'%}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option1 }}</div>&nbsp;{% endif %}
+					{% if data.progress_option2 and data.progress_option2 != 'None'%}<div class="small-flag">{{ labels.progress_option1 }}: {{ data.progress_option2 }}</div>{% endif %}
+
+					<p>
+						{% if data.progress_setting1 %}<strong>{{ labels.progress_setting1 }}:</strong> {{ data.progress_setting1 }} {% endif %}
+						{% if data.progress_setting2 %}<br /><strong>{{ labels.progress_setting2 }}:</strong> {{ data.progress_setting2 }}{% endif %}
+					</p>
+				</div>
+
+				{% if data.how_get_green %}
+				<!-- How to get to green -->
+				<div class="col-sm-6">
+					<p class="infobox">
+						<strong>{{ labels.how_get_green }}</strong><br />
+						{{ data.how_get_green }}
+					</p>
+				</div>
+				{% endif %}
 			</div>
 			{% endif %}
+
+
+
+
+
+
+			<!-- Project team -->
+			{% if data.oddlead or data.key_contact1 or data.key_contact2 or data.key_contact3 or data.team or data.supplier or data.project_team_option1 or data.project_team_option2 or data.team or data.supplier %}
+			<br />
+			<hr />
+			<h2 class="accordion section" onclick="showhide('s3'); arrow('a3')">Project team &nbsp;&nbsp; <i id="a3" class="arrow up"></i></h2>
+			<!-- Key contacts -->
+			<div id="s3">
+				{% if data.oddlead or data.key_contact1 or data.key_contact2 or data.key_contact3 %}
+				<div class="d-flex flex-row flex-wrap bd-highlight mb-3">
+					{% if data.oddlead %}
+					<div class="p-2 flex-fill bd-highlight lead-box">
+						<p>
+							<strong>{{ labels.oddlead}}</strong><br />
+							{{ data.oddlead }} <br />
+							<a href="mailto:{{ data.oddlead_email }}">{{ data.oddlead_email }}</a><br />
+							{% if data.oddlead_role and data.oddlead_role != 'Role' %}<strong>{{ labels.oddlead_role}}: </strong>{{ data.oddlead_role }}<br />{% endif %}
+							{% if data.g6team and 'g6team' in excludelist %}<strong>{{ labels.g6team}}: </strong>{{ data.g6team }}
+						</p>{% endif %}
+					</div>
+					{% endif %}
+
+					{% if data.key_contact1 %}
+					<div class="p-2 flex-fill bd-highlight key-contact">
+						<p>
+							<strong>{{ labels.key_contact1 }}</strong><br />
+							{{ data.key_contact1.text }}<br />
+							<a href="mailto:{{ data.key_contact1_email }}">{{ data.key_contact1.email }}</a>
+						</p>
+					</div>
+					{% endif %}
+
+					{% if data.key_contact2 %}
+					<div class="p-2 flex-fill bd-highlight key-contact">
+						<p>
+							<strong>{{ labels.key_contact2 }}</strong><br />
+							{{ data.key_contact2.text }}<br />
+							<a href="mailto:{{ data.key_contact2.email }}">{{ data.key_contact2.email }}</a>
+						</p>
+					</div>
+					{% endif %}
+
+					{% if data.key_contact3 %}
+					<div class="p-2 flex-fill bd-highlight key-contact">
+						<p>
+							<strong>{{ labels.key_contact3 }}</strong><br />
+							{{ data.key_contact3.text }}<br />
+							<a href="mailto:{{ data.key_contact3.email }}">{{ data.key_contact3.email }}</a>
+						</p>
+					</div>
+					{% endif %}
+				</div>
+				{% endif %}
+
+				{% if data.team or data.supplier %}
+				<div class="mb-3">
+					{% if data.team %}<p><strong>{{ labels.team }} </strong><br />{{ data.team }} </p>{% endif %}
+					{% if data.supplier %}<p><strong>{{ labels.supplier }} </strong><br />{{ data.supplier }}</p>{% endif %}
+				</div>
+				{% endif %}
+
+				{%if data.project_team_option1 and data.project_team_option1 != 'None' %}<div class="small-flag mb-3">{{labels.project_team_option1}}: {{data.project_team_option1}}</div> {% endif %}
+				{%if data.project_team_option2 and data.project_team_option2 != 'None' %}<div class="small-flag mb-3">{{labels.project_team_option2}}: {{data.project_team_option2}}</div> {% endif %}
+
+
+				{% if data.project_team_setting1 or data.project_team_setting2 %}
+				<div class="mb-3">
+					<p>
+						{% if data.project_team_setting1 %}<strong>{{labels.project_team_setting1}}:</strong>{{data.project_team_setting1}} {% endif %}
+						{% if data.project_team_setting2 %}<br /><strong>{{labels.project_team_setting2}}:</strong>{{data.project_team_setting2}}{% endif %}
+					</p>
+				</div>
+				{% endif %}
+
+			</div>
+			{% endif %}
+
+
+
+
+
+			<!-- Updates (always displayed, even if just to indicate there are no updates) -->
+			<br />
+			<hr />
+			<h2 class="accordion section" onclick="showhide('s4'); arrow('a4')">Updates &nbsp;&nbsp; <i id="a4" class="arrow up"></i></h2>
+			<div id="s4">
+				{% if data.updates.length > 0 %}
+				<ul id="myList" style="padding-left:0;">
+					{% for update in data.updates %}
+					<li><p style="white-space: pre-wrap;"><span style="font-weight:700">{{ update.timestamp | date(globals.timestampFormat) | safe }}</span> - {{ update.text | safe }}</p><br /></li>
+					{% endfor %}
+				</ul>
+
+				<p>
+					<span id="loadMore" style="font-weight:800; cursor:pointer;">Load more</span> <span id="showLess" style="font-weight:800; cursor:pointer;"><span id="pipe">|</span> Show less</span>
+					<span id="oneupdate" style="font-weight:600;">This project has only one update</span>
+				</p>
+				{% else %}
+
+				<p><strong> No updates</strong></p>
+				{% endif %}
+
+				{% if data.forward_look %}<br /><p class="infobox"><strong>{{ labels.forward_look }}</strong><br />{{ data.forward_look }}</p>{% endif %}
+				{% if data.emerging_issues %}<br /><p class="infobox"><strong>{{ labels.emerging_issues}}</strong><br />{{ data.emerging_issues }}</p>{% endif %}
+
+			</div>
+
+
+
+			{% if data.milestones and data.milestones.length > 0 %}
+			<br />
+			<hr />
+			<h2 class="accordion section" onclick="showhide('s5'); arrow('a5')">Milestones&nbsp;&nbsp; <i id="a5" class="arrow down"></i></h2>
+
+			<div class="mb-3" id="s5" style="display:none;">
+				<table class="table">
+					<thead class="thead-light">
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Name</th>
+							<th scope="col">Deadline</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for milestone in data.milestones %}
+						<tr>
+							<th scope="row">{{milestone.order}}</th>
+							<td>{{milestone.name | safe }}</td>
+							<td>{{ milestone.deadline.date | date(getProjectDateFormat(milestone.deadline.flag)) if milestone.deadline.date}}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			{% endif %}
+
+
+
+			<!-- Key documents -->
+			{% if data.documents and data.documents.length > 0 %}
+			<br />
+			<hr />
+			<h2 class="accordion section" onclick="showhide('s6'); arrow('a6')">{{labels.documents}}&nbsp;&nbsp; <i id="a6" class="arrow down"></i></h2>
+			<div class="row" id="s6" style="display:none;">
+				{% for doc in data.documents %}<div class="col-sm-3 py-3"><a href="{{ doc.link | safe }}">{{ doc.name | safe }}</a></div>{% endfor %}
+			</div>
+			{% endif %}
+
+
+			<!-- Related projects -->
+			{% if data.rels and data.rels.length > 0 %}
+			<br />
+			<hr />
+			<h2 class="accordion section" onclick="showhide('s7'); arrow('a7')">{{labels.rels}}&nbsp;&nbsp; <i id="a7" class="arrow down"></i></h2>
+			<div class="row" id="s7" style="display:none;">
+				{% for rel in data.rels %}<div class="col-sm-6 py-3"><a href="/{{portfolio}}/projects/{{ rel.project_id }}">{{ rel.project_name }}</a></div>{% endfor %}
+			</div>
+			{% endif %}
+
+
+
+			<!-- Dependencies -->
+			{% if data.dependencies and data.dependencies.length > 0 %}
+			<br />
+			<hr />
+			<h2 class="accordion section" onclick="showhide('s8'); arrow('a8')">This project depends on&nbsp;&nbsp; <i id="a8" class="arrow down"></i></h2>
+			<div class="row" id="s8" style="display:none;">
+				{% for dep in data.dependencies %}<div class="col-sm-6 py-3"><a href="/{{portfolio}}/projects/{{ dep.project_id }}">{{ dep.project_name }}</a></div> {% endfor %}
+			</div>
+			{% endif %}
+
+
 		</div>
-		{% endif %}
 
 
-
-
-		
-		
-		<!-- Project team -->
-		{% if data.oddlead or data.key_contact1 or data.key_contact2 or data.key_contact3 or data.team or data.supplier or data.project_team_option1 or data.project_team_option2 or data.team or data.supplier %}
-		<br />
-		<hr />
-		<h2 class="accordion section" onclick="showhide('s3'); arrow('a3')">Project team &nbsp;&nbsp; <i id="a3" class="arrow up"></i></h2>
-		<!-- Key contacts -->
-		<div id="s3">
-		{% if data.oddlead or data.key_contact1 or data.key_contact2 or data.key_contact3 %}
-		<div class="d-flex flex-row flex-wrap bd-highlight mb-3">
-		
-		  {% if data.oddlead %}
-		  <div class="p-2 flex-fill bd-highlight lead-box">
-		  <p><strong>{{ labels.oddlead}}</strong><br />
-		  {{ data.oddlead}} <br />
-		  <a href="mailto:{{ data.oddlead_email }}">{{ data.oddlead_email }}</a><br />
-		  {% if data.oddlead_role and data.oddlead_role != 'Role' %}<strong>{{ labels.oddlead_role}}: </strong>{{ data.oddlead_role }}<br />{% endif %}
-		  {% if data.g6team %}<strong>{{ labels.g6team}}: </strong>{{ data.g6team }}</p>{% endif %}
-		  </div>
-		  {% endif %}
-		  
-		  {% if data.key_contact1 %}
-		  <div class="p-2 flex-fill bd-highlight key-contact">
-		  <p><strong>{{ labels.key_contact1 }}</strong><br />
-		  {{ data.key_contact1.text }}<br />
-		  <a href="mailto:{{ data.key_contact1_email }}">{{ data.key_contact1.email }}</a></p>
-		  </div>
-		  {% endif %}
-		  
-		  {% if data.key_contact2 %}
-		  <div class="p-2 flex-fill bd-highlight key-contact">
-		  <p><strong>{{ labels.key_contact2 }}</strong><br />
-		  {{ data.key_contact2.text }}<br />
-		  <a href="mailto:{{ data.key_contact2.email }}">{{ data.key_contact2.email }}</a></p>
-		  </div>
-		  {% endif %}
-		  
-		  {% if data.key_contact3 %}
-		  <div class="p-2 flex-fill bd-highlight key-contact">
-		  <p><strong>{{ labels.key_contact3 }}</strong><br />
-		  {{ data.key_contact3.text }}<br />
-		  <a href="mailto:{{ data.key_contact3.email }}">{{ data.key_contact3.email }}</a></p>
-		  </div>
-		  {% endif %}
-		</div>
-		{% endif %}
-				
-		{% if data.team or data.supplier %}
-		<div class="mb-3">
-		{% if data.team %}<p><strong>{{ labels.team }} </strong><br />{{ data.team }} </p>{% endif %}
-		{% if data.supplier %}<p><strong>{{ labels.supplier }} </strong><br />{{ data.supplier }}</p>{% endif %}
-		</div>
-		{% endif %}
-		
-		{%if data.project_team_option1 and data.project_team_option1 != 'None' %}<div class="small-flag mb-3">{{labels.project_team_option1}}: {{data.project_team_option1}}</div> {% endif %}
-		{%if data.project_team_option2 and data.project_team_option2 != 'None' %}<div class="small-flag mb-3">{{labels.project_team_option2}}: {{data.project_team_option2}}</div> {% endif %}
-		
-		
-		{% if data.project_team_setting1 or data.project_team_setting2 %}
-		<div class="mb-3">
-		<p>
-		{% if data.project_team_setting1 %}<strong>{{labels.project_team_setting1}}:</strong>{{data.project_team_setting1}} {% endif %}
-		{% if data.project_team_setting2 %}<br /><strong>{{labels.project_team_setting2}}:</strong>{{data.project_team_setting2}}{% endif %}
-		</p>
-		</div>
-		{% endif %}
-		
-		</div>
-		{% endif %}
-
-
-
-
-
-		<!-- Updates (always displayed, even if just to indicate there are no updates) -->
-		<br />
-		<hr />
-		<h2 class="accordion section" onclick="showhide('s4'); arrow('a4')">Updates &nbsp;&nbsp; <i id="a4" class="arrow up"></i></h2>
-		<div id="s4">
-		{% if data.updates.length > 0 %}
-		<ul id="myList" style="padding-left:0;">
-			{% for update in data.updates %}
-			<li><p style="white-space: pre-wrap;"><span style="font-weight:700">{{ update.timestamp | date(globals.timestampFormat) | safe }}</span> - {{ update.text | safe }}</p><br /></li>
-			{% endfor %}
-		</ul>
-
-		<p><span id="loadMore" style="font-weight:800; cursor:pointer;">Load more</span> <span id="showLess" style="font-weight:800; cursor:pointer;"><span id="pipe">|</span> Show less</span>
-		<span id="oneupdate" style="font-weight:600;">This project has only one update</span></p>
-		{% else %}
-
-		<p><strong> No updates</strong></p>
-		{% endif %}
-		
-		{% if data.forward_look %}<br /><p class="infobox"><strong>{{ labels.forward_look }}</strong><br />{{ data.forward_look }}</p>{% endif %}
-		{% if data.emerging_issues %}<br /><p class="infobox"><strong>{{ labels.emerging_issues}}</strong><br />{{ data.emerging_issues }}</p>{% endif %}
-		
-		</div>
-		
-		
-
-		{% if data.milestones and data.milestones.length > 0 %}
-		<br />
-		<hr />
-		<h2 class="accordion section" onclick="showhide('s5'); arrow('a5')">Milestones&nbsp;&nbsp; <i id="a5" class="arrow down"></i></h2>
-		
-		<div class="mb-3" id="s5" style="display:none;">
-		<table class="table">
-		  <thead class="thead-light">
-			<tr>
-			  <th scope="col">#</th>
-			  <th scope="col">Name</th>
-			  <th scope="col">Deadline</th>
-			</tr>
-		  </thead>
-		  <tbody>
-			{% for milestone in data.milestones %}
-			<tr>
-				<th scope="row">{{milestone.order}}</th>
-				<td>{{milestone.name | safe }}</td>
-				<td>{{ milestone.deadline.date | date(getProjectDateFormat(milestone.deadline.flag)) if milestone.deadline.date}}</td>
-			</tr>
-			{% endfor %}
-		  </tbody>
-		</table>
-		</div>
-		{% endif %}
-		
-		
-		
-		<!-- Key documents -->
-		{% if data.documents and data.documents.length > 0 %}
-		<br />
-		<hr />
-		<h2 class="accordion section" onclick="showhide('s6'); arrow('a6')">{{labels.documents}}&nbsp;&nbsp; <i id="a6" class="arrow down"></i></h2>
-		<div class="row" id="s6" style="display:none;">
-		{% for doc in data.documents %}<div class="col-sm-3 py-3"><a href="{{ doc.link | safe }}">{{ doc.name | safe }}</a></div>{% endfor %}
-		</div>
-		{% endif %}		
-		
-		
-		<!-- Related projects -->
-		{% if data.rels and data.rels.length > 0 %}
-		<br />
-		<hr />
-		<h2 class="accordion section" onclick="showhide('s7'); arrow('a7')">{{labels.rels}}&nbsp;&nbsp; <i id="a7" class="arrow down"></i></h2>
-		<div class="row" id="s7" style="display:none;">
-		{% for rel in data.rels %}<div class="col-sm-6 py-3"><a href="/{{portfolio}}/projects/{{ rel.project_id }}">{{ rel.project_name }}</a></div>{% endfor %}
-		</div>
-		{% endif %}
-
-			
-		
-		<!-- Dependencies -->
-		{% if data.dependencies and data.dependencies.length > 0 %}
-		<br />
-		<hr />
-		<h2 class="accordion section" onclick="showhide('s8'); arrow('a8')">This project depends on&nbsp;&nbsp; <i id="a8" class="arrow down"></i></h2>
-		<div class="row" id="s8" style="display:none;">
-		{% for dep in data.dependencies %}<div class="col-sm-6 py-3"><a href="/{{portfolio}}/projects/{{ dep.project_id }}">{{ dep.project_name }}</a></div> {% endfor %}
-		</div>
-		{% endif %}
-
-
-	</div>
-	
-	
-<!-- -------------------------- SIDE BAR -------------------------- -->
+		<!-- -------------------------- SIDE BAR -------------------------- -->
 		<div class="col-sm-2 py-3">
 			<!-- Project plan -->
 			{% if data.start_date.date or data.actstart.date or data.expendp.date or data.expend.date or data.hardend.date or data.actual_end_date.date or data.p_comp or data.project_plan_option1 or data.project_plan_option2 or data.project_plan_setting1 or data.project_plan_setting2 %}
@@ -388,27 +401,27 @@ function arrow(id) {
 				{% if data.theme and data.theme != 'None' %}			<p><strong>{{ labels.theme }}</strong><br />{{ data.theme }}</p>{% endif %}
 				{% if data.project_type and data.project_type != 'None' %}	<p><strong>{{ labels.project_type }}</strong><br />	{{ data.project_type }}</p>{% endif %}
 				{% if data.project_size and data.project_size != 'None' %}	<p><strong>{{ labels.project_size }}</strong><br />{{ data.project_size }}</p>{% endif %}
-				{% if data.link.link and data.link.link != 'None' %}		
-					<p>
-						<strong>{{ labels.link }}</strong><br />	<a href="{{ data.link.link }}">{{ data.link.name }}</a>{% endif %}
-					</p>
+				{% if data.link.link and data.link.link != 'None' %}
+				<p>
+					<strong>{{ labels.link }}</strong><br />	<a href="{{ data.link.link }}">{{ data.link.name }}</a>{% endif %}
+				</p>
 				{% if data.strategic_objectives and data.strategic_objectives != 'None' and data.strategic_objectives != 'Error' %}
-					<p>
-						<strong>{{ labels.strategic_objectives }}</strong><br />{{ data.strategic_objectives }}<br />
-					</p>
+				<p>
+					<strong>{{ labels.strategic_objectives }}</strong><br />{{ data.strategic_objectives }}<br />
+				</p>
 				{% endif %}
 				{% if (data.category or data.subcat) and (data.category != 'None' or data.subcat != 'None') %}
-					<p>
-						<strong>{{ labels.category }}</strong><br />{{ data.category }}
-						{% if data.subcat %}
-						<br />
-						{% for subcat in data.subcat %}
-						{{ subcat }}<br />
-						{% endfor %}
-						{% else %}
-						<br />
-						{% endif %}
-					</p>
+				<p>
+					<strong>{{ labels.category }}</strong><br />{{ data.category }}
+					{% if data.subcat %}
+					<br />
+					{% for subcat in data.subcat %}
+					{{ subcat }}<br />
+					{% endfor %}
+					{% else %}
+					<br />
+					{% endif %}
+				</p>
 				{% endif %}
 			</div>
 			{% endif %}
@@ -441,12 +454,12 @@ function arrow(id) {
 
 				<!-- Future Forecast -->
 				{% if data.forecasts and data.forecasts.length > 0 %}
-					{% for forecast in data.forecasts %}
-					<p>
-						<strong>{{ forecast.name | safe }}:</strong> <br /> 
-						{{ forecast.amount | safe}}
-					</p>
-					{% endfor %}
+				{% for forecast in data.forecasts %}
+				<p>
+					<strong>{{ forecast.name | safe }}:</strong> <br />
+					{{ forecast.amount | safe}}
+				</p>
+				{% endfor %}
 				{% endif %}
 			</div>
 			{% endif %}
@@ -479,9 +492,9 @@ function arrow(id) {
 
 		</div>
 
-</div>
-<div class="col-sm-1 py-3">
-</div>
+	</div>
+	<div class="col-sm-1 py-3">
+	</div>
 
 
-{% endblock %}
+	{% endblock %}
